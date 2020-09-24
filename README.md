@@ -18,4 +18,4 @@ This project covers installation of Media Composer with Nexis storage ( online) 
 ## Prerequisites  
 - [Azure subscription] (https://portal.azure.com)
 - Avid licenses
- 
+ - test lock
