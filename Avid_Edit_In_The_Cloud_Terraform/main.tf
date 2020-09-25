@@ -11,7 +11,7 @@ provider "azurerm" {
   #tenant_id       = var.tenant_id
   features {}
   version         = "~>2.6"
-  #partner_id      = "6ae4d712-3974-76c4-96de-50fc79fa69fc"
+  partner_id      = "6ae4d712-3974-76c4-96de-50fc79fa69fc"
 }
 
 provider "random" {
