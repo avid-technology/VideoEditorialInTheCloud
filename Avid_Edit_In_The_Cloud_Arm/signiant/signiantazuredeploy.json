@@ -1,0 +1,372 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "workstationName": {
+      "type": "string",
+      "metadata": {
+        "description": "Workstation name must be 3-char min, 8-char max, lowercase alphanumeric"
+      }
+    },
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "Username for the Virtual Machine."
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Password for the Virtual Machine."
+      }
+    },
+    "general-VnetResourceGroup": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Resource Group where the existing Vnet is deployed."
+            }
+      },
+    "general-VnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the existing Virtual Network."
+            }
+      }, 
+    "general-SubnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Existing subnet in where VMs should be deployed"
+            },
+            "defaultValue": "default"
+      },
+    "_system-InstallURL": {
+            "type": "string"
+        },
+    "signiantInstallName": {
+      "type": "string",
+      "defaultValue": "Install_Signiant_SDCX_Server_v3.3.2.exe",
+      "metadata": {
+        "description": "Signiant Install File Name"
+      }
+    },
+    "avidNexisClientInstallName": {
+      "type": "string",
+      "defaultValue": "AvidNEXISClient_Win64_20.3.1.14.msi",
+      "metadata": {
+        "description": "Avid Nexis Client Install Name"
+      }
+    }
+  },
+  "variables": {
+    "uniqueName": "[parameters('workstationName')]",
+    "subnetId": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]",
+    "location": "[resourceGroup().location]",
+    "vmSize": "Standard_D8_v3",
+    "nicName": "[concat(variables('uniqueName'),'-sig-nic')]",
+    "publicIPAddressName": "[concat(variables('uniqueName'),'-sig-ip')]",
+    "vmName": "[concat(variables('uniqueName'),'-sig-vm')]",
+    "networkSecurityGroupName": "[concat(variables('uniqueName'),'-sig-nsg')]",
+    "adminUsername": "[parameters('adminUsername')]",
+    "adminPassword": "[parameters('adminPassword')]",
+    "scriptFileName": "installSigniant.ps1",
+    "_githubLocation": "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Arm",
+    "signiantInstallName":"[parameters('signiantInstallName')]",
+    "avidNexisClientInstallName":"[parameters('avidNexisClientInstallName')]",
+    "scriptLocation": "[concat(variables('_githubLocation'), '/','scripts')]",
+    "signiantInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('signiantInstallName'))]",
+    "avidNexisClentInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('avidNexisClientInstallName'))]",
+    "scriptParameters": "[concat('-SigniantMediaShuttleURL ', variables('signiantInstallLocation'),' -AvidNEXISClientURL ', variables('avidNexisClentInstallLocation'))]",
+    "scriptFolder": ".",
+    "networkSecurityGroupRules": [
+      {
+        "name": "RemoteAccessRDP",
+        "properties": {
+          "priority": 100,
+          "protocol": "TCP",
+          "access": "Allow",
+          "direction": "Inbound",
+          "sourceAddressPrefix": "*",
+          "sourcePortRange": "*",
+          "destinationAddressPrefix": "*",
+          "destinationPortRange": "3389"
+        }
+      },
+      {
+        "name": "RemoteAccessSSH",
+        "properties": {
+          "priority": 110,
+          "protocol": "TCP",
+          "access": "Allow",
+          "direction": "Inbound",
+          "sourceAddressPrefix": "*",
+          "sourcePortRange": "*",
+          "destinationAddressPrefix": "*",
+          "destinationPortRange": "22"
+        }
+      },
+      {
+        "name": "Allow-80-In",
+        "properties": {
+          "priority": 200,
+          "protocol": "TCP",
+          "access": "Allow",
+          "direction": "Inbound",
+          "sourceAddressPrefix": "*",
+          "sourcePortRange": "*",
+          "destinationAddressPrefix": "*",
+          "destinationPortRange": "80"
+        }
+      },
+      {
+        "name": "Allow-80-Out",
+        "properties": {
+          "priority": 205,
+          "protocol": "TCP",
+          "access": "Allow",
+          "direction": "Outbound",
+          "sourceAddressPrefix": "*",
+          "sourcePortRange": "*",
+          "destinationAddressPrefix": "*",
+          "destinationPortRange": "80"
+        }
+      },
+      {
+        "name": "Allow-8080",
+        "properties": {
+          "priority": 210,
+          "protocol": "TCP",
+          "access": "Allow",
+          "direction": "Inbound",
+          "sourceAddressPrefix": "*",
+          "sourcePortRange": "*",
+          "destinationAddressPrefix": "*",
+          "destinationPortRange": "8080"
+        }
+      },
+      {
+        "name": "Allow-TCP-49221-In",
+        "properties": {
+          "priority": 215,
+          "protocol": "TCP",
+          "access": "Allow",
+          "direction": "Inbound",
+          "sourceAddressPrefix": "*",
+          "sourcePortRange": "*",
+          "destinationAddressPrefix": "*",
+          "destinationPortRange": "49221"
+        }
+      },
+      {
+        "name": "Allow-TCP-49221-Out",
+        "properties": {
+          "priority": 220,
+          "protocol": "TCP",
+          "access": "Allow",
+          "direction": "Outbound",
+          "sourceAddressPrefix": "*",
+          "sourcePortRange": "*",
+          "destinationAddressPrefix": "*",
+          "destinationPortRange": "49221"
+        }
+      },
+      {
+        "name": "Shuttle-UDP",
+        "properties": {
+          "priority": 300,
+          "protocol": "UDP",
+          "access": "Allow",
+          "direction": "Inbound",
+          "sourceAddressPrefix": "*",
+          "sourcePortRange": "*",
+          "destinationAddressPrefix": "*",
+          "destinationPortRange": "49221-49321"
+        }
+      },
+      {
+        "name": "Allow-TCP-49321-In",
+        "properties": {
+          "priority": 230,
+          "protocol": "TCP",
+          "access": "Allow",
+          "direction": "Inbound",
+          "sourceAddressPrefix": "*",
+          "sourcePortRange": "*",
+          "destinationAddressPrefix": "*",
+          "destinationPortRange": "49321"
+        }
+      },
+      {
+        "name": "Allow-TCP-49321-Out",
+        "properties": {
+          "priority": 250,
+          "protocol": "TCP",
+          "access": "Allow",
+          "direction": "Inbound",
+          "sourceAddressPrefix": "*",
+          "sourcePortRange": "*",
+          "destinationAddressPrefix": "*",
+          "destinationPortRange": "49321"
+        }
+      },
+      {
+        "name": "Allow-TCP-50221-In",
+        "properties": {
+          "priority": 235,
+          "protocol": "TCP",
+          "access": "Allow",
+          "direction": "Inbound",
+          "sourceAddressPrefix": "*",
+          "sourcePortRange": "*",
+          "destinationAddressPrefix": "*",
+          "destinationPortRange": "50221"
+        }
+      },
+      {
+        "name": "Allow-TCP-50221-Out",
+        "properties": {
+          "priority": 240,
+          "protocol": "TCP",
+          "access": "Allow",
+          "direction": "Outbound",
+          "sourceAddressPrefix": "*",
+          "sourcePortRange": "*",
+          "destinationAddressPrefix": "*",
+          "destinationPortRange": "50221"
+        }
+      },
+      {
+        "name": "Allow-TCP-443-Out",
+        "properties": {
+          "priority": 245,
+          "protocol": "TCP",
+          "access": "Allow",
+          "direction": "Outbound",
+          "sourceAddressPrefix": "*",
+          "sourcePortRange": "*",
+          "destinationAddressPrefix": "*",
+          "destinationPortRange": "443"
+        }
+      }
+    ]
+  },
+  "resources": [
+    {
+      "apiVersion": "2017-06-01",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('publicIPAddressName')]",
+      "location": "[variables('location')]",
+      "properties": {
+        "publicIPAllocationMethod": "Static"
+      }
+    },
+    {
+      "name": "[variables('networkSecurityGroupName')]",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2018-08-01",
+      "location": "[variables('location')]",
+      "properties": {
+        "securityRules": "[variables('networkSecurityGroupRules')]"
+      },
+      "tags": {}
+    },
+    {
+      "apiVersion": "2018-04-01",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('nicName')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[variables('publicIPAddressName')]",
+        "[variables('networkSecurityGroupName')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
+              },
+              "subnet": {
+                "id": "[variables('subnetId')]"
+              }
+            }
+          }
+        ],
+        "networkSecurityGroup": {
+          "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName'))]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2018-10-01",
+      "name": "[variables('vmName')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[variables('nicName')]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[variables('vmSize')]"
+        },
+        "osProfile": {
+          "computerName": "[variables('vmName')]",
+          "adminUsername": "[variables('adminUsername')]",
+          "adminPassword": "[variables('adminPassword')]",
+          "windowsConfiguration": {
+            "provisionVmAgent": "true"
+          },
+          "secrets": [],
+          "allowExtensionOperations": true
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "MicrosoftWindowsServer",
+            "offer": "WindowsServer",
+            "sku": "2016-Datacenter",
+            "version": "latest"
+          },
+          "osDisk": {
+            "createOption": "FromImage",
+            "name": "[concat(variables('vmName'),'-os-disk')]"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(concat(variables('vmName'),'/create.Signiant.v1.0.0'))]",
+      "apiVersion": "2017-12-01",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[variables('vmName')]"
+      ],
+      "properties": {
+        "publisher": "Microsoft.Compute",
+        "type": "CustomScriptExtension",
+        "typeHandlerVersion": "1.9",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "fileUris": [
+            "[concat(variables('scriptLocation'), '/',variables('scriptFileName'))]"
+          ],
+          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('scriptFolder'), '/', variables('scriptFileName'), ' ', variables('scriptParameters'))]"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "Signiamt-IPAddress": {
+      "type": "string",
+      "value": "[reference(variables('publicIPAddressName'), '2016-03-30').IPaddress]"
+    }
+  }
+}

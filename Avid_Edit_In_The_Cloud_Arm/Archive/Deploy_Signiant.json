@@ -1,0 +1,130 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"general-AdminUsername": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the Administrator of the VMs"
+			}
+		},
+		"general-AdminPassword": {
+			"type": "securestring",
+			"minLength": 12,
+			"metadata": {
+				"description": "Password for the Administrator account of the VMs"
+			}
+		},
+		"general-VnetName": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the existing Virtual Network"
+			}
+		},
+		"general-NamePrefix": {
+			"type": "string",
+			"minLength": 3,
+			"maxLength": 7,
+			"metadata": {
+				"description": "System Name prefix for all VM resources created for Cloud Edition. 3-char min, 7-char max, lower case alphanumeric"
+			}
+		},
+		"general-VnetResourceGroup": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the Resource Group where the existing Vnet is deployed."
+			}
+		},
+		"general-SubnetName": {
+			"type": "string",
+			"metadata": {
+				"description": "Subnet the VMs should be deployed within"
+			},
+			"defaultValue": "default"
+		},
+		"system-InstallURL": {
+			"type": "string"
+		},
+		"system-NexisWindowsClient": {
+			"type": "string",
+			"defaultValue": "AvidNEXISClient_Win64_20.3.1.14.msi"
+		},
+		"system-SigniantClient": {
+			"type": "string",
+			"metadata": {
+				"description": "Signiant Install File Name"
+			},
+			"defaultValue": "Install_Signiant_SDCX_Server_v3.3.2.exe"
+		}
+	},
+	"variables": {
+		"githubBase": "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/MediaComposer-BYOL",
+		"_buildArtifactsLocation": "[concat('https://ssengreleng.blob.core.windows.net/nexisgold/19.8.0', '/installers')]",
+		"signiantTemplateLink": "[concat(variables('githubBase'),'/signiant/','signiantazuredeploy.json')]"
+	},
+	"resources": [
+		{
+			"apiVersion": "2015-01-01",
+			"name": "signiant-template",
+			"type": "Microsoft.Resources/deployments",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('signiantTemplateLink')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"workstationName": {
+						"value": "[parameters('general-namePrefix')]"
+					},
+					"adminUsername": {
+						"value": "[parameters('general-adminUsername')]"
+					},
+					"adminPassword": {
+						"value": "[parameters('general-adminPassword')]"
+					},
+					"subnetId": {
+						"value": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]"
+					},
+					"_artifactsLocation": {
+						"value": "[parameters('system-InstallURL')]"
+					},
+					"_githubLocation": {
+						"value": "[variables('githubBase')]"
+					},
+					"vmSize": {
+						"value": "Standard_D8_v3"
+					},
+					"signiantInstallName": {
+						"value": "[parameters('system-SigniantClient')]"
+					},
+					"avidNexisClientInstallName": {
+						"value": "[parameters('system-NexisWindowsClient')]"
+					}
+				}
+			}
+		}
+	],
+	"outputs": {
+		"general-namePrefix": {
+			"type": "string",
+			"value": "[parameters('general-namePrefix')]"
+		},
+		"general-adminUsername": {
+			"type": "string",
+			"value": "[parameters('general-adminUsername')]"
+		},
+		"general-adminPassword": {
+			"type": "string",
+			"value": "[parameters('general-adminPassword')]"
+		},
+		"resourceGroupName": {
+			"type": "string",
+			"value": "[resourceGroup().name]"
+		},
+		"resourceGroupLocation": {
+			"type": "string",
+			"value": "[resourceGroup().location]"
+		}
+	}
+}
