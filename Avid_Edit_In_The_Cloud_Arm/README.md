@@ -63,9 +63,11 @@ Back up your video content to Nexis on Azure.
 
 To duplicate the VM, follow the steps below:
 
-a) Create a snapshot of the main os disk
+a) Create a snapshot of the main os disk. <br />
 
-b) Run script to duplicate snapshot x time (right click / run in powershell connected to your azure subscription)
+b) Run script to duplicate snapshot x time (right click / run in powershell connected to your azure subscription). <br />
+
+[a relative link](scripts\create_disk_from_snapshot.ps1)
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Fscripts%2Fcreate_disk_from_snapshot.ps1" target="_blank"></a>
 
