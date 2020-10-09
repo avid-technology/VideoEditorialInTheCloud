@@ -52,6 +52,8 @@ Back up your video content to Nexis on Azure.
 
 4) Choose a Media Composer module depending on the version and GPU selected.
 
+[snapshot script](signiant/signiantazuredeploy.json)
+
 <br />
 
 | Module | Compatible Version | ARM Template link |
