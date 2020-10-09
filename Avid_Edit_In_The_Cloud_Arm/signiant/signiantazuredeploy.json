@@ -1,5 +1,5 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
     "workstationName": {
@@ -55,6 +55,12 @@
       "metadata": {
         "description": "Avid Nexis Client Install Name"
       }
+    },
+    "branchName": {
+      "type": "string",
+      "metadata": {
+        "description": "Branch to point script to"
+      }
     }
   },
   "variables": {
@@ -69,7 +75,7 @@
     "adminUsername": "[parameters('adminUsername')]",
     "adminPassword": "[parameters('adminPassword')]",
     "scriptFileName": "installSigniant.ps1",
-    "_githubLocation": "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Arm",
+    "_githubLocation": "[concat('https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/',parameters('branchName'),'/Avid_Edit_In_The_Cloud_Arm')]",
     "signiantInstallName":"[parameters('signiantInstallName')]",
     "avidNexisClientInstallName":"[parameters('avidNexisClientInstallName')]",
     "scriptLocation": "[concat(variables('_githubLocation'), '/','scripts')]",

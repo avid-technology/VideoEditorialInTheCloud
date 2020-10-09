@@ -42,6 +42,11 @@ Back up your video content to Nexis on Azure.
 
 <br />
 
+run powershell command locally
+
+az deployment group create --name "SigniantTestDeployment" --resource-group "avid-sdbx-ben-02" --template-file ".\signiant\signiantazuredeploy.json" --parameters ".\signiant.parameters.json"
+
+
 | Module | Compatible Version | ARM Template link |
 | ------ | ------------------ | ----------------- |
 | Signiant 3.3.2 + Nexis 20.3.1.14 (Client) | - Install_Signiant_SDCX_Server_v3.3.2.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Fsigniant%2Fsigniantazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
