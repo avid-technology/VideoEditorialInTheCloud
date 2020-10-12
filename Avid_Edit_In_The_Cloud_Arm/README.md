@@ -52,7 +52,6 @@ PS> az deployment group create --name "SigniantTestDeployment" --resource-group 
 <br />
 <br />
 | Module | Compatible Version | Code |
-| ------ | ------------------ | ----------------- |
 | a | b | c |
 <br />
 | Signiant 3.3.2 + Nexis 20.3.1.14 (Client) | - Install_Signiant_SDCX_Server_v3.3.2.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | (Coming soon)  |
