@@ -23,14 +23,17 @@ Back up your video content to Nexis on Azure.
 <img src="./diagram.png" />
 
 # Deploy to Azure
-
+<br />
 1) [Optional] Create Resource Group within your subscription:
 <br />
 PS> az login
 <br />
+<br />
 PS> az group create --location xxxx --name xxxx
 <br />
+<br />
 <i>Exemple: az group create --location westus2 --name myresourcegroup</i>
+<br />
 <br />
 2) [Optional] Create Vnet within your Resource Group:
 <br />
