@@ -24,8 +24,11 @@ Back up your video content to Nexis on Azure.
 
 # Deploy to Azure
 <br />
-<b> 1) [for new environment] Create Resource Group within your subscription: </b>
 
+Clone project to your local repository
+
+<b> 1) [for new environment] Create Resource Group within your subscription: </b>
+<br />
 PS> az login
 
 PS> az group create --location xxxx --name xxxx
@@ -34,25 +37,23 @@ PS> az group create --location xxxx --name xxxx
 
 <b> 2) [for new environment] Create Vnet within your Resource Group: </b>
 <br />
-<br />
 PS> az network vnet create --name xxx --resource-group xxx --address-prefix x.x.x.x/xx --subnet-name xxx --subnet-prefix x.x.x.x/xx
-<br />
-<br />
+
 <i>Example: ps> az network vnet create --name "myvnet" --resource-group "myresourcegroup" --address-prefix 10.0.0.0/16 --subnet-name "mysubnet1" --subnet-prefix 10.0.0.0/24</i>
-<br />
-<br />
+
 <b> 3) Choose a file transfer accelerator module: a) Signiant, b)FileCatalyst or c)Aspera </b>
-<br />
-<br />
+
+| Module | Compatible Version | ARM Template link |
+| ------ | ------------------ | ----------------- |
+| Signiant 3.3.2 + Nexis 20.3.1.14 (Client) | - Install_Signiant_SDCX_Server_v3.3.2.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | (Coming soon)  |
+| FileCatalyst 3.7.3b38 + Nexis 20.3.1.14 (Client) | - install_fc_server.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | (Coming soon) |
+| Aspera + Nexis 20.3.1.14 (Client) | - AvidNEXISClient_Win64_20.3.1.14.msi | (Coming soon) |
+
 PS> az deployment group create --name xxx --resource-group xxxx --template-file xxxx --parameters xxxx
-<br />
-<br />
+
 <i>Example: ps> az deployment group create --name "SigniantTestDeployment" --resource-group "myresourcegroup" --template-file ".\signiant\signiantazuredeploy.json" --parameters ".\signiant.parameters.json"</i>
-<br />
-<br />
+
 <b> 4) Choose a Media Composer module depending on the version and GPU selected. </b>
-<br />
-<br />
 
 [snapshot script](signiant/signiantazuredeploy.json)
 
