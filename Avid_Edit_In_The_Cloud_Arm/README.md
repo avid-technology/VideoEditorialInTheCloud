@@ -51,21 +51,8 @@ PS> az network vnet create --name xxx --resource-group xxx --address-prefix x.x.
 PS> az deployment group create --name "SigniantTestDeployment" --resource-group "avid-sdbx-ben-02" --template-file ".\signiant\signiantazuredeploy.json" --parameters ".\signiant.parameters.json"
 <br />
 <br />
-| Module | Compatible Version | Code |
-| a | b | c |
+<b> 4) Choose a Media Composer module depending on the version and GPU selected. </b>
 <br />
-| Signiant 3.3.2 + Nexis 20.3.1.14 (Client) | - Install_Signiant_SDCX_Server_v3.3.2.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | (Coming soon)  |
-| FileCatalyst 3.7.3b38 + Nexis 20.3.1.14 (Client) | - install_fc_server.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | (Coming soon) |
-| Aspera + Nexis 20.3.1.14 (Client) | - AvidNEXISClient_Win64_20.3.1.14.msi | (Coming soon) |
-<br />
-<br />
-| Module | Compatible Version | Code|
-| ------ | ------------------ | ----------------- |
-| Media Composer 2018.12.11 / 2019.12 / 2020.4 (Nvidia) | - Media_Composer_2018.12.11_Win.zip, Media_Composer_2019.12_Win.zip, Media_Composer_2020.4._Win.zip <br /> - pcoip-agent-graphics_20.04.0.exe <br /> - 442.06_grid_win10_64bit_international_whql.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi |  |
-| Media Composer 2018.12.11 / 2019.12 / 2020.4 (AMD) | - Media_Composer_2018.12.11_Win.zip, Media_Composer_2019.12_Win.zip, Media_Composer_2020.4._Win.zip <br /> - pcoip-agent-graphics_20.04.0.exe <br /> - Radeon-Pro-Software-for-Enterprise-GA.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi |  |
-<br />
-4) Choose a Media Composer module depending on the version and GPU selected.
-
 [snapshot script](signiant/signiantazuredeploy.json)
 
 <br />
