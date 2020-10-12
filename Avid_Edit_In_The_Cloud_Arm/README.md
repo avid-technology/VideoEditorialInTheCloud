@@ -24,7 +24,7 @@ Back up your video content to Nexis on Azure.
 
 # Deploy to Azure
 <br />
-1) [Optional] Create Resource Group within your subscription:
+1) Create Resource Group within your subscription:
 <br />
 <br />
 PS> az login
@@ -36,23 +36,21 @@ PS> az group create --location xxxx --name xxxx
 <i>Exemple: az group create --location westus2 --name myresourcegroup</i>
 <br />
 <br />
-2) [Optional] Create Vnet within your Resource Group:
+2) Create Vnet within your Resource Group:
 <br />
 <br />
 PS> az network vnet create --name xxx --resource-group xxx --address-prefix x.x.x.x/xx --subnet-name xxx --subnet-prefix x.x.x.x/xx
 <br />
 <br />
-Exemple: az network vnet create --name xxx --resource-group xxx --address-prefix 10.0.0.0/16 --subnet-name xxx --subnet-prefix 10.0.0.0/24
+<i>Exemple: az network vnet create --name xxx --resource-group xxx --address-prefix 10.0.0.0/16 --subnet-name xxx --subnet-prefix 10.0.0.0/24</i>
 <br />
 <br />
 3) Choose a file transfer accelerator module: Signiant, FileCatalyst or Aspera
 <br />
 <br />
-run powershell command locally
-
-az deployment group create --name "SigniantTestDeployment" --resource-group "avid-sdbx-ben-02" --template-file ".\signiant\signiantazuredeploy.json" --parameters ".\signiant.parameters.json"
-
-
+PS> az deployment group create --name "SigniantTestDeployment" --resource-group "avid-sdbx-ben-02" --template-file ".\signiant\signiantazuredeploy.json" --parameters ".\signiant.parameters.json"
+<br />
+<br />
 | Module | Compatible Version | ARM Template link |
 | ------ | ------------------ | ----------------- |
 | Signiant 3.3.2 + Nexis 20.3.1.14 (Client) | - Install_Signiant_SDCX_Server_v3.3.2.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Fsigniant%2Fsigniantazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
