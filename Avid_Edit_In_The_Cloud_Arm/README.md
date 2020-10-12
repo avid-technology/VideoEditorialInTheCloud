@@ -48,11 +48,15 @@ PS> az network vnet create --name xxx --resource-group xxx --address-prefix x.x.
 
 | Module | Supported Version | Code |
 | ------ | ------------------ | ----------------- |
-| Signiant | - Signiant SDCX Server v3.3.2 <br /> - Avid NEXIS Client 2020.7.3 | az deployment group create --name xxx --resource-group xxxx --template-file ".\signiant\signiantazuredeploy.json" --parameters xxxx  |
-| FileCatalyst | - FileCatalyst v1.0 <br /> - Avid NEXIS Client 2020.7.3 | (Coming soon) |
-| Aspera | - Aspera HSTS v1.0 - Avid NEXIS Client 2020.7.3 | (Coming soon) |
+| Signiant | - Signiant SDCX Server v3.3.2 <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name xxx --resource-group xxxx --template-file ".\signiant\signiantazuredeploy.json" --parameters xxxx  |
+| FileCatalyst | - FileCatalyst v3.8.1 <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name xxx --resource-group xxxx --template-file ".\signiant\filecatalystazuredeploy.json" --parameters xxxx |
+| Aspera | - Aspera HSTS v3.9.6 - Avid NEXIS Client v2020.7.3 | (Coming soon) |
 
-<i>Example: ps> az deployment group create --name "SigniantTestDeployment" --resource-group "myresourcegroup" --template-file ".\signiant\signiantazuredeploy.json" --parameters ".\signiant.parameters.json"</i>
+<i>Example: ps> az deployment group create --name "SigniantTestDeployment" --resource-group "myresourcegroup" --template-file ".\signiant\signiantazuredeploy.json" --parameters ".\signiant\signiant.parameters.json"</i>
+
+<i>Example: ps> az deployment group create --name "FileCatalystTestDeployment" --resource-group "myresourcegroup" --template-file ".\filecatalyst\filecatalystazuredeploy.json" --parameters ".\filecatalyst\filecatalyst.parameters.json"</i>
+
+<i>Example: ps> az deployment group create --name "AsperaTestDeployment" --resource-group "myresourcegroup" --template-file ".\aspera\asperaazuredeploy.json" --parameters ".\aspera\aspera.parameters.json"</i>
 
 <b> 4) Choose a Media Composer module depending on the version and GPU selected. </b>
 <br />

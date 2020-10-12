@@ -2,7 +2,7 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
     "parameters": {
-        "general-Name": {
+        "workstationPrefix": {
             "type": "string"
         },
         "adminUsername": {
@@ -48,14 +48,20 @@
         },
         "avidNexisClientInstallName": {
             "type": "string",
-            "defaultValue": "AvidNEXISClient_Win64_20.3.1.14.msi",
+            "defaultValue": "AvidNEXISClient_Win64_20.7.3.10.msi",
             "metadata": {
                 "description": "Avid Nexis Client Install Name"
             }
-        }
+        },
+        "branchName": {
+          "type": "string",
+          "metadata": {
+          "description": "Branch to point script to"
+      }
+    }
     },
     "variables": {
-        "uniqueName": "[parameters('general-Name')]",
+        "uniqueName": "[parameters('workstationPrefix')]",
         "subnetId": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]",
         "location": "[resourceGroup().location]",
         "nicName": "[concat(variables('uniqueName'),'-fcyst-nic')]",
@@ -66,7 +72,7 @@
         "adminPassword": "[parameters('adminPassword')]",
         "scriptFileName": "installFilecatalyst.ps1",
         "vmSize": "Standard_D8_v3",
-        "_githubLocation": "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Arm",
+        "_githubLocation": "[concat('https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/',parameters('branchName'),'/Avid_Edit_In_The_Cloud_Arm')]",
         "filecatalystInstallName": "[parameters('filecatalystInstallName')]",
         "avidNexisClientInstallName": "[parameters('avidNexisClientInstallName')]",
         "scriptLocation": "[concat(variables('_githubLocation'), '/','scripts')]",

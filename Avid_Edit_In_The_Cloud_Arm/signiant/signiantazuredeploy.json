@@ -51,7 +51,7 @@
     },
     "avidNexisClientInstallName": {
       "type": "string",
-      "defaultValue": "AvidNEXISClient_Win64_20.3.1.14.msi",
+      "defaultValue": "AvidNEXISClient_Win64_20.7.3.10.msi",
       "metadata": {
         "description": "Avid Nexis Client Install Name"
       }
