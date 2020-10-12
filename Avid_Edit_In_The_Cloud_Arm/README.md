@@ -41,13 +41,13 @@ PS> az network vnet create --name xxx --resource-group xxx --address-prefix x.x.
 
 <i>Example: ps> az network vnet create --name "myvnet" --resource-group "myresourcegroup" --address-prefix 10.0.0.0/16 --subnet-name "mysubnet1" --subnet-prefix 10.0.0.0/24</i>
 
-<b> 3) Choose a file transfer accelerator module: a) Signiant, b)FileCatalyst or c)Aspera </b>
+<b> 3) Choose a file transfer accelerator module: </b>
 
-| Module | Compatible Version | ARM Template link |
+| Module | Supported Version | Code |
 | ------ | ------------------ | ----------------- |
-| Signiant 3.3.2 + Nexis 20.3.1.14 (Client) | - Install_Signiant_SDCX_Server_v3.3.2.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | (Coming soon)  |
-| FileCatalyst 3.7.3b38 + Nexis 20.3.1.14 (Client) | - install_fc_server.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | (Coming soon) |
-| Aspera + Nexis 20.3.1.14 (Client) | - AvidNEXISClient_Win64_20.3.1.14.msi | (Coming soon) |
+| Signiant | - Install_Signiant_SDCX_Server_v3.3.2.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | az deployment group create --name xxx --resource-group xxxx --template-file ".\signiant\signiantazuredeploy.json" --parameters xxxx  |
+| FileCatalyst | - install_fc_server.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | (Coming soon) |
+| Aspera | - AvidNEXISClient_Win64_20.3.1.14.msi | (Coming soon) |
 
 PS> az deployment group create --name xxx --resource-group xxxx --template-file xxxx --parameters xxxx
 
