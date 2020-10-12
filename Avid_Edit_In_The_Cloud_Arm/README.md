@@ -26,6 +26,7 @@ Back up your video content to Nexis on Azure.
 <br />
 1) [Optional] Create Resource Group within your subscription:
 <br />
+<br />
 PS> az login
 <br />
 <br />
@@ -37,14 +38,16 @@ PS> az group create --location xxxx --name xxxx
 <br />
 2) [Optional] Create Vnet within your Resource Group:
 <br />
+<br />
 PS> az network vnet create --name xxx --resource-group xxx --address-prefix x.x.x.x/xx --subnet-name xxx --subnet-prefix x.x.x.x/xx
+<br />
 <br />
 Exemple: az network vnet create --name xxx --resource-group xxx --address-prefix 10.0.0.0/16 --subnet-name xxx --subnet-prefix 10.0.0.0/24
 <br />
-3) Choose a file transfer accelerator module: Signiant, FileCatalyst or Aspera
-
 <br />
-
+3) Choose a file transfer accelerator module: Signiant, FileCatalyst or Aspera
+<br />
+<br />
 run powershell command locally
 
 az deployment group create --name "SigniantTestDeployment" --resource-group "avid-sdbx-ben-02" --template-file ".\signiant\signiantazuredeploy.json" --parameters ".\signiant.parameters.json"
