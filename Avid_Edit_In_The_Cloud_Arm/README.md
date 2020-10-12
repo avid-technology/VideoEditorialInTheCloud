@@ -24,7 +24,7 @@ Back up your video content to Nexis on Azure.
 
 # Deploy to Azure
 <br />
-1) Create Resource Group within your subscription:
+1) (for new environment) Create Resource Group within your subscription:
 <br />
 <br />
 PS> az login
@@ -36,7 +36,7 @@ PS> az group create --location xxxx --name xxxx
 <i>Exemple: az group create --location westus2 --name myresourcegroup</i>
 <br />
 <br />
-2) Create Vnet within your Resource Group:
+2) (for new environment) Create Vnet within your Resource Group:
 <br />
 <br />
 PS> az network vnet create --name xxx --resource-group xxx --address-prefix x.x.x.x/xx --subnet-name xxx --subnet-prefix x.x.x.x/xx
@@ -53,12 +53,10 @@ PS> az deployment group create --name "SigniantTestDeployment" --resource-group 
 <br />
 | Module | Compatible Version | ARM Template link |
 | ------ | ------------------ | ----------------- |
-| Signiant 3.3.2 + Nexis 20.3.1.14 (Client) | - Install_Signiant_SDCX_Server_v3.3.2.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Fsigniant%2Fsigniantazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
+| Signiant 3.3.2 + Nexis 20.3.1.14 (Client) | - Install_Signiant_SDCX_Server_v3.3.2.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | (Coming soon)  |
 | FileCatalyst 3.7.3b38 + Nexis 20.3.1.14 (Client) | - install_fc_server.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | (Coming soon) |
 | Aspera + Nexis 20.3.1.14 (Client) | - AvidNEXISClient_Win64_20.3.1.14.msi | (Coming soon) |
-
 <br />
-
 4) Choose a Media Composer module depending on the version and GPU selected.
 
 [snapshot script](signiant/signiantazuredeploy.json)
