@@ -24,7 +24,7 @@ Back up your video content to Nexis on Azure.
 
 # Deploy to Azure
 <br />
-1) (for new environment) Create Resource Group within your subscription:
+<b> 1) (for new environment) Create Resource Group within your subscription: </b>
 <br />
 <br />
 PS> az login
