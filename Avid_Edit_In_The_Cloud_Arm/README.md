@@ -51,9 +51,9 @@ PS> az network vnet create --name xxx --resource-group xxx --address-prefix x.x.
 PS> az deployment group create --name "SigniantTestDeployment" --resource-group "avid-sdbx-ben-02" --template-file ".\signiant\signiantazuredeploy.json" --parameters ".\signiant.parameters.json"
 <br />
 <br />
-
-| Module | Compatible Version | ARM Template link |
+| Module | Compatible Version | Code |
 | ------ | ------------------ | ----------------- |
+| a | b | c |
 <br />
 | Signiant 3.3.2 + Nexis 20.3.1.14 (Client) | - Install_Signiant_SDCX_Server_v3.3.2.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | (Coming soon)  |
 | FileCatalyst 3.7.3b38 + Nexis 20.3.1.14 (Client) | - install_fc_server.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | (Coming soon) |
