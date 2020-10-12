@@ -24,19 +24,19 @@ Back up your video content to Nexis on Azure.
 
 # Deploy to Azure
 
-1) [Optional] Create Resource Group within your subscription directly within Azure Portal.
+1) [Optional] Create Resource Group within your subscription:
+
+<br />
+PS> az login
+PS> az group create --location xxxx --name xxxx
+Exemple: az group create --location westus2 --name myresourcegroup
+
+2) [Optional] Create Vnet within your Resource Group:
 
 <br />
 
-2) [Optional] If you don’t have a Vnet yet, create one Vnet (with at least one subnet) directly within Azure Portal using the link below:
-
-<br />
-
-| Module | Compatible Version | ARM Template link |
-| ------ | ------------------ | ----------------- |
-| Vnet | n/a | <a href="https://portal.azure.com/#create/Microsoft.VirtualNetwork-ARM" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
-
-<br />
+PS> az network vnet create --name xxx --resource-group xxx --address-prefix x.x.x.x/xx --subnet-name xxx --subnet-prefix x.x.x.x/xx
+Exemple: az network vnet create --name xxx --resource-group xxx --address-prefix 10.0.0.0/16 --subnet-name xxx --subnet-prefix 10.0.0.0/24
 
 3) Choose a file transfer accelerator module: Signiant, FileCatalyst or Aspera
 
