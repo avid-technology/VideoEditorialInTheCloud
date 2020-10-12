@@ -25,34 +25,35 @@ Back up your video content to Nexis on Azure.
 # Deploy to Azure
 <br />
 <b> 1) [for new environment] Create Resource Group within your subscription: </b>
-<br />
-<br />
+
 PS> az login
-<br />
-<br />
+
 PS> az group create --location xxxx --name xxxx
-<br />
-<br />
-<i>Exemple: az group create --location westus2 --name myresourcegroup</i>
-<br />
-<br />
-<b> 2) (for new environment) Create Vnet within your Resource Group: </b>
+
+<i>Example: ps> az group create --location "westus2" --name "myresourcegroup"</i>
+
+<b> 2) [for new environment] Create Vnet within your Resource Group: </b>
 <br />
 <br />
 PS> az network vnet create --name xxx --resource-group xxx --address-prefix x.x.x.x/xx --subnet-name xxx --subnet-prefix x.x.x.x/xx
 <br />
 <br />
-<i>Exemple: az network vnet create --name xxx --resource-group xxx --address-prefix 10.0.0.0/16 --subnet-name xxx --subnet-prefix 10.0.0.0/24</i>
+<i>Example: ps> az network vnet create --name "myvnet" --resource-group "myresourcegroup" --address-prefix 10.0.0.0/16 --subnet-name "mysubnet1" --subnet-prefix 10.0.0.0/24</i>
 <br />
 <br />
-<b> 3) Choose a file transfer accelerator module: Signiant, FileCatalyst or Aspera </b>
+<b> 3) Choose a file transfer accelerator module: a) Signiant, b)FileCatalyst or c)Aspera </b>
 <br />
 <br />
-PS> az deployment group create --name "SigniantTestDeployment" --resource-group "avid-sdbx-ben-02" --template-file ".\signiant\signiantazuredeploy.json" --parameters ".\signiant.parameters.json"
+PS> az deployment group create --name xxx --resource-group xxxx --template-file xxxx --parameters xxxx
+<br />
+<br />
+<i>Example: ps> az deployment group create --name "SigniantTestDeployment" --resource-group "myresourcegroup" --template-file ".\signiant\signiantazuredeploy.json" --parameters ".\signiant.parameters.json"</i>
 <br />
 <br />
 <b> 4) Choose a Media Composer module depending on the version and GPU selected. </b>
 <br />
+<br />
+
 [snapshot script](signiant/signiantazuredeploy.json)
 
 <br />
