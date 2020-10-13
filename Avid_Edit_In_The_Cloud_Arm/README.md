@@ -25,9 +25,13 @@ Back up your video content to Nexis on Azure.
 # Deploy to Azure
 <br />
 
-Clone project to your local repository
+<b> 1) [for new environment] Clone project to your local repository </b>
+<br />
 
-<b> 1) [for new environment] Create Resource Group within your subscription: </b>
+<b> 2) [for new environment] Install Azure CLI </b>
+<br />
+
+<b> 3) [for new environment] Create Resource Group within your subscription: </b>
 <br />
 
 PS> az login
@@ -36,14 +40,14 @@ PS> az group create --location xxxx --name xxxx
 
 <i>Example: ps> az group create --location "westus2" --name "myresourcegroup"</i>
 
-<b> 2) [for new environment] Create Vnet within your Resource Group: </b>
+<b> 4) [for new environment] Create Vnet within your Resource Group: </b>
 <br />
 
 PS> az network vnet create --name xxx --resource-group xxx --address-prefix x.x.x.x/xx --subnet-name xxx --subnet-prefix x.x.x.x/xx
 
 <i>Example: ps> az network vnet create --name "myvnet" --resource-group "myresourcegroup" --address-prefix 10.0.0.0/16 --subnet-name "mysubnet1" --subnet-prefix 10.0.0.0/24</i>
 
-<b> 3) Choose a file transfer accelerator module: </b>
+<b> 5) Choose a file transfer accelerator module: </b>
 <br />
 
 | Module | Supported Version | Code |
@@ -58,7 +62,7 @@ PS> az network vnet create --name xxx --resource-group xxx --address-prefix x.x.
 
 <i>Example: ps> az deployment group create --name "AsperaTestDeployment" --resource-group "myresourcegroup" --template-file ".\aspera\asperaazuredeploy.json" --parameters ".\aspera\aspera.parameters.json"</i>
 
-<b> 4) Choose a Media Composer module depending on the version and GPU selected. </b>
+<b> 6) Choose a Media Composer module depending on the version and GPU selected. </b>
 <br />
 
 | Module | Supported Version | Code |
@@ -66,7 +70,7 @@ PS> az network vnet create --name xxx --resource-group xxx --address-prefix x.x.
 | Media Composer Nvidia | - Media_Composer 2018.12.11, 2019.12, 2020.4 <br /> - PCoIP Agent 20.04.0 <br /> - Nvidia 442.06 grid <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name "xxx" --resource-group "xxxx" --template-file ".\mediacomposer\mediacomposerazuredeploy_NVIDIA.json" --parameters "xxxx"  |
 | Media Composer AMD | - Media_Composer 2018.12.11, 2019.12, 2020.4 <br /> - PCoIP Agent 20.04.0 <br /> - Radeon-Pro-Software-for-Enterprise-GA.exe <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name "xxx" --resource-group "xxxx" --template-file ".\mediacomposer\mediacomposerazuredeploy_AMD.json" --parameters "xxxx" |
 
-<b> 4') [To duplicate environment] If you need to duplicate Media Composer environment, follow the instructions below: </b>
+<b> 7) [To duplicate environment] If you need to duplicate Media Composer environment, follow the instructions below: </b>
 
 a) Create a snapshot of the main os disk. <br />
 
@@ -74,13 +78,13 @@ b) Run script to duplicate snapshot x time (right click / run in powershell conn
 
 [snapshot script](scripts/create_disk_from_snapshot.ps1)
 
-c) Use duplication ARM template: 
+c) Run following script: 
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Fmediacomposer%2Fmediacomposercloning.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a>
+PS> az deployment group create --name "xxx" --resource-group "xxxx" --template-file ".\mediacomposer\mediacomposercloning.json" --parameters "xxxx"
 
 <br />
 
-5) Deploy a Nexis storage module.
+8) Deploy a Nexis storage module.
 
 <br />
 
