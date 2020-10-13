@@ -50,7 +50,7 @@ PS> az network vnet create --name xxx --resource-group xxx --address-prefix x.x.
 | ------ | ------------------ | ----------------- |
 | Signiant | - Signiant SDCX Server v3.3.2 <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name xxx --resource-group xxxx --template-file ".\signiant\signiantazuredeploy.json" --parameters xxxx  |
 | FileCatalyst | - FileCatalyst v3.8.1 <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name xxx --resource-group xxxx --template-file ".\filecatalyst\filecatalystazuredeploy.json" --parameters xxxx |
-| Aspera | - Aspera HSTS v3.9.6 - Avid NEXIS Client v2020.7.3 | (Coming soon) |
+| Aspera | - Aspera HSTS v3.9.6 <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name xxx --resource-group xxxx --template-file ".\aspera\asperaazuredeploy.json" --parameters xxxx |
 
 <i>Example: ps> az deployment group create --name "SigniantTestDeployment" --resource-group "myresourcegroup" --template-file ".\signiant\signiantazuredeploy.json" --parameters ".\signiant\signiant.parameters.json"</i>
 
@@ -63,8 +63,8 @@ PS> az network vnet create --name xxx --resource-group xxx --address-prefix x.x.
 
 | Module | Supported Version | Code |
 | ------ | ------------------ | ----------------- |
-| Media Composer 2018.12.11 / 2019.12 / 2020.4 (Nvidia) | - Media_Composer_2018.12.11_Win.zip, Media_Composer_2019.12_Win.zip, Media_Composer_2020.4._Win.zip <br /> - pcoip-agent-graphics_20.04.0.exe <br /> - 442.06_grid_win10_64bit_international_whql.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | az deployment group create --name xxx --resource-group xxxx --template-file ".\mediacomposer\mediacomposerazuredeploy_NVIDIA.json" --parameters xxxx  |
-| Media Composer 2018.12.11 / 2019.12 / 2020.4 (AMD) | - Media_Composer_2018.12.11_Win.zip, Media_Composer_2019.12_Win.zip, Media_Composer_2020.4._Win.zip <br /> - pcoip-agent-graphics_20.04.0.exe <br /> - Radeon-Pro-Software-for-Enterprise-GA.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | az deployment group create --name xxx --resource-group xxxx --template-file ".\mediacomposer\mediacomposerazuredeploy_AMD.json" --parameters xxxx |
+| Media Composer Nvidia | - Media_Composer 2018.12.11, Media_Composer 2019.12, Media_Composer 2020.4 <br /> - pcoip-agent-graphics 20.04.0 <br /> - Nvidia 442.06 grid <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | az deployment group create --name xxx --resource-group xxxx --template-file ".\mediacomposer\mediacomposerazuredeploy_NVIDIA.json" --parameters xxxx  |
+| Media Composer AMD | - Media_Composer_2018.12.11_Win.zip, Media_Composer_2019.12_Win.zip, Media_Composer_2020.4._Win.zip <br /> - pcoip-agent-graphics_20.04.0.exe <br /> - Radeon-Pro-Software-for-Enterprise-GA.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | az deployment group create --name xxx --resource-group xxxx --template-file ".\mediacomposer\mediacomposerazuredeploy_AMD.json" --parameters xxxx |
 
 To duplicate the VM, follow the steps below:
 
