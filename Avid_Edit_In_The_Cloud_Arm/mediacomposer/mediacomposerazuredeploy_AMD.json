@@ -196,10 +196,10 @@
         ],
     "location": "[resourceGroup().location]",
     "uniqueName": "[parameters('workstationPrefix')]",
-    "networkSecurityGroupName": "[concat(parameters('workstationPrefix'),'-nsg')]",
-    "nicName": "[concat(variables('uniqueName'), '-nic')]",
+    "networkSecurityGroupName": "[concat(parameters('workstationPrefix'),'-mc-nsg')]",
+    "nicName": "[concat(variables('uniqueName'), '-mc-nic')]",
     "numberOfInstances": "[parameters('numberOfInstances')]",
-    "publicIPAddressName": "[concat(variables('uniqueName'), '-ip')]",
+    "publicIPAddressName": "[concat(variables('uniqueName'), '-mc-ip')]",
     "subnetId": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]",
     "teradiciKey": "null",
     "vmName": "[concat(variables('uniqueName'),'-')]",
@@ -316,7 +316,7 @@
         "storageProfile": {
           "imageReference": "[variables('osType')]",
           "osDisk": {
-            "name": "[concat(variables('uniqueName'), '-os-disk', padLeft(copyindex(1),2,'0'))]",
+            "name": "[concat(variables('uniqueName'), '-mc-os-disk', padLeft(copyindex(1),2,'0'))]",
             "createOption": "FromImage"
           }
         },

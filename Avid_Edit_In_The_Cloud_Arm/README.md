@@ -88,7 +88,7 @@ PS> az deployment group create --name "xxx" --resource-group "xxxx" --template-f
 
 <br />
 
-8) Deploy One Nexis storage module.
+<b> 8) Deploy One Nexis storage module. </b>
 
 <br />
 
