@@ -1,5 +1,5 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
     "workstationPrefix": {
@@ -12,108 +12,103 @@
       "type": "securestring"
     },
     "vmSize": {
-            "type": "string",
-            "defaultValue": "Standard_NV4as_v4",
-            "metadata": {
-                "description": "Size of the Media Composer VM."
-            },
-            "allowedValues": [
+      "type": "string",
+      "metadata": {
+          "description": "Size of the Media Composer VM."
+      },
+      "allowedValues": [
                 "Standard_NV4as_v4",
                 "Standard_NV8as_v4",
                 "Standard_NV16as_v4",
                 "Standard_NV32as_v4"
-            ]
-        },
+        ]
+      },
     "numberOfInstances": {
       "type": "int"
     },
     "general-VnetResourceGroup": {
-            "type": "string",
-            "metadata": {
-                "description": "Name of the Resource Group where the existing Vnet is deployed."
-            }
-        },
-        "general-VnetName": {
-            "type": "string",
-            "metadata": {
-                "description": "Name of the existing Virtual Network."
-            }
-        },
-        "general-SubnetName": {
-            "type": "string",
-            "metadata": {
-                "description": "Existing subnet in where VMs should be deployed"
-            },
-            "defaultValue": "default"
-        },
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Resource Group where the existing Vnet is deployed."
+      }
+    },
+    "general-VnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the existing Virtual Network."
+      }
+    },
+    "general-SubnetName": {
+      "type": "string",
+      "metadata": {
+          "description": "Existing subnet in where VMs should be deployed"
+      }
+      },
     "_system-InstallURL": {
             "type": "string"
         },
     "mediaComposerFileName": {
-            "type": "string",
+      "type": "string",
             "defaultValue": "Media_Composer_2020.4._Win.zip"
         },
-        "mediaComposerOS": {
-            "type": "string",
-            "allowedValues": [
-                "Windows_10",
-                "Windows_Server_2016",
-                "Windows_Server_2019"
-            ],
-            "defaultValue": "Windows_10"
-        },
-        "mediaComposerVersion": {
-            "type": "string",
-            "allowedValues": [
-                "2018_12_11",
-                "2019_12",
-                "2020_4"
-            ],
-            "defaultValue": "2020_4"
-        },
-        "teradiciInstallFileName": {
-            "type": "string",
-            "defaultValue": "pcoip-agent-graphics_20.07.0.exe"
-        },
-        "nexisClientInstallFileName": {
-            "type": "string",
-            "defaultValue": "AvidNEXISClient_Win64_20.3.1.14.msi"
-        },
-        "branchName": {
-        "type": "string",
-        "metadata": {
-          "description": "Branch to point script to"
-        }
+    "mediaComposerOS": {
+      "type": "string",
+      "allowedValues": [
+        "Windows_10",
+        "Windows_Server_2016",
+        "Windows_Server_2019"
+      ]
+    },
+    "mediaComposerVersion": {
+      "type": "string",
+      "allowedValues": [
+          "2018_12_11",
+          "2019_12",
+          "2020_4"
+      ]
+    },
+    "teradiciInstallFileName": {
+      "type": "string"
+    },
+    "nexisClientInstallFileName": {
+      "type": "string",
+      "defaultValue": "AvidNEXISClient_Win64_20.3.1.14.msi"
+    },
+    "branchName": {
+      "type": "string",
+      "metadata": {
+        "description": "Branch to point script to"
       }
+    }
   },
   "variables": {
     "adminPassword": "[parameters('adminPassword')]",
     "adminUsername": "[parameters('adminUsername')]",
     "createNic?": true,
+    "osType": "[variables(concat('osType_',parameters('mediaComposerOS')))]",
     "osType_Windows_10": {
-            "publisher": "MicrosoftWindowsDesktop",
-            "offer": "Windows-10",
-            "sku": "rs5-pro",
-            "version": "latest"
-        },
+      "publisher": "MicrosoftWindowsDesktop",
+      "offer": "Windows-10",
+      "sku": "rs5-pro",
+      "version": "latest"
+    },
     "osType_Windows_Server_2016": {
-            "publisher": "MicrosoftWindowsServer",
-            "offer": "WindowsServer",
-            "sku": "2016-Datacenter",
-            "version": "latest"
-        },
+      "publisher": "MicrosoftWindowsServer",
+      "offer": "WindowsServer",
+      "sku": "2016-Datacenter",
+      "version": "latest"
+    },
     "osType_Windows_Server_2019": {
-            "publisher": "MicrosoftWindowsServer",
-            "offer": "WindowsServer",
-            "sku": "2019-Datacenter",
-            "version": "latest"
-        },
-        "osType": "[variables(concat('osType_',parameters('mediaComposerOS')))]",
-        "mcVersion_2018_12_11": "setupMediaComposer_AMD_20181211.ps1",
-        "mcVersion_2019_12": "setupMediaComposer_AMD_20204.ps1",
-        "mcVersion_2020_4": "setupMediaComposer_AMD_20204.ps1",
-        "scriptFileName": "[variables(concat('mcVersion_',parameters('mediaComposerVersion')))]",
-        "networkSecurityGroupRules": [
+      "publisher": "MicrosoftWindowsServer",
+      "offer": "WindowsServer",
+      "sku": "2019-Datacenter",
+      "version": "latest"
+    },
+    "scriptFileName": "[variables(concat('mcVersion_',parameters('mediaComposerVersion')))]",
+    "mcVersion_2018_12_11": "setupMediaComposer_AMD_20181211.ps1",
+    "mcVersion_2019_12": "setupMediaComposer_AMD_20204.ps1",
+    "mcVersion_2020_4": "setupMediaComposer_AMD_20204.ps1",
+    "networkSecurityGroupRules": [
             {
                 "name": "RDP",
                 "properties": {
@@ -193,7 +188,7 @@
                 }
             }
 
-        ],
+    ],
     "location": "[resourceGroup().location]",
     "uniqueName": "[parameters('workstationPrefix')]",
     "networkSecurityGroupName": "[concat(parameters('workstationPrefix'),'-mc-nsg')]",
