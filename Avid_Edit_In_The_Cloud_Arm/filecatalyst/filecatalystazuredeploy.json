@@ -65,8 +65,8 @@
         "subnetId": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]",
         "location": "[resourceGroup().location]",
         "nicName": "[concat(variables('uniqueName'),'-fcyst-nic')]",
-        "publicIPAddressName": "[concat(variables('uniqueName'), '-ip')]",
-        "vmName": "[variables('uniqueName')]",
+        "publicIPAddressName": "[concat(variables('uniqueName'), '-fcyst-ip')]",
+        "vmName": "[concat(variables('uniqueName'),'-fcyst-vm')]",
         "networkSecurityGroupName": "[concat(variables('uniqueName'),'-fcyst-nsg')]",
         "adminUsername": "[parameters('adminUsername')]",
         "adminPassword": "[parameters('adminPassword')]",
@@ -280,7 +280,7 @@
           },
           "osDisk": {
             "createOption": "FromImage",
-            "name": "[concat(variables('vmName'),'-os-disk')]"
+            "name": "[concat(variables('vmName'),'-fcyst-os-disk')]"
           }
         },
         "networkProfile": {

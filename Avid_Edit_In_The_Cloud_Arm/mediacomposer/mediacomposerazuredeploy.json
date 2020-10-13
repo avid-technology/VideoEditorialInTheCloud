@@ -211,7 +211,7 @@
         "publicIPAddressName": "[concat(variables('uniqueName'), '-mc-ip')]",
         "subnetId": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]",
         "teradiciKey": "null",
-        "vmName": "[concat(variables('uniqueName'),'-')]",
+        "vmName": "[concat(variables('uniqueName'),'-mc-vm')]",
         "vmSize": "[parameters('vmSize')]",
         "scriptFolder": ".",
         "driverInstallFileName": "[parameters('driverInstallFileName')]",
@@ -362,27 +362,6 @@
                         "[concat(variables('scriptLocation'), '/',variables('scriptFileName'))]"
                     ],
                     "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('scriptFolder'), '/', variables('scriptFileName'), ' ', variables('scriptParameters'))]"
-                }
-            }
-        },
-        {
-            "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat(concat(variables('vmName'),  padLeft(copyindex(1),2,'0')),'/install.amdgpu.v0')]",
-            "apiVersion": "2015-06-15",
-            "location": "[variables('location')]",
-            "copy": {
-                "name": "extensionLoop2",
-                "count": "[variables('numberOfInstances')]"
-            },
-            "dependsOn": [
-                "extensionLoop1"
-            ],
-            "properties": {
-                "publisher": "Microsoft.HpcCompute",
-                "type": "AmdGpuDriverWindows",
-                "typeHandlerVersion": "1.0",
-                "autoUpgradeMinorVersion": true,
-                "settings": {
                 }
             }
         }
