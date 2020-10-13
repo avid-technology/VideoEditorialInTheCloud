@@ -25,13 +25,15 @@ Back up your video content to Nexis on Azure.
 # Deploy to Azure
 <br />
 
-<b> 1) [for new environment] Clone project to your local repository </b>
+<b> 1) Clone project to your local repository </b>
 <br />
 
-<b> 2) [for new environment] Install Azure CLI </b>
+<b> 2) Install Azure CLI </b>
 <br />
 
-<b> 3) [for new environment] Create Resource Group within your subscription: </b>
+[Install Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+
+<b> 3) Create One Resource Group within your subscription: </b>
 <br />
 
 PS> az login
@@ -40,7 +42,7 @@ PS> az group create --location xxxx --name xxxx
 
 <i>Example: ps> az group create --location "westus2" --name "myresourcegroup"</i>
 
-<b> 4) [for new environment] Create Vnet within your Resource Group: </b>
+<b> 4) Create One Vnet and One subnet within your Resource Group: </b>
 <br />
 
 PS> az network vnet create --name xxx --resource-group xxx --address-prefix x.x.x.x/xx --subnet-name xxx --subnet-prefix x.x.x.x/xx
@@ -70,21 +72,21 @@ PS> az network vnet create --name xxx --resource-group xxx --address-prefix x.x.
 | Media Composer Nvidia | - Media_Composer 2018.12.11, 2019.12, 2020.4 <br /> - PCoIP Agent 20.04.0 <br /> - Nvidia 442.06 grid <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name "xxx" --resource-group "xxxx" --template-file ".\mediacomposer\mediacomposerazuredeploy_NVIDIA.json" --parameters "xxxx"  |
 | Media Composer AMD | - Media_Composer 2018.12.11, 2019.12, 2020.4 <br /> - PCoIP Agent 20.04.0 <br /> - Radeon-Pro-Software-for-Enterprise-GA.exe <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name "xxx" --resource-group "xxxx" --template-file ".\mediacomposer\mediacomposerazuredeploy_AMD.json" --parameters "xxxx" |
 
-<b> 7) [To duplicate environment] If you need to duplicate Media Composer environment, follow the instructions below: </b>
+<b> 7) If you need to duplicate Media Composer environment, follow the instructions below: </b>
 
 a) Create a snapshot of the main os disk. <br />
 
-b) Run script to duplicate snapshot x time (right click / run in powershell connected to your azure subscription). <br />
+b) Run script to duplicate snapshot x time. <br />
 
 [snapshot script](scripts/create_disk_from_snapshot.ps1)
 
-c) Run following script: 
+c) Run script to create media composer VM from snapshot: 
 
 PS> az deployment group create --name "xxx" --resource-group "xxxx" --template-file ".\mediacomposer\mediacomposercloning.json" --parameters "xxxx"
 
 <br />
 
-8) Deploy a Nexis storage module.
+8) Deploy One Nexis storage module.
 
 <br />
 
