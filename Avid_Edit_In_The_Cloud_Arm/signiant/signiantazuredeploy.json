@@ -70,7 +70,7 @@
     "vmSize": "Standard_D8_v3",
     "nicName": "[concat(variables('uniqueName'),'-sig-nic')]",
     "publicIPAddressName": "[concat(variables('uniqueName'),'-sig-ip')]",
-    "vmName": "[concat(variables('uniqueName'),'-sig-vm')]",
+    "vmName": "[concat(variables('uniqueName'),'-sig')]",
     "networkSecurityGroupName": "[concat(variables('uniqueName'),'-sig-nsg')]",
     "adminUsername": "[parameters('adminUsername')]",
     "adminPassword": "[parameters('adminPassword')]",
