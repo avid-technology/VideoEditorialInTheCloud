@@ -2,7 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-      "workstationPrefix": {
+      "showCode": {
         "type": "string",
         "metadata": {
           "description": "Workstation name must be 3-char min, 8-char max, lowercase alphanumeric"
@@ -64,7 +64,7 @@
       }
     },
     "variables": {
-      "uniqueName": "[parameters('workstationPrefix')]",
+      "uniqueName": "[parameters('showCode')]",
       "subnetId": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]",
       "location": "[resourceGroup().location]",
       "vmSize": "Standard_D8_v3",
@@ -98,59 +98,7 @@
           }
         },
         {
-          "name": "RemoteAccessSSH",
-          "properties": {
-            "priority": 110,
-            "protocol": "TCP",
-            "access": "Allow",
-            "direction": "Inbound",
-            "sourceAddressPrefix": "*",
-            "sourcePortRange": "*",
-            "destinationAddressPrefix": "*",
-            "destinationPortRange": "22"
-          }
-        },
-        {
-          "name": "Allow-80-In",
-          "properties": {
-            "priority": 200,
-            "protocol": "TCP",
-            "access": "Allow",
-            "direction": "Inbound",
-            "sourceAddressPrefix": "*",
-            "sourcePortRange": "*",
-            "destinationAddressPrefix": "*",
-            "destinationPortRange": "80"
-          }
-        },
-        {
-          "name": "Allow-80-Out",
-          "properties": {
-            "priority": 205,
-            "protocol": "TCP",
-            "access": "Allow",
-            "direction": "Outbound",
-            "sourceAddressPrefix": "*",
-            "sourcePortRange": "*",
-            "destinationAddressPrefix": "*",
-            "destinationPortRange": "80"
-          }
-        },
-        {
-          "name": "Allow-8080",
-          "properties": {
-            "priority": 210,
-            "protocol": "TCP",
-            "access": "Allow",
-            "direction": "Inbound",
-            "sourceAddressPrefix": "*",
-            "sourcePortRange": "*",
-            "destinationAddressPrefix": "*",
-            "destinationPortRange": "8080"
-          }
-        },
-        {
-          "name": "Allow-TCP-49221-In",
+          "name": "Aspera-TCP-33001-In",
           "properties": {
             "priority": 215,
             "protocol": "TCP",
@@ -159,98 +107,20 @@
             "sourceAddressPrefix": "*",
             "sourcePortRange": "*",
             "destinationAddressPrefix": "*",
-            "destinationPortRange": "49221"
+            "destinationPortRange": "33001"
           }
         },
         {
-          "name": "Allow-TCP-49221-Out",
+          "name": "Aspera-UDP-33001-In",
           "properties": {
             "priority": 220,
-            "protocol": "TCP",
-            "access": "Allow",
-            "direction": "Outbound",
-            "sourceAddressPrefix": "*",
-            "sourcePortRange": "*",
-            "destinationAddressPrefix": "*",
-            "destinationPortRange": "49221"
-          }
-        },
-        {
-          "name": "Shuttle-UDP",
-          "properties": {
-            "priority": 300,
             "protocol": "UDP",
             "access": "Allow",
             "direction": "Inbound",
             "sourceAddressPrefix": "*",
             "sourcePortRange": "*",
             "destinationAddressPrefix": "*",
-            "destinationPortRange": "49221-49321"
-          }
-        },
-        {
-          "name": "Allow-TCP-49321-In",
-          "properties": {
-            "priority": 230,
-            "protocol": "TCP",
-            "access": "Allow",
-            "direction": "Inbound",
-            "sourceAddressPrefix": "*",
-            "sourcePortRange": "*",
-            "destinationAddressPrefix": "*",
-            "destinationPortRange": "49321"
-          }
-        },
-        {
-          "name": "Allow-TCP-49321-Out",
-          "properties": {
-            "priority": 250,
-            "protocol": "TCP",
-            "access": "Allow",
-            "direction": "Inbound",
-            "sourceAddressPrefix": "*",
-            "sourcePortRange": "*",
-            "destinationAddressPrefix": "*",
-            "destinationPortRange": "49321"
-          }
-        },
-        {
-          "name": "Allow-TCP-50221-In",
-          "properties": {
-            "priority": 235,
-            "protocol": "TCP",
-            "access": "Allow",
-            "direction": "Inbound",
-            "sourceAddressPrefix": "*",
-            "sourcePortRange": "*",
-            "destinationAddressPrefix": "*",
-            "destinationPortRange": "50221"
-          }
-        },
-        {
-          "name": "Allow-TCP-50221-Out",
-          "properties": {
-            "priority": 240,
-            "protocol": "TCP",
-            "access": "Allow",
-            "direction": "Outbound",
-            "sourceAddressPrefix": "*",
-            "sourcePortRange": "*",
-            "destinationAddressPrefix": "*",
-            "destinationPortRange": "50221"
-          }
-        },
-        {
-          "name": "Allow-TCP-443-Out",
-          "properties": {
-            "priority": 245,
-            "protocol": "TCP",
-            "access": "Allow",
-            "direction": "Outbound",
-            "sourceAddressPrefix": "*",
-            "sourcePortRange": "*",
-            "destinationAddressPrefix": "*",
-            "destinationPortRange": "443"
+            "destinationPortRange": "33001-33101"
           }
         }
       ]
