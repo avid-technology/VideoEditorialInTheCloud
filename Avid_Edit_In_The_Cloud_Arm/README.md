@@ -48,9 +48,9 @@ PS> az network vnet create --name xxx --resource-group xxx --address-prefix x.x.
 
 | Module | Supported Version | Code |
 | ------ | ------------------ | ----------------- |
-| Signiant | - Signiant SDCX Server v3.3.2 <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name xxx --resource-group xxxx --template-file ".\signiant\signiantazuredeploy.json" --parameters xxxx  |
-| FileCatalyst | - FileCatalyst v3.8.1 <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name xxx --resource-group xxxx --template-file ".\filecatalyst\filecatalystazuredeploy.json" --parameters xxxx |
-| Aspera | - Aspera HSTS v3.9.6 <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name xxx --resource-group xxxx --template-file ".\aspera\asperaazuredeploy.json" --parameters xxxx |
+| Signiant | - Signiant SDCX Server v3.3.2 <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name xxx --resource-group xxxx --template-file ".\signiant\signiantazuredeploy.json" --parameters "xxxx"  |
+| FileCatalyst | - FileCatalyst v3.8.1 <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name xxx --resource-group xxxx --template-file ".\filecatalyst\filecatalystazuredeploy.json" --parameters "xxxx" |
+| Aspera | - Aspera HSTS v3.9.6 <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name xxx --resource-group xxxx --template-file ".\aspera\asperaazuredeploy.json" --parameters "xxxx" |
 
 <i>Example: ps> az deployment group create --name "SigniantTestDeployment" --resource-group "myresourcegroup" --template-file ".\signiant\signiantazuredeploy.json" --parameters ".\signiant\signiant.parameters.json"</i>
 
@@ -63,10 +63,10 @@ PS> az network vnet create --name xxx --resource-group xxx --address-prefix x.x.
 
 | Module | Supported Version | Code |
 | ------ | ------------------ | ----------------- |
-| Media Composer Nvidia | - Media_Composer 2018.12.11, Media_Composer 2019.12, Media_Composer 2020.4 <br /> - pcoip-agent-graphics 20.04.0 <br /> - Nvidia 442.06 grid <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | az deployment group create --name xxx --resource-group xxxx --template-file ".\mediacomposer\mediacomposerazuredeploy_NVIDIA.json" --parameters xxxx  |
-| Media Composer AMD | - Media_Composer_2018.12.11_Win.zip, Media_Composer_2019.12_Win.zip, Media_Composer_2020.4._Win.zip <br /> - pcoip-agent-graphics_20.04.0.exe <br /> - Radeon-Pro-Software-for-Enterprise-GA.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | az deployment group create --name xxx --resource-group xxxx --template-file ".\mediacomposer\mediacomposerazuredeploy_AMD.json" --parameters xxxx |
+| Media Composer Nvidia | - Media_Composer 2018.12.11, 2019.12, 2020.4 <br /> - PCoIP Agent 20.04.0 <br /> - Nvidia 442.06 grid <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name "xxx" --resource-group "xxxx" --template-file ".\mediacomposer\mediacomposerazuredeploy_NVIDIA.json" --parameters "xxxx"  |
+| Media Composer AMD | - Media_Composer 2018.12.11, 2019.12, 2020.4 <br /> - PCoIP Agent 20.04.0 <br /> - Radeon-Pro-Software-for-Enterprise-GA.exe <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name "xxx" --resource-group "xxxx" --template-file ".\mediacomposer\mediacomposerazuredeploy_AMD.json" --parameters "xxxx" |
 
-To duplicate the VM, follow the steps below:
+<b> 4') [To duplicate environment] If you need to duplicate Media Composer environment, follow the instructions below: </b>
 
 a) Create a snapshot of the main os disk. <br />
 
@@ -84,8 +84,8 @@ c) Use duplication ARM template:
 
 <br />
 
-| Module | Compatible Version | ARM Template link |
+| Module | Supported Version | ARM Template link |
 | ------ | ------------------ | ----------------- |
-| Nexis 20.3.2 | AvidNexisCloud_20.3.2-17.run | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fssengreleng.blob.core.windows.net%2Fnexisgold%2F20.3.2%2FAzureProvisioning%2Fnexis.nearline%2Fazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
+| Nexis  | Avid Nexis Cloud 20.7.0 | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fssengreleng.blob.core.windows.net%2Fnexisgold%2F20.7.0%2FAzureProvisioning%2Fnexis.nearline%2Fazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
 
 <br />

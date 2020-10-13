@@ -2,7 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "general-Name": {
+        "workstationPrefix": {
             "type": "string"
         },
         "adminUsername": {
@@ -81,7 +81,13 @@
         "nexisClientInstallFileName": {
             "type": "string",
             "defaultValue": "AvidNEXISClient_Win64_20.3.1.14.msi"
+        },
+        "branchName": {
+        "type": "string",
+        "metadata": {
+          "description": "Branch to point script to"
         }
+      }
     },
     "variables": {
         "adminPassword": "[parameters('adminPassword')]",
@@ -192,8 +198,8 @@
 
         ],
         "location": "[resourceGroup().location]",
-        "uniqueName": "[parameters('general-Name')]",
-        "networkSecurityGroupName": "[concat(parameters('general-Name'),'-nsg')]",
+        "uniqueName": "[parameters('workstationPrefix')]",
+        "networkSecurityGroupName": "[concat(parameters('workstationPrefix'),'-nsg')]",
         "nicName": "[concat(variables('uniqueName'), '-nic')]",
         "numberOfInstances": "[parameters('numberOfInstances')]",
         "publicIPAddressName": "[concat(variables('uniqueName'), '-ip')]",
@@ -206,7 +212,7 @@
         "teradiciInstallFileName": "[parameters('teradiciInstallFileName')]",
         "nvidiaInstallFileName": "[parameters('nvidiaInstallFileName')]",
         "nexisClientInstallFileName": "[parameters('nexisClientInstallFileName')]",
-        "_githubLocation": "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Arm",
+        "_githubLocation": "[concat('https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/',parameters('branchName'),'/Avid_Edit_In_The_Cloud_Arm')]",
         "scriptLocation": "[concat(variables('_githubLocation'), '/','scripts')]",
         "mediaComposerInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('mediaComposerFileName'))]",
         "teradiciInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('teradiciInstallFileName'))]",

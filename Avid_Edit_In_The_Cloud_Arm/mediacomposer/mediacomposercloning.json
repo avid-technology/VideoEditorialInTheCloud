@@ -8,7 +8,7 @@
         },
         "vmSize": {
             "type": "string",
-            "defaultValue": "Standard_NV12",
+            "defaultValue": "Standard_NV12s_v3",
             "metadata": {
                 "description": "Size of the Media Composer VM."
             },
