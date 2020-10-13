@@ -1,7 +1,7 @@
 <# Custom Script for Windows to install a file from Azure Storage using the staging folder created by the deployment script #>
 param (
     [ValidateNotNullOrEmpty()]
-    $FileCatalystURL,
+    $AsperaURL,
     [ValidateNotNullOrEmpty()]
     $AvidNEXISClientURL
 )
@@ -58,13 +58,13 @@ Install-ChocolatyAndPackages {
 }
 
 function 
-Install-FileCatalyst {
+Install-Aspera {
    
-    Write-Log "downloading FileCatalyst Server"
-    $FileCatalystDestinationPath = "C:\Users\Public\Desktop\Install_FileCatalyst.exe"
+    Write-Log "downloading Aspera Server"
+    $AsperaDestinationPath = "C:\Users\Public\Desktop\Install_Aspera.exe"
 
-    Write-Log $FileCatalystDestinationPath
-    DownloadFileOverHttp $FileCatalystURL $FileCatalystDestinationPath
+    Write-Log $AsperaDestinationPath
+    DownloadFileOverHttp $AsperaURL $AsperaDestinationPath
 
 }
 
@@ -83,8 +83,8 @@ try {
     Write-Log "Call Install-NexisCLient"
     Install-NexisClient
 
-    Write-Log "Call Install-FileCatalyst"
-    Install-FileCatalyst
+    Write-Log "Call Install-Aspera"
+    Install-Aspera
 }
 catch {
     Write-Error $_
