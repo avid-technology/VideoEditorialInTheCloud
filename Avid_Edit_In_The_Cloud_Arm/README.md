@@ -25,18 +25,18 @@ Back up your video content to Nexis on Azure.
 # Deploy to Azure
 <br />
 
-<b> 1) Clone project to your local repository </b>
+<b> 1) Clone project to your local repository. </b>
 <br />
 
-<b> 2) Install Azure CLI </b>
+<b> 2) Install Azure CLI. </b>
 <br />
+
+PS> az login
 
 [Install Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 
 <b> 3) Create One Resource Group within your subscription: </b>
 <br />
-
-PS> az login
 
 PS> az group create --location xxxx --name xxxx
 
@@ -69,16 +69,18 @@ PS> az network vnet create --name xxx --resource-group xxx --address-prefix x.x.
 
 | Module | Supported Version | Code |
 | ------ | ------------------ | ----------------- |
-| Media Composer Nvidia | - Media_Composer 2018.12.11, 2019.12, 2020.4 <br /> - PCoIP Agent 20.04.0 <br /> - Nvidia 442.06 grid <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name "xxx" --resource-group "xxxx" --template-file ".\mediacomposer\mediacomposerazuredeploy_NVIDIA.json" --parameters "xxxx"  |
+| Media Composer Nvidia | - Media_Composer 2018.12.11, 2019.12, 2020.4 <br /> - PCoIP Agent 20.04.0 <br /> - Nvidia 442.06 grid <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name "xxx" --resource-group "xxxx" --template-file ".\mediacomposer\mediacomposerazuredeploy_NVIDIA_v2.json" --parameters "xxxx"  |
 | Media Composer AMD | - Media_Composer 2018.12.11, 2019.12, 2020.4 <br /> - PCoIP Agent 20.04.0 <br /> - Radeon-Pro-Software-for-Enterprise-GA.exe <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name "xxx" --resource-group "xxxx" --template-file ".\mediacomposer\mediacomposerazuredeploy_AMD.json" --parameters "xxxx" |
 
 <b> 7) If you need to duplicate Media Composer environment, follow the instructions below: </b>
 
 a) Create a snapshot of the main os disk. <br />
 
+[create snapshot](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/snapshot-copy-managed-disk)
+
 b) Run script to duplicate snapshot x time. <br />
 
-[snapshot script](scripts/create_disk_from_snapshot.ps1)
+[duplicate snapshot script](scripts/create_disk_from_snapshot.ps1)
 
 c) Run script to create media composer VM from snapshot: 
 
