@@ -70,9 +70,6 @@
                 "2020_4"
             ]
         },
-        "driverInstallFileName": {
-            "type": "string"
-        },
         "teradiciInstallFileName": {
             "type": "string"
         },
@@ -214,17 +211,15 @@
         "vmName": "[concat(variables('uniqueName'),'-mc')]",
         "vmSize": "[parameters('vmSize')]",
         "scriptFolder": ".",
-        "driverInstallFileName": "[parameters('driverInstallFileName')]",
         "mediaComposerFileName": "[parameters('mediaComposerFileName')]",
         "teradiciInstallFileName": "[parameters('teradiciInstallFileName')]",
         "nexisClientInstallFileName": "[parameters('nexisClientInstallFileName')]",
         "_githubLocation": "[concat('https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/',parameters('branchName'),'/Avid_Edit_In_The_Cloud_Arm')]",
         "scriptLocation": "[concat(variables('_githubLocation'), '/','scripts')]",
-        "driverInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('driverInstallFileName'))]",
         "mediaComposerInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('mediaComposerFileName'))]",
         "teradiciInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('teradiciInstallFileName'))]",
         "nexisClientInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('nexisClientInstallFileName'))]",
-        "scriptParameters": "[concat('-TeradiciKey ', variables('teradiciKey'),' -MediaComposerURL ', variables('mediaComposerInstallLocation'),' -TeradiciURL ', variables('teradiciInstallLocation'),' -NvidiaURL ', variables('driverInstallLocation'),' -AvidNEXISClientURL ', variables('nexisClientInstallLocation'))]"
+        "scriptParameters": "[concat('-TeradiciKey ', variables('teradiciKey'),' -MediaComposerURL ', variables('mediaComposerInstallLocation'),' -TeradiciURL ', variables('teradiciInstallLocation'),' -AvidNEXISClientURL ', variables('nexisClientInstallLocation'))]"
     },
     "resources": [
         {
@@ -362,6 +357,50 @@
                         "[concat(variables('scriptLocation'), '/',variables('scriptFileName'))]"
                     ],
                     "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('scriptFolder'), '/', variables('scriptFileName'), ' ', variables('scriptParameters'))]"
+                }
+            }
+        },
+        {
+            "condition": "[equals(parameters('gpuType'),'NVIDIA')]",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(concat(variables('vmName'),  padLeft(copyindex(1),2,'0')),'/install.amdgpu.v0')]",
+            "apiVersion": "2015-06-15",
+            "location": "[variables('location')]",
+            "copy": {
+                "name": "extensionLoop2",
+                "count": "[variables('numberOfInstances')]"
+            },
+            "dependsOn": [
+                "extensionLoop1"
+            ],
+            "properties": {
+                "publisher": "Microsoft.HpcCompute",
+                "type": "NvidiaGpuDriverWindows",
+                "typeHandlerVersion": "1.0",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                }
+            }
+        },
+        {
+            "condition": "[equals(parameters('gpuType'),'AMD')]",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(concat(variables('vmName'),  padLeft(copyindex(1),2,'0')),'/install.amdgpu.v0')]",
+            "apiVersion": "2015-06-15",
+            "location": "[variables('location')]",
+            "copy": {
+                "name": "extensionLoop2",
+                "count": "[variables('numberOfInstances')]"
+            },
+            "dependsOn": [
+                "extensionLoop1"
+            ],
+            "properties": {
+                "publisher": "Microsoft.HpcCompute",
+                "type": "AmdGpuDriverWindows",
+                "typeHandlerVersion": "1.0",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
                 }
             }
         }
