@@ -169,6 +169,19 @@ Install-NexisClient {
     
 }
 
+function 
+Install-AmdGPU {
+    
+    Write-Log "Download Amd Driver"
+    $NvidiaDestinationPath = "D:\AzureData\Amd.exe"
+
+    Write-Log $DestinationPath
+    DownloadFileOverHttp $NvidiaURL $NvidiaDestinationPath  
+    
+    Write-Log "Install Nvidia"
+    Start-Process -FilePath $NvidiaDestinationPath -ArgumentList "-INSTALL" -Wait 
+}
+
 try {
     # Set to false for debugging.  This will output the start script to
     # c:\AzureData\CustomDataSetupScript.log, and then you can RDP
@@ -187,6 +200,9 @@ try {
 
         Write-Log "Create Download folder"
         mkdir D:\AzureData
+
+        Write-Log "Call Install-AmdGPU"
+        Install-AmdGPU
 
         Write-Log "Call Install-Teradici"
         Install-Teradici

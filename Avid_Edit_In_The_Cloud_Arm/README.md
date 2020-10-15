@@ -69,8 +69,10 @@ PS> az network vnet create --name xxx --resource-group xxx --address-prefix x.x.
 
 | Module | Supported Version | Code |
 | ------ | ------------------ | ----------------- |
-| Media Composer Nvidia | - Media_Composer 2018.12.11, 2019.12, 2020.4 <br /> - PCoIP Agent 20.04.0 <br /> - Nvidia 442.06 grid <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name "xxx" --resource-group "xxxx" --template-file ".\mediacomposer\mediacomposerazuredeploy_NVIDIA_v2.json" --parameters "xxxx"  |
+| Media Composer Nvidia | - Media_Composer 2018.12.11, 2019.12, 2020.4 <br /> - PCoIP Agent 20.04.0 <br /> - Nvidia 442.06 grid <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name "xxx" --resource-group "xxxx" --template-file ".\mediacomposer\mediacomposerazuredeploy.json" --parameters "xxxx"  |
 | Media Composer AMD | - Media_Composer 2018.12.11, 2019.12, 2020.4 <br /> - PCoIP Agent 20.04.0 <br /> - Radeon-Pro-Software-for-Enterprise-GA.exe <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name "xxx" --resource-group "xxxx" --template-file ".\mediacomposer\mediacomposerazuredeploy_AMD.json" --parameters "xxxx" |
+
+<i>Example: ps> az deployment group create --name "MCTestDeployment" --resource-group "myresourcegroup" --template-file ".\mediacomposer\mediacomposerazuredeploy.json" --parameters ".\mediacomposer\mediacomposerazuredeploy.parameters.json"</i>
 
 <b> 7) If you need to duplicate Media Composer environment, follow the instructions below: </b>
 
