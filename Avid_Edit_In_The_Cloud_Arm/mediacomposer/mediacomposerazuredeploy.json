@@ -363,7 +363,7 @@
         {
             "condition": "[equals(parameters('gpuType'),'NVIDIA')]",
             "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat(concat(variables('vmName'),  padLeft(copyindex(1),2,'0')),'/install.amdgpu.v0')]",
+            "name": "[concat(concat(variables('vmName'),  padLeft(copyindex(1),2,'0')),'/install.nvidiagpu.v0')]",
             "apiVersion": "2015-06-15",
             "location": "[variables('location')]",
             "copy": {
