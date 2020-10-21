@@ -63,8 +63,6 @@ Install-SigniantMediaShuttle {
     Write-Log $SigniantDestinationPath
     DownloadFileOverHttp $SigniantMediaShuttleURL $SigniantDestinationPath
 
-    Start-Process -FilePath $NexisDestinationPath -ArgumentList "/S" -Wait
-
 }
 
 try {
