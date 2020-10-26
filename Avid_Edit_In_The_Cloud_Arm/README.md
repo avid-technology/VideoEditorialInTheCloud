@@ -28,12 +28,12 @@ Back up your video content to Nexis on Azure.
 <b> 1) Install Git </b>
 <br />
 
-[Install Git](git-scm.com/downloads)
+[Install Git](https://git-scm.com/downloads)
 
 <b> 2) Clone project to your local repository. </b>
 <br />
 
-git clone https://github.com/avid-technology/VideoEditorialInTheCloud.git
+PS> git clone https://github.com/avid-technology/VideoEditorialInTheCloud.git
 
 <b> 3) Install Azure CLI / Login to your subscription. </b>
 <br />
@@ -92,6 +92,8 @@ a) Create a snapshot of the main os disk. <br />
 b) Run script to duplicate snapshot x time. <br />
 
 [duplicate snapshot script](scripts/create_disk_from_snapshot.ps1)
+
+PS> .\create_disk_from_snapshot.ps1
 
 c) Run script to create media composer VM from snapshot: 
 
