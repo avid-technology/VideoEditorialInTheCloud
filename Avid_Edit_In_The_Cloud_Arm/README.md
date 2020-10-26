@@ -25,31 +25,38 @@ Back up your video content to Nexis on Azure.
 # Deploy to Azure
 <br />
 
-<b> 1) Clone project to your local repository. </b>
+<b> 1) Install Git </b>
 <br />
 
-<b> 2) Install Azure CLI. </b>
+[Install Git](git-scm.com/downloads)
+
+<b> 2) Clone project to your local repository. </b>
 <br />
 
-PS> az login
+git clone https://github.com/avid-technology/VideoEditorialInTheCloud.git
+
+<b> 3) Install Azure CLI / Login to your subscription. </b>
+<br />
 
 [Install Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 
-<b> 3) Create One Resource Group within your subscription: </b>
+PS> az login
+
+<b> 4) Create One Resource Group within your subscription: </b>
 <br />
 
 PS> az group create --location xxxx --name xxxx
 
 <i>Example: ps> az group create --location "westus2" --name "myresourcegroup"</i>
 
-<b> 4) Create One Vnet and One subnet within your Resource Group: </b>
+<b> 5) Create One Vnet and One subnet within your Resource Group: </b>
 <br />
 
 PS> az network vnet create --name xxx --resource-group xxx --address-prefix x.x.x.x/xx --subnet-name xxx --subnet-prefix x.x.x.x/xx
 
 <i>Example: ps> az network vnet create --name "myvnet" --resource-group "myresourcegroup" --address-prefix 10.0.0.0/16 --subnet-name "mysubnet1" --subnet-prefix 10.0.0.0/24</i>
 
-<b> 5) Choose a file transfer accelerator module: </b>
+<b> 6) Choose a file transfer accelerator module: </b>
 <br />
 
 | Module | Supported Version | Code |
@@ -64,7 +71,7 @@ PS> az network vnet create --name xxx --resource-group xxx --address-prefix x.x.
 
 <i>Example: ps> az deployment group create --name "AsperaTestDeployment" --resource-group "myresourcegroup" --template-file ".\aspera\asperaazuredeploy.json" --parameters ".\aspera\aspera.parameters.json"</i>
 
-<b> 6) Choose a Media Composer module depending on the version and GPU selected. </b>
+<b> 7) Choose a Media Composer module depending on the version and GPU selected. </b>
 <br />
 
 | Module | Supported Version | Code |
@@ -76,7 +83,7 @@ PS> az network vnet create --name xxx --resource-group xxx --address-prefix x.x.
 
 <i>Example: ps> az deployment group create --name "MCTestDeployment" --resource-group "myresourcegroup" --template-file ".\mediacomposer\mediacomposerazuredeploy.json" --parameters ".\mediacomposer\mediacomposerazuredeployamd.parameters.json"</i>
 
-<b> 7) If you need to duplicate Media Composer environment, follow the instructions below: </b>
+<b> 8) If you need to duplicate Media Composer environment, follow the instructions below: </b>
 
 a) Create a snapshot of the main os disk. <br />
 
@@ -92,7 +99,7 @@ PS> az deployment group create --name "xxx" --resource-group "xxxx" --template-f
 
 <br />
 
-<b> 8) Deploy One Nexis storage module. </b>
+<b> 9) Deploy One Nexis storage module. </b>
 
 <br />
 
