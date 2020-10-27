@@ -29,14 +29,11 @@
         "_system-InstallURL": {
             "value": "https://eitcstore01.blob.core.windows.net"
         },
-        "mediaComposerFileName": {
-            "value": "Media_Composer_2020.4._Win.zip"
-        },
         "mediaComposerOS": {
             "value": "Windows_10"
         },
         "mediaComposerVersion": {
-            "value": "2020_4"
+            "value": "2018.12.3"
         },
         "teradiciInstallFileName": {
             "value": "pcoip-agent-graphics_20.07.0.exe"

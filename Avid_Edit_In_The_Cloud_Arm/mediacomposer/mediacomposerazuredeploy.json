@@ -119,11 +119,11 @@
             "version": "latest"
         },
         "scriptFileName": "[variables(concat('mcVersion_',parameters('gpuType'),'_',parameters('mediaComposerVersion')))]",
-        "mcVersion_AMD_2018.12.11": "setupMediaComposer_AMD_20181213.ps1",
-        "mcVersion_AMD_2019_12": "setupMediaComposer_AMD_20209.ps1",
-        "mcVersion_AMD_2020_4": "setupMediaComposer_AMD_20209.ps1",
-        "mcVersion_NVIDIA_2018_12_11": "setupMediaComposer_NVIDIA_20181213.ps1",
-        "mcVersion_NVIDIA_2019_12": "setupMediaComposer_NVIDIA_20209.ps1",
+        "mcVersion_AMD_2018.12.3": "setupMediaComposer_AMD_20181213.ps1",
+        "mcVersion_AMD_2019.12": "setupMediaComposer_AMD_20209.ps1",
+        "mcVersion_AMD_2020.4": "setupMediaComposer_AMD_20209.ps1",
+        "mcVersion_NVIDIA_2018.12.13": "setupMediaComposer_NVIDIA_20181213.ps1",
+        "mcVersion_NVIDIA_2019.12": "setupMediaComposer_NVIDIA_20209.ps1",
         "mcVersion_NVIDIA_2020.9.0": "setupMediaComposer_NVIDIA_20209.ps1",
         "networkSecurityGroupRules": [
             {
