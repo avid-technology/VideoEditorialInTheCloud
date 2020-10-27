@@ -5,7 +5,7 @@
         "showCode": {
             "type": "string",
             "minLength": 3,
-            "maxLength": 8,
+            "maxLength": 4,
             "metadata": {
                 "description": "NEXIS system name. 3-char min, 8-char max, lowercase alphanumeric"
             }
@@ -46,13 +46,6 @@
             },
             "defaultValue": "default"
         },
-        "nexisBuild": {
-            "type": "string",
-            "metadata": {
-                "description": "The nexis build to install after deployment.  If empty, the default build will be used."
-            },
-            "defaultValue": "AvidNexisCloud_20.7.0-3.run"
-        },
         "partNumber": {
             "type": "string",
             "metadata": {
@@ -65,10 +58,11 @@
         }
     },
     "variables": {
+        "nexisBuild": "AvidNexisCloud_20.7.0-3.run",
         "_sasToken": "",
         "_urlLocation": "https://ssengreleng.blob.core.windows.net/nexisgold/20.7.0",
         "_artifactsLocation": "[concat(variables('_urlLocation'), '/AzureProvisioning/nexis.nearline')]",
-        "systemName":"[concat(parameters('showCode'), 'nx')]",
+        "systemName":"[concat(parameters('showCode'), 'nex')]",
         "_artifactsLocationSasToken": "[variables('_sasToken')]",
         "_buildArtifactsLocation": "[concat(variables('_urlLocation'), '/installers')]",
         "_buildArtifactsLocationSasToken": "[variables('_sasToken')]",
@@ -142,7 +136,7 @@
                         "value": "[variables('_buildArtifactsLocationSasToken')]"
                     },
                     "nexisBuild": {
-                        "value": "[parameters('nexisBuild')]"
+                        "value": "[variables('nexisBuild')]"
                     },
                     "partNumber": {
                         "value": "[parameters('partNumber')]"

@@ -217,7 +217,7 @@
         "vmName": "[concat(variables('uniqueName'),'-mc')]",
         "vmSize": "[parameters('vmSize')]",
         "scriptFolder": ".",
-        "mediaComposerFileName": "[concat('Media_Composer_',parameters('mediaComposerVersion'),'-_Win.zip')]",
+        "mediaComposerFileName": "[concat('Media_Composer_',parameters('mediaComposerVersion'),'_Win.zip')]",
         "teradiciInstallFileName": "[parameters('teradiciInstallFileName')]",
         "nexisClientInstallFileName": "[parameters('nexisClientInstallFileName')]",
         "_githubLocation": "[concat('https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/',parameters('branchName'),'/Avid_Edit_In_The_Cloud_Arm')]",
