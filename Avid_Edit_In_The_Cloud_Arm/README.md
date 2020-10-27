@@ -76,8 +76,8 @@ PS> az network vnet create --name xxx --resource-group xxx --address-prefix x.x.
 
 | Module | Supported Version | Code |
 | ------ | ------------------ | ----------------- |
-| Media Composer Nvidia | - Media_Composer 2018.12.11, 2019.12, 2020.4 <br /> - PCoIP Agent 20.07.0 <br /> - Nvidia 442.06 grid <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name "xxx" --resource-group "xxxx" --template-file ".\mediacomposer\mediacomposerazuredeploy.json" --parameters "xxxx"  |
-| Media Composer AMD | - Media_Composer 2018.12.11, 2019.12, 2020.4 <br /> - PCoIP Agent 20.07.0 <br /> - Radeon-Pro-Software-for-Enterprise-GA.exe <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name "xxx" --resource-group "xxxx" --template-file ".\mediacomposer\mediacomposerazuredeploy_AMD.json" --parameters "xxxx" |
+| Media Composer Nvidia | - Media_Composer 2018.12.13, 2019.12, 2020.9 <br /> - PCoIP Agent 20.07.0 <br /> - Nvidia 442.06 grid <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name "xxx" --resource-group "xxxx" --template-file ".\mediacomposer\mediacomposerazuredeploy.json" --parameters "xxxx"  |
+| Media Composer AMD | - Media_Composer 2018.12.13, 2019.12, 2020.9 <br /> - PCoIP Agent 20.07.0 <br /> - Radeon-Pro-Software-for-Enterprise-GA.exe <br /> - Avid NEXIS Client v2020.7.3 | az deployment group create --name "xxx" --resource-group "xxxx" --template-file ".\mediacomposer\mediacomposerazuredeploy_AMD.json" --parameters "xxxx" |
 
 <i>Example: ps> az deployment group create --name "MCTestDeployment" --resource-group "myresourcegroup" --template-file ".\mediacomposer\mediacomposerazuredeploy.json" --parameters ".\mediacomposer\mediacomposerazuredeploynvidia.parameters.json"</i>
 
@@ -108,6 +108,8 @@ PS> az deployment group create --name "xxx" --resource-group "xxxx" --template-f
 | Module | Supported Version | ARM Template link |
 | ------ | ------------------ | ----------------- |
 | Nexis  | Avid Nexis Cloud 20.7.0 | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fssengreleng.blob.core.windows.net%2Fnexisgold%2F20.7.0%2FAzureProvisioning%2Fnexis.nearline%2Fazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
+
+<i>Example: ps> az deployment group create --name "NexisTestDeployment" --resource-group "myresourcegroup" --template-file ".\nexis\nexisazuredeploy.json" --parameters ".\nexis\nexisazuredeploy.parameters.json"</i>
 
 <br />
 

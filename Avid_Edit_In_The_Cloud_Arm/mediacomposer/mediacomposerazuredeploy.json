@@ -53,7 +53,7 @@
         "mediaComposerFileName": {
             "type": "string",
             "allowedValues": [
-                "Media_Composer_20.9.0_Win.zip",
+                "Media_Composer_2020.9.0_Win.zip",
                 "Media_Composer_2018.12.3_Win.zip",
                 "Media_Composer_2019.12_Win.zip"
             ]
@@ -72,7 +72,7 @@
                 "2018_12_11",
                 "2019_12",
                 "2020_4",
-                "2020_9"
+                "2020.9.0"
             ]
         },
         "teradiciInstallFileName": {
@@ -118,12 +118,13 @@
             "version": "latest"
         },
         "scriptFileName": "[variables(concat('mcVersion_',parameters('gpuType'),'_',parameters('mediaComposerVersion')))]",
-        "mcVersion_AMD_2018_12_11": "setupMediaComposer_AMD_20181211.ps1",
+        "mcVersion_AMD_2018.12.11": "setupMediaComposer_AMD_20181211.ps1",
         "mcVersion_AMD_2019_12": "setupMediaComposer_AMD_20204.ps1",
         "mcVersion_AMD_2020_4": "setupMediaComposer_AMD_20204.ps1",
         "mcVersion_NVIDIA_2018_12_11": "setupMediaComposer_NVIDIA_20181211.ps1",
         "mcVersion_NVIDIA_2019_12": "setupMediaComposer_NVIDIA_20204.ps1",
         "mcVersion_NVIDIA_2020_4": "setupMediaComposer_NVIDIA_20204.ps1",
+        "mcVersion_NVIDIA_2020.9.0": "setupMediaComposer_NVIDIA_20204.ps1",
         "networkSecurityGroupRules": [
             {
                 "name": "RDP",
@@ -216,7 +217,7 @@
         "vmName": "[concat(variables('uniqueName'),'-mc')]",
         "vmSize": "[parameters('vmSize')]",
         "scriptFolder": ".",
-        "mediaComposerFileName": "[parameters('mediaComposerFileName')]",
+        "mediaComposerFileName": "[concat('Media_Composer_',parameters('mediaComposerVersion'),'-_Win.zip')]",
         "teradiciInstallFileName": "[parameters('teradiciInstallFileName')]",
         "nexisClientInstallFileName": "[parameters('nexisClientInstallFileName')]",
         "_githubLocation": "[concat('https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/',parameters('branchName'),'/Avid_Edit_In_The_Cloud_Arm')]",
