@@ -4,9 +4,8 @@
     "parameters": {
       "showCode": {
         "type": "string",
-        "metadata": {
-          "description": "Workstation name must be 3-char min, 8-char max, lowercase alphanumeric"
-        }
+        "minLength": 3,
+        "maxLength": 4
       },
       "adminUsername": {
         "type": "string",
