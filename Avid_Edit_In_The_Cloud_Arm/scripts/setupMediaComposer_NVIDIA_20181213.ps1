@@ -17,8 +17,6 @@ param(
     [ValidateNotNullOrEmpty()]
     $TeradiciURL,
     [ValidateNotNullOrEmpty()]
-    $NvidiaURL,
-    [ValidateNotNullOrEmpty()]
     $AvidNEXISClientURL
 )
 
@@ -171,19 +169,6 @@ Install-NexisClient {
     
 }
 
-function 
-Install-NvidiaGPU {
-    
-    Write-Log "Download Nvidia Tesla Driver"
-    $NvidiaDestinationPath = "D:\AzureData\Nividia.exe"
-
-    Write-Log $DestinationPath
-    DownloadFileOverHttp $NvidiaURL $NvidiaDestinationPath  
-    
-    Write-Log "Install Nvidia"
-    Start-Process -FilePath $NvidiaDestinationPath -ArgumentList "-s", "-noreboot" -Verb RunAs -Wait 
-}
-
 
 try {
     # Set to false for debugging.  This will output the start script to
@@ -203,9 +188,6 @@ try {
 
         Write-Log "Create Download folder"
         mkdir D:\AzureData
-
-        Write-Log "Call Install-NvidiaGPU"
-        Install-NvidiaGPU
 
         Write-Log "Call Install-Teradici"
         Install-Teradici
