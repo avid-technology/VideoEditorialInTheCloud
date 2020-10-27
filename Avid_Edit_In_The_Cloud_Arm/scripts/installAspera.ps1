@@ -35,7 +35,7 @@ DownloadFileOverHttp($Url, $DestinationPath) {
 function 
 Install-NexisClient {
    
-    Write-Log "downloading Nexus Client"
+    Write-Log "downloading Nexis Client"
     $NexisDestinationPath = "D:\AzureData\AvidNEXISClient.msi"
     Write-Log $DestinationPath
     DownloadFileOverHttp $AvidNEXISClientURL $NexisDestinationPath
