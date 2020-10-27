@@ -214,7 +214,7 @@
         "publicIPAddressName": "[concat(variables('uniqueName'), '-mc-ip')]",
         "subnetId": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]",
         "teradiciKey": "null",
-        "vmName": "[concat(variables('uniqueName'),'-mc')]",
+        "vmName": "[concat(variables('uniqueName'),'-mc-')]",
         "vmSize": "[parameters('vmSize')]",
         "scriptFolder": ".",
         "mediaComposerFileName": "[concat('Media_Composer_',parameters('mediaComposerVersion'),'_Win.zip')]",
