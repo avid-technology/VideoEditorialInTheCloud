@@ -1,0 +1,54 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "showCode": {
+            "value": "show"
+        },
+        "adminUsername": {
+            "value": "admin01"
+        },
+        "adminPassword": {
+            "value": "Password01"
+        },
+        "vmSize": {
+            "value": "Standard_NV4as_v4"
+        },
+        "numberOfInstances": {
+            "value": 1
+        },
+        "general-VnetResourceGroup": {
+            "value": "avid-sdbx-ben-03"
+        },
+        "general-VnetName": {
+            "value": "avid-sdbx-vnet-03"
+        },
+        "general-SubnetName": {
+           "value": "default"
+        },
+        "_system-InstallURL": {
+            "value": "https://eitcstore01.blob.core.windows.net"
+        },
+        "mediaComposerFileName": {
+            "value": "Media_Composer_2020.4._Win.zip"
+        },
+        "mediaComposerOS": {
+            "value": "Windows_10"
+        },
+        "mediaComposerVersion": {
+            "value": "2020_4"
+        },
+        "teradiciInstallFileName": {
+            "value": "pcoip-agent-graphics_20.07.0.exe"
+        },
+        "nexisClientInstallFileName": {
+            "value": "AvidNEXISClient_Win64_20.7.3.10.msi"
+        },
+        "gpuType": {
+            "value": "AMD"
+        },
+        "branchName": {
+            "value": "avid-development"
+        }
+    }
+  }

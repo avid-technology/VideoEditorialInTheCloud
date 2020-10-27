@@ -3,6 +3,3 @@
 *.tfstate.*
 *.tfstate.*
 .terraform
-
-### arm variable ###
-*.parameters.json

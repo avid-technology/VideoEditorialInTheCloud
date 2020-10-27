@@ -1,0 +1,36 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "showCode": {
+            "value": "show"
+          },
+          "adminUsername": {
+            "value": "admin01"
+          },
+          "adminPassword": {
+            "value": "Password01"
+          },
+          "general-VnetResourceGroup": {
+            "value": "avid-sdbx-ben-03"
+          },
+          "general-VnetName": {
+            "value": "avid-sdbx-vnet-03"
+            }, 
+          "general-SubnetName": {
+            "value": "default"
+            },
+          "_system-InstallURL": {
+            "value": "https://eitcstore01.blob.core.windows.net"
+              },
+          "filecatalystInstallName": {
+            "value": "install_fc_server.exe"
+          },
+          "avidNexisClientInstallName": {
+            "value": "AvidNEXISClient_Win64_20.7.3.10.msi"
+          },
+          "branchName": {
+            "value": "avid-development"
+          }
+    }
+  }
