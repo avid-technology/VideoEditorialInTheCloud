@@ -2,7 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.1.0.0",
     "parameters": {
-        "systemName": {
+        "showCode": {
             "type": "string",
             "minLength": 3,
             "maxLength": 8,
@@ -25,94 +25,26 @@
             ],
             "metadata": {
                 "description": "Size of VM"
-            },
-            "defaultValue": "Standard_F16s_v2"
-        },
-        "debianVersion": {
-            "type": "string",
-            "allowedValues": [
-                "8"
-            ],
-            "metadata": {
-                "description": "Version of Debian (default: 8)"
-            },
-            "defaultValue": "8"
-        },
-        "newOrExistingVnet": {
-            "type": "string",
-            "allowedValues": [
-                "new",
-                "existing"
-            ],
-            "metadata": {
-                "description": "Select if these VMs will need a new VNet or will reference an existing VNet"
-            },
-            "defaultValue": "new"
-        },
-        "vnetName": {
-            "type": "string",
-            "metadata": {
-                "description": "Name of the existing or new VNet"
             }
         },
-        "vnetResourceGroup": {
+        "general-VnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the VNet"
+            }
+        },
+        "general-VnetResourceGroup": {
             "type": "string",
             "metadata": {
                 "description": "Name of the Resource Group containing the existing VNet. If deploying a New Vnet, use the name of the Resource Group you're deploying to."
             }
         },
-        "subnetName": {
+        "general-SubnetName": {
             "type": "string",
             "metadata": {
                 "description": "Name of the existing or new subnet name in the Vnet to which the MP VMs should be deployed"
             },
             "defaultValue": "default"
-        },
-        "addressSpace": {
-            "type": "string",
-            "metadata": {
-                "description": "Address space for Vnet, specify in the form: x.x.x.x/y with y as the mask bits, Ignore if vnet exists"
-            },
-            "defaultValue": "10.0.0.0/16"
-        },
-        "addressSubnet": {
-            "type": "string",
-            "metadata": {
-                "description": "Address subnet for Vnet, specify in the form: x.x.x.x/y with y as the mask bits, Ignore if vnet exists"
-            },
-            "defaultValue": "10.0.0.0/24"
-        },
-        "staticPrivateIPAddress": {
-            "type": "string",
-            "metadata": {
-                "description": "(Optional) Specify a static private IP address"
-            },
-            "defaultValue": ""
-        },
-        "deployPublicIPs": {
-            "type": "string",
-            "allowedValues": [
-                "Yes",
-                "No"
-            ],
-            "metadata": {
-                "description": "Select whether or not you want to create Public IPs."
-            },
-            "defaultValue": "No"
-        },
-        "_urlLocation": {
-            "type": "string",
-            "metadata": {
-                "description": "URL to the installation scripts"
-            },
-            "defaultValue": "https://ssengreleng.blob.core.windows.net/nexisgold/20.7.0"
-        },
-        "_sasToken": {
-            "type": "securestring",
-            "metadata": {
-                "description": "The SAS Token (optional)"
-            },
-            "defaultValue": ""
         },
         "nexisBuild": {
             "type": "string",
@@ -134,11 +66,14 @@
         }
     },
     "variables": {
-        "_artifactsLocation": "[concat(parameters('_urlLocation'), '/AzureProvisioning/nexis.nearline')]",
-        "_artifactsLocationSasToken": "[parameters('_sasToken')]",
-        "_buildArtifactsLocation": "[concat(parameters('_urlLocation'), '/installers')]",
-        "_buildArtifactsLocationSasToken": "[parameters('_sasToken')]",
-        "deployNexisCloudTemplateURL": "[concat(variables('_artifactsLocation'),'/nestedtemplates/deploy-nexiscloud-',parameters('debianVersion'),'.json',parameters('_sasToken'))]",
+        "_sasToken": "",
+        "_urlLocation": "https://ssengreleng.blob.core.windows.net/nexisgold/20.7.0",
+        "_artifactsLocation": "[concat(variables('_urlLocation'), '/AzureProvisioning/nexis.nearline')]",
+        "systemName":"[concat(parameters('showCode'), 'nx')]",
+        "_artifactsLocationSasToken": "[variables('_sasToken')]",
+        "_buildArtifactsLocation": "[concat(variables('_urlLocation'), '/installers')]",
+        "_buildArtifactsLocationSasToken": "[variables('_sasToken')]",
+        "deployNexisCloudTemplateURL": "[concat(variables('_artifactsLocation'),'/nestedtemplates/deploy-nexiscloud-','8','.json',variables('_sasToken'))]",
         "deployNexisCloud": "deployNexisCloud",
         "adminUsername": "avid",
         "privateIPAddressType": "Static"
@@ -157,7 +92,7 @@
                 },
                 "parameters": {
                     "vmName": {
-                        "value": "[parameters('systemName')]"
+                        "value": "[variables('systemName')]"
                     },
                     "adminUsername": {
                         "value": "[variables('adminUsername')]"
@@ -169,31 +104,31 @@
                         "value": "[parameters('vmSize')]"
                     },
                     "newOrExistingVnet": {
-                        "value": "[parameters('newOrExistingVnet')]"
+                        "value": "existing"
                     },
                     "vnetName": {
-                        "value": "[parameters('vnetName')]"
+                        "value": "[parameters('general-VnetName')]"
                     },
                     "vnetResourceGroup": {
-                        "value": "[parameters('vnetResourceGroup')]"
+                        "value": "[parameters('general-VnetResourceGroup')]"
                     },
                     "subnetName": {
-                        "value": "[parameters('subnetName')]"
+                        "value": "[parameters('general-SubnetName')]"
                     },
                     "addressSpace": {
-                        "value": "[parameters('addressSpace')]"
+                        "value": ""
                     },
                     "addressSubnet": {
-                        "value": "[parameters('addressSubnet')]"
+                        "value": ""
                     },
                     "privateAddressType": {
                         "value": "[variables('privateIPAddressType')]"
                     },
                     "addressStatic": {
-                        "value": "[parameters('staticPrivateIPAddress')]"
+                        "value": ""
                     },
                     "deployPublicIPs": {
-                        "value": "[parameters('deployPublicIPs')]"
+                        "value": "No"
                     },
                     "_artifactsLocation": {
                         "value": "[variables('_artifactsLocation')]"

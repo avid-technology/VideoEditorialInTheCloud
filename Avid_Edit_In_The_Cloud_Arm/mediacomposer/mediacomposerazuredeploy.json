@@ -52,7 +52,11 @@
         },
         "mediaComposerFileName": {
             "type": "string",
-            "defaultValue": "Media_Composer_2020.4._Win.zip"
+            "allowedValues": [
+                "Media_Composer_20.9.0_Win.zip",
+                "Media_Composer_2018.12.3_Win.zip",
+                "Media_Composer_2019.12_Win.zip"
+            ]
         },
         "mediaComposerOS": {
             "type": "string",
@@ -67,7 +71,8 @@
             "allowedValues": [
                 "2018_12_11",
                 "2019_12",
-                "2020_4"
+                "2020_4",
+                "2020_9"
             ]
         },
         "teradiciInstallFileName": {

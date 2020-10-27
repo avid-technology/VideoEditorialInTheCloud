@@ -1,0 +1,24 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "showCode": {
+            "value": "show"
+        },
+        "adminPassword": {
+            "value": "Password0101"
+        },
+        "vmSize": {
+            "value": "Standard_F16s_v2"
+        },
+        "general-VnetResourceGroup": {
+            "value": "myresourcegroup"
+        },
+        "general-VnetName": {
+            "value": "myvnet"
+        },
+        "general-SubnetName": {
+           "value": "mysubnet1"
+        }
+    }
+  }
