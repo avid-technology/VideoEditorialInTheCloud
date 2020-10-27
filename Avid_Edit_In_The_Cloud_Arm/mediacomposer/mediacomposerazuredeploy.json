@@ -69,9 +69,8 @@
         "mediaComposerVersion": {
             "type": "string",
             "allowedValues": [
-                "2018_12_11",
-                "2019_12",
-                "2020_4",
+                "2018.12.3",
+                "2019.12",
                 "2020.9.0"
             ]
         },
@@ -118,13 +117,12 @@
             "version": "latest"
         },
         "scriptFileName": "[variables(concat('mcVersion_',parameters('gpuType'),'_',parameters('mediaComposerVersion')))]",
-        "mcVersion_AMD_2018.12.11": "setupMediaComposer_AMD_20181211.ps1",
-        "mcVersion_AMD_2019_12": "setupMediaComposer_AMD_20204.ps1",
-        "mcVersion_AMD_2020_4": "setupMediaComposer_AMD_20204.ps1",
-        "mcVersion_NVIDIA_2018_12_11": "setupMediaComposer_NVIDIA_20181211.ps1",
-        "mcVersion_NVIDIA_2019_12": "setupMediaComposer_NVIDIA_20204.ps1",
-        "mcVersion_NVIDIA_2020_4": "setupMediaComposer_NVIDIA_20204.ps1",
-        "mcVersion_NVIDIA_2020.9.0": "setupMediaComposer_NVIDIA_20204.ps1",
+        "mcVersion_AMD_2018.12.11": "setupMediaComposer_AMD_20181213.ps1",
+        "mcVersion_AMD_2019_12": "setupMediaComposer_AMD_20209.ps1",
+        "mcVersion_AMD_2020_4": "setupMediaComposer_AMD_20209.ps1",
+        "mcVersion_NVIDIA_2018_12_11": "setupMediaComposer_NVIDIA_20181213.ps1",
+        "mcVersion_NVIDIA_2019_12": "setupMediaComposer_NVIDIA_20209.ps1",
+        "mcVersion_NVIDIA_2020.9.0": "setupMediaComposer_NVIDIA_20209.ps1",
         "networkSecurityGroupRules": [
             {
                 "name": "RDP",
