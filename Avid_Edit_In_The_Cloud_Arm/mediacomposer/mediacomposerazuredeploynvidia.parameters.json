@@ -15,7 +15,7 @@
             "value": "Standard_NV12s_v3"
         },
         "numberOfInstances": {
-            "value": 3
+            "value": 1
         },
         "general-VnetResourceGroup": {
             "value": "myresourcegroup"
@@ -33,7 +33,7 @@
             "value": "Windows_10"
         },
         "mediaComposerVersion": {
-            "value": "2020.9.0"
+            "value": "2018.12.3"
         },
         "teradiciInstallFileName": {
             "value": "pcoip-agent-graphics_20.07.0.exe"
