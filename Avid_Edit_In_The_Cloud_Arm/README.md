@@ -20,7 +20,7 @@ Back up your video content to Nexis on Azure.
 
 # What is Deployed as part of this Solution
 
-<img src="./diagram.png" />
+<img src="./diagram2.PNG" />
 
 # Deploy to Azure
 <br />
@@ -101,7 +101,7 @@ PS> az deployment group create --name "xxx" --resource-group "xxxx" --template-f
 
 <br />
 
-<b> 9) Deploy One Nexis storage module. </b>
+<b> 9) Deploy One Cloud Nexis storage module. </b>
 
 <br />
 
@@ -113,7 +113,7 @@ PS> az deployment group create --name "xxx" --resource-group "xxxx" --template-f
 
 <br />
 
-Addendum
+<b> Addendum </b>
 
 <br />
 
