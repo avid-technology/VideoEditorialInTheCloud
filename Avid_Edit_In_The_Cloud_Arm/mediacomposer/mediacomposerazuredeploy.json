@@ -63,7 +63,7 @@
         "mediaComposerVersion": {
             "type": "string",
             "allowedValues": [
-                "2018.12.3",
+                "2018.12.13",
                 "2019.12",
                 "2020.9.0"
             ]
