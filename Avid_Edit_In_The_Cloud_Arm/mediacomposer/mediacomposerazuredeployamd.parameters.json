@@ -18,13 +18,13 @@
             "value": 1
         },
         "general-VnetResourceGroup": {
-            "value": "avid-sdbx-ben-03"
+            "value": "myresourcegroup"
         },
         "general-VnetName": {
-            "value": "avid-sdbx-vnet-03"
+            "value": "myvnet"
         },
         "general-SubnetName": {
-           "value": "default"
+           "value": "mysubnet1"
         },
         "_system-InstallURL": {
             "value": "https://eitcstore01.blob.core.windows.net"
