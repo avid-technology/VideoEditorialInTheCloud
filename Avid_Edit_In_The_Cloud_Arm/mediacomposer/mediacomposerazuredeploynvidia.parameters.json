@@ -15,7 +15,7 @@
             "value": "Standard_NV12s_v3"
         },
         "numberOfInstances": {
-            "value": 1
+            "value": 3
         },
         "general-VnetResourceGroup": {
             "value": "myresourcegroup"
@@ -28,9 +28,6 @@
         },
         "_system-InstallURL": {
             "value": "https://eitcstore01.blob.core.windows.net"
-        },
-        "mediaComposerFileName": {
-            "value": "Media_Composer_2020.9.0_Win.zip"
         },
         "mediaComposerOS": {
             "value": "Windows_10"

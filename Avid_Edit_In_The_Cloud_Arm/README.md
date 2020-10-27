@@ -107,7 +107,7 @@ PS> az deployment group create --name "xxx" --resource-group "xxxx" --template-f
 
 | Module | Supported Version | ARM Template link |
 | ------ | ------------------ | ----------------- |
-| Nexis  | Avid Nexis Cloud 20.7.0 | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fssengreleng.blob.core.windows.net%2Fnexisgold%2F20.7.0%2FAzureProvisioning%2Fnexis.nearline%2Fazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
+| Nexis  | Avid Nexis Cloud 20.7.0 | az deployment group create --name "xxxx" --resource-group "xxxx" --template-file ".\nexis\nexisazuredeploy.json" --parameters ".\nexis\nexisazuredeploy.parameters.json" |
 
 <i>Example: ps> az deployment group create --name "NexisTestDeployment" --resource-group "myresourcegroup" --template-file ".\nexis\nexisazuredeploy.json" --parameters ".\nexis\nexisazuredeploy.parameters.json"</i>
 

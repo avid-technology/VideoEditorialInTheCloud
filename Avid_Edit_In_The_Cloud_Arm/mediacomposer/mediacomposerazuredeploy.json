@@ -50,14 +50,6 @@
         "_system-InstallURL": {
             "type": "string"
         },
-        "mediaComposerFileName": {
-            "type": "string",
-            "allowedValues": [
-                "Media_Composer_2020.9.0_Win.zip",
-                "Media_Composer_2018.12.3_Win.zip",
-                "Media_Composer_2019.12_Win.zip"
-            ]
-        },
         "mediaComposerOS": {
             "type": "string",
             "allowedValues": [
@@ -84,13 +76,21 @@
             "type": "string",
             "metadata": {
                 "description": "NVIDIA or AMD"
-            }
+            },
+            "allowedValues": [
+                "AMD",
+                "NVIDIA"
+            ]
         },
         "branchName": {
             "type": "string",
             "metadata": {
                 "description": "Branch to point script to"
-            }
+            },
+            "allowedValues": [
+                "master",
+                "avid-development"
+            ]
         }
     },
     "variables": {
