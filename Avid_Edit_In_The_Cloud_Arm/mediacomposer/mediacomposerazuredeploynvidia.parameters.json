@@ -33,10 +33,10 @@
             "value": "Windows_10"
         },
         "mediaComposerVersion": {
-            "value": "2018.12.13"
+            "value": "2020.9.0"
         },
         "teradiciInstallFileName": {
-            "value": "pcoip-agent-graphics_20.07.0.exe"
+            "value": "pcoip-agent-graphics_20.10.1.exe"
         },
         "nexisClientInstallFileName": {
             "value": "AvidNEXISClient_Win64_20.7.3.10.msi"
