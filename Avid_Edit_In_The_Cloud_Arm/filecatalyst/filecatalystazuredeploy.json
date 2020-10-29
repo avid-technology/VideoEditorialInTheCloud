@@ -1,9 +1,14 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
     "parameters": {
-        "general-Name": {
-            "type": "string"
+        "showCode": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 4,
+            "metadata": {
+              "description": "Showcode must be 3-char min, 4-char max, lowercase alphanumeric"
+      }
         },
         "adminUsername": {
             "type": "string",
@@ -33,11 +38,11 @@
             "type": "string",
             "metadata": {
                 "description": "Existing subnet in where VMs should be deployed"
-            },
-            "defaultValue": "default"
+            }
         },
         "_system-InstallURL": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "https://eitcstore01.blob.core.windows.net"
         },
         "filecatalystInstallName": {
             "type": "string",
@@ -48,25 +53,36 @@
         },
         "avidNexisClientInstallName": {
             "type": "string",
-            "defaultValue": "AvidNEXISClient_Win64_20.3.1.14.msi",
+            "defaultValue": "AvidNEXISClient_Win64_20.7.3.10.msi",
             "metadata": {
                 "description": "Avid Nexis Client Install Name"
             }
-        }
+        },
+        "branchName": {
+          "type": "string",
+          "metadata": {
+          "description": "Branch to point script to. Either master or avid-development"
+          },
+      "defaultValue": "master",
+      "allowedValues": [
+                "master",
+                "avid-development"
+            ]
+    }
     },
     "variables": {
-        "uniqueName": "[parameters('general-Name')]",
+        "uniqueName": "[parameters('showCode')]",
         "subnetId": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]",
         "location": "[resourceGroup().location]",
         "nicName": "[concat(variables('uniqueName'),'-fcyst-nic')]",
-        "publicIPAddressName": "[concat(variables('uniqueName'), '-ip')]",
-        "vmName": "[variables('uniqueName')]",
+        "publicIPAddressName": "[concat(variables('uniqueName'), '-fcyst-ip')]",
+        "vmName": "[concat(variables('uniqueName'),'-fcyst')]",
         "networkSecurityGroupName": "[concat(variables('uniqueName'),'-fcyst-nsg')]",
         "adminUsername": "[parameters('adminUsername')]",
         "adminPassword": "[parameters('adminPassword')]",
         "scriptFileName": "installFilecatalyst.ps1",
         "vmSize": "Standard_D8_v3",
-        "_githubLocation": "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Arm",
+        "_githubLocation": "[concat('https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/',parameters('branchName'),'/Avid_Edit_In_The_Cloud_Arm')]",
         "filecatalystInstallName": "[parameters('filecatalystInstallName')]",
         "avidNexisClientInstallName": "[parameters('avidNexisClientInstallName')]",
         "scriptLocation": "[concat(variables('_githubLocation'), '/','scripts')]",

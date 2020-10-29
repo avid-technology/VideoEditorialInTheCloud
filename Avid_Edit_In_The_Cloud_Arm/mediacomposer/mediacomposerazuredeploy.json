@@ -1,30 +1,48 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "general-Name": {
-            "type": "string"
+        "showCode": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 4,
+            "metadata": {
+            "description": "Showcode must be 3-char min, 4-char max, lowercase alphanumeric"
+      }
         },
         "adminUsername": {
-            "type": "string"
+            "type": "string",
+            "metadata": {
+            "description": "Username for the Virtual Machine."
+      }
         },
         "adminPassword": {
-            "type": "securestring"
+            "type": "securestring",
+            "metadata": {
+            "description": "Password for the Virtual Machine."
+            }
         },
         "vmSize": {
             "type": "string",
-            "defaultValue": "Standard_NV12s_v3",
             "metadata": {
-                "description": "Size of the Media Composer VM."
+                "description": "Size of the Media Composer VM. Should be either: Standard_NV4as_v4, Standard_NV8as_v4, Standard_NV16as_v4, Standard_NV32as_v4, Standard_NV12s_v3, Standard_NV24s_v3, Standard_NV48s_v3"
             },
             "allowedValues": [
+                "Standard_NV4as_v4",
+                "Standard_NV8as_v4",
+                "Standard_NV16as_v4",
+                "Standard_NV32as_v4",
                 "Standard_NV12s_v3",
                 "Standard_NV24s_v3",
                 "Standard_NV48s_v3"
             ]
         },
         "numberOfInstances": {
-            "type": "int"
+            "type": "int",
+            "metadata": {
+                "description": "Number of instances to launch"
+            },
+            "defaultValue": 1
         },
         "general-VnetResourceGroup": {
             "type": "string",
@@ -42,18 +60,17 @@
             "type": "string",
             "metadata": {
                 "description": "Existing subnet in where VMs should be deployed"
-            },
-            "defaultValue": "default"
+            }
         },
         "_system-InstallURL": {
-            "type": "string"
-        },
-        "mediaComposerFileName": {
             "type": "string",
-            "defaultValue": "Media_Composer_2020.4._Win.zip"
+            "defaultValue": "https://eitcstore01.blob.core.windows.net"
         },
         "mediaComposerOS": {
             "type": "string",
+            "metadata": {
+                "description": "OS for MediaComposer. Should be either: Windows_10, Windows_Server_2016, Windows_Server_2019"
+            },
             "allowedValues": [
                 "Windows_10",
                 "Windows_Server_2016",
@@ -63,30 +80,52 @@
         },
         "mediaComposerVersion": {
             "type": "string",
+            "metadata": {
+                "description": "MediaComposer version. Should be either: 2018.12.13, 2019.12, 2020.9.0"
+            },
             "allowedValues": [
-                "2018_12_11",
-                "2019_12",
-                "2020_4"
+                "2018.12.13",
+                "2019.12",
+                "2020.9.0"
             ],
-            "defaultValue": "2020_4"
+            "defaultValue": "2020.9.0"
         },
         "teradiciInstallFileName": {
             "type": "string",
-            "defaultValue": "pcoip-agent-graphics_20.07.0.exe"
-        },
-        "nvidiaInstallFileName": {
-            "type": "string",
-            "defaultValue": "442.06_grid_win10_64bit_international_whql.exe"
+            "defaultValue": "pcoip-agent-graphics_20.10.1.exe"
         },
         "nexisClientInstallFileName": {
             "type": "string",
-            "defaultValue": "AvidNEXISClient_Win64_20.3.1.14.msi"
+            "defaultValue": "AvidNEXISClient_Win64_20.7.3.10.msi"
+        },
+        "gpuType": {
+            "type": "string",
+            "metadata": {
+                "description": "GPu type. Should be: NVIDIA, AMD"
+            },
+            "defaultValue": "NVIDIA",
+            "allowedValues": [
+                "AMD",
+                "NVIDIA"
+            ]
+        },
+        "branchName": {
+            "type": "string",
+            "metadata": {
+                "description": "Branch to point script to. Either master or avid-development"
+            },
+            "defaultValue": "master",
+            "allowedValues": [
+                "master",
+                "avid-development"
+            ]
         }
     },
     "variables": {
         "adminPassword": "[parameters('adminPassword')]",
         "adminUsername": "[parameters('adminUsername')]",
         "createNic?": true,
+        "osType": "[variables(concat('osType_',parameters('mediaComposerOS')))]",
         "osType_Windows_10": {
             "publisher": "MicrosoftWindowsDesktop",
             "offer": "Windows-10",
@@ -105,11 +144,13 @@
             "sku": "2019-Datacenter",
             "version": "latest"
         },
-        "osType": "[variables(concat('osType_',parameters('mediaComposerOS')))]",
-        "mcVersion_2018_12_11": "setupMediaComposer_NVIDIA_20181211.ps1",
-        "mcVersion_2019_12": "setupMediaComposer_NVIDIA_20204.ps1",
-        "mcVersion_2020_4": "setupMediaComposer_NVIDIA_20204.ps1",
-        "scriptFileName": "[variables(concat('mcVersion_',parameters('mediaComposerVersion')))]",
+        "scriptFileName": "[variables(concat('mcVersion_',parameters('gpuType'),'_',parameters('mediaComposerVersion')))]",
+        "mcVersion_AMD_2018.12.13": "setupMediaComposer_AMD_20181213.ps1",
+        "mcVersion_AMD_2019.12": "setupMediaComposer_AMD_20209.ps1",
+        "mcVersion_AMD_2020.9.0": "setupMediaComposer_AMD_20209.ps1",
+        "mcVersion_NVIDIA_2018.12.13": "setupMediaComposer_NVIDIA_20181213.ps1",
+        "mcVersion_NVIDIA_2019.12": "setupMediaComposer_NVIDIA_20209.ps1",
+        "mcVersion_NVIDIA_2020.9.0": "setupMediaComposer_NVIDIA_20209.ps1",
         "networkSecurityGroupRules": [
             {
                 "name": "RDP",
@@ -192,27 +233,25 @@
 
         ],
         "location": "[resourceGroup().location]",
-        "uniqueName": "[parameters('general-Name')]",
-        "networkSecurityGroupName": "[concat(parameters('general-Name'),'-nsg')]",
-        "nicName": "[concat(variables('uniqueName'), '-nic')]",
+        "uniqueName": "[parameters('showCode')]",
+        "networkSecurityGroupName": "[concat(parameters('showCode'),'-mc-nsg')]",
+        "nicName": "[concat(variables('uniqueName'), '-mc-nic')]",
         "numberOfInstances": "[parameters('numberOfInstances')]",
-        "publicIPAddressName": "[concat(variables('uniqueName'), '-ip')]",
+        "publicIPAddressName": "[concat(variables('uniqueName'), '-mc-ip')]",
         "subnetId": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]",
         "teradiciKey": "null",
-        "vmName": "[concat(variables('uniqueName'),'-')]",
+        "vmName": "[concat(variables('uniqueName'),'-mc-')]",
         "vmSize": "[parameters('vmSize')]",
         "scriptFolder": ".",
-        "mediaComposerFileName": "[parameters('mediaComposerFileName')]",
+        "mediaComposerFileName": "[concat('Media_Composer_',parameters('mediaComposerVersion'),'_Win.zip')]",
         "teradiciInstallFileName": "[parameters('teradiciInstallFileName')]",
-        "nvidiaInstallFileName": "[parameters('nvidiaInstallFileName')]",
         "nexisClientInstallFileName": "[parameters('nexisClientInstallFileName')]",
-        "_githubLocation": "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Arm",
+        "_githubLocation": "[concat('https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/',parameters('branchName'),'/Avid_Edit_In_The_Cloud_Arm')]",
         "scriptLocation": "[concat(variables('_githubLocation'), '/','scripts')]",
         "mediaComposerInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('mediaComposerFileName'))]",
         "teradiciInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('teradiciInstallFileName'))]",
-        "nvidiaInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('nvidiaInstallFileName'))]",
         "nexisClientInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('nexisClientInstallFileName'))]",
-        "scriptParameters": "[concat('-TeradiciKey ', variables('teradiciKey'),' -MediaComposerURL ', variables('mediaComposerInstallLocation'),' -TeradiciURL ', variables('teradiciInstallLocation'),' -NvidiaURL ', variables('nvidiaInstallLocation'),' -AvidNEXISClientURL ', variables('nexisClientInstallLocation'))]"
+        "scriptParameters": "[concat('-TeradiciKey ', variables('teradiciKey'),' -MediaComposerURL ', variables('mediaComposerInstallLocation'),' -TeradiciURL ', variables('teradiciInstallLocation'),' -AvidNEXISClientURL ', variables('nexisClientInstallLocation'))]"
     },
     "resources": [
         {
@@ -315,7 +354,7 @@
                 "storageProfile": {
                     "imageReference": "[variables('osType')]",
                     "osDisk": {
-                        "name": "[concat(variables('uniqueName'), '-os-disk', padLeft(copyindex(1),2,'0'))]",
+                        "name": "[concat(variables('uniqueName'), '-mc-os-disk', padLeft(copyindex(1),2,'0'))]",
                         "createOption": "FromImage"
                     }
                 },
@@ -334,7 +373,7 @@
             "apiVersion": "2017-12-01",
             "location": "[variables('location')]",
             "copy": {
-                "name": "extensionLoop",
+                "name": "extensionLoop1",
                 "count": "[variables('numberOfInstances')]"
             },
             "dependsOn": [
@@ -350,6 +389,50 @@
                         "[concat(variables('scriptLocation'), '/',variables('scriptFileName'))]"
                     ],
                     "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('scriptFolder'), '/', variables('scriptFileName'), ' ', variables('scriptParameters'))]"
+                }
+            }
+        },
+        {
+            "condition": "[equals(parameters('gpuType'),'NVIDIA')]",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(concat(variables('vmName'),  padLeft(copyindex(1),2,'0')),'/install.nvidiagpu.v0')]",
+            "apiVersion": "2015-06-15",
+            "location": "[variables('location')]",
+            "copy": {
+                "name": "extensionLoop2",
+                "count": "[variables('numberOfInstances')]"
+            },
+            "dependsOn": [
+                "extensionLoop1"
+            ],
+            "properties": {
+                "publisher": "Microsoft.HpcCompute",
+                "type": "NvidiaGpuDriverWindows",
+                "typeHandlerVersion": "1.0",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                }
+            }
+        },
+        {
+            "condition": "[equals(parameters('gpuType'),'AMD')]",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(concat(variables('vmName'),  padLeft(copyindex(1),2,'0')),'/install.amdgpu.v0')]",
+            "apiVersion": "2015-06-15",
+            "location": "[variables('location')]",
+            "copy": {
+                "name": "extensionLoop2",
+                "count": "[variables('numberOfInstances')]"
+            },
+            "dependsOn": [
+                "extensionLoop1"
+            ],
+            "properties": {
+                "publisher": "Microsoft.HpcCompute",
+                "type": "AmdGpuDriverWindows",
+                "typeHandlerVersion": "1.0",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
                 }
             }
         }

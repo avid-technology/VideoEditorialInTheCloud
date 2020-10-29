@@ -76,10 +76,10 @@ resource "random_string" "mediacomposer" {
 variable "software_install_urls" {
   default ={
     "mediacomposer_vm_script_url"   = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/scripts/setupMediaComposer_NVIDIA_20204.ps1"
-    "avid_nexis_client_url"         = "https://benstore01.blob.core.windows.net/installers/AvidNEXIS_20.7.0_Client.zip"
-    "mediaComposer_url"             = "https://benstore01.blob.core.windows.net/installers/Media_Composer_2020.4._Win.zip"
-    "teradici_url"                  = "https://benstore01.blob.core.windows.net/installers/pcoip-agent-graphics_20.04.0.exe"
-    "nvidia_url"                    = "https://benstore01.blob.core.windows.net/installers/442.06_grid_win10_64bit_international_whql.exe"
+    "avid_nexis_client_url"         = "https://eitcstore01.blob.core.windows.net/installers/AvidNEXIS_20.7.0_Client.zip"
+    "mediaComposer_url"             = "https://eitcstore01.blob.core.windows.net/installers/Media_Composer_2020.4._Win.zip"
+    "teradici_url"                  = "https://eitcstore01.blob.core.windows.net/installers/pcoip-agent-graphics_20.04.0.exe"
+    "nvidia_url"                    = "https://eitcstore01.blob.core.windows.net/installers/442.06_grid_win10_64bit_international_whql.exe"
     "teradici_key"                  = "No_Key"
   }
 }
