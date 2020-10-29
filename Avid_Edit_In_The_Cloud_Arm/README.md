@@ -8,9 +8,9 @@ This readme file explains the value of video editorial in the cloud using Avid M
 
 # Prerequisite
 
-- Showcode: 3 to 4 letters or numbers
+- Showcode: 3 to 4 letters
 - Active enterprise or pay-as-you-go Azure subscription
-- License for: Avid NEXIS | Cloud, Avid Media Composer | Ultimate with VM Option, Signiant MediaShuttle / Aspera HSTS / FileCatalyst Server, Teradici Graphics Agent 
+- License for: a) Avid NEXIS | Cloud, b) Avid Media Composer | Ultimate with VM Option, c) Signiant MediaShuttle / Aspera HSTS / FileCatalyst Server, d) Teradici Graphics Agent 
 
 # Deploy to Azure
 <br />

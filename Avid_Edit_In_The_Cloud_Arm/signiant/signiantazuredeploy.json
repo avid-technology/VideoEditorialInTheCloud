@@ -7,7 +7,7 @@
       "minLength": 3,
       "maxLength": 4,
       "metadata": {
-        "description": "Workstation name must be 3-char min, 8-char max, lowercase alphanumeric"
+        "description": "Showcode must be 3-char min, 4-char max, lowercase alphanumeric"
       }
     },
     "adminUsername": {
@@ -38,11 +38,11 @@
             "type": "string",
             "metadata": {
                 "description": "Existing subnet in where VMs should be deployed"
-            },
-            "defaultValue": "default"
+            }
       },
     "_system-InstallURL": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "https://eitcstore01.blob.core.windows.net"
         },
     "signiantInstallName": {
       "type": "string",
@@ -61,8 +61,13 @@
     "branchName": {
       "type": "string",
       "metadata": {
-        "description": "Branch to point script to"
-      }
+        "description": "Branch to point script to. Either master or avid-development"
+      },
+      "defaultValue": "master",
+      "allowedValues": [
+                "master",
+                "avid-development"
+            ]
     }
   },
   "variables": {

@@ -5,7 +5,10 @@
         "showCode": {
             "type": "string",
             "minLength": 3,
-            "maxLength": 4
+            "maxLength": 4,
+            "metadata": {
+              "description": "Showcode must be 3-char min, 4-char max, lowercase alphanumeric"
+      }
         },
         "adminUsername": {
             "type": "string",
@@ -35,11 +38,11 @@
             "type": "string",
             "metadata": {
                 "description": "Existing subnet in where VMs should be deployed"
-            },
-            "defaultValue": "default"
+            }
         },
         "_system-InstallURL": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "https://eitcstore01.blob.core.windows.net"
         },
         "filecatalystInstallName": {
             "type": "string",
@@ -58,8 +61,13 @@
         "branchName": {
           "type": "string",
           "metadata": {
-          "description": "Branch to point script to"
-      }
+          "description": "Branch to point script to. Either master or avid-development"
+          },
+      "defaultValue": "master",
+      "allowedValues": [
+                "master",
+                "avid-development"
+            ]
     }
     },
     "variables": {

@@ -7,7 +7,7 @@
             "minLength": 3,
             "maxLength": 4,
             "metadata": {
-                "description": "NEXIS system name. 3-char min, 8-char max, lowercase alphanumeric"
+                "description": "Showcode must be 3-char min, 4-char max, lowercase alphanumeric"
             }
         },
         "adminPassword": {
@@ -25,6 +25,13 @@
             ],
             "metadata": {
                 "description": "Size of VM"
+            },
+            "defaultValue": "Standard_F16s_v2"
+        },
+        "general-VnetResourceGroup": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Resource Group containing the existing VNet. If deploying a New Vnet, use the name of the Resource Group you're deploying to."
             }
         },
         "general-VnetName": {
@@ -33,28 +40,22 @@
                 "description": "Name of the VNet"
             }
         },
-        "general-VnetResourceGroup": {
-            "type": "string",
-            "metadata": {
-                "description": "Name of the Resource Group containing the existing VNet. If deploying a New Vnet, use the name of the Resource Group you're deploying to."
-            }
-        },
         "general-SubnetName": {
             "type": "string",
             "metadata": {
                 "description": "Name of the existing or new subnet name in the Vnet to which the MP VMs should be deployed"
-            },
-            "defaultValue": "default"
+            }
         },
         "partNumber": {
             "type": "string",
             "metadata": {
-                "description": "0100-38171-00 for Cloud Nearline (default) or 0100-40109-00 for Cloud Online."
+                "description": "Should be either: 0100-38171-00 (Nearline) or 0100-40109-00 (Online)"
             },
             "allowedValues": [
                 "0100-38171-00",
                 "0100-40109-00"
-            ]
+            ],
+            "defaultValue": "0100-40109-00"
         }
     },
     "variables": {
