@@ -22,15 +22,15 @@ To perform a successful deployment in your subscription, follow the steps below:
 
 ## Module deployment
 
-There are two ways to deploy Avid EITC module via ARM template: 
+There are two ways to deploy Avid EITC module (ARM template): 
 
-a) Using Azure Portal
+a) Azure Portal
 
 Follow the guide below to copy the ARM templates to your Azure subscription:
 
 [Az Portal deployment](https://github.com/avid-technology/VideoEditorialInTheCloud/tree/master/Avid_Edit_In_The_Cloud_Arm/Document/AzPortalGuide.pdf) 
 
-b) Using Az cli
+b) Az cli
 
 Follow the guide below to deploy each module directly from CLI:
 
