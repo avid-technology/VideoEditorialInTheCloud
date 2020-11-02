@@ -12,7 +12,8 @@ $snapshotName = 'testsnapshot'
 # Change this for the desired VM OS Disk naming convention. 
 # A number and "osdisk" label will be appended in the loop below
 # e.g. with a prefix "ams-edit" the names will look like: ams-edit-001-osdisk
-$showCode = "show"
+# For MediaComposer VM, replace xxxx with showCode. 
+$prefix = "xxxx-mc"
 #Start number for naming. E.g. if 1, the first disk will be <name>-001-osdisk
 $vmStartIndex = 1
 <#
@@ -29,7 +30,7 @@ Select-AzSubscription -SubscriptionId $SubscriptionId
 #The below loop will create the set number of VM clones.
 for($i = $vmStartIndex; $i -le $vmEndIndex; $i += 1) {
     #Name of the OS disk that will be created using the snapshot
-    $osDiskName = "$showCode-mc-os-disk{0:d2}" -f $i
+    $osDiskName = "$prefix-os-disk{0:d2}" -f $i
 
     Write-Host "Creating Disk $osDiskName"
 
