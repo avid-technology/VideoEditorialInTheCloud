@@ -25,7 +25,7 @@
         "vmSize": {
             "type": "string",
             "metadata": {
-                "description": "Size of the Media Composer VM. Should be either: Standard_NV4as_v4, Standard_NV8as_v4, Standard_NV16as_v4, Standard_NV32as_v4, Standard_NV12s_v3, Standard_NV24s_v3, Standard_NV48s_v3"
+                "description": "Size of the Media Composer VM. Please select v4 type for AMD GPU and v3 for NVIDIA GPU"
             },
             "allowedValues": [
                 "Standard_NV4as_v4",
