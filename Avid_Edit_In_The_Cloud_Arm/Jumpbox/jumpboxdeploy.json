@@ -1,0 +1,259 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "showCode": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 4,
+      "metadata": {
+        "description": "Showcode must be 3-char min, 4-char max, lowercase alphanumeric"
+      }
+    },
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "Username for the Virtual Machine."
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Password for the Virtual Machine."
+      }
+    },
+    "general-VnetResourceGroup": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Resource Group where the existing Vnet is deployed."
+            }
+      },
+    "general-VnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the existing Virtual Network."
+            }
+      }, 
+    "general-SubnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Existing subnet in where VMs should be deployed"
+            }
+      },
+    "branchName": {
+      "type": "string",
+      "metadata": {
+        "description": "Branch to point script to. Either master or avid-development"
+      },
+      "defaultValue": "master",
+      "allowedValues": [
+                "master",
+                "avid-development"
+            ]
+    }
+  },
+  "variables": {
+    "uniqueName": "[parameters('showCode')]",
+    "subnetId": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]",
+    "location": "[resourceGroup().location]",
+    "vmSize": "Standard_D4s_v3",
+    "nicName": "[concat(variables('uniqueName'),'-jpbx-nic')]",
+    "publicIPAddressName": "[concat(variables('uniqueName'),'-jpbx-ip')]",
+    "vmName": "[concat(variables('uniqueName'),'-jpbx')]",
+    "networkSecurityGroupName": "[concat(variables('uniqueName'),'-jpbx-nsg')]",
+    "adminUsername": "[parameters('adminUsername')]",
+    "adminPassword": "[parameters('adminPassword')]",
+    "scriptFileName": "jumpbox.ps1",
+    "_githubLocation": "[concat('https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/',parameters('branchName'),'/Avid_Edit_In_The_Cloud_Arm')]",
+    "scriptLocation": "[concat(variables('_githubLocation'), '/','scripts')]",
+    "scriptParameters": "",
+    "scriptFolder": ".",
+    "networkSecurityGroupRules": [
+      {
+        "name": "RemoteAccessRDP",
+        "properties": {
+          "priority": 100,
+          "protocol": "TCP",
+          "access": "Allow",
+          "direction": "Inbound",
+          "sourceAddressPrefix": "*",
+          "sourcePortRange": "*",
+          "destinationAddressPrefix": "*",
+          "destinationPortRange": "3389"
+        }
+      },
+      {
+        "name": "RemoteAccessSSH",
+        "properties": {
+          "priority": 110,
+          "protocol": "TCP",
+          "access": "Allow",
+          "direction": "Inbound",
+          "sourceAddressPrefix": "*",
+          "sourcePortRange": "*",
+          "destinationAddressPrefix": "*",
+          "destinationPortRange": "22"
+        }
+      },
+      {
+        "name": "Allow-80-In",
+        "properties": {
+          "priority": 200,
+          "protocol": "TCP",
+          "access": "Allow",
+          "direction": "Inbound",
+          "sourceAddressPrefix": "*",
+          "sourcePortRange": "*",
+          "destinationAddressPrefix": "*",
+          "destinationPortRange": "80"
+        }
+      },
+      {
+        "name": "Allow-80-Out",
+        "properties": {
+          "priority": 205,
+          "protocol": "TCP",
+          "access": "Allow",
+          "direction": "Outbound",
+          "sourceAddressPrefix": "*",
+          "sourcePortRange": "*",
+          "destinationAddressPrefix": "*",
+          "destinationPortRange": "80"
+        }
+      },
+      {
+        "name": "Allow-8080",
+        "properties": {
+          "priority": 210,
+          "protocol": "TCP",
+          "access": "Allow",
+          "direction": "Inbound",
+          "sourceAddressPrefix": "*",
+          "sourcePortRange": "*",
+          "destinationAddressPrefix": "*",
+          "destinationPortRange": "8080"
+        }
+      }
+    ]
+  },
+  "resources": [
+    {
+      "apiVersion": "2017-06-01",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('publicIPAddressName')]",
+      "location": "[variables('location')]",
+      "properties": {
+        "publicIPAllocationMethod": "Static"
+      }
+    },
+    {
+      "name": "[variables('networkSecurityGroupName')]",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2018-08-01",
+      "location": "[variables('location')]",
+      "properties": {
+        "securityRules": "[variables('networkSecurityGroupRules')]"
+      },
+      "tags": {}
+    },
+    {
+      "apiVersion": "2018-04-01",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('nicName')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[variables('publicIPAddressName')]",
+        "[variables('networkSecurityGroupName')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
+              },
+              "subnet": {
+                "id": "[variables('subnetId')]"
+              }
+            }
+          }
+        ],
+        "networkSecurityGroup": {
+          "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName'))]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2018-10-01",
+      "name": "[variables('vmName')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[variables('nicName')]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[variables('vmSize')]"
+        },
+        "osProfile": {
+          "computerName": "[variables('vmName')]",
+          "adminUsername": "[variables('adminUsername')]",
+          "adminPassword": "[variables('adminPassword')]",
+          "windowsConfiguration": {
+            "provisionVmAgent": "true"
+          },
+          "secrets": [],
+          "allowExtensionOperations": true
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "MicrosoftWindowsServer",
+            "offer": "WindowsServer",
+            "sku": "2016-Datacenter",
+            "version": "latest"
+          },
+          "osDisk": {
+            "createOption": "FromImage",
+            "name": "[concat(variables('vmName'),'-os-disk')]"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(concat(variables('vmName'),'/create.Jumpbox.v1.0.0'))]",
+      "apiVersion": "2017-12-01",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[variables('vmName')]"
+      ],
+      "properties": {
+        "publisher": "Microsoft.Compute",
+        "type": "CustomScriptExtension",
+        "typeHandlerVersion": "1.9",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "fileUris": [
+            "[concat(variables('scriptLocation'), '/',variables('scriptFileName'))]"
+          ],
+          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('scriptFolder'), '/', variables('scriptFileName'), ' ', variables('scriptParameters'))]"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "Signiamt-IPAddress": {
+      "type": "string",
+      "value": "[reference(variables('publicIPAddressName'), '2016-03-30').IPaddress]"
+    }
+  }
+}
