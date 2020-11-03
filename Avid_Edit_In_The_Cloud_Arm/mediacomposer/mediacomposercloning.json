@@ -2,7 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "showCode": {
+        "namePrefix": {
             "defaultValue": "show",
             "type": "String"
         },
@@ -68,7 +68,7 @@
     },
     "variables": {
         "subnet1Ref": "[resourceId('Microsoft.Network/virtualNetworks/subnets',parameters('virtualNetworkName'),parameters('subnetName'))]",
-        "vmName": "[concat(parameters('showCode'),'-mc')]"
+        "vmName": "[concat(parameters('namePrefix'),'-mc')]"
     },
     "resources": [
         {
