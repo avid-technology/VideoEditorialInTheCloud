@@ -2,12 +2,12 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "showCode": {
+    "namePrefix": {
       "type": "string",
       "minLength": 3,
       "maxLength": 4,
       "metadata": {
-        "description": "Showcode must be 3-char min, 4-char max, lowercase alphanumeric"
+        "description": "Prefix must be 3-char min, 4-char max, lowercase alphanumeric"
       }
     },
     "adminUsername": {
@@ -71,7 +71,7 @@
     }
   },
   "variables": {
-    "uniqueName": "[parameters('showCode')]",
+    "uniqueName": "[parameters('namePrefix')]",
     "subnetId": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]",
     "location": "[resourceGroup().location]",
     "vmSize": "Standard_D8_v3",

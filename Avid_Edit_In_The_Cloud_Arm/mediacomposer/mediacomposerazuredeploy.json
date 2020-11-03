@@ -2,12 +2,12 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "showCode": {
+        "namePrefix": {
             "type": "string",
             "minLength": 3,
             "maxLength": 4,
             "metadata": {
-            "description": "Showcode must be 3-char min, 4-char max, lowercase alphanumeric"
+            "description": "Prefix must be 3-char min, 4-char max, lowercase alphanumeric"
       }
         },
         "adminUsername": {
@@ -233,11 +233,11 @@
 
         ],
         "location": "[resourceGroup().location]",
-        "uniqueName": "[parameters('showCode')]",
-        "networkSecurityGroupName": "[concat(parameters('showCode'),'-mc-nsg')]",
-        "nicName": "[concat(variables('uniqueName'), '-mc-nic')]",
+        "uniqueName": "[parameters('namePrefix')]",
+        "networkSecurityGroupName": "[concat(parameters('namePrefix'),'-mc-nsg')]",
+        "nicName": "[concat(variables('uniqueName'), '-mc-nic-')]",
         "numberOfInstances": "[parameters('numberOfInstances')]",
-        "publicIPAddressName": "[concat(variables('uniqueName'), '-mc-ip')]",
+        "publicIPAddressName": "[concat(variables('uniqueName'), '-mc-ip-')]",
         "subnetId": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]",
         "teradiciKey": "null",
         "vmName": "[concat(variables('uniqueName'),'-mc-')]",
@@ -354,7 +354,7 @@
                 "storageProfile": {
                     "imageReference": "[variables('osType')]",
                     "osDisk": {
-                        "name": "[concat(variables('uniqueName'), '-mc-os-disk', padLeft(copyindex(1),2,'0'))]",
+                        "name": "[concat(variables('uniqueName'), '-mc-os-disk-', padLeft(copyindex(1),2,'0'))]",
                         "createOption": "FromImage"
                     }
                 },
