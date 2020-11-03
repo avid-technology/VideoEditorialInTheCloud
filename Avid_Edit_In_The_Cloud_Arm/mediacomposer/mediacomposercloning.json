@@ -10,7 +10,7 @@
             "type": "string",
             "defaultValue": "Standard_NV12s_v3",
             "metadata": {
-                "description": "Size of the Media Composer VM."
+                "description": "Size of the Media Composer VM. Please select v4 type for AMD GPU and v3 for NVIDIA GPU"
             },
             "allowedValues": [
                 "Standard_NV4as_v4",
@@ -68,20 +68,40 @@
     },
     "variables": {
         "subnet1Ref": "[resourceId('Microsoft.Network/virtualNetworks/subnets',parameters('virtualNetworkName'),parameters('subnetName'))]",
-        "vmName": "[concat(parameters('namePrefix'),'-mc')]"
+        "vmName": "[concat(parameters('namePrefix'),'-mc')]",
+        "publicIPAddressName": "[concat(parameters('namePrefix'), '-mc-ip-')]"
     },
     "resources": [
         {
+            "apiVersion": "2017-10-01",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[concat(variables('publicIPAddressName'),padleft(string(copyIndex(parameters('startNumberingAt'))),parameters('suffixLength'),'0'))]",
+            "location": "[resourceGroup().location]",
+            "copy": {
+                "name": "publicIPLoop",
+                "count": "[parameters('numberOfInstances')]"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Static"
+            }
+        },
+        {
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2016-03-30",
-            "name": "[concat(variables('vmName'),'-nic',padleft(string(copyIndex(parameters('startNumberingAt'))),parameters('suffixLength'),'0'))]",
+            "name": "[concat(variables('vmName'),'-nic-',padleft(string(copyIndex(parameters('startNumberingAt'))),parameters('suffixLength'),'0'))]",
             "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "publicIPLoop"
+            ],
             "properties": {
                 "ipConfigurations": [
                     {
                         "name": "ipconfig1",
                         "properties": {
                             "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',concat(variables('publicIPAddressName'), padleft(string(copyIndex(parameters('startNumberingAt'))),parameters('suffixLength'),'0')))]"
+                            },
                             "subnet": {
                                 "id": "[variables('subnet1Ref')]"
                             }
@@ -110,17 +130,17 @@
                     "osDisk": {
                         "managedDisk": {
                             "storageAccountType": "Standard_LRS",
-                            "id": "[resourceId('Microsoft.Compute/disks/',concat(variables('vmName'),'-','os-disk',padleft(string(copyIndex(parameters('startNumberingAt'))),parameters('suffixLength'),'0')))]"
+                            "id": "[resourceId('Microsoft.Compute/disks/',concat(variables('vmName'),'-','os-disk-',padleft(string(copyIndex(parameters('startNumberingAt'))),parameters('suffixLength'),'0')))]"
                         },
                         "osType": "Windows",
                         "createOption": "Attach",
-                        "name": "[concat(variables('vmName'),'-','os-disk',padleft(string(copyIndex(parameters('startNumberingAt'))),parameters('suffixLength'),'0'))]"
+                        "name": "[concat(variables('vmName'),'-','os-disk-',padleft(string(copyIndex(parameters('startNumberingAt'))),parameters('suffixLength'),'0'))]"
                     }
                 },
                 "networkProfile": {
                     "networkInterfaces": [
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(variables('vmName'),'-nic',padleft(string(copyIndex(parameters('startNumberingAt'))),parameters('suffixLength'),'0')))]"
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(variables('vmName'),'-nic-',padleft(string(copyIndex(parameters('startNumberingAt'))),parameters('suffixLength'),'0')))]"
                         }
                     ]
                 }
