@@ -22,6 +22,13 @@
         "description": "Password for the Virtual Machine."
       }
     },
+    "numberOfInstances": {
+            "type": "int",
+            "metadata": {
+                "description": "Number of instances to launch"
+            },
+            "defaultValue": 1
+        },
     "general-VnetResourceGroup": {
             "type": "string",
             "metadata": {
@@ -58,6 +65,7 @@
     "location": "[resourceGroup().location]",
     "vmSize": "Standard_D4s_v3",
     "nicName": "[concat(variables('uniqueName'),'-jpbx-nic')]",
+    "numberOfInstances": "[parameters('numberOfInstances')]",
     "publicIPAddressName": "[concat(variables('uniqueName'),'-jpbx-ip')]",
     "vmName": "[concat(variables('uniqueName'),'-jpbx')]",
     "networkSecurityGroupName": "[concat(variables('uniqueName'),'-jpbx-nsg')]",
@@ -81,70 +89,22 @@
           "destinationAddressPrefix": "*",
           "destinationPortRange": "3389"
         }
-      },
-      {
-        "name": "RemoteAccessSSH",
-        "properties": {
-          "priority": 110,
-          "protocol": "TCP",
-          "access": "Allow",
-          "direction": "Inbound",
-          "sourceAddressPrefix": "*",
-          "sourcePortRange": "*",
-          "destinationAddressPrefix": "*",
-          "destinationPortRange": "22"
-        }
-      },
-      {
-        "name": "Allow-80-In",
-        "properties": {
-          "priority": 200,
-          "protocol": "TCP",
-          "access": "Allow",
-          "direction": "Inbound",
-          "sourceAddressPrefix": "*",
-          "sourcePortRange": "*",
-          "destinationAddressPrefix": "*",
-          "destinationPortRange": "80"
-        }
-      },
-      {
-        "name": "Allow-80-Out",
-        "properties": {
-          "priority": 205,
-          "protocol": "TCP",
-          "access": "Allow",
-          "direction": "Outbound",
-          "sourceAddressPrefix": "*",
-          "sourcePortRange": "*",
-          "destinationAddressPrefix": "*",
-          "destinationPortRange": "80"
-        }
-      },
-      {
-        "name": "Allow-8080",
-        "properties": {
-          "priority": 210,
-          "protocol": "TCP",
-          "access": "Allow",
-          "direction": "Inbound",
-          "sourceAddressPrefix": "*",
-          "sourcePortRange": "*",
-          "destinationAddressPrefix": "*",
-          "destinationPortRange": "8080"
-        }
       }
     ]
   },
   "resources": [
     {
-      "apiVersion": "2017-06-01",
-      "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[variables('publicIPAddressName')]",
-      "location": "[variables('location')]",
-      "properties": {
-        "publicIPAllocationMethod": "Static"
-      }
+            "apiVersion": "2018-02-01",
+            "name": "pid-bc1e25ec-4990-4a2d-a035-a332bebc3ded",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": []
+                }
+            }
     },
     {
       "name": "[variables('networkSecurityGroupName')]",
@@ -157,22 +117,39 @@
       "tags": {}
     },
     {
+      "apiVersion": "2017-06-01",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[concat(variables('publicIPAddressName'),padLeft(copyindex(1),2,'0'))]",
+      "location": "[variables('location')]",
+      "copy": {
+                "name": "publicIPLoop",
+                "count": "[variables('numberOfInstances')]"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "Static"
+      }
+    },
+    {
       "apiVersion": "2018-04-01",
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('nicName')]",
+      "name": "[concat(variables('nicName'), padLeft(copyindex(1),2,'0'))]",
       "location": "[variables('location')]",
+      "copy": {
+                "name": "nicLoop",
+                "count": "[variables('numberOfInstances')]"
+            },
       "dependsOn": [
-        "[variables('publicIPAddressName')]",
+        "publicIPLoop",
         "[variables('networkSecurityGroupName')]"
       ],
       "properties": {
         "ipConfigurations": [
           {
-            "name": "ipconfig1",
+            "name": "ipconfig",
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',concat(variables('publicIPAddressName'), padLeft(copyindex(1),2,'0')))]"
               },
               "subnet": {
                 "id": "[variables('subnetId')]"
@@ -188,17 +165,21 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "apiVersion": "2018-10-01",
-      "name": "[variables('vmName')]",
+      "name": "[concat(variables('vmName'),  padLeft(copyindex(1),2,'0'))]",
       "location": "[variables('location')]",
+      "copy": {
+                "name": "virtualMachineLoop",
+                "count": "[variables('numberOfInstances')]"
+            },
       "dependsOn": [
-        "[variables('nicName')]"
+        "nicLoop"
       ],
       "properties": {
         "hardwareProfile": {
           "vmSize": "[variables('vmSize')]"
         },
         "osProfile": {
-          "computerName": "[variables('vmName')]",
+          "computername": "[concat(variables('vmName'), padLeft(copyindex(1),2,'0'))]",
           "adminUsername": "[variables('adminUsername')]",
           "adminPassword": "[variables('adminPassword')]",
           "windowsConfiguration": {
@@ -211,18 +192,18 @@
           "imageReference": {
             "publisher": "MicrosoftWindowsServer",
             "offer": "WindowsServer",
-            "sku": "2016-Datacenter",
+            "sku": "2019-Datacenter",
             "version": "latest"
           },
           "osDisk": {
             "createOption": "FromImage",
-            "name": "[concat(variables('vmName'),'-os-disk')]"
+            "name": "[concat(variables('vmName'),'-os-disk', padLeft(copyindex(1),2,'0'))]"
           }
         },
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(variables('nicName'), padLeft(copyindex(1),2,'0')))]"
             }
           ]
         }
@@ -230,11 +211,15 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(concat(variables('vmName'),'/create.Jumpbox.v1.0.0'))]",
+      "name": "[concat(concat(variables('vmName'),  padLeft(copyindex(1),2,'0')),'/create.Jumpbox.v1.0.0')]",
       "apiVersion": "2017-12-01",
       "location": "[variables('location')]",
+      "copy": {
+                "name": "extensionLoop",
+                "count": "[variables('numberOfInstances')]"
+            },
       "dependsOn": [
-        "[variables('vmName')]"
+        "virtualMachineLoop"
       ],
       "properties": {
         "publisher": "Microsoft.Compute",
@@ -251,9 +236,9 @@
     }
   ],
   "outputs": {
-    "Signiamt-IPAddress": {
-      "type": "string",
-      "value": "[reference(variables('publicIPAddressName'), '2016-03-30').IPaddress]"
-    }
+    "resource_group": {
+            "type": "string",
+            "value": "[resourceGroup().name]"
+        }
   }
 }
