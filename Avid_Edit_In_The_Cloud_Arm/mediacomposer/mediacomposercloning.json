@@ -3,8 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "resourcePrefix": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 10,
             "defaultValue": "show-mc",
-            "type": "String"
+            "metadata": {
+            "description": "Prefix must be 5-char min, 10-char max, lowercase alphanumeric"
+            }
         },
         "vmSize": {
             "type": "string",

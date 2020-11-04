@@ -3,13 +3,14 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
       "resourcePrefix": {
-        "type": "string",
-        "minLength": 3,
-        "maxLength": 4,
-        "metadata": {
-        "description": "Prefix must be 3-char min, 4-char max, lowercase alphanumeric"
-      }
-      },
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 10,
+            "defaultValue": "show-asp",
+            "metadata": {
+            "description": "Prefix must be 5-char min, 10-char max, lowercase alphanumeric"
+            }
+        },
       "adminUsername": {
         "type": "string",
         "metadata": {
@@ -75,10 +76,10 @@
       "subnetId": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]",
       "location": "[resourceGroup().location]",
       "vmSize": "Standard_D8_v3",
-      "nicName": "[concat(variables('uniqueName'),'-asp-nic')]",
-      "publicIPAddressName": "[concat(variables('uniqueName'),'-asp-ip')]",
-      "vmName": "[concat(variables('uniqueName'),'-asp')]",
-      "networkSecurityGroupName": "[concat(variables('uniqueName'),'-asp-nsg')]",
+      "nicName": "[concat(variables('uniqueName'),'-nic')]",
+      "publicIPAddressName": "[concat(variables('uniqueName'),'-ip')]",
+      "vmName": "[parameters('resourcePrefix')]",
+      "networkSecurityGroupName": "[concat(variables('uniqueName'),'-nsg')]",
       "adminUsername": "[parameters('adminUsername')]",
       "adminPassword": "[parameters('adminPassword')]",
       "scriptFileName": "installAspera.ps1",

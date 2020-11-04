@@ -4,11 +4,12 @@
     "parameters": {
         "resourcePrefix": {
             "type": "string",
-            "minLength": 3,
-            "maxLength": 4,
+            "minLength": 5,
+            "maxLength": 10,
+            "defaultValue": "show-edit",
             "metadata": {
-            "description": "Prefix must be 3-char min, 4-char max, lowercase alphanumeric"
-      }
+            "description": "Prefix must be 5-char min, 10-char max, lowercase alphanumeric"
+            }
         },
         "adminUsername": {
             "type": "string",
@@ -221,14 +222,14 @@
         ],
         "location": "[resourceGroup().location]",
         "uniqueName": "[parameters('resourcePrefix')]",
-        "networkSecurityGroupName": "[concat(parameters('resourcePrefix'),'-mc-nsg')]",
-        "nicName": "[concat(variables('uniqueName'), '-mc-nic-')]",
+        "networkSecurityGroupName": "[concat(parameters('resourcePrefix'),'-nsg')]",
+        "nicName": "[concat(variables('uniqueName'), '-nic-')]",
         "numberOfInstances": "[parameters('numberOfInstances')]",
-        "publicIPAddressName": "[concat(variables('uniqueName'), '-mc-ip-')]",
-        "osDiskName": "[concat(variables('uniqueName'), '-mc-os-disk-')]",
+        "publicIPAddressName": "[concat(variables('uniqueName'), '-ip-')]",
+        "osDiskName": "[concat(variables('uniqueName'), '-os-disk-')]",
         "subnetId": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]",
         "teradiciKey": "null",
-        "vmName": "[concat(variables('uniqueName'),'-mc-')]",
+        "vmName": "[concat(variables('uniqueName'),'-')]",
         "vmSize": "[parameters('vmSize')]",
         "scriptFolder": ".",
         "mediaComposerFileName": "[concat('Media_Composer_',parameters('mediaComposerVersion'),'_Win.zip')]",
