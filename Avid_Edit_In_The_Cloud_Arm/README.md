@@ -8,33 +8,82 @@ This readme file explains the value of video editorial in the cloud using Avid M
 
 # Prerequisite
 
-- Showcode: 3 to 4 letters
+- Prefix: 3 to 4 letters
+
 - Active enterprise or pay-as-you-go Azure subscription
-- License for: a) Avid NEXIS | Cloud, b) Avid Media Composer | Ultimate with VM Option, c) Signiant MediaShuttle / Aspera HSTS / FileCatalyst Server, d) Teradici Graphics Agent 
+
+- License for: a) Avid NEXIS | Cloud, b) Avid Media Composer Ultimate with VM Option, c) Signiant MediaShuttle, Aspera HSTS, FileCatalyst Server, d) Teradici Graphics Agent 
 
 # Deploy to Azure
 
 To perform a successful deployment in your subscription, follow the steps below: 
 
-1) Deploy each module needed either via Azure Portal or Azure cli. 
+1) Deploy each module needed. 
 
 2) Follow the deployment guide to finish each module configuration.  
 
 ## Module deployment
 
-There are two ways to deploy Avid EITC module (ARM template): 
+1) [Optional] Create Resource Group within your subscription directly within Azure Portal.
 
-a) Azure Portal
+<br />
 
-Follow the guide below to copy the ARM templates to your Azure subscription:
+2) [Optional] If you don’t have a Vnet yet, create one Vnet (with at least one subnet) directly within Azure Portal using the link below:
 
-[Az Portal deployment](https://github.com/avid-technology/VideoEditorialInTheCloud/tree/master/Avid_Edit_In_The_Cloud_Arm/Document/AzPortalGuide.pdf) 
+<br />
 
-b) Az cli
+| Module | Compatible Version | ARM Template link |
+| ------ | ------------------ | ----------------- |
+| Vnet | n/a | <a href="https://portal.azure.com/#create/Microsoft.VirtualNetwork-ARM" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
 
-Follow the guide below to deploy each module directly from CLI:
+<br />
 
-[Az Cli deployment](https://github.com/avid-technology/VideoEditorialInTheCloud/tree/master/Avid_Edit_In_The_Cloud_Arm/Document/AzCliGuide.pdf) 
+3) Choose a file transfer accelerator module: Signiant, FileCatalyst or Aspera
+
+<br />
+
+| Module | Compatible Version | ARM Template link |
+| ------ | ------------------ | ----------------- |
+| Signiant 3.3.2 + Nexis 20.3.1.14 (Client) | - Install_Signiant_SDCX_Server_v3.3.2.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Fsigniant%2Fsigniantazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
+| FileCatalyst 3.7.3b38 + Nexis 20.3.1.14 (Client) | - install_fc_server.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Ffilecatalyst%2Ffilecatalystazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
+| Aspera + Nexis 20.3.1.14 (Client) | - AvidNEXISClient_Win64_20.3.1.14.msi | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Faspera%2Fasperaazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
+
+<br />
+
+4) Choose a Media Composer module depending on the version and GPU selected.
+
+<br />
+
+| Module | Compatible Version | ARM Template link |
+| ------ | ------------------ | ----------------- |
+| Media Composer 2018.12.11  / 2019.12 / 2020.4 (Nvidia) | - Media_Composer_2018.12.11_Win.zip, Media_Composer_2019.12_Win.zip, Media_Composer_2020.4._Win.zip <br /> - pcoip-agent-graphics_20.04.0.exe <br /> - 442.06_grid_win10_64bit_international_whql.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Fmediacomposer%2Fmediacomposerazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
+
+<br />
+
+To duplicate the VM, follow the steps below:
+
+<br />
+a) Create a snapshot of the main os disk
+<br />
+b) Run script to duplicate snapshot x time (right click / run in powershell connected to your azure subscription)
+<br />
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Fscripts%2Fcreate_disk_from_snapshot.ps1" target="_blank"></a>
+<br />
+c) Use duplication ARM template: 
+
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Fmediacomposer%2Fmediacomposercloning.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a>
+
+<br />
+
+5) Deploy a Nexis storage module.
+
+<br />
+
+| Module | Compatible Version | ARM Template link |
+| ------ | ------------------ | ----------------- |
+| Nexis 20.3.2 | AvidNexisCloud_20.3.2-17.run | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Fmediacomposer%2Fmediacomposercloning.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
+
+<br />
 
 ## Module configuration
 
