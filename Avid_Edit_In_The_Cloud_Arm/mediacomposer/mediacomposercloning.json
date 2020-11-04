@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "namePrefix": {
-            "defaultValue": "show",
+            "defaultValue": "show-mc",
             "type": "String"
         },
         "vmSize": {
@@ -68,8 +68,8 @@
     },
     "variables": {
         "subnet1Ref": "[resourceId('Microsoft.Network/virtualNetworks/subnets',parameters('virtualNetworkName'),parameters('subnetName'))]",
-        "vmName": "[concat(parameters('namePrefix'),'-mc')]",
-        "publicIPAddressName": "[concat(parameters('namePrefix'), '-mc-ip-')]"
+        "vmName": "[parameters('namePrefix')]",
+        "publicIPAddressName": "[concat(parameters('namePrefix'), '-ip-')]"
     },
     "resources": [
         {
