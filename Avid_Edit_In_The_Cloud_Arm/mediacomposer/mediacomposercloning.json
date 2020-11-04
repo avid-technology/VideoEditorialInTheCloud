@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "namePrefix": {
-            "defaultValue": "show",
+            "defaultValue": "show-mc",
             "type": "String"
         },
         "vmSize": {
@@ -38,13 +38,6 @@
                 "description": "Start numbering VMs from here."
             }
         },
-        "suffixLength": {
-            "defaultValue": 2,
-            "type": "Int",
-            "metadata": {
-                "description": "Number of digits to append to vmname (NOTE: VM names must be less than 15 characters)."
-            }
-        },
         "virtualNetworkName": {
             "defaultValue": "myvnet",
             "type": "String",
@@ -64,18 +57,30 @@
             "metadata": {
                 "description": "Name of an existing subnet to attach to the VMs."
             }
+        },
+        "branchName": {
+            "type": "string",
+            "metadata": {
+                "description": "Branch to point script to. Either master or avid-development"
+            },
+            "defaultValue": "master",
+            "allowedValues": [
+                "master",
+                "avid-development"
+            ]
         }
     },
     "variables": {
         "subnet1Ref": "[resourceId('Microsoft.Network/virtualNetworks/subnets',parameters('virtualNetworkName'),parameters('subnetName'))]",
-        "vmName": "[concat(parameters('namePrefix'),'-mc')]",
-        "publicIPAddressName": "[concat(parameters('namePrefix'), '-mc-ip-')]"
+        "suffixLength": 2,
+        "vmName": "[parameters('namePrefix')]",
+        "publicIPAddressName": "[concat(parameters('namePrefix'), '-ip-')]"
     },
     "resources": [
         {
             "apiVersion": "2017-10-01",
             "type": "Microsoft.Network/publicIPAddresses",
-            "name": "[concat(variables('publicIPAddressName'),padleft(string(copyIndex(parameters('startNumberingAt'))),parameters('suffixLength'),'0'))]",
+            "name": "[concat(variables('publicIPAddressName'),padleft(string(copyIndex(parameters('startNumberingAt'))),variables('suffixLength'),'0'))]",
             "location": "[resourceGroup().location]",
             "copy": {
                 "name": "publicIPLoop",
@@ -88,7 +93,7 @@
         {
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2016-03-30",
-            "name": "[concat(variables('vmName'),'-nic-',padleft(string(copyIndex(parameters('startNumberingAt'))),parameters('suffixLength'),'0'))]",
+            "name": "[concat(variables('vmName'),'-nic-',padleft(string(copyIndex(parameters('startNumberingAt'))),variables('suffixLength'),'0'))]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
                 "publicIPLoop"
@@ -100,7 +105,7 @@
                         "properties": {
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',concat(variables('publicIPAddressName'), padleft(string(copyIndex(parameters('startNumberingAt'))),parameters('suffixLength'),'0')))]"
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',concat(variables('publicIPAddressName'), padleft(string(copyIndex(parameters('startNumberingAt'))),variables('suffixLength'),'0')))]"
                             },
                             "subnet": {
                                 "id": "[variables('subnet1Ref')]"
@@ -117,7 +122,7 @@
         {
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2016-04-30-preview",
-            "name": "[concat(variables('vmName'),'-',padleft(string(copyIndex(parameters('startNumberingAt'))),parameters('suffixLength'),'0'))]",
+            "name": "[concat(variables('vmName'),'-',padleft(string(copyIndex(parameters('startNumberingAt'))),variables('suffixLength'),'0'))]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
                 "nicLoop"
@@ -130,17 +135,17 @@
                     "osDisk": {
                         "managedDisk": {
                             "storageAccountType": "Standard_LRS",
-                            "id": "[resourceId('Microsoft.Compute/disks/',concat(variables('vmName'),'-','os-disk-',padleft(string(copyIndex(parameters('startNumberingAt'))),parameters('suffixLength'),'0')))]"
+                            "id": "[resourceId('Microsoft.Compute/disks/',concat(variables('vmName'),'-','os-disk-',padleft(string(copyIndex(parameters('startNumberingAt'))),variables('suffixLength'),'0')))]"
                         },
                         "osType": "Windows",
                         "createOption": "Attach",
-                        "name": "[concat(variables('vmName'),'-','os-disk-',padleft(string(copyIndex(parameters('startNumberingAt'))),parameters('suffixLength'),'0'))]"
+                        "name": "[concat(variables('vmName'),'-','os-disk-',padleft(string(copyIndex(parameters('startNumberingAt'))),variables('suffixLength'),'0'))]"
                     }
                 },
                 "networkProfile": {
                     "networkInterfaces": [
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(variables('vmName'),'-nic-',padleft(string(copyIndex(parameters('startNumberingAt'))),parameters('suffixLength'),'0')))]"
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(variables('vmName'),'-nic-',padleft(string(copyIndex(parameters('startNumberingAt'))),variables('suffixLength'),'0')))]"
                         }
                     ]
                 }
@@ -153,7 +158,7 @@
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
             "apiVersion": "2018-06-01",
-            "name": "[concat(variables('vmName'),'-',padleft(string(copyIndex(parameters('startNumberingAt'))),parameters('suffixLength'),'0'),'/config-teradici-1')]",
+            "name": "[concat(variables('vmName'),'-',padleft(string(copyIndex(parameters('startNumberingAt'))),variables('suffixLength'),'0'),'/config-teradici-1')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
                 "virtualMachineLoop"
@@ -168,7 +173,7 @@
                 "autoUpgradeMinorVersion": true,
                 "settings": {
                     "fileUris": [
-                        "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Arm/scripts/clone-post-config.ps1"
+                        "[concat('https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/',parameters('branchName'),'/Avid_Edit_In_The_Cloud_Arm/scripts/clone-post-config.ps1')]"
                     ],
                     "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ./clone-post-config.ps1 -RegistrationCode ', parameters('teradiciRegistrationCode'))]"
                 }

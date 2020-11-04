@@ -8,16 +8,15 @@ $subscriptionId = "63e4095b-6f13-45ed-9386-af1b8f8c1a40"
 #Provide the name of your resource group with the snapshot
 $resourceGroupName = "sdbx-scus-01"
 #Provide the name of the snapshot that will be used to create OS disk
-$snapshotName = 'goldimagemc'
+$snapshotName = 'goldimagetest'
 # Change this for the desired VM OS Disk naming convention. 
 # A number and "osdisk" label will be appended in the loop below
-# e.g. with a prefix "ams-edit" the names will look like: ams-edit-001-osdisk
 # For MediaComposer VM, replace xxxx with showCode. 
-$prefix = "show-mc"
-#Start number for naming. E.g. if 1, the first disk will be <name>-001-osdisk
+$prefix = "show-edit"
+#Start number for naming. E.g. if 1, the first disk will be <name>-01-osdisk
 $vmStartIndex = 1
 <#
-    Last number for naming. E.g. if 10, the last disk will be <name>-010-osdisk
+    Last number for naming. E.g. if 10, the last disk will be <name>-10-osdisk
     If the start index is 1 and end index is 10, then 10 disks will be created 1-10
     If the start index is 11 and end index is 40, then 30 disks will be created 11-40
 #>
