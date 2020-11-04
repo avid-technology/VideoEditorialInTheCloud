@@ -56,7 +56,7 @@ To perform a successful deployment in your subscription, follow the steps below:
 
 | Module | Compatible Version | ARM Template link |
 | ------ | ------------------ | ----------------- |
-| Media Composer | Media Composer 2018.12.13  / 2019.12 / 2020.9.0 <br /> Nexis 20.7.3.10 (Client) <br /> Teradici Agent 20.10.1 <br /> Amd GPU <br /> Nvidia GPU | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Fmediacomposer%2Fmediacomposerazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
+| Media Composer | Media Composer 2018.12.13  / 2019.12 / 2020.9.0 <br /> Nexis 20.7.3.10 (Client) <br /> Teradici Agent 20.10.1 <br /> Amd Radeon MI25 <br /> Nvidia GPU | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Fmediacomposer%2Fmediacomposerazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
 
 <br />
 
