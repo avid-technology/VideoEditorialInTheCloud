@@ -1,6 +1,6 @@
 # Abstract
 
-This readme file explains the value of video editorial in the cloud using Avid Media Composer and Avid Nexis on Microsoft Azure and summarizes key resources in this repository: a deployment guide and deployment scripts. The deployment guide included in this repository explains, step-by-step, how to deploy these applications into your Azure subscription.  The deployment guide and accompanying scripts are designed for media production companies that want to provide an edit-on-demand deployment experience.
+This readme file explains the value of video editorial in the cloud using Avid Media Composer and Avid Nexis on Microsoft Azure. The deployment guide included in this repository explains, step-by-step, how to deploy these applications into your Azure subscription.  The deployment guide and accompanying scripts are designed for media production companies that want to provide an edit-on-demand deployment experience.
 
 # Deployment Architecture 
 
@@ -8,11 +8,11 @@ This readme file explains the value of video editorial in the cloud using Avid M
 
 # Prerequisite
 
-- Prefix: 3 to 4 letters
+- Resource Prefix: 3 to 4 letters.
 
-- Active enterprise or pay-as-you-go Azure subscription
+- Active enterprise or pay-as-you-go Azure subscription.
 
-- License for: a) Avid NEXIS | Cloud, b) Avid Media Composer Ultimate with VM Option, c) Signiant MediaShuttle, Aspera HSTS, FileCatalyst Server, d) Teradici Graphics Agent 
+- License for: a) Avid NEXIS | Cloud, b) Avid Media Composer Ultimate with VM Option, c) Signiant MediaShuttle, Aspera HSTS, FileCatalyst Server, d) Teradici Graphics Agent.
 
 # Deploy to Azure
 
@@ -44,9 +44,9 @@ To perform a successful deployment in your subscription, follow the steps below:
 
 | Module | Compatible Version | ARM Template link |
 | ------ | ------------------ | ----------------- |
-| Signiant 3.3.2 + Nexis 20.3.1.14 (Client) | - Install_Signiant_SDCX_Server_v3.3.2.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Fsigniant%2Fsigniantazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
-| FileCatalyst 3.7.3b38 + Nexis 20.3.1.14 (Client) | - install_fc_server.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Ffilecatalyst%2Ffilecatalystazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
-| Aspera + Nexis 20.3.1.14 (Client) | - AvidNEXISClient_Win64_20.3.1.14.msi | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Faspera%2Fasperaazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
+| Signiant | Signiant 3.3.2 + Nexis 20.7.3.10 (Client) | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Fsigniant%2Fsigniantazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
+| FileCatalyst | - FileCatalyst 3.7.3b38 + Nexis 20.7.3.10 (Client) | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Ffilecatalyst%2Ffilecatalystazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
+| Aspera | Aspera 3.9.6 + Nexis 20.7.3.10 (Client) | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Faspera%2Fasperaazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
 
 <br />
 
@@ -56,20 +56,23 @@ To perform a successful deployment in your subscription, follow the steps below:
 
 | Module | Compatible Version | ARM Template link |
 | ------ | ------------------ | ----------------- |
-| Media Composer 2018.12.11  / 2019.12 / 2020.4 (Nvidia) | - Media_Composer_2018.12.11_Win.zip, Media_Composer_2019.12_Win.zip, Media_Composer_2020.4._Win.zip <br /> - pcoip-agent-graphics_20.04.0.exe <br /> - 442.06_grid_win10_64bit_international_whql.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Fmediacomposer%2Fmediacomposerazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
+| Media Composer | Media Composer 2018.12.13  / 2019.12 / 2020.9.0 <br /> Nexis 20.7.3.10 (Client) <br /> Teradici Agent 20.10.1 <br /> Amd GPU <br /> Nvidia GPU | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Fmediacomposer%2Fmediacomposerazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
 
 <br />
 
 To duplicate the VM, follow the steps below:
-
 <br />
+
 a) Create a snapshot of the main os disk
 <br />
+
 b) Run script to duplicate snapshot x time (right click / run in powershell connected to your azure subscription)
 <br />
+
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Fscripts%2Fcreate_disk_from_snapshot.ps1" target="_blank"></a>
-<br />
+
 c) Use duplication ARM template: 
+<br />
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Fmediacomposer%2Fmediacomposercloning.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a>
 
@@ -81,7 +84,7 @@ c) Use duplication ARM template:
 
 | Module | Compatible Version | ARM Template link |
 | ------ | ------------------ | ----------------- |
-| Nexis 20.3.2 | AvidNexisCloud_20.3.2-17.run | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Fmediacomposer%2Fmediacomposercloning.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
+| Nexis | Avid Cloud Nexis 20.7.0 | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Fmediacomposer%2Fmediacomposercloning.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
 
 <br />
 
