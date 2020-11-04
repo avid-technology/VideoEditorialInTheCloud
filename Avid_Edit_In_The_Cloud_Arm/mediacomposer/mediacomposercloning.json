@@ -2,7 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "namePrefix": {
+        "resourcePrefix": {
             "defaultValue": "show-mc",
             "type": "String"
         },
@@ -73,8 +73,8 @@
     "variables": {
         "subnet1Ref": "[resourceId('Microsoft.Network/virtualNetworks/subnets',parameters('virtualNetworkName'),parameters('subnetName'))]",
         "suffixLength": 2,
-        "vmName": "[parameters('namePrefix')]",
-        "publicIPAddressName": "[concat(parameters('namePrefix'), '-ip-')]"
+        "vmName": "[parameters('resourcePrefix')]",
+        "publicIPAddressName": "[concat(parameters('resourcePrefix'), '-ip-')]"
     },
     "resources": [
         {

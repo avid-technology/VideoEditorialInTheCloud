@@ -2,7 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "namePrefix": {
+        "resourcePrefix": {
             "type": "string",
             "minLength": 3,
             "maxLength": 4,
@@ -220,8 +220,8 @@
 
         ],
         "location": "[resourceGroup().location]",
-        "uniqueName": "[parameters('namePrefix')]",
-        "networkSecurityGroupName": "[concat(parameters('namePrefix'),'-mc-nsg')]",
+        "uniqueName": "[parameters('resourcePrefix')]",
+        "networkSecurityGroupName": "[concat(parameters('resourcePrefix'),'-mc-nsg')]",
         "nicName": "[concat(variables('uniqueName'), '-mc-nic-')]",
         "numberOfInstances": "[parameters('numberOfInstances')]",
         "publicIPAddressName": "[concat(variables('uniqueName'), '-mc-ip-')]",
