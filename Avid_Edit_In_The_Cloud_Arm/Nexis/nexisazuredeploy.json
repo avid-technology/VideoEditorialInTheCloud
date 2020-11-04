@@ -2,7 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.1.0.0",
     "parameters": {
-        "namePrefix": {
+        "resourcePrefix": {
             "type": "string",
             "minLength": 3,
             "maxLength": 4,
@@ -64,8 +64,8 @@
         "_urlLocation": "https://ssengreleng.blob.core.windows.net/nexisgold/20.7.0",
         "_artifactsLocation": "[concat(variables('_urlLocation'), '/AzureProvisioning/nexis.nearline')]",
         "systemName":"[variables(concat('systemName_',parameters('nexisType')))]",
-        "systemName_Online":"[concat(parameters('namePrefix'), 'onnx')]",
-        "systemName_Nearline":"[concat(parameters('namePrefix'), 'nlnx')]",
+        "systemName_Online":"[concat(parameters('resourcePrefix'), 'onnx')]",
+        "systemName_Nearline":"[concat(parameters('resourcePrefix'), 'nlnx')]",
         "nexisCloud": "[variables(concat('nexisCloud_',parameters('nexisType')))]",
         "nexisCloud_Online":"0100-40109-00",
         "nexisCloud_Nearline":"0100-38171-00",
