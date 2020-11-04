@@ -2,12 +2,12 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.1.0.0",
     "parameters": {
-        "showCode": {
+        "namePrefix": {
             "type": "string",
             "minLength": 3,
             "maxLength": 4,
             "metadata": {
-                "description": "Showcode must be 3-char min, 4-char max, lowercase alphanumeric"
+                "description": "Prefix must be 3-char min, 4-char max, lowercase alphanumeric"
             }
         },
         "adminPassword": {
@@ -46,16 +46,16 @@
                 "description": "Name of the existing or new subnet name in the Vnet to which the MP VMs should be deployed"
             }
         },
-        "partNumber": {
+        "nexisType": {
             "type": "string",
             "metadata": {
                 "description": "Should be either: 0100-38171-00 (Nearline) or 0100-40109-00 (Online)"
             },
             "allowedValues": [
-                "0100-38171-00",
-                "0100-40109-00"
+                "Online",
+                "Nearline"
             ],
-            "defaultValue": "0100-40109-00"
+            "defaultValue": "Online"
         }
     },
     "variables": {
@@ -63,7 +63,12 @@
         "_sasToken": "",
         "_urlLocation": "https://ssengreleng.blob.core.windows.net/nexisgold/20.7.0",
         "_artifactsLocation": "[concat(variables('_urlLocation'), '/AzureProvisioning/nexis.nearline')]",
-        "systemName":"[concat(parameters('showCode'), 'nex')]",
+        "systemName":"[variables(concat('systemName_',parameters('nexisType')))]",
+        "systemName_Online":"[concat(parameters('namePrefix'), 'onnx')]",
+        "systemName_Nearline":"[concat(parameters('namePrefix'), 'nlnx')]",
+        "nexisCloud": "[variables(concat('nexisCloud_',parameters('nexisType')))]",
+        "nexisCloud_Online":"0100-40109-00",
+        "nexisCloud_Nearline":"0100-38171-00",
         "_artifactsLocationSasToken": "[variables('_sasToken')]",
         "_buildArtifactsLocation": "[concat(variables('_urlLocation'), '/installers')]",
         "_buildArtifactsLocationSasToken": "[variables('_sasToken')]",
@@ -140,7 +145,7 @@
                         "value": "[variables('nexisBuild')]"
                     },
                     "partNumber": {
-                        "value": "[parameters('partNumber')]"
+                        "value": "[variables('nexisCloud')]"
                     }
                 }
             }

@@ -2,12 +2,12 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "showCode": {
+        "namePrefix": {
             "type": "string",
             "minLength": 3,
             "maxLength": 4,
             "metadata": {
-            "description": "Showcode must be 3-char min, 4-char max, lowercase alphanumeric"
+            "description": "Prefix must be 3-char min, 4-char max, lowercase alphanumeric"
       }
         },
         "adminUsername": {
@@ -153,19 +153,6 @@
         "mcVersion_NVIDIA_2020.9.0": "setupMediaComposer_NVIDIA_20209.ps1",
         "networkSecurityGroupRules": [
             {
-                "name": "RDP",
-                "properties": {
-                    "priority": 300,
-                    "protocol": "TCP",
-                    "access": "Allow",
-                    "direction": "Inbound",
-                    "sourceAddressPrefix": "*",
-                    "sourcePortRange": "*",
-                    "destinationAddressPrefix": "*",
-                    "destinationPortRange": "3389"
-                }
-            },
-            {
                 "name": "PCoIPtcp",
                 "properties": {
                     "priority": 301,
@@ -233,11 +220,12 @@
 
         ],
         "location": "[resourceGroup().location]",
-        "uniqueName": "[parameters('showCode')]",
-        "networkSecurityGroupName": "[concat(parameters('showCode'),'-mc-nsg')]",
-        "nicName": "[concat(variables('uniqueName'), '-mc-nic')]",
+        "uniqueName": "[parameters('namePrefix')]",
+        "networkSecurityGroupName": "[concat(parameters('namePrefix'),'-mc-nsg')]",
+        "nicName": "[concat(variables('uniqueName'), '-mc-nic-')]",
         "numberOfInstances": "[parameters('numberOfInstances')]",
-        "publicIPAddressName": "[concat(variables('uniqueName'), '-mc-ip')]",
+        "publicIPAddressName": "[concat(variables('uniqueName'), '-mc-ip-')]",
+        "osDiskName": "[concat(variables('uniqueName'), '-mc-os-disk-')]",
         "subnetId": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]",
         "teradiciKey": "null",
         "vmName": "[concat(variables('uniqueName'),'-mc-')]",
@@ -354,7 +342,7 @@
                 "storageProfile": {
                     "imageReference": "[variables('osType')]",
                     "osDisk": {
-                        "name": "[concat(variables('uniqueName'), '-mc-os-disk', padLeft(copyindex(1),2,'0'))]",
+                        "name": "[concat(variables('osDiskName'), padLeft(copyindex(1),2,'0'))]",
                         "createOption": "FromImage"
                     }
                 },
