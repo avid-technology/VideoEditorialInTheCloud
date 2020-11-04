@@ -64,10 +64,10 @@
     "subnetId": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]",
     "location": "[resourceGroup().location]",
     "vmSize": "Standard_D4s_v3",
-    "nicName": "[concat(variables('uniqueName'),'-jpbx-nic')]",
+    "nicName": "[concat(variables('uniqueName'),'-jpbx-nic-')]",
     "numberOfInstances": "[parameters('numberOfInstances')]",
-    "publicIPAddressName": "[concat(variables('uniqueName'),'-jpbx-ip')]",
-    "vmName": "[concat(variables('uniqueName'),'-jpbx')]",
+    "publicIPAddressName": "[concat(variables('uniqueName'),'-jpbx-ip-')]",
+    "vmName": "[concat(variables('uniqueName'),'-jpbx-')]",
     "networkSecurityGroupName": "[concat(variables('uniqueName'),'-jpbx-nsg')]",
     "adminUsername": "[parameters('adminUsername')]",
     "adminPassword": "[parameters('adminPassword')]",
@@ -197,7 +197,7 @@
           },
           "osDisk": {
             "createOption": "FromImage",
-            "name": "[concat(variables('vmName'),'-os-disk', padLeft(copyindex(1),2,'0'))]"
+            "name": "[concat(variables('vmName'),'-os-disk-', padLeft(copyindex(1),2,'0'))]"
           }
         },
         "networkProfile": {
