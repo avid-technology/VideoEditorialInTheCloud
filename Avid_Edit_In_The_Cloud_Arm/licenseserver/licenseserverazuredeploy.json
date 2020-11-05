@@ -74,12 +74,12 @@
       "networkSecurityGroupName": "[concat(variables('uniqueName'),'-nsg')]",
       "adminUsername": "[parameters('adminUsername')]",
       "adminPassword": "[parameters('adminPassword')]",
-      "scriptFileName": "installAspera.ps1",
+      "scriptFileName": "installLicense.ps1",
       "_githubLocation": "[concat('https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/',parameters('branchName'),'/Avid_Edit_In_The_Cloud_Arm')]",
       "licenseInstallName":"[parameters('licenseInstallName')]",
       "scriptLocation": "[concat(variables('_githubLocation'), '/','scripts')]",
       "licenseInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('licenseInstallName'))]",
-      "scriptParameters": "[concat('-Aspera ', variables('licenseInstallLocation'))]",
+      "scriptParameters": "[concat('-License ', variables('licenseInstallLocation'))]",
       "scriptFolder": ".",
       "networkSecurityGroupRules": [
         {
@@ -191,7 +191,7 @@
       },
       {
         "type": "Microsoft.Compute/virtualMachines/extensions",
-        "name": "[concat(concat(variables('vmName'),'/create.Aspera.v1.0.0'))]",
+        "name": "[concat(concat(variables('vmName'),'/create.License.v1.0.0'))]",
         "apiVersion": "2017-12-01",
         "location": "[variables('location')]",
         "dependsOn": [
