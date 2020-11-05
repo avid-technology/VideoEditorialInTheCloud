@@ -46,7 +46,7 @@ function
 Install-License {
    
     Write-Log "downloading License Server"
-    $LicenseDestinationPath = "C:\Users\Public\Desktop\Install_License.exe"
+    $LicenseDestinationPath = "C:\Users\Public\Desktop\Install_License.zip"
 
     Write-Log $LicenseDestinationPath
     DownloadFileOverHttp $LicenseURL $LicenseDestinationPath
