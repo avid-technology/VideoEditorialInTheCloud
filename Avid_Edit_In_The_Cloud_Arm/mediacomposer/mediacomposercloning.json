@@ -59,6 +59,7 @@
         },
         "teradiciRegistrationCode": {
             "type": "String",
+            "defaultValue": "null",
             "metadata": {
                 "description": "Teradici Registration Code to license the PCoIP Graphics Agent."
             }
@@ -139,7 +140,7 @@
                 "storageProfile": {
                     "osDisk": {
                         "managedDisk": {
-                            "storageAccountType": "Standard_LRS",
+                            "storageAccountType": "Premium_LRS",
                             "id": "[resourceId('Microsoft.Compute/disks/',concat(variables('vmName'),'-','os-disk-',padleft(string(copyIndex(parameters('startNumberingAt'))),variables('suffixLength'),'0')))]"
                         },
                         "osType": "Windows",
