@@ -81,34 +81,7 @@
       "licenseInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('licenseInstallName'))]",
       "scriptParameters": "[concat('-License ', variables('licenseInstallLocation'))]",
       "scriptFolder": ".",
-      "networkSecurityGroupRules": [
-        {
-          "name": "License_server_3333",
-          "properties": {
-            "priority": 100,
-            "protocol": "TCP",
-            "access": "Allow",
-            "direction": "Outbound",
-            "sourceAddressPrefix": "*",
-            "sourcePortRange": "*",
-            "destinationAddressPrefix": "*",
-            "destinationPortRange": "3333"
-          }
-        },
-        {
-          "name": "License_server_8888",
-          "properties": {
-            "priority": 110,
-            "protocol": "TCP",
-            "access": "Allow",
-            "direction": "Outbound",
-            "sourceAddressPrefix": "*",
-            "sourcePortRange": "*",
-            "destinationAddressPrefix": "*",
-            "destinationPortRange": "8888"
-          }
-        }
-      ]
+      "networkSecurityGroupRules": []
     },
     "resources": [
       {

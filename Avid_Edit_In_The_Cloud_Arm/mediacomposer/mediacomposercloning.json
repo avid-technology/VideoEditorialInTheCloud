@@ -50,17 +50,17 @@
                 "description": "Name of an existing vNet for the VMs."
             }
         },
-        "teradiciRegistrationCode": {
-            "type": "String",
-            "metadata": {
-                "description": "Teradici Registration Code to license the PCoIP Graphics Agent."
-            }
-        },
         "subnetName": {
             "defaultValue": "mysubnet1",
             "type": "String",
             "metadata": {
                 "description": "Name of an existing subnet to attach to the VMs."
+            }
+        },
+        "teradiciRegistrationCode": {
+            "type": "String",
+            "metadata": {
+                "description": "Teradici Registration Code to license the PCoIP Graphics Agent."
             }
         },
         "branchName": {
