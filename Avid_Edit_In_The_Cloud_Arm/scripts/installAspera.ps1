@@ -66,6 +66,8 @@ Install-Aspera {
     Write-Log $AsperaDestinationPath
     DownloadFileOverHttp $AsperaURL $AsperaDestinationPath
 
+    Start-Process -FilePath $AsperaDestinationPath -ArgumentList "/quiet", "/log installation.log", "/forcerestart" -Wait
+
 }
 
 try {
