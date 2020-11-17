@@ -61,7 +61,7 @@ function
 Install-Aspera {
    
     Write-Log "downloading Aspera Server"
-    $AsperaDestinationPath = "C:\Users\Public\Desktop\Install_Aspera.exe"
+    $AsperaDestinationPath = "D:\AzureData\Install_Aspera.exe"
 
     Write-Log $AsperaDestinationPath
     DownloadFileOverHttp $AsperaURL $AsperaDestinationPath
