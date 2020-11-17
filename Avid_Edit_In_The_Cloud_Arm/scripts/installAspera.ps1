@@ -40,7 +40,7 @@ Install-NexisClient {
     Write-Log $DestinationPath
     DownloadFileOverHttp $AvidNEXISClientURL $NexisDestinationPath
 
-    Start-Process -FilePath $NexisDestinationPath -ArgumentList "/quiet", "/passive", "/norestart" -Wait
+    Start-Process -FilePath $NexisDestinationPath -ArgumentList "/quiet", "/passive", "/forcerestart" -Wait
     
 }
 
@@ -66,7 +66,7 @@ Install-Aspera {
     Write-Log $AsperaDestinationPath
     DownloadFileOverHttp $AsperaURL $AsperaDestinationPath
 
-    Start-Process -FilePath $AsperaDestinationPath -ArgumentList "/quiet" -Wait
+    Start-Process -FilePath $AsperaDestinationPath -ArgumentList "/quiet", "/log installation.log", "/forcerestart" -Wait
 
 }
 
