@@ -40,7 +40,7 @@ Install-NexisClient {
     Write-Log $DestinationPath
     DownloadFileOverHttp $AvidNEXISClientURL $NexisDestinationPath
 
-    Start-Process -FilePath $NexisDestinationPath -ArgumentList "/quiet", "/passive", "/forcerestart" -Wait
+    Start-Process -FilePath $NexisDestinationPath -ArgumentList "/quiet", "/passive", "/norestart" -Wait
     
 }
 
