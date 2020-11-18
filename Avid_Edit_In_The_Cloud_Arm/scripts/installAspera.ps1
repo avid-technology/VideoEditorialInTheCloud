@@ -70,7 +70,7 @@ Install-Aspera {
     Set-Content $AsperaCmdPath "Install_Aspera.exe /quiet /log aspera_installation.log"
 
     Set-Location "D:\AzureData"
-    Start-Process -FilePath '.\IBMAspera.cmd' -RedirectStandardOutput "D:\AzureData\aspera.log" -Wait -Verb RunAs
+    Start-Process -FilePath '.\IBMAspera.cmd' -RedirectStandardOutput "D:\AzureData\aspera.log" -Wait
     #Start-Process -FilePath $AsperaDestinationPath -ArgumentList "/quiet", "/log installation.log", "/norestart" -Wait -Verb RunAs
 
 }
