@@ -63,6 +63,13 @@ Install-SigniantMediaShuttle {
     Write-Log $SigniantDestinationPath
     DownloadFileOverHttp $SigniantMediaShuttleURL $SigniantDestinationPath
 
+    netsh int ipv4 set dynamicport tcp start=10000 num=1000
+    netsh int ipv4 set dynamicport udp start=10000 num=1000
+    netsh int ipv6 set dynamicport tcp start=10000 num=1000
+    netsh int ipv6 set dynamicport udp start=10000 num=1000
+
+    Start-Process -FilePath $SigniantDestinationPath -ArgumentList "/z", '"-type=agent -mode=silent -installkey=keyless -setupfiledir=D:\AzureData"' -Wait
+
 }
 
 try {
