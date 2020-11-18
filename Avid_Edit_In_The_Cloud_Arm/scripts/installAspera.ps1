@@ -62,11 +62,16 @@ Install-Aspera {
    
     Write-Log "downloading Aspera Server"
     $AsperaDestinationPath = "D:\AzureData\Install_Aspera.exe"
+    $AsperaCmdPath = "D:\AzureData\IBMAspera.cmd"
 
     Write-Log $AsperaDestinationPath
     DownloadFileOverHttp $AsperaURL $AsperaDestinationPath
 
-    Start-Process -FilePath $AsperaDestinationPath -ArgumentList "/quiet", "/log installation.log", "/norestart" -Wait -Verb RunAs
+    Set-Content $AsperaCmdPath "Install_Aspera.exe /quiet /log aspera_installation.log"
+
+    Set-Location "D:\AzureData"
+    Start-Process -FilePath '.\IBMAspera.cmd' -RedirectStandardOutput "D:\AzureData\aspera.log" -Wait -Verb RunAs
+    #Start-Process -FilePath $AsperaDestinationPath -ArgumentList "/quiet", "/log installation.log", "/norestart" -Wait -Verb RunAs
 
 }
 
