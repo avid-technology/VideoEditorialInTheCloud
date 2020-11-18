@@ -61,13 +61,13 @@ function
 Install-Aspera {
    
     Write-Log "downloading Aspera Server"
-    $AsperaDestinationPath = "D:\AzureData\Install_Aspera.exe"
+    $AsperaDestinationPath = "D:\AzureData\IBMAsperaHSTS-ML-3.9.6.exe"
     $AsperaCmdPath = "D:\AzureData\IBMAspera.cmd"
 
     Write-Log $AsperaDestinationPath
     DownloadFileOverHttp $AsperaURL $AsperaDestinationPath
 
-    Set-Content $AsperaCmdPath "Install_Aspera.exe /quiet /log aspera_installation.log"
+    Set-Content $AsperaCmdPath "IBMAsperaHSTS-ML-3.9.6.exe  /msicl ""ADDLOCAL=ProdEntServer,FASP,ScpClient,Central,SSHServer,PostProcessor,SYNC,FASPFRAMES,NODE ASPERA_SSHD_USER=mc_service@studio.lab ASPERA_SSHD_USER_CONVERTED=mc_service@studio.lab ASPERA_SSHD_PASS=""""""Avid1234567$"""""""" /quiet /log aspera_installation.log"
 
     Set-Location "D:\AzureData"
     Start-Process -FilePath '.\IBMAspera.cmd' -RedirectStandardOutput "D:\AzureData\aspera.log" -Wait
