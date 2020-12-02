@@ -55,6 +55,12 @@ Install-ChocolatyAndPackages {
     Write-Log "choco install -y 7zip.install"
     choco install -y 7zip.install
 
+    Write-Log "choco Install Microsoft C++ Redistributions"
+    choco install -y vcredist2008
+    choco install -y vcredist2012
+    choco install -y vcredist2013
+    choco install -y vcredist2017
+
 }
 
 function 
