@@ -55,12 +55,6 @@ Install-ChocolatyAndPackages {
     Write-Log "choco install -y 7zip.install"
     choco install -y 7zip.install
 
-    Write-Log "choco Install Microsoft C++ Redistributions"
-    choco install -y vcredist2008
-    choco install -y vcredist2012
-    choco install -y vcredist2013
-    choco install -y vcredist2017
-
 }
 
 function 
@@ -68,15 +62,16 @@ Install-Aspera {
    
     Write-Log "downloading Aspera Server"
     $AsperaDestinationPath = "D:\AzureData\IBMAsperaHSTS-ML-3.9.6.exe"
-    $AsperaCmdPath = "D:\AzureData\IBMAspera.cmd"
+    $VCURL = "https://eitcstore01.blob.core.windows.net/installers/vc_redist.x64.exe"
+    $VCInstallerPath = "C:\AzureData\vc_redist.x64.exe"
 
     Write-Log $AsperaDestinationPath
     DownloadFileOverHttp $AsperaURL $AsperaDestinationPath
+    DownloadFileOverHttp $VCURL $VCInstallerPath
 
-    Set-Content $AsperaCmdPath "IBMAsperaHSTS-ML-3.9.6.exe  /msicl /quiet /log aspera_installation.log"
+    Start-Process -FilePath $VCInstallerPath -ArgumentList "/Q" -Wait
 
-    Set-Location "D:\AzureData"
-    Start-Process -FilePath '.\IBMAspera.cmd' -RedirectStandardOutput "D:\AzureData\aspera.log" -Wait
+    Start-Process -FilePath $AsperaInstallerPath -ArgumentList "/msicl", "/quiet", "/log", "C:\AzureData\aspera_installation.log" -Wait
     #Start-Process -FilePath $AsperaDestinationPath -ArgumentList "/quiet", "/log installation.log", "/norestart" -Wait -Verb RunAs
 
 }
