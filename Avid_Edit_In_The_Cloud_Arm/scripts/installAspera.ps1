@@ -63,7 +63,7 @@ Install-Aspera {
     Write-Log "downloading Aspera Server"
     $AsperaDestinationPath = "D:\AzureData\IBMAsperaHSTS-ML-3.9.6.exe"
     $VCURL = "https://eitcstore01.blob.core.windows.net/installers/vc_redist.x64.exe"
-    $VCInstallerPath = "C:\AzureData\vc_redist.x64.exe"
+    $VCInstallerPath = "D:\AzureData\vc_redist.x64.exe"
 
     Write-Log $AsperaDestinationPath
     DownloadFileOverHttp $AsperaURL $AsperaDestinationPath
