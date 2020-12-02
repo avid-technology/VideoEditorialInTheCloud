@@ -55,7 +55,7 @@ Install-ChocolatyAndPackages {
     Write-Log "choco install -y 7zip.install"
     choco install -y 7zip.install
 
-    choco install vcredist2015
+    choco install -y vcredist2015
 
 }
 
