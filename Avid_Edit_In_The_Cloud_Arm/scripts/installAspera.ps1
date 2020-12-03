@@ -63,7 +63,7 @@ function
 Install-Aspera {
    
     Write-Log "downloading Aspera Server"
-    $AsperaDestinationPath = "D:\AzureData\IBMAsperaHSTS-ML-3.9.6.exe"
+    $AsperaDestinationPath = "D:\AzureData\IBMAsperaHighSpeedTransferServer.msi"
     #$VCURL = "https://eitcstore01.blob.core.windows.net/installers/vc_redist.x64.exe"
     #$VCInstallerPath = "D:\AzureData\vc_redist.x64.exe"
 
@@ -73,7 +73,7 @@ Install-Aspera {
 
     #Start-Process -FilePath $VCInstallerPath -ArgumentList "/quiet" -Wait
 
-    Start-Process -FilePath $AsperaDestinationPath -ArgumentList "/msicl", "/quiet", "/log", "D:\AzureData\aspera_installation.log" -Wait
+    Start-Process -FilePath $AsperaDestinationPath -ArgumentList "/quiet", "/log", "D:\AzureData\aspera_installation.log", "/norestart" -Wait
     #Start-Process -FilePath $AsperaDestinationPath -ArgumentList "/quiet", "/log installation.log", "/norestart" -Wait -Verb RunAs
 
 }

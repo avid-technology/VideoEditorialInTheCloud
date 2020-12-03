@@ -47,7 +47,7 @@
           },
       "asperaInstallName": {
         "type": "string",
-        "defaultValue": "IBMAsperaHighSpeedTransferServer-ML-3.9.6.178596-win-v140_xp-64.exe",
+        "defaultValue": "IBMAsperaHighSpeedTransferServer.msi",
         "metadata": {
           "description": "Aspera Install File Name"
         }
