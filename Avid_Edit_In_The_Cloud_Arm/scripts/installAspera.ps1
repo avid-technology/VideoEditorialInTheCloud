@@ -64,14 +64,14 @@ Install-Aspera {
    
     Write-Log "downloading Aspera Server"
     $AsperaDestinationPath = "D:\AzureData\IBMAsperaHighSpeedTransferServer.msi"
-    #$VCURL = "https://eitcstore01.blob.core.windows.net/installers/vc_redist.x64.exe"
-    #$VCInstallerPath = "D:\AzureData\vc_redist.x64.exe"
+    $VCURL = "https://eitcstore01.blob.core.windows.net/installers/vc_redist.x64.exe"
+    $VCInstallerPath = "D:\AzureData\vc_redist.x64.exe"
 
     Write-Log $AsperaDestinationPath
     DownloadFileOverHttp $AsperaURL $AsperaDestinationPath
-    #DownloadFileOverHttp $VCURL $VCInstallerPath
+    DownloadFileOverHttp $VCURL $VCInstallerPath
 
-    #Start-Process -FilePath $VCInstallerPath -ArgumentList "/quiet" -Wait
+    Start-Process -FilePath $VCInstallerPath -ArgumentList "/quiet" -Wait
 
     Start-Process -FilePath $AsperaDestinationPath -ArgumentList "/quiet", "/log", "D:\AzureData\aspera_installation.log", "/norestart" -Wait
     #Start-Process -FilePath $AsperaDestinationPath -ArgumentList "/quiet", "/log installation.log", "/norestart" -Wait -Verb RunAs
