@@ -71,7 +71,7 @@ Install-Aspera {
     DownloadFileOverHttp $AsperaURL $AsperaDestinationPath
     DownloadFileOverHttp $VCURL $VCInstallerPath
 
-    Start-Process -FilePath $VCInstallerPath -ArgumentList "/quiet", "/norestart" -Wait
+    Start-Process -FilePath $VCInstallerPath -ArgumentList "/Q", "/norestart" -Wait
 
     Start-Process -FilePath $AsperaDestinationPath -ArgumentList "/quiet", "/log", "D:\AzureData\aspera_installation.log", "/norestart" -Wait
     #Start-Process -FilePath $AsperaDestinationPath -ArgumentList "/quiet", "/log installation.log", "/norestart" -Wait -Verb RunAs
