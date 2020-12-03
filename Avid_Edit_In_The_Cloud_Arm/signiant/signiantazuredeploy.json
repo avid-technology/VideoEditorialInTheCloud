@@ -2,14 +2,15 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "showCode": {
-      "type": "string",
-      "minLength": 3,
-      "maxLength": 4,
-      "metadata": {
-        "description": "Showcode must be 3-char min, 4-char max, lowercase alphanumeric"
-      }
-    },
+    "resourcePrefix": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 10,
+            "defaultValue": "show-sig",
+            "metadata": {
+            "description": "Prefix must be 5-char min, 10-char max, lowercase alphanumeric"
+            }
+        },
     "adminUsername": {
       "type": "string",
       "metadata": {
@@ -71,14 +72,14 @@
     }
   },
   "variables": {
-    "uniqueName": "[parameters('showCode')]",
+    "uniqueName": "[parameters('resourcePrefix')]",
     "subnetId": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]",
     "location": "[resourceGroup().location]",
     "vmSize": "Standard_D8_v3",
-    "nicName": "[concat(variables('uniqueName'),'-sig-nic')]",
-    "publicIPAddressName": "[concat(variables('uniqueName'),'-sig-ip')]",
-    "vmName": "[concat(variables('uniqueName'),'-sig')]",
-    "networkSecurityGroupName": "[concat(variables('uniqueName'),'-sig-nsg')]",
+    "nicName": "[concat(variables('uniqueName'),'-nic')]",
+    "publicIPAddressName": "[concat(variables('uniqueName'),'-ip')]",
+    "vmName": "[parameters('resourcePrefix')]",
+    "networkSecurityGroupName": "[concat(variables('uniqueName'),'-nsg')]",
     "adminUsername": "[parameters('adminUsername')]",
     "adminPassword": "[parameters('adminPassword')]",
     "scriptFileName": "installSigniant.ps1",
@@ -337,7 +338,7 @@
           "imageReference": {
             "publisher": "MicrosoftWindowsServer",
             "offer": "WindowsServer",
-            "sku": "2016-Datacenter",
+            "sku": "2019-Datacenter",
             "version": "latest"
           },
           "osDisk": {

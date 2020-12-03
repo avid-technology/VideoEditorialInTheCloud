@@ -6,7 +6,7 @@
             "type": "string",
             "minLength": 5,
             "maxLength": 10,
-            "defaultValue": "show-asp",
+            "defaultValue": "sdbx-mclic",
             "metadata": {
             "description": "Prefix must be 5-char min, 10-char max, lowercase alphanumeric"
             }
@@ -45,18 +45,11 @@
               "type": "string",
               "defaultValue": "https://eitcstore01.blob.core.windows.net"
           },
-      "asperaInstallName": {
+      "licenseInstallName": {
         "type": "string",
-        "defaultValue": "IBMAsperaHighSpeedTransferServer.msi",
+        "defaultValue": "FlexNetDeviceManagerSetup_5.1.2_Win.zip",
         "metadata": {
           "description": "Aspera Install File Name"
-        }
-      },
-      "avidNexisClientInstallName": {
-        "type": "string",
-        "defaultValue": "AvidNEXISClient_Win64_20.7.3.10.msi",
-        "metadata": {
-          "description": "Avid Nexis Client Install Name"
         }
       },
       "branchName": {
@@ -77,72 +70,20 @@
       "location": "[resourceGroup().location]",
       "vmSize": "Standard_D8_v3",
       "nicName": "[concat(variables('uniqueName'),'-nic')]",
-      "publicIPAddressName": "[concat(variables('uniqueName'),'-ip')]",
       "vmName": "[parameters('resourcePrefix')]",
       "networkSecurityGroupName": "[concat(variables('uniqueName'),'-nsg')]",
       "adminUsername": "[parameters('adminUsername')]",
       "adminPassword": "[parameters('adminPassword')]",
-      "scriptFileName": "installAspera.ps1",
+      "scriptFileName": "installLicense.ps1",
       "_githubLocation": "[concat('https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/',parameters('branchName'),'/Avid_Edit_In_The_Cloud_Arm')]",
-      "asperaInstallName":"[parameters('asperaInstallName')]",
-      "avidNexisClientInstallName":"[parameters('avidNexisClientInstallName')]",
+      "licenseInstallName":"[parameters('licenseInstallName')]",
       "scriptLocation": "[concat(variables('_githubLocation'), '/','scripts')]",
-      "asperaInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('asperaInstallName'))]",
-      "avidNexisClentInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('avidNexisClientInstallName'))]",
-      "scriptParameters": "[concat('-Aspera ', variables('asperaInstallLocation'),' -AvidNEXISClientURL ', variables('avidNexisClentInstallLocation'))]",
+      "licenseInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('licenseInstallName'))]",
+      "scriptParameters": "[concat('-License ', variables('licenseInstallLocation'))]",
       "scriptFolder": ".",
-      "networkSecurityGroupRules": [
-        {
-          "name": "RemoteAccessRDP",
-          "properties": {
-            "priority": 100,
-            "protocol": "TCP",
-            "access": "Allow",
-            "direction": "Inbound",
-            "sourceAddressPrefix": "*",
-            "sourcePortRange": "*",
-            "destinationAddressPrefix": "*",
-            "destinationPortRange": "3389"
-          }
-        },
-        {
-          "name": "Aspera-TCP-33001-In",
-          "properties": {
-            "priority": 215,
-            "protocol": "TCP",
-            "access": "Allow",
-            "direction": "Inbound",
-            "sourceAddressPrefix": "*",
-            "sourcePortRange": "*",
-            "destinationAddressPrefix": "*",
-            "destinationPortRange": "33001"
-          }
-        },
-        {
-          "name": "Aspera-UDP-33001-In",
-          "properties": {
-            "priority": 220,
-            "protocol": "UDP",
-            "access": "Allow",
-            "direction": "Inbound",
-            "sourceAddressPrefix": "*",
-            "sourcePortRange": "*",
-            "destinationAddressPrefix": "*",
-            "destinationPortRange": "33001-33101"
-          }
-        }
-      ]
+      "networkSecurityGroupRules": []
     },
     "resources": [
-      {
-        "apiVersion": "2017-06-01",
-        "type": "Microsoft.Network/publicIPAddresses",
-        "name": "[variables('publicIPAddressName')]",
-        "location": "[variables('location')]",
-        "properties": {
-          "publicIPAllocationMethod": "Static"
-        }
-      },
       {
         "name": "[variables('networkSecurityGroupName')]",
         "type": "Microsoft.Network/networkSecurityGroups",
@@ -159,7 +100,6 @@
         "name": "[variables('nicName')]",
         "location": "[variables('location')]",
         "dependsOn": [
-          "[variables('publicIPAddressName')]",
           "[variables('networkSecurityGroupName')]"
         ],
         "properties": {
@@ -168,9 +108,6 @@
               "name": "ipconfig1",
               "properties": {
                 "privateIPAllocationMethod": "Dynamic",
-                "publicIPAddress": {
-                  "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
-                },
                 "subnet": {
                   "id": "[variables('subnetId')]"
                 }
@@ -227,7 +164,7 @@
       },
       {
         "type": "Microsoft.Compute/virtualMachines/extensions",
-        "name": "[concat(concat(variables('vmName'),'/create.Aspera.v1.0.0'))]",
+        "name": "[concat(concat(variables('vmName'),'/create.License.v1.0.0'))]",
         "apiVersion": "2017-12-01",
         "location": "[variables('location')]",
         "dependsOn": [
@@ -248,9 +185,5 @@
       }
     ],
     "outputs": {
-      "Signiamt-IPAddress": {
-        "type": "string",
-        "value": "[reference(variables('publicIPAddressName'), '2016-03-30').IPaddress]"
-      }
     }
   }

@@ -1,9 +1,7 @@
 <# Custom Script for Windows to install a file from Azure Storage using the staging folder created by the deployment script #>
 param (
     [ValidateNotNullOrEmpty()]
-    $AsperaURL,
-    [ValidateNotNullOrEmpty()]
-    $AvidNEXISClientURL
+    $LicenseURL
 )
 
 filter Timestamp {"$(Get-Date -Format o): $_"}
@@ -31,19 +29,6 @@ DownloadFileOverHttp($Url, $DestinationPath) {
     Invoke-WebRequest $Url -UseBasicParsing -OutFile $DestinationPath -Verbose
     Write-Log "$DestinationPath updated"
 }
-
-function 
-Install-NexisClient {
-   
-    Write-Log "downloading Nexis Client"
-    $NexisDestinationPath = "D:\AzureData\AvidNEXISClient.msi"
-    Write-Log $DestinationPath
-    DownloadFileOverHttp $AvidNEXISClientURL $NexisDestinationPath
-
-    Start-Process -FilePath $NexisDestinationPath -ArgumentList "/quiet", "/passive", "/norestart" -Wait
-    
-}
-
 function
 Install-ChocolatyAndPackages {
     
@@ -55,26 +40,16 @@ Install-ChocolatyAndPackages {
     Write-Log "choco install -y 7zip.install"
     choco install -y 7zip.install
 
-    choco install -y vcredist2015
-
 }
 
 function 
-Install-Aspera {
+Install-License {
    
-    Write-Log "downloading Aspera Server"
-    $AsperaDestinationPath = "D:\AzureData\IBMAsperaHighSpeedTransferServer.msi"
-    #$VCURL = "https://eitcstore01.blob.core.windows.net/installers/vc_redist.x64.exe"
-    #$VCInstallerPath = "D:\AzureData\vc_redist.x64.exe"
+    Write-Log "downloading License Server"
+    $LicenseDestinationPath = "C:\Users\Public\Desktop\Install_License.zip"
 
-    Write-Log $AsperaDestinationPath
-    DownloadFileOverHttp $AsperaURL $AsperaDestinationPath
-    #DownloadFileOverHttp $VCURL $VCInstallerPath
-
-    #Start-Process -FilePath $VCInstallerPath -ArgumentList "/Q", "/norestart" -Wait
-
-    Start-Process -FilePath $AsperaDestinationPath -ArgumentList "/quiet", "/log", "D:\AzureData\aspera_installation.log", "/norestart" -Wait
-    #Start-Process -FilePath $AsperaDestinationPath -ArgumentList "/quiet", "/log installation.log", "/norestart" -Wait -Verb RunAs
+    Write-Log $LicenseDestinationPath
+    DownloadFileOverHttp $LicenseURL $LicenseDestinationPath
 
 }
 
@@ -89,13 +64,9 @@ try {
         catch {
             # chocolaty is best effort
         }
-    
-    Write-Log "Call Install-NexisCLient"
-    Install-NexisClient
 
-    Write-Log "Call Install-Aspera"
-    Install-Aspera
-
+    Write-Log "Call Install-License"
+    Install-License
 }
 catch {
     Write-Error $_
