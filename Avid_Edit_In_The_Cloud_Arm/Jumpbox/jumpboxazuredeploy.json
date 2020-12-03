@@ -4,10 +4,11 @@
   "parameters": {
     "resourcePrefix": {
       "type": "string",
-      "minLength": 3,
-      "maxLength": 4,
+      "minLength": 5,
+      "maxLength": 10,
+      "defaultValue": "show-jpbx",
       "metadata": {
-        "description": "Prefix must be 3-char min, 4-char max, lowercase alphanumeric"
+      "description": "Prefix must be 5-char min, 10-char max, lowercase alphanumeric"
       }
     },
     "adminUsername": {
@@ -71,7 +72,7 @@
     "networkSecurityGroupName": "[concat(variables('uniqueName'),'-jpbx-nsg')]",
     "adminUsername": "[parameters('adminUsername')]",
     "adminPassword": "[parameters('adminPassword')]",
-    "scriptFileName": "jumpbox.ps1",
+    "scriptFileName": "installJumpbox.ps1",
     "_githubLocation": "[concat('https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/',parameters('branchName'),'/Avid_Edit_In_The_Cloud_Arm')]",
     "scriptLocation": "[concat(variables('_githubLocation'), '/','scripts')]",
     "scriptParameters": "",
