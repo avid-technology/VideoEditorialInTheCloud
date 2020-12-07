@@ -124,6 +124,19 @@
         "scriptFileName": "setupProTools_2020.11.0.ps1",
         "networkSecurityGroupRules": [
             {
+                "name": "RDPtcp",
+                "properties": {
+                    "priority": 300,
+                    "protocol": "TCP",
+                    "access": "Allow",
+                    "direction": "Inbound",
+                    "sourceAddressPrefix": "*",
+                    "sourcePortRange": "*",
+                    "destinationAddressPrefix": "*",
+                    "destinationPortRange": "3389"
+                }
+            },
+            {
                 "name": "PCoIPtcp",
                 "properties": {
                     "priority": 301,

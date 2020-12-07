@@ -63,7 +63,7 @@ function
 Install-ProTools {
     
     Write-Log "downloading ProTools"
-    $DestinationPath = "D:\AzureData\ProTools.zip"
+    $DestinationPath = "C:\Users\Public\Desktop\ProTools.zip"
 
     Write-Log $DestinationPath
     DownloadFileOverHttp $ProToolsURL $DestinationPath
