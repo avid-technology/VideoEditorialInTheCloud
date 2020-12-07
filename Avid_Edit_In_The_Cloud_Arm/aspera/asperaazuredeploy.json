@@ -3,12 +3,12 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
       "resourcePrefix": {
-            "type": "string",
-            "minLength": 5,
-            "maxLength": 10,
-            "defaultValue": "show-asp",
-            "metadata": {
-            "description": "Prefix must be 5-char min, 10-char max, lowercase alphanumeric"
+        "type": "string",
+        "minLength": 5,
+        "maxLength": 15,
+        "defaultValue": "show-asp-01",
+        "metadata": {
+        "description": "Prefix must be 5-char min, 15-char max, lowercase alphanumeric"
             }
         },
       "adminUsername": {

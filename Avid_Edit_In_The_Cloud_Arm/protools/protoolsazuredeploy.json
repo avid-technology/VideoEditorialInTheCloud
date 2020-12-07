@@ -5,11 +5,11 @@
         "resourcePrefix": {
             "type": "string",
             "minLength": 5,
-            "maxLength": 10,
-            "defaultValue": "show-edit",
+            "maxLength": 15,
+            "defaultValue": "show-prot-01",
             "metadata": {
-            "description": "Prefix must be 5-char min, 10-char max, lowercase alphanumeric"
-            }
+            "description": "Prefix must be 5-char min, 15-char max, lowercase alphanumeric"
+                }
         },
         "adminUsername": {
             "type": "string",
@@ -26,7 +26,7 @@
         "vmSize": {
             "type": "string",
             "metadata": {
-                "description": "Size of the Media Composer VM. Please select v4 type for AMD GPU and v3 for NVIDIA GPU"
+                "description": "Size of the ProTools VM. Please select v4 type for AMD GPU and v3 for NVIDIA GPU"
             },
             "allowedValues": [
                 "Standard_NV4as_v4",
@@ -37,13 +37,6 @@
                 "Standard_NV24s_v3",
                 "Standard_NV48s_v3"
             ]
-        },
-        "numberOfInstances": {
-            "type": "int",
-            "metadata": {
-                "description": "Number of instances to launch"
-            },
-            "defaultValue": 1
         },
         "general-VnetResourceGroup": {
             "type": "string",
@@ -67,29 +60,25 @@
             "type": "string",
             "defaultValue": "https://eitcstore01.blob.core.windows.net"
         },
-        "mediaComposerOS": {
+        "proToolsOS": {
             "type": "string",
             "metadata": {
-                "description": "OS for MediaComposer. Should be either: Windows_10, Windows_Server_2016, Windows_Server_2019"
+                "description": "OS for ProTools. Should be either: Windows_10, Windows_Server_2016, Windows_Server_2019"
             },
             "allowedValues": [
-                "Windows_10",
-                "Windows_Server_2016",
-                "Windows_Server_2019"
+                "Windows_10"
             ],
             "defaultValue": "Windows_10"
         },
-        "mediaComposerVersion": {
+        "proToolsVersion": {
             "type": "string",
             "metadata": {
-                "description": "MediaComposer version. Should be either: 2018.12.13, 2019.12, 2020.9.0"
+                "description": "ProTools version."
             },
             "allowedValues": [
-                "2018.12.13",
-                "2019.12",
-                "2020.9.0"
+                "2020.11.0"
             ],
-            "defaultValue": "2020.9.0"
+            "defaultValue": "2020.11.0"
         },
         "teradiciInstallFileName": {
             "type": "string",
@@ -126,32 +115,13 @@
         "adminPassword": "[parameters('adminPassword')]",
         "adminUsername": "[parameters('adminUsername')]",
         "createNic?": true,
-        "osType": "[variables(concat('osType_',parameters('mediaComposerOS')))]",
-        "osType_Windows_10": {
+        "osType": {
             "publisher": "MicrosoftWindowsDesktop",
             "offer": "Windows-10",
             "sku": "rs5-pro",
             "version": "latest"
         },
-        "osType_Windows_Server_2016": {
-            "publisher": "MicrosoftWindowsServer",
-            "offer": "WindowsServer",
-            "sku": "2016-Datacenter",
-            "version": "latest"
-        },
-        "osType_Windows_Server_2019": {
-            "publisher": "MicrosoftWindowsServer",
-            "offer": "WindowsServer",
-            "sku": "2019-Datacenter",
-            "version": "latest"
-        },
-        "scriptFileName": "[variables(concat('mcVersion_',parameters('gpuType'),'_',parameters('mediaComposerVersion')))]",
-        "mcVersion_AMD_2018.12.13": "setupMediaComposer_AMD_20181213.ps1",
-        "mcVersion_AMD_2019.12": "setupMediaComposer_AMD_20209.ps1",
-        "mcVersion_AMD_2020.9.0": "setupMediaComposer_AMD_20209.ps1",
-        "mcVersion_NVIDIA_2018.12.13": "setupMediaComposer_NVIDIA_20181213.ps1",
-        "mcVersion_NVIDIA_2019.12": "setupMediaComposer_NVIDIA_20209.ps1",
-        "mcVersion_NVIDIA_2020.9.0": "setupMediaComposer_NVIDIA_20209.ps1",
+        "scriptFileName": "setupProTools_2020.11.0.ps1",
         "networkSecurityGroupRules": [
             {
                 "name": "PCoIPtcp",
@@ -223,24 +193,23 @@
         "location": "[resourceGroup().location]",
         "uniqueName": "[parameters('resourcePrefix')]",
         "networkSecurityGroupName": "[concat(parameters('resourcePrefix'),'-nsg')]",
-        "nicName": "[concat(variables('uniqueName'), '-nic-')]",
-        "numberOfInstances": "[parameters('numberOfInstances')]",
-        "publicIPAddressName": "[concat(variables('uniqueName'), '-ip-')]",
-        "osDiskName": "[concat(variables('uniqueName'), '-os-disk-')]",
+        "nicName": "[concat(variables('uniqueName'), '-nic')]",
+        "publicIPAddressName": "[concat(variables('uniqueName'), '-ip')]",
+        "osDiskName": "[concat(variables('uniqueName'), '-os-disk')]",
         "subnetId": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]",
         "teradiciKey": "null",
-        "vmName": "[concat(variables('uniqueName'),'-')]",
+        "vmName": "[parameters('resourcePrefix')]",
         "vmSize": "[parameters('vmSize')]",
         "scriptFolder": ".",
-        "mediaComposerFileName": "[concat('Media_Composer_',parameters('mediaComposerVersion'),'_Win.zip')]",
+        "proToolsFileName": "[concat('Pro_Tools_',parameters('proToolsVersion'),'_Win.zip')]",
         "teradiciInstallFileName": "[parameters('teradiciInstallFileName')]",
         "nexisClientInstallFileName": "[parameters('nexisClientInstallFileName')]",
         "_githubLocation": "[concat('https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/',parameters('branchName'),'/Avid_Edit_In_The_Cloud_Arm')]",
         "scriptLocation": "[concat(variables('_githubLocation'), '/','scripts')]",
-        "mediaComposerInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('mediaComposerFileName'))]",
+        "proToolsInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('proToolsFileName'))]",
         "teradiciInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('teradiciInstallFileName'))]",
         "nexisClientInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('nexisClientInstallFileName'))]",
-        "scriptParameters": "[concat('-TeradiciKey ', variables('teradiciKey'),' -MediaComposerURL ', variables('mediaComposerInstallLocation'),' -TeradiciURL ', variables('teradiciInstallLocation'),' -AvidNEXISClientURL ', variables('nexisClientInstallLocation'))]"
+        "scriptParameters": "[concat('-TeradiciKey ', variables('teradiciKey'),' -ProToolsURL ', variables('proToolsInstallLocation'),' -TeradiciURL ', variables('teradiciInstallLocation'),' -AvidNEXISClientURL ', variables('nexisClientInstallLocation'))]"
     },
     "resources": [
         {
@@ -269,12 +238,8 @@
         {
             "apiVersion": "2017-10-01",
             "type": "Microsoft.Network/publicIPAddresses",
-            "name": "[concat(variables('publicIPAddressName'),padLeft(copyindex(1),2,'0'))]",
+            "name": "[variables('publicIPAddressName')]",
             "location": "[variables('location')]",
-            "copy": {
-                "name": "publicIPLoop",
-                "count": "[variables('numberOfInstances')]"
-            },
             "properties": {
                 "publicIPAllocationMethod": "Static"
             }
@@ -283,15 +248,11 @@
             "apiVersion": "2017-10-01",
             "condition": "[variables('createNic?')]",
             "type": "Microsoft.Network/networkInterfaces",
-            "name": "[concat(variables('nicName'), padLeft(copyindex(1),2,'0'))]",
+            "name": "[variables('nicName')]",
             "location": "[variables('location')]",
-            "copy": {
-                "name": "nicLoop",
-                "count": "[variables('numberOfInstances')]"
-            },
             "dependsOn": [
-                "publicIPLoop",
-                "[concat(variables('networkSecurityGroupName'))]"
+                "[variables('publicIPAddressName')]",
+                "[variables('networkSecurityGroupName')]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -300,7 +261,7 @@
                         "properties": {
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',concat(variables('publicIPAddressName'), padLeft(copyindex(1),2,'0')))]"
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
                             },
                             "subnet": {
                                 "id": "[variables('subnetId')]"
@@ -316,24 +277,20 @@
         {
             "apiVersion": "2017-12-01",
             "tags": {
-                "avid": "mediacomposer"
+                "avid": "protools"
             },
             "type": "Microsoft.Compute/virtualMachines",
-            "name": "[concat(variables('vmName'),  padLeft(copyindex(1),2,'0'))]",
+            "name": "[variables('vmName')]",
             "location": "[variables('location')]",
-            "copy": {
-                "name": "virtualMachineLoop",
-                "count": "[variables('numberOfInstances')]"
-            },
             "dependsOn": [
-                "nicLoop"
+                "[variables('nicName')]"
             ],
             "properties": {
                 "hardwareProfile": {
                     "vmSize": "[variables('vmSize')]"
                 },
                 "osProfile": {
-                    "computername": "[concat(variables('vmName'), padLeft(copyindex(1),2,'0'))]",
+                    "computername": "[variables('vmName')]",
                     "adminUsername": "[variables('adminUsername')]",
                     "adminPassword": "[variables('adminPassword')]",
                     "windowsConfiguration": {
@@ -343,14 +300,14 @@
                 "storageProfile": {
                     "imageReference": "[variables('osType')]",
                     "osDisk": {
-                        "name": "[concat(variables('osDiskName'), padLeft(copyindex(1),2,'0'))]",
+                        "name": "[variables('osDiskName')]",
                         "createOption": "FromImage"
                     }
                 },
                 "networkProfile": {
                     "networkInterfaces": [
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(variables('nicName'), padLeft(copyindex(1),2,'0')))]"
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
                         }
                     ]
                 }
@@ -358,15 +315,11 @@
         },
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat(concat(variables('vmName'),  padLeft(copyindex(1),2,'0')),'/create.avid.mediacomposer.v0.3.0')]",
+            "name": "[concat(variables('vmName'),'/','installprotools')]",
             "apiVersion": "2017-12-01",
             "location": "[variables('location')]",
-            "copy": {
-                "name": "extensionLoop1",
-                "count": "[variables('numberOfInstances')]"
-            },
             "dependsOn": [
-                "virtualMachineLoop"
+                "[variables('vmName')]"
             ],
             "properties": {
                 "publisher": "Microsoft.Compute",
@@ -378,50 +331,6 @@
                         "[concat(variables('scriptLocation'), '/',variables('scriptFileName'))]"
                     ],
                     "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('scriptFolder'), '/', variables('scriptFileName'), ' ', variables('scriptParameters'))]"
-                }
-            }
-        },
-        {
-            "condition": "[equals(parameters('gpuType'),'NVIDIA')]",
-            "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat(concat(variables('vmName'),  padLeft(copyindex(1),2,'0')),'/install.nvidiagpu.v0')]",
-            "apiVersion": "2015-06-15",
-            "location": "[variables('location')]",
-            "copy": {
-                "name": "extensionLoop2",
-                "count": "[variables('numberOfInstances')]"
-            },
-            "dependsOn": [
-                "extensionLoop1"
-            ],
-            "properties": {
-                "publisher": "Microsoft.HpcCompute",
-                "type": "NvidiaGpuDriverWindows",
-                "typeHandlerVersion": "1.0",
-                "autoUpgradeMinorVersion": true,
-                "settings": {
-                }
-            }
-        },
-        {
-            "condition": "[equals(parameters('gpuType'),'AMD')]",
-            "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat(concat(variables('vmName'),  padLeft(copyindex(1),2,'0')),'/install.amdgpu.v0')]",
-            "apiVersion": "2015-06-15",
-            "location": "[variables('location')]",
-            "copy": {
-                "name": "extensionLoop2",
-                "count": "[variables('numberOfInstances')]"
-            },
-            "dependsOn": [
-                "extensionLoop1"
-            ],
-            "properties": {
-                "publisher": "Microsoft.HpcCompute",
-                "type": "AmdGpuDriverWindows",
-                "typeHandlerVersion": "1.0",
-                "autoUpgradeMinorVersion": true,
-                "settings": {
                 }
             }
         }
