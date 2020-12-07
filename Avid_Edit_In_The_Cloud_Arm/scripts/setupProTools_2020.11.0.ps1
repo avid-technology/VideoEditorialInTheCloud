@@ -1,11 +1,11 @@
 <#
     .SYNOPSIS
-        Configure Windows 10 Workstation with Avid Media Composer.
+        Configure Windows 10 Workstation with Avid ProTools.
 
     .DESCRIPTION
-        Configure Windows 10 Workstation with Avid Media Composer.
+        Configure Windows 10 Workstation with Avid ProTools.
 
-        Example command line: .\setupMachine.ps1 Avid Media Composer
+        Example command line: .\setupMachine.ps1 Avid ProTools
 #>
 [CmdletBinding(DefaultParameterSetName = "Standard")]
 param(
@@ -123,16 +123,14 @@ try {
         Write-Log "Call Install-NexisCLient"
         Install-NexisClient
 
-        Write-Log "Call Install-MediaComposer"
-        Install-MediaComposer
+        Write-Log "Call Install-ProTools"
+        Install-ProTools
 
         # Write-Log "Cleanup"
         # Remove-Item D:\AzureData -Force  -Recurse -ErrorAction SilentlyContinue
         
         Write-Log "Complete"
 
-        Write-Log "Restart Computer"
-        Restart-Computer 
     }
     else {
         # keep for debugging purposes

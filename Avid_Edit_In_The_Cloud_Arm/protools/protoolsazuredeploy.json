@@ -318,6 +318,10 @@
             "name": "[concat(variables('vmName'),'/','installprotools')]",
             "apiVersion": "2017-12-01",
             "location": "[variables('location')]",
+            "copy": {
+                "name": "extensionLoop1",
+                "count": 1
+            },
             "dependsOn": [
                 "[variables('vmName')]"
             ],
@@ -331,6 +335,42 @@
                         "[concat(variables('scriptLocation'), '/',variables('scriptFileName'))]"
                     ],
                     "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('scriptFolder'), '/', variables('scriptFileName'), ' ', variables('scriptParameters'))]"
+                }
+            }
+        },
+         {
+            "condition": "[equals(parameters('gpuType'),'NVIDIA')]",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(variables('vmName'),'/install.nvidia.v0')]",
+            "apiVersion": "2015-06-15",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "extensionLoop1"
+            ],
+            "properties": {
+                "publisher": "Microsoft.HpcCompute",
+                "type": "NvidiaGpuDriverWindows",
+                "typeHandlerVersion": "1.0",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                }
+            }
+        },
+        {
+            "condition": "[equals(parameters('gpuType'),'AMD')]",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(variables('vmName'),'/install.amdgpu.v0')]",
+            "apiVersion": "2015-06-15",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "extensionLoop1"
+            ],
+            "properties": {
+                "publisher": "Microsoft.HpcCompute",
+                "type": "AmdGpuDriverWindows",
+                "typeHandlerVersion": "1.0",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
                 }
             }
         }
