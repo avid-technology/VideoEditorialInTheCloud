@@ -76,7 +76,7 @@ Install-ProTools {
     [System.IO.Compression.ZipFile]::ExtractToDirectory($DestinationPath_data, "D:\AzureData\")
 
     # Install Pro Tools
-    Start-Process -FilePath 'D:\AzureData\ProTools\Pro Tools\setup.exe' -Args '/s /v" REBOOT=ReallySuppress "/qn' -Wait
+    Start-Process -FilePath 'D:\AzureData\Pro Tools\setup.exe' -Args '/s /v" REBOOT=ReallySuppress "/qn' -Wait
    
 }
 
