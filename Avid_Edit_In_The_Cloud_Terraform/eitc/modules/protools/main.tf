@@ -1,10 +1,10 @@
 locals {
-  protools_vm_script_url      = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/avid-development/Avid_Edit_In_The_Cloud_Terraform/eitc/scripts/setupProTools_2020.11.0.ps1"
-  avid_nexis_client_url       = "https://eitcstore01.blob.core.windows.net/installers/AvidNEXISClient_Win64_20.7.3.10.msi"
-  protools_url                = "https://eitcstore01.blob.core.windows.net/installers/Pro_Tools_2020.11.0_Win.zip"
-  teradici_url                = "https://eitcstore01.blob.core.windows.net/installers/pcoip-agent-graphics_20.10.1.exe"
-  nvidia_url                  = ""
-  teradici_key                = ""
+  ProToolsScriptURL           = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/avid-development/Avid_Edit_In_The_Cloud_Terraform/eitc/scripts/setupProTools_2020.11.0.ps1"
+  TeradiciKey                 = "0000"
+  TeradiciURL                 = "https://eitcstore01.blob.core.windows.net/installers/pcoip-agent-graphics_20.10.1.exe"
+  ProToolsURL                 = "https://eitcstore01.blob.core.windows.net/installers/Pro_Tools_2020.11.0_Win.zip"
+  NvidiaURL                   = "https://"
+  AvidNexisInstallerUrl       = "https://eitcstore01.blob.core.windows.net/installers/AvidNEXISClient_Win64_20.7.3.10.msi"
 }
 
 resource "azurerm_public_ip" "ip" {
@@ -65,12 +65,12 @@ resource "azurerm_virtual_machine_extension" "protools" {
   # CustomVMExtension Documentation: https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-windows
   settings = <<SETTINGS
     {
-        "fileUris": ["${local.protools_vm_script_url}"]
+        "fileUris": ["${local.ProToolsScriptURL}"]
     }
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File setupProTools_2020.11.0.ps1 ${local.teradici_key} ${local.protools_url} ${local.teradici_url} ${local.nvidia_url} ${local.avid_nexis_client_url}"
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File setupProTools_2020.11.0.ps1 ${local.TeradiciKey} ${local.TeradiciURL} ${local.ProToolsURL} ${local.NvidiaURL} ${local.AvidNexisInstallerUrl}"
     }
   PROTECTED_SETTINGS
 }
