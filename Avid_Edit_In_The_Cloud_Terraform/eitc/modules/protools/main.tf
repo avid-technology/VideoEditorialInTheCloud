@@ -1,6 +1,6 @@
 locals {
-  protools_vm_script_url      = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/mavid-developement/Avid_Edit_In_The_Cloud_Terraform/eitc/scripts/setupProTools_2020.11.0.ps1"
-  avid_nexis_client_url       = "https://eitcstore01.blob.core.windows.net/installers/AvidNEXIS_20.7.3_Client.zip"
+  protools_vm_script_url      = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/avid-development/Avid_Edit_In_The_Cloud_Terraform/eitc/scripts/setupProTools_2020.11.0.ps1"
+  avid_nexis_client_url       = "https://eitcstore01.blob.core.windows.net/installers/AvidNEXISClient_Win64_20.7.3.10.msi"
   protools_url                = "https://eitcstore01.blob.core.windows.net/installers/Pro_Tools_2020.11.0_Win.zip"
   teradici_url                = "https://eitcstore01.blob.core.windows.net/installers/pcoip-agent-graphics_20.10.1.exe"
   nvidia_url                  = ""
@@ -56,7 +56,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
 
 resource "azurerm_virtual_machine_extension" "protools" {
   name                  = "protools"
-  virtual_machine_id    = azurerm_windows_virtual_machine.vm
+  virtual_machine_id    = azurerm_windows_virtual_machine.vm[0].id
   publisher             = "Microsoft.Compute"
   type                  = "CustomScriptExtension"
   type_handler_version  = "1.9"
@@ -70,7 +70,7 @@ resource "azurerm_virtual_machine_extension" "protools" {
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File setupProTools_2020.11.0.ps1 ${local.teradici_key} ${local.ProToolsURL} ${local.TeradiciURL} ${local.nvidia_url} ${local.AvidNexisInstallerUrl}"
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File setupProTools_2020.11.0.ps1 ${local.teradici_key} ${local.protools_url} ${local.teradici_url} ${local.nvidia_url} ${local.avid_nexis_client_url}"
     }
   PROTECTED_SETTINGS
 }

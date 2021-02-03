@@ -145,22 +145,12 @@ Install-Teradici {
 
 function 
 Install-NexisClient {
-    Write-Log "Downloading Avid NEXIS"
-    DownloadFileOverHttp $AvidNexisInstallerUrl "D:\AzureData\NEXIS.zip"
+    Write-Log "downloading Nexis Client"
+    $NexisDestinationPath = "D:\AzureData\AvidNEXISClient.msi"
+    Write-Log $DestinationPath
+    DownloadFileOverHttp $AvidNEXISClientURL $NexisDestinationPath
 
-    $7zipPath = "$env:ProgramFiles\7-Zip\7z.exe"
-
-    if (-not (Test-Path -Path $7zipPath -PathType Leaf)) {
-        throw "7zip file '$7zipPath' not found"
-    }
-
-    Set-Alias 7zip $7zipPath
-    7zip x "D:\AzureData\NEXIS.zip" -o"D:\AzureData" -y
-
-    Write-Log "Installing Avid NEXIS Client" 
-    $nexisInstallerPath = "D:\AzureData\Installers_Client"
-    $nexisInstaller = $nexisInstallerPath+ "\" +$(Get-ChildItem -Path $nexisInstallerPath *.msi)
-    Start-Process $nexisInstaller -ArgumentList "/quiet", "/passive", "/norestart" -Wait
+    Start-Process -FilePath $NexisDestinationPath -ArgumentList "/quiet", "/passive", "/norestart" -Wait
 }
 
 
