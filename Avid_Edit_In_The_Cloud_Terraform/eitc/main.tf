@@ -13,9 +13,9 @@ provider "azurerm" {
 }
 
 module "editorial_networking" {
-  source                  = "./modules/azurenetwork"
+  source                  = "./modules/network"
   vnet_name               = "${var.resource_group_name}-vnet" 
-  resource_group_name     = var.resource_group_name
+  resource_group_name     = "${var.resource_prefix}-rg"
   resource_group_location = var.resource_group_location
   address_space           = var.vnet_address_space
   dns_servers             = var.dns_servers

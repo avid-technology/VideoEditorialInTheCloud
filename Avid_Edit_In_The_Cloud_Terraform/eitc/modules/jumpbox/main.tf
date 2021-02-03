@@ -20,9 +20,9 @@ resource "azurerm_network_interface" "nic" {
   }
 }
 
-resource "azurerm_windows_virtual_machine" "vm" {
+resource "azurerm_windows_virtual_machine" "jumpbox_vm" {
   count                         = var.jumpbox_vm_instances
-  name                          = "${var.resource_group_name}-vm"
+  name                          = "${var.jumpbox_vm_hostname}-vm"
   resource_group_name           = var.resource_group_name
   location                      = var.resource_group_location
   computer_name                 = var.jumpbox_vm_hostname
