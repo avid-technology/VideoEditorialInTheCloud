@@ -48,7 +48,7 @@ module "protools_deployment" {
   resource_group_name               = "${var.resource_prefix}-rg"
   resource_group_location           = var.resource_group_location
   vnet_subnet_id                    = local.stored_subnet_id[0]
-  protools_vm_hostname              = "${var.resource_prefix}-ptls"
+  protools_vm_hostname              = "${var.resource_prefix}-pt"
   protools_vm_size                  = var.protools_vm_size
   protools_vm_instances             = var.protools_vm_instances
   depends_on                        = [module.editorial_networking]

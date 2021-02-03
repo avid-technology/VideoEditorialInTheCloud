@@ -70,6 +70,45 @@ Install-ChocolatyAndPackages {
     choco install -y asio4all
 }
 
+function 
+Install-NexisClient {
+    Write-Log "downloading Nexis Client"
+    $NexisDestinationPath = "D:\AzureData\AvidNEXISClient.msi"
+    Write-Log $DestinationPath
+    DownloadFileOverHttp $AvidNexisInstallerUrl $NexisDestinationPath
+
+    Start-Process -FilePath $NexisDestinationPath -ArgumentList "/quiet", "/passive", "/norestart" -Wait
+}
+
+function
+Install-Teradici {
+    Write-Log "Downloading Teradici"
+    $TeradiciDestinationPath = "D:\AzureData\PCoIP_graphic_agent.exe"
+
+    Write-Log $DestinationPath
+    DownloadFileOverHttp $TeradiciURL $TeradiciDestinationPath   
+    
+    #Write-Log "Installing Teradici PCoIP Graphics Agent" 
+    #Start-Process -FilePath $TeradiciDestinationPath ‑ArgumentList "/S /NoPostReboot _?$TeradiciDestinationPath" -Wait
+}
+
+function
+Install-ProTools {
+    
+    Write-Log "Downloading ProTools"
+    #$DestinationPath = "C:\Users\Public\Desktop\ProTools.zip"
+    $DestinationPath = "D:\AzureData\ProTools.zip"
+
+    Write-Log $DestinationPath
+    DownloadFileOverHttp $ProToolsURL $DestinationPath
+
+    # Unzip Pro Tools
+    Write-Log "Unzip Pro Tools"
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($DestinationPath, "D:\AzureData\")
+    
+}
+
 try {
     # Set to false for debugging.  This will output the start script to
     # c:\AzureData\CustomDataSetupScript.log, and then you can RDP
@@ -88,6 +127,15 @@ try {
 
         Write-Log "Create Download folder"
         mkdir D:\AzureData
+
+        Write-Log "Call Install-NexisClient"
+        Install-NexisClient
+
+        Write-Log "Call Install-Teradici"
+        Install-Teradici
+
+        Write-Log "Call Install-ProTools"
+        Install-ProTools
 
         # Write-Log "Cleanup"
         # Remove-Item D:\AzureData -Force  -Recurse -ErrorAction SilentlyContinue
