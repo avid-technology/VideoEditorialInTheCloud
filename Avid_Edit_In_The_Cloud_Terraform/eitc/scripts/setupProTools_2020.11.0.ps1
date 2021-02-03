@@ -106,7 +106,50 @@ Install-ProTools {
     Write-Log "Unzip Pro Tools"
     Add-Type -AssemblyName System.IO.Compression.FileSystem
     [System.IO.Compression.ZipFile]::ExtractToDirectory($DestinationPath, "D:\AzureData\")
-    
+
+    #PreReqBasePath
+    $PreReqBasePath = "D:\AzureData\Pro Tools\ISSetupPrerequisites"
+
+    #Install PACE License Support
+    Write-Log "Installing PACE License Support"
+
+    # Fixing the InstallShield response file...
+    $PaceSetupIss = @"
+[{5AC59014-E7D8-447e-ABE2-5D7FA0626522}-DlgOrder]
+Dlg0={5AC59014-E7D8-447e-ABE2-5D7FA0626522}-SdWelcome-0
+Count=4
+Dlg1={5AC59014-E7D8-447e-ABE2-5D7FA0626522}-SdLicenseRtf-0
+Dlg2={5AC59014-E7D8-447e-ABE2-5D7FA0626522}-SdStartCopy2-0
+Dlg3={5AC59014-E7D8-447e-ABE2-5D7FA0626522}-SdFinish-0
+[{5AC59014-E7D8-447e-ABE2-5D7FA0626522}-SdWelcome-0]
+Result=1
+[{5AC59014-E7D8-447e-ABE2-5D7FA0626522}-SdLicenseRtf-0]
+Result=1
+[{5AC59014-E7D8-447e-ABE2-5D7FA0626522}-SdStartCopy2-0]
+Result=1
+[{5AC59014-E7D8-447e-ABE2-5D7FA0626522}-SdFinish-0]
+Result=1
+bOpt1=0
+bOpt2=0
+"@
+    Set-Content -Path "$PreReqBasePath\Pace License Support\setup.iss" -Value $PaceSetupIss
+    $PaceLicenseSupportBaseName = "$PreReqBasePath\PACE License Support\License Support Win64.exe"
+    Start-Process -FilePath "$PaceLicenseSupportBaseName" -ArgumentList "/s" -Wait
+
+    #Install Avid Cloud Client Services
+    Write-Log "Installing Avid Cloud Client Services"   
+    Start-Process -FilePath "$PreReqBasePath\Avid Cloud Client\Avid_Cloud_Client_Services.exe" -ArgumentList "/s", "/v/qn" -Wait
+
+    #Install AvidLink
+    Write-Log "Installing AvidLink"   
+    Start-Process -FilePath "$PreReqBasePath\AvidLink\AvidLinkSetup.exe" -ArgumentList "/s", "/v/qn" -Wait
+
+    #Install Avid Codecs
+    Write-Log "Installing Avid Codecs LE"
+    Start-Process -FilePath "$PreReqBasePath\Avid Codecs\AvidCodecsLESetup.exe" -ArgumentList "/s", "/v/qn" -Wait
+
+    # Install Pro Tools
+    Start-Process -FilePath 'D:\AzureData\Pro Tools\Avid Pro Tools.msi' -ArgumentList "/quiet", "/passive", "/norestart" -Wait
 }
 
 try {
