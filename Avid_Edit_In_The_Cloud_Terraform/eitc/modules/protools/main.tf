@@ -9,7 +9,7 @@ locals {
 
 resource "azurerm_public_ip" "ip" {
   count               = var.protools_vm_instances
-  name                = "${var.resource_group_name}-ip"
+  name                = "${var.protools_vm_hostname}-ip"
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
   allocation_method   = "Dynamic"
@@ -17,7 +17,7 @@ resource "azurerm_public_ip" "ip" {
 
 resource "azurerm_network_interface" "nic" {
   count                         = var.protools_vm_instances
-  name                          = "${var.resource_group_name}-nic"
+  name                          = "${var.protools_vm_hostname}-nic"
   location                      = var.resource_group_location
   resource_group_name           = var.resource_group_name
 
@@ -55,12 +55,13 @@ resource "azurerm_windows_virtual_machine" "protools_vm" {
 }
 
 resource "azurerm_virtual_machine_extension" "protools" {
+  count                 = var.protools_vm_instances
   name                  = "protools"
-  virtual_machine_id    = azurerm_windows_virtual_machine.vm[0].id
+  virtual_machine_id    = azurerm_windows_virtual_machine.protools_vm[count.index].id
   publisher             = "Microsoft.Compute"
   type                  = "CustomScriptExtension"
   type_handler_version  = "1.9"
-  depends_on            = [azurerm_windows_virtual_machine.vm]
+  depends_on            = [azurerm_windows_virtual_machine.protools_vm]
 
   # CustomVMExtension Documentation: https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-windows
   settings = <<SETTINGS

@@ -14,13 +14,13 @@ provider "azurerm" {
 
 module "editorial_networking" {
   source                  = "./modules/network"
-  vnet_name               = "${var.resource_group_name}-vnet" 
+  vnet_name               = "${var.resource_prefix}-rg-vnet" 
   resource_group_name     = "${var.resource_prefix}-rg"
   resource_group_location = var.resource_group_location
   address_space           = var.vnet_address_space
   dns_servers             = var.dns_servers
   subnets                 = var.subnets
-  sg_name                 = "${var.resource_group_name}-nsg"
+  sg_name                 = "${var.resource_prefix}-rg-nsg"
   tags                    = var.azureTags
 }
 
@@ -32,7 +32,7 @@ module "jumpbox_deployment" {
   source                        = "./modules/jumpbox"
   admin_username                = var.admin_username
   admin_password                = var.admin_password
-  resource_group_name           = var.resource_group_name
+  resource_group_name           = "${var.resource_prefix}-rg"
   resource_group_location       = var.resource_group_location
   vnet_subnet_id                = local.stored_subnet_id[0]
   jumpbox_vm_hostname           = "${var.resource_prefix}-jpbx"
@@ -45,7 +45,7 @@ module "protools_deployment" {
   source                            = "./modules/protools"
   admin_username                    = var.admin_username
   admin_password                    = var.admin_password
-  resource_group_name               = var.resource_group_name
+  resource_group_name               = "${var.resource_prefix}-rg"
   resource_group_location           = var.resource_group_location
   vnet_subnet_id                    = local.stored_subnet_id[0]
   protools_vm_hostname              = "${var.resource_prefix}-ptls"
