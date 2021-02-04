@@ -35,6 +35,10 @@ variable "jumpbox_vm_size" {
   description = "description"
 }
 
-variable "jumpbox_vm_instances" {
+variable "jumpbox_nb_instances" {
   description = "description"
+}
+
+variable "jumpbox_internet_access" {
+  description = "Internet access for Jumpbox"
 }

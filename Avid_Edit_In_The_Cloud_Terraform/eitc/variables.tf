@@ -14,6 +14,10 @@ variable "resource_prefix" {
     type = string 
 }
 
+variable "NvidiaURL" {
+    type = string 
+}
+
 ######################
 ### Network Module ###
 ######################
@@ -44,6 +48,26 @@ variable "azureTags" {
 }
 
 ######################
+### Nexis          ###
+#######################
+
+variable "AvidNexisInstallerUrl" {
+    type = string 
+}
+
+######################
+### Teradici       ###
+#######################
+
+variable "TeradiciKey" {
+    type = string 
+}
+
+variable "TeradiciURL" {
+    type = string 
+}
+
+######################
 ### Jumpbox Module ###
 #######################
 
@@ -51,8 +75,12 @@ variable "jumpbox_vm_size" {
     type = string 
 }
 
-variable "jumpbox_vm_instances" {
-    type = string 
+variable "jumpbox_nb_instances" {
+    type = number
+}
+
+variable "jumpbox_internet_access" {
+    type = bool 
 }
 
 #######################
@@ -63,6 +91,18 @@ variable "protools_vm_size" {
     type = string 
 }
 
-variable "protools_vm_instances" {
+variable "protools_nb_instances" {
+    type = number 
+}
+
+variable "ProToolsScriptURL" {
     type = string 
+}
+
+variable "ProToolsURL" {
+    type = string 
+}
+
+variable "protools_internet_access" {
+    type = bool 
 }

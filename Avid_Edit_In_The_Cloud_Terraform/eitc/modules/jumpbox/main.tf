@@ -1,5 +1,6 @@
 resource "azurerm_public_ip" "ip" {
-  count               = var.jumpbox_vm_instances
+  count               = var.jumpbox_internet_access ? var.jumpbox_nb_instances : 0
+  #count               = var.jumpbox_vm_instances
   name                = "${var.resource_group_name}-ip"
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
@@ -7,7 +8,7 @@ resource "azurerm_public_ip" "ip" {
 }
 
 resource "azurerm_network_interface" "nic" {
-  count                         = var.jumpbox_vm_instances
+  count                         = var.jumpbox_nb_instances
   name                          = "${var.resource_group_name}-nic"
   location                      = var.resource_group_location
   resource_group_name           = var.resource_group_name
@@ -16,12 +17,12 @@ resource "azurerm_network_interface" "nic" {
     name                          = "ipconfig"
     subnet_id                     = var.vnet_subnet_id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.ip[count.index].id
+    public_ip_address_id          = var.jumpbox_internet_access ? azurerm_public_ip.ip[count.index].id : ""
   }
 }
 
 resource "azurerm_windows_virtual_machine" "jumpbox_vm" {
-  count                         = var.jumpbox_vm_instances
+  count                         = var.jumpbox_nb_instances
   name                          = "${var.jumpbox_vm_hostname}-vm"
   resource_group_name           = var.resource_group_name
   location                      = var.resource_group_location

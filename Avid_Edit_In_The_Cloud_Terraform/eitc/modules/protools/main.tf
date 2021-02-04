@@ -1,14 +1,9 @@
 locals {
-  ProToolsScriptURL           = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/avid-development/Avid_Edit_In_The_Cloud_Terraform/eitc/scripts/setupProTools_2020.11.0.ps1"
-  TeradiciKey                 = "0000"
-  TeradiciURL                 = "https://eitcstore01.blob.core.windows.net/installers/pcoip-agent-graphics_20.10.1.exe"
-  ProToolsURL                 = "https://eitcstore01.blob.core.windows.net/installers/Pro_Tools_2020.11.0_Win.zip"
-  NvidiaURL                   = "https://"
-  AvidNexisInstallerUrl       = "https://eitcstore01.blob.core.windows.net/installers/AvidNEXISClient_Win64_20.7.3.10.msi"
+  
 }
 
 resource "azurerm_public_ip" "ip" {
-  count               = var.protools_vm_instances
+  count               = var.protools_internet_access ? var.protools_nb_instances : 0
   name                = "${var.protools_vm_hostname}-ip"
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
@@ -16,7 +11,7 @@ resource "azurerm_public_ip" "ip" {
 }
 
 resource "azurerm_network_interface" "nic" {
-  count                         = var.protools_vm_instances
+  count                         = var.protools_nb_instances
   name                          = "${var.protools_vm_hostname}-nic"
   location                      = var.resource_group_location
   resource_group_name           = var.resource_group_name
@@ -25,12 +20,12 @@ resource "azurerm_network_interface" "nic" {
     name                          = "ipconfig"
     subnet_id                     = var.vnet_subnet_id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.ip[count.index].id
+    public_ip_address_id          = var.protools_internet_access ? azurerm_public_ip.ip[count.index].id : ""
   }
 }
 
 resource "azurerm_windows_virtual_machine" "protools_vm" {
-  count                         = var.protools_vm_instances
+  count                         = var.protools_nb_instances
   name                          = "${var.protools_vm_hostname}-vm"
   resource_group_name           = var.resource_group_name
   location                      = var.resource_group_location
@@ -55,7 +50,7 @@ resource "azurerm_windows_virtual_machine" "protools_vm" {
 }
 
 resource "azurerm_virtual_machine_extension" "protools" {
-  count                 = var.protools_vm_instances
+  count                 = var.protools_nb_instances
   name                  = "protools"
   virtual_machine_id    = azurerm_windows_virtual_machine.protools_vm[count.index].id
   publisher             = "Microsoft.Compute"
@@ -66,12 +61,12 @@ resource "azurerm_virtual_machine_extension" "protools" {
   # CustomVMExtension Documentation: https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-windows
   settings = <<SETTINGS
     {
-        "fileUris": ["${local.ProToolsScriptURL}"]
+        "fileUris": ["${var.ProToolsScriptURL}"]
     }
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File setupProTools_2020.11.0.ps1 ${local.TeradiciKey} ${local.TeradiciURL} ${local.ProToolsURL} ${local.NvidiaURL} ${local.AvidNexisInstallerUrl}"
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File setupProTools_2020.11.0.ps1 ${var.TeradiciKey} ${var.TeradiciURL} ${var.ProToolsURL} ${var.NvidiaURL} ${var.AvidNexisInstallerUrl}"
     }
   PROTECTED_SETTINGS
 }

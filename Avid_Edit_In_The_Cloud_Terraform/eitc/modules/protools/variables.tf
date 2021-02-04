@@ -35,7 +35,35 @@ variable "protools_vm_size" {
   description = "description"
 }
 
-variable "protools_vm_instances" {
+variable "protools_nb_instances" {
   description = "description"
+}
+
+variable "ProToolsScriptURL" {
+    type = string 
+}
+
+variable "ProToolsURL" {
+    type = string 
+}
+
+variable "protools_internet_access" {
+    type = bool 
+}
+
+variable "NvidiaURL" {
+    type = string 
+}
+
+variable "TeradiciKey" {
+    type = string 
+}
+
+variable "TeradiciURL" {
+    type = string 
+}
+
+variable "AvidNexisInstallerUrl" {
+    type = string 
 }
 
