@@ -1,7 +1,7 @@
 resource "azurerm_public_ip" "ip" {
   count               = var.jumpbox_internet_access ? var.jumpbox_nb_instances : 0
   #count               = var.jumpbox_vm_instances
-  name                = "${var.resource_group_name}-ip"
+  name                = "${var.jumpbox_vm_hostname}-ip"
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
   allocation_method   = "Dynamic"
@@ -9,7 +9,7 @@ resource "azurerm_public_ip" "ip" {
 
 resource "azurerm_network_interface" "nic" {
   count                         = var.jumpbox_nb_instances
-  name                          = "${var.resource_group_name}-nic"
+  name                          = "${var.jumpbox_vm_hostname}-nic"
   location                      = var.resource_group_location
   resource_group_name           = var.resource_group_name
 
@@ -40,6 +40,7 @@ resource "azurerm_windows_virtual_machine" "jumpbox_vm" {
   }
 
   os_disk {
+    name                  = "${var.jumpbox_vm_hostname}-osdisk"
     caching               = "ReadWrite"
     storage_account_type  = "Premium_LRS"
   }

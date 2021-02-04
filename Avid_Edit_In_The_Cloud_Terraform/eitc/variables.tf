@@ -55,6 +55,26 @@ variable "AvidNexisInstallerUrl" {
     type = string 
 }
 
+variable "nexis_type" {
+    type = string 
+}
+
+variable "nexis_vm_size" {
+    type = string 
+}
+
+variable "nexis_nb_instances" {
+    type = number
+}
+
+variable "nexis_storage_configuration" {
+    type = map
+}
+
+variable "nexis_storage_account_configuration" {
+    type = map
+}
+
 ######################
 ### Teradici       ###
 #######################
