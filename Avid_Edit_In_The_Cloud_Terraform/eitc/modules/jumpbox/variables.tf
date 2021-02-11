@@ -42,3 +42,7 @@ variable "jumpbox_nb_instances" {
 variable "jumpbox_internet_access" {
   description = "Internet access for Jumpbox"
 }
+
+variable "JumpboxScriptURL" {
+  description = "Script forJumbpox"
+}

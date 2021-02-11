@@ -103,6 +103,10 @@ variable "jumpbox_internet_access" {
     type = bool 
 }
 
+variable "JumpboxScriptURL" {
+    type = string 
+}
+
 #######################
 ### ProTools Module ###
 #######################

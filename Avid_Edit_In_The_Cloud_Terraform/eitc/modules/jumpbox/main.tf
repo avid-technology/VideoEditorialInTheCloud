@@ -1,13 +1,12 @@
-resource "azurerm_public_ip" "ip" {
-  count               = var.jumpbox_internet_access ? var.jumpbox_nb_instances : 0
-  #count               = var.jumpbox_vm_instances
+resource "azurerm_public_ip" "jumpbox_ip" {
+  count               = var.jumpbox_vm_instances
   name                = "${var.jumpbox_vm_hostname}-ip"
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
   allocation_method   = "Dynamic"
 }
 
-resource "azurerm_network_interface" "nic" {
+resource "azurerm_network_interface" "jumpbox_nic" {
   count                         = var.jumpbox_nb_instances
   name                          = "${var.jumpbox_vm_hostname}-nic"
   location                      = var.resource_group_location
@@ -44,6 +43,27 @@ resource "azurerm_windows_virtual_machine" "jumpbox_vm" {
     caching               = "ReadWrite"
     storage_account_type  = "Premium_LRS"
   }
+}
 
+resource "azurerm_virtual_machine_extension" "jumpbox_extension" {
+  count                 = var.jumpbox_nb_instances
+  name                  = "jumbpox_extension"
+  virtual_machine_id    = azurerm_windows_virtual_machine.jumpbox_vm[count.index].id
+  publisher             = "Microsoft.Compute"
+  type                  = "CustomScriptExtension"
+  type_handler_version  = "1.9"
+  depends_on            = [azurerm_windows_virtual_machine.jumpbox_vm]
+
+  # CustomVMExtension Documentation: https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-windows
+  settings = <<SETTINGS
+    {
+        "fileUris": ["${var.JumpboxScriptURL}"]
+    }
+SETTINGS
+  protected_settings = <<PROTECTED_SETTINGS
+    {
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File jumpbox_v0.1.ps1"
+    }
+  PROTECTED_SETTINGS
 }
 

@@ -52,6 +52,7 @@ module "jumpbox_deployment" {
   jumpbox_vm_hostname           = "${var.resource_prefix}-jpbx"
   jumpbox_vm_size               = var.jumpbox_vm_size
   jumpbox_nb_instances          = var.jumpbox_nb_instances
+  JumpboxScriptURL              = var.JumpboxScriptURL
   jumpbox_internet_access       = var.jumpbox_internet_access 
   depends_on                    = [module.editorial_networking]
 }

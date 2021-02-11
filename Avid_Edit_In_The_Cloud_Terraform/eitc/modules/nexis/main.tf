@@ -66,9 +66,9 @@ resource "azurerm_virtual_machine" "vm-linux-with-datadisk" {
   network_interface_ids         = [azurerm_network_interface.nic[count.index].id]
 
   storage_image_reference {
-    publisher = "credativ"
-    offer     = "Debian"
-    sku       = "8"
+    publisher = "debian"
+    offer     = "debian-10"
+    sku       = "10"
     version   = "latest"
   }
 
@@ -84,8 +84,8 @@ resource "azurerm_virtual_machine" "vm-linux-with-datadisk" {
     name              = "${var.hostname}-datadisk"
     create_option     = "Empty"
     lun               = 0
-    disk_size_gb      = "769"
-    managed_disk_type = "Standard_LRS"
+    disk_size_gb      = "768"
+    managed_disk_type = "Premium_LRS"
   }
 
   os_profile {

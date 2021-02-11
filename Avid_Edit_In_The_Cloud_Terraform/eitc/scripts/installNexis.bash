@@ -1,6 +1,6 @@
 #!/bin/bash
 # @@ AVID HEADER - DO NOT EDIT @@
-# Copyright 2017 by Avid Technology, Inc.
+# Copyright 2017,2019 by Avid Technology, Inc.
 # @@ AVID HEADER @@
 
 # Usage:
