@@ -43,6 +43,6 @@ variable "jumpbox_internet_access" {
   description = "Internet access for Jumpbox"
 }
 
-variable "JumpboxScriptURL" {
+variable "JumpboxScript" {
   description = "Script forJumbpox"
 }

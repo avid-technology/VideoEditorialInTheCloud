@@ -19,6 +19,7 @@ resource "random_string" "nexis" {
 # Storage Account for Nexis #
 #############################
 resource "azurerm_storage_account" "nexis_storage_account" {
+  count                     = var.nexis_storage_nb_instances
   name                      = "${var.hostname}${random_string.nexis.result}"
   resource_group_name       = var.resource_group_name
   location                  = var.resource_group_location
@@ -29,6 +30,7 @@ resource "azurerm_storage_account" "nexis_storage_account" {
 }
 
 resource "azurerm_private_endpoint" "nexis_storage_account" {
+  count               = var.nexis_storage_nb_instances
   name                = "${var.hostname}${random_string.nexis.result}-pe"
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location

@@ -5,6 +5,9 @@ terraform {
       source = "hashicorp/azurerm"
       version = ">= 2.26"
     }
+    random = {
+      version = "~> 2.2"
+    }
   }
 }
 
@@ -12,12 +15,9 @@ provider "azurerm" {
   features {}
 }
 
-provider "random" {
-  version = "~> 2.2"
-}
-
 locals {
   resource_group_name= "${var.resource_prefix}-rg"
+  github_url          = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/eitc/scripts/"
 }
 
 module "editorial_networking" {
@@ -52,7 +52,7 @@ module "jumpbox_deployment" {
   jumpbox_vm_hostname           = "${var.resource_prefix}-jpbx"
   jumpbox_vm_size               = var.jumpbox_vm_size
   jumpbox_nb_instances          = var.jumpbox_nb_instances
-  JumpboxScriptURL              = var.JumpboxScriptURL
+  JumpboxScript                 = "${local.github_url}${var.JumpboxScript}"
   jumpbox_internet_access       = var.jumpbox_internet_access 
   depends_on                    = [module.editorial_networking]
 }

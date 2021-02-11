@@ -8,14 +8,24 @@ variable "admin_username" {
 
 variable "admin_password" {
     type = string 
+    sensitive = true
 }
 
 variable "resource_prefix" {
-    type = string 
+    type = string
+    
+    validation {
+        condition = length(var.resource_prefix) < 4
+        error = "resource prefix must be less than 4 characters"
+    }
 }
 
 variable "NvidiaURL" {
     type = string 
+}
+
+variable "branch"{
+    type = string
 }
 
 ######################
@@ -103,7 +113,7 @@ variable "jumpbox_internet_access" {
     type = bool 
 }
 
-variable "JumpboxScriptURL" {
+variable "JumpboxScript" {
     type = string 
 }
 

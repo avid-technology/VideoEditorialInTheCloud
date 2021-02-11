@@ -1,5 +1,5 @@
 resource "azurerm_public_ip" "jumpbox_ip" {
-  count               = var.jumpbox_vm_instances
+  count               = var.jumpbox_nb_instances
   name                = "${var.jumpbox_vm_hostname}-ip"
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
@@ -16,7 +16,7 @@ resource "azurerm_network_interface" "jumpbox_nic" {
     name                          = "ipconfig"
     subnet_id                     = var.vnet_subnet_id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = var.jumpbox_internet_access ? azurerm_public_ip.ip[count.index].id : ""
+    public_ip_address_id          = var.jumpbox_internet_access ? azurerm_public_ip.jumpbox_ip[count.index].id : ""
   }
 }
 
@@ -29,7 +29,7 @@ resource "azurerm_windows_virtual_machine" "jumpbox_vm" {
   size                          = var.jumpbox_vm_size
   admin_username                = var.admin_username
   admin_password                = var.admin_password
-  network_interface_ids         = [azurerm_network_interface.nic[count.index].id]
+  network_interface_ids         = [azurerm_network_interface.jumpbox_nic[count.index].id]
 
   source_image_reference {
     publisher = "MicrosoftWindowsDesktop"
@@ -57,7 +57,7 @@ resource "azurerm_virtual_machine_extension" "jumpbox_extension" {
   # CustomVMExtension Documentation: https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-windows
   settings = <<SETTINGS
     {
-        "fileUris": ["${var.JumpboxScriptURL}"]
+        "fileUris": ["${var.JumpboxScript}"]
     }
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
