@@ -92,7 +92,7 @@ resource "azurerm_virtual_machine" "vm-linux-with-datadisk" {
 
   os_profile {
     computer_name  = var.hostname
-    admin_username = var.admin_username
+    admin_username = "avid"
     admin_password = var.admin_password
     custom_data    = ""
   }

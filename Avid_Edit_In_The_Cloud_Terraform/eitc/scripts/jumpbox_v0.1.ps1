@@ -1,6 +1,17 @@
-<# Custom Script for Windows to install a file from Azure Storage using the staging folder created by the deployment script #>
-param (
+<#
+    .SYNOPSIS
+        Configure Windows 10 Workstation with Avid ProTools.
 
+    .DESCRIPTION
+        Configure Windows 10 Workstation with Avid ProTools.
+
+        Example command line: .\setupMachine.ps1 Avid ProTools
+#>
+[CmdletBinding(DefaultParameterSetName = "Standard")]
+param (
+    [string]
+    [ValidateNotNullOrEmpty()]
+    $AvidNexisInstallerUrl
 )
 
 filter Timestamp {"$(Get-Date -Format o): $_"}
@@ -9,6 +20,34 @@ function
 Write-Log($message) {
     $msg = $message | Timestamp
     Write-Output $msg
+}
+
+function
+DownloadFileOverHttp($Url, $DestinationPath) {
+    $secureProtocols = @()
+    $insecureProtocols = @([System.Net.SecurityProtocolType]::SystemDefault, [System.Net.SecurityProtocolType]::Ssl3)
+
+    foreach ($protocol in [System.Enum]::GetValues([System.Net.SecurityProtocolType])) {
+        if ($insecureProtocols -notcontains $protocol) {
+            $secureProtocols += $protocol
+        }
+    }
+    [System.Net.ServicePointManager]::SecurityProtocol = $secureProtocols
+
+    # make Invoke-WebRequest go fast: https://stackoverflow.com/questions/14202054/why-is-this-powershell-code-invoke-webrequest-getelementsbytagname-so-incred
+    $ProgressPreference = "SilentlyContinue"
+    Invoke-WebRequest $Url -UseBasicParsing -OutFile $DestinationPath -Verbose
+    Write-Log "$DestinationPath updated"
+}
+
+function 
+Install-NexisClient {
+    Write-Log "downloading Nexis Client"
+    $NexisDestinationPath = "D:\AzureData\AvidNEXISClient.msi"
+    Write-Log $DestinationPath
+    DownloadFileOverHttp $AvidNexisInstallerUrl $NexisDestinationPath
+
+    Start-Process -FilePath $NexisDestinationPath -ArgumentList "/quiet", "/passive", "/norestart" -Wait
 }
 
 function
@@ -32,6 +71,9 @@ try {
         catch {
             # chocolaty is best effort
         }
+
+        Write-Log "Call Install-NexisClient"
+        Install-NexisClient
 
 }
 catch {

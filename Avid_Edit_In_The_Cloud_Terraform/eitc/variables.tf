@@ -13,10 +13,10 @@ variable "admin_password" {
 
 variable "resource_prefix" {
     type = string
-    
+
     validation {
-        condition = length(var.resource_prefix) < 4
-        error = "resource prefix must be less than 4 characters"
+        condition       = length(var.resource_prefix) <= 4
+        error_message   = "Resource prefix must be less than 4 characters."
     }
 }
 

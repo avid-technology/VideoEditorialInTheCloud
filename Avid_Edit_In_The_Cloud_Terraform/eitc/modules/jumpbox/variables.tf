@@ -46,3 +46,7 @@ variable "jumpbox_internet_access" {
 variable "JumpboxScript" {
   description = "Script forJumbpox"
 }
+
+variable "AvidNexisInstallerUrl" {
+  description = "Script forJumbpox"
+}

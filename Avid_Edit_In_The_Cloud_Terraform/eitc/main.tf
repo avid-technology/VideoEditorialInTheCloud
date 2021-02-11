@@ -54,6 +54,7 @@ module "jumpbox_deployment" {
   jumpbox_nb_instances          = var.jumpbox_nb_instances
   JumpboxScript                 = "${local.github_url}${var.JumpboxScript}"
   jumpbox_internet_access       = var.jumpbox_internet_access 
+  AvidNexisInstallerUrl         = var.AvidNexisInstallerUrl 
   depends_on                    = [module.editorial_networking]
 }
 
