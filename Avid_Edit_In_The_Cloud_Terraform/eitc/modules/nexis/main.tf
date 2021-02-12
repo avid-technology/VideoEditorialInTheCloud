@@ -1,12 +1,12 @@
 locals{
-  nexis_storage_vm_script_url         = "${element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 0)}"
-  nexis_storage_vm_script_name        = "${element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 1)}"
-  nexis_storage_vm_artifacts_location = "${element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 2)}"
-  nexis_storage_vm_build              = "${element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 3)}"
-  nexis_storage_vm_part_number        = "${element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 4)}"
-  nexis_storage_performance           = "${element(split(",", lookup(var.nexis_storage_account_configuration, var.nexis_storage_type, "")), 0)}"
-  nexis_storage_replication           = "${element(split(",", lookup(var.nexis_storage_account_configuration, var.nexis_storage_type, "")), 1)}"
-  nexis_storage_account_kind          = "${element(split(",", lookup(var.nexis_storage_account_configuration, var.nexis_storage_type, "")), 2)}"
+  nexis_storage_vm_script_url         = element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 0)
+  nexis_storage_vm_script_name        = element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 1)
+  nexis_storage_vm_artifacts_location = element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 2)
+  nexis_storage_vm_build              = element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 3)
+  nexis_storage_vm_part_number        = element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 4)
+  nexis_storage_performance           = element(split(",", lookup(var.nexis_storage_account_configuration, var.nexis_storage_type, "")), 0)
+  nexis_storage_replication           = element(split(",", lookup(var.nexis_storage_account_configuration, var.nexis_storage_type, "")), 1)
+  nexis_storage_account_kind          = element(split(",", lookup(var.nexis_storage_account_configuration, var.nexis_storage_type, "")), 2)
 }
 
 resource "random_string" "nexis" {
@@ -45,11 +45,12 @@ resource "azurerm_private_endpoint" "nexis_storage_account" {
   } 
 }
 
-resource "azurerm_network_interface" "nic" {
+resource "azurerm_network_interface" "nexis_nic" {
   count                         = var.nexis_storage_nb_instances
   name                          = "${var.hostname}-nic"
   location                      = var.resource_group_location
   resource_group_name           = var.resource_group_name
+  enable_accelerated_networking = true
 
   ip_configuration {
     name                          = "ipconfig"
@@ -59,13 +60,13 @@ resource "azurerm_network_interface" "nic" {
   }
 }
 
-resource "azurerm_virtual_machine" "vm-linux-with-datadisk" {
+resource "azurerm_virtual_machine" "nexis_vm" {
   count                         = var.nexis_storage_nb_instances
   name                          = var.hostname
   location                      = var.resource_group_location
   resource_group_name           = var.resource_group_name
   vm_size                       = var.nexis_storage_vm_size
-  network_interface_ids         = [azurerm_network_interface.nic[count.index].id]
+  network_interface_ids         = [azurerm_network_interface.nexis_nic[count.index].id]
 
   storage_image_reference {
     publisher = "debian"
@@ -106,11 +107,11 @@ resource "azurerm_virtual_machine" "vm-linux-with-datadisk" {
 resource "azurerm_virtual_machine_extension" "nexis_storage_servers" {
   count                 = var.nexis_storage_nb_instances
   name                  = var.hostname
-  virtual_machine_id    = azurerm_virtual_machine.vm-linux-with-datadisk[count.index].id
+  virtual_machine_id    = azurerm_virtual_machine.nexis_vm[count.index].id
   publisher             = "Microsoft.Azure.Extensions"
   type                  = "CustomScript"
   type_handler_version  = "2.0"
-  depends_on            = [azurerm_virtual_machine.vm-linux-with-datadisk]
+  depends_on            = [azurerm_virtual_machine.nexis_vm]
 
   settings = <<EOF
     {

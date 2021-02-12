@@ -2,7 +2,7 @@ locals {
   
 }
 
-resource "azurerm_public_ip" "ip" {
+resource "azurerm_public_ip" "protools_ip" {
   count               = var.protools_internet_access ? var.protools_nb_instances : 0
   name                = "${var.protools_vm_hostname}-ip"
   location            = var.resource_group_location
@@ -10,17 +10,18 @@ resource "azurerm_public_ip" "ip" {
   allocation_method   = "Dynamic"
 }
 
-resource "azurerm_network_interface" "nic" {
+resource "azurerm_network_interface" "protools_nic" {
   count                         = var.protools_nb_instances
   name                          = "${var.protools_vm_hostname}-nic"
   location                      = var.resource_group_location
   resource_group_name           = var.resource_group_name
+  enable_accelerated_networking = true
 
   ip_configuration {
     name                          = "ipconfig"
     subnet_id                     = var.vnet_subnet_id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = var.protools_internet_access ? azurerm_public_ip.ip[count.index].id : ""
+    public_ip_address_id          = var.protools_internet_access ? azurerm_public_ip.protools_ip[count.index].id : ""
   }
 }
 
@@ -33,7 +34,7 @@ resource "azurerm_windows_virtual_machine" "protools_vm" {
   size                          = var.protools_vm_size
   admin_username                = var.admin_username
   admin_password                = var.admin_password
-  network_interface_ids         = [azurerm_network_interface.nic[count.index].id]
+  network_interface_ids         = [azurerm_network_interface.protools_nic[count.index].id]
 
   source_image_reference {
     publisher = "MicrosoftWindowsDesktop"
@@ -49,7 +50,7 @@ resource "azurerm_windows_virtual_machine" "protools_vm" {
 
 }
 
-resource "azurerm_virtual_machine_extension" "protools" {
+resource "azurerm_virtual_machine_extension" "protools_extension" {
   count                 = var.protools_nb_instances
   name                  = "protools"
   virtual_machine_id    = azurerm_windows_virtual_machine.protools_vm[count.index].id

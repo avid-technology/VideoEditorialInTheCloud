@@ -78,6 +78,26 @@ module "protools_deployment" {
   depends_on                        = [module.editorial_networking]
 }
 
+module "mediacomposer_deployment" {
+  source                            = "./modules/mediacomposer"
+  admin_username                    = var.admin_username
+  admin_password                    = var.admin_password
+  resource_group_name               = local.resource_group_name
+  resource_group_location           = var.resource_group_location
+  vnet_subnet_id                    = local.stored_subnet_id[0]
+  mediacomposer_vm_hostname         = "${var.resource_prefix}-pt"
+  mediacomposer_vm_size             = var.mediacomposer_vm_size
+  mediacomposer_nb_instances        = var.mediacomposer_nb_instances
+  mediacomposer_internet_access     = var.mediacomposer_internet_access 
+  mediacomposerScriptURL            = var.mediacomposerScriptURL
+  TeradiciKey                       = var.TeradiciKey
+  TeradiciURL                       = var.TeradiciURL
+  mediacomposerURL                  = var.mediacomposerURL
+  NvidiaURL                         = var.NvidiaURL
+  AvidNexisInstallerUrl             = var.AvidNexisInstallerUrl 
+  depends_on                        = [module.editorial_networking]
+}
+
 module "nexis_deployment" {
   source                              = "./modules/nexis"
   hostname                            = "${var.resource_prefix}nx00"

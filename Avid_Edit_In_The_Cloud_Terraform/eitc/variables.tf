@@ -140,3 +140,27 @@ variable "ProToolsURL" {
 variable "protools_internet_access" {
     type = bool 
 }
+
+############################
+### MediaComposer Module ###
+############################
+
+variable "mediacomposer_vm_size" {
+    type = string 
+}
+
+variable "mediacomposer_nb_instances" {
+    type = number 
+}
+
+variable "mediacomposerScriptURL" {
+    type = string 
+}
+
+variable "mediacomposerURL" {
+    type = string 
+}
+
+variable "mediacomposer_internet_access" {
+    type = bool 
+}

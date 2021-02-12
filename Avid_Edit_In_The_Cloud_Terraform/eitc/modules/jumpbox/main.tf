@@ -11,6 +11,7 @@ resource "azurerm_network_interface" "jumpbox_nic" {
   name                          = "${var.jumpbox_vm_hostname}-nic"
   location                      = var.resource_group_location
   resource_group_name           = var.resource_group_name
+  enable_accelerated_networking = true
 
   ip_configuration {
     name                          = "ipconfig"
