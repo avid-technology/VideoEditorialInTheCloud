@@ -161,6 +161,19 @@ variable "mediacomposerURL" {
     type = string 
 }
 
+variable "mediacomposerVersion" {
+    type = string 
+
+    validation {
+            condition       = (
+                var.mediacomposerVersion == "2021.2.0" || 
+                var.mediacomposerVersion == "2020.12.0" ||
+                var.mediacomposerVersion == "2018.12.14"
+            )
+            error_message   = "Only the following versions are supported: 2020.12.0, 2020.12.0 and 2018.12.14."
+        }
+}
+
 variable "mediacomposer_internet_access" {
     type = bool 
 }

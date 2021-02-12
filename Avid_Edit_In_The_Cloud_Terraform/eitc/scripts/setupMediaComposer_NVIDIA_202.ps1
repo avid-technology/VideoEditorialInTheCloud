@@ -175,7 +175,7 @@ function
 Install-NvidiaGPU {
     
     Write-Log "Download Nvidia Tesla Driver"
-    $NvidiaDestinationPath = "D:\AzureData\Nividia.exe"
+    $NvidiaDestinationPath = "D:\AzureData\Nvidia.exe"
 
     Write-Log $DestinationPath
     DownloadFileOverHttp $NvidiaURL $NvidiaDestinationPath  
@@ -204,8 +204,8 @@ try {
         Write-Log "Create Download folder"
         mkdir D:\AzureData
         
-        Write-Log "Call Install-NvidiaGPU"
-        Install-NvidiaGPU
+        #Write-Log "Call Install-NvidiaGPU"
+        #Install-NvidiaGPU
 
         Write-Log "Call Install-Teradici"
         Install-Teradici
