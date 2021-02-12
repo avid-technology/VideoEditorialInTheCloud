@@ -129,7 +129,7 @@ variable "protools_nb_instances" {
     type = number 
 }
 
-variable "ProToolsScriptURL" {
+variable "ProToolsScript" {
     type = string 
 }
 
@@ -153,7 +153,7 @@ variable "mediacomposer_nb_instances" {
     type = number 
 }
 
-variable "mediacomposerScriptURL" {
+variable "mediacomposerScript" {
     type = string 
 }
 

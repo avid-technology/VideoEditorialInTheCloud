@@ -62,12 +62,12 @@ resource "azurerm_virtual_machine_extension" "mediacomposer_extension" {
   # CustomVMExtension Documentation: https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-windows
   settings = <<SETTINGS
     {
-        "fileUris": ["${var.mediacomposerScriptURL}"]
+        "fileUris": ["${var.mediacomposerScript}"]
     }
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File setupmediacomposer_2020.11.0.ps1 ${var.TeradiciKey} ${var.TeradiciURL} ${var.mediacomposerURL} ${var.NvidiaURL} ${var.AvidNexisInstallerUrl}"
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File setupMediaComposer_NVIDIA_202.ps1 ${var.TeradiciKey} ${var.TeradiciURL} ${var.mediacomposerURL} ${var.NvidiaURL} ${var.AvidNexisInstallerUrl}"
     }
   PROTECTED_SETTINGS
 }

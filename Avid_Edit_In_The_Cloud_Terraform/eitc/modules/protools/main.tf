@@ -62,7 +62,7 @@ resource "azurerm_virtual_machine_extension" "protools_extension" {
   # CustomVMExtension Documentation: https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-windows
   settings = <<SETTINGS
     {
-        "fileUris": ["${var.ProToolsScriptURL}"]
+        "fileUris": ["${var.ProToolsScript}"]
     }
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS

@@ -39,7 +39,7 @@ variable "mediacomposer_nb_instances" {
   description = "description"
 }
 
-variable "mediacomposerScriptURL" {
+variable "mediacomposerScript" {
     type = string 
 }
 

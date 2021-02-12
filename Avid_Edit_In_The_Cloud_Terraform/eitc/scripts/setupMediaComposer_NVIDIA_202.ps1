@@ -1,9 +1,11 @@
 <#
     .SYNOPSIS
-        Configure Windows 10 Workstation with Avid Media Composer.
+        Configure Windows 10 Workstation with Avid ProTools.
+
     .DESCRIPTION
-        Configure Windows 10 Workstation with Avid Media Composer.
-        Example command line: .\setupMachine.ps1 Avid Media Composer
+        Configure Windows 10 Workstation with Avid ProTools.
+
+        Example command line: .\setupMachine.ps1 Avid ProTools
 #>
 [CmdletBinding(DefaultParameterSetName = "Standard")]
 param(
@@ -11,13 +13,13 @@ param(
     [ValidateNotNullOrEmpty()]
     $TeradiciKey,
     [ValidateNotNullOrEmpty()]
-    $MediaComposerURL,
-    [ValidateNotNullOrEmpty()]
     $TeradiciURL,
+    [ValidateNotNullOrEmpty()]
+    $MediaComposerURL,
     [ValidateNotNullOrEmpty()]
     $NvidiaURL,
     [ValidateNotNullOrEmpty()]
-    $AvidNEXISClientURL
+    $AvidNexisInstallerUrl
 )
 
 filter Timestamp {"$(Get-Date -Format o): $_"}
@@ -163,7 +165,7 @@ Install-NexisClient {
     Write-Log "downloading Nexus Client"
     $NexisDestinationPath = "D:\AzureData\AvidNEXISClient.msi"
     Write-Log $DestinationPath
-    DownloadFileOverHttp $AvidNEXISClientURL $NexisDestinationPath
+    DownloadFileOverHttp $AvidNexisInstallerUrl $NexisDestinationPath
 
     Start-Process -FilePath $NexisDestinationPath -ArgumentList "/quiet", "/passive", "/norestart" -Wait
     

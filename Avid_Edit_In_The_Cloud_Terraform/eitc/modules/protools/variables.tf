@@ -39,7 +39,7 @@ variable "protools_nb_instances" {
   description = "description"
 }
 
-variable "ProToolsScriptURL" {
+variable "ProToolsScript" {
     type = string 
 }
 

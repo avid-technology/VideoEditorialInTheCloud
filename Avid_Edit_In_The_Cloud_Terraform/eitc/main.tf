@@ -69,7 +69,7 @@ module "protools_deployment" {
   protools_vm_size                  = var.protools_vm_size
   protools_nb_instances             = var.protools_nb_instances
   protools_internet_access          = var.protools_internet_access 
-  ProToolsScriptURL                 = var.ProToolsScriptURL
+  ProToolsScript                    = "${local.github_url}${var.ProToolsScript}"
   TeradiciKey                       = var.TeradiciKey
   TeradiciURL                       = var.TeradiciURL
   ProToolsURL                       = var.ProToolsURL
@@ -85,11 +85,11 @@ module "mediacomposer_deployment" {
   resource_group_name               = local.resource_group_name
   resource_group_location           = var.resource_group_location
   vnet_subnet_id                    = local.stored_subnet_id[0]
-  mediacomposer_vm_hostname         = "${var.resource_prefix}-pt"
+  mediacomposer_vm_hostname         = "${var.resource_prefix}-mc"
   mediacomposer_vm_size             = var.mediacomposer_vm_size
   mediacomposer_nb_instances        = var.mediacomposer_nb_instances
   mediacomposer_internet_access     = var.mediacomposer_internet_access 
-  mediacomposerScriptURL            = var.mediacomposerScriptURL
+  mediacomposerScript               = "${local.github_url}${var.mediacomposerScript}"
   TeradiciKey                       = var.TeradiciKey
   TeradiciURL                       = var.TeradiciURL
   mediacomposerURL                  = var.mediacomposerURL
