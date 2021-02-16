@@ -10,9 +10,9 @@ variable "admin_password" {
   description = "Admin Password for Virtual Machines"
 }
 
-variable "resource_group_name" {
-  description = ""
-}
+#variable "resource_group_name" {
+#  description = ""
+#}
 
 variable "resource_group_location" {
   description = ""
@@ -27,9 +27,13 @@ variable "base_index" {
   default = 0
 }
 
-variable "mediacomposer_vm_hostname" {
-  description = "description"
+variable "resource_prefix" {
+  description = ""
 }
+
+#variable "mediacomposer_vm_hostname" {
+#  description = "description"
+#}
 
 variable "mediacomposer_vm_size" {
   description = "description"

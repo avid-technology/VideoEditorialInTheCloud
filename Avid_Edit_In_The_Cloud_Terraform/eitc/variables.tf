@@ -65,15 +65,15 @@ variable "AvidNexisInstallerUrl" {
     type = string 
 }
 
-variable "nexis_type" {
-    type = string 
-}
-
 variable "nexis_vm_size" {
     type = string 
 }
 
-variable "nexis_nb_instances" {
+variable "nexis_nearline_nb_instances" {
+    type = number
+}
+
+variable "nexis_online_nb_instances" {
     type = number
 }
 
@@ -154,10 +154,6 @@ variable "mediacomposer_nb_instances" {
 }
 
 variable "mediacomposerScript" {
-    type = string 
-}
-
-variable "mediacomposerURL" {
     type = string 
 }
 

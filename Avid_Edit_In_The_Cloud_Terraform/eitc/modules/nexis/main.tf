@@ -10,6 +10,7 @@ locals{
 }
 
 resource "random_string" "nexis" {
+    count   = var.nexis_storage_nb_instances
     length  = 5
     special = false
     upper   = false
@@ -20,7 +21,7 @@ resource "random_string" "nexis" {
 #############################
 resource "azurerm_storage_account" "nexis_storage_account" {
   count                     = var.nexis_storage_nb_instances
-  name                      = "${var.hostname}${random_string.nexis.result}"
+  name                      = "${var.hostname}${random_string.nexis[count.index].result}"
   resource_group_name       = var.resource_group_name
   location                  = var.resource_group_location
   account_kind              = local.nexis_storage_account_kind
@@ -31,14 +32,14 @@ resource "azurerm_storage_account" "nexis_storage_account" {
 
 resource "azurerm_private_endpoint" "nexis_storage_account" {
   count               = var.nexis_storage_nb_instances
-  name                = "${var.hostname}${random_string.nexis.result}-pe"
+  name                = "${var.hostname}${random_string.nexis[count.index].result}-pe"
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
   subnet_id           = var.vnet_subnet_id
   depends_on = [ random_string.nexis]
 
   private_service_connection {
-    name                           = "${var.hostname}${random_string.nexis.result}-psc"
+    name                           = "${var.hostname}${random_string.nexis[count.index].result}-psc"
     is_manual_connection           = false
     private_connection_resource_id = azurerm_storage_account.nexis_storage_account.*.id[0]
     subresource_names              = ["blob"]

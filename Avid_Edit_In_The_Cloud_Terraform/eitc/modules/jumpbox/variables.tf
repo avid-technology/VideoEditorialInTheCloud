@@ -10,7 +10,11 @@ variable "admin_password" {
   description = "Admin Password for Virtual Machines"
 }
 
-variable "resource_group_name" {
+#variable "resource_group_name" {
+#  description = ""
+#}
+
+variable "resource_prefix" {
   description = ""
 }
 
@@ -27,9 +31,9 @@ variable "base_index" {
   default = 0
 }
 
-variable "jumpbox_vm_hostname" {
-  description = "description"
-}
+#variable "jumpbox_vm_hostname" {
+#  description = "description"
+#}
 
 variable "jumpbox_vm_size" {
   description = "description"

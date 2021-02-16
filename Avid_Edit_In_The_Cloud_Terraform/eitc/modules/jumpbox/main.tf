@@ -1,16 +1,22 @@
+
+locals {
+  resource_group_name = "${var.resource_prefix}-rg"
+  jumpbox_vm_hostname = "${var.resource_prefix}-jx"
+}
+
 resource "azurerm_public_ip" "jumpbox_ip" {
   count               = var.jumpbox_nb_instances
-  name                = "${var.jumpbox_vm_hostname}-ip"
+  name                = "${local.jumpbox_vm_hostname}-ip-${format("%02d",count.index)}"
   location            = var.resource_group_location
-  resource_group_name = var.resource_group_name
+  resource_group_name = local.resource_group_name
   allocation_method   = "Dynamic"
 }
 
 resource "azurerm_network_interface" "jumpbox_nic" {
   count                         = var.jumpbox_nb_instances
-  name                          = "${var.jumpbox_vm_hostname}-nic"
+  name                          = "${local.jumpbox_vm_hostname}-nic-${format("%02d",count.index)}"
   location                      = var.resource_group_location
-  resource_group_name           = var.resource_group_name
+  resource_group_name           = local.resource_group_name
   enable_accelerated_networking = true
 
   ip_configuration {
@@ -23,10 +29,10 @@ resource "azurerm_network_interface" "jumpbox_nic" {
 
 resource "azurerm_windows_virtual_machine" "jumpbox_vm" {
   count                         = var.jumpbox_nb_instances
-  name                          = "${var.jumpbox_vm_hostname}-vm"
-  resource_group_name           = var.resource_group_name
+  name                          = "${local.jumpbox_vm_hostname}-vm-${format("%02d",count.index)}"
+  resource_group_name           = local.resource_group_name
   location                      = var.resource_group_location
-  computer_name                 = var.jumpbox_vm_hostname
+  computer_name                 = "${local.jumpbox_vm_hostname}-vm-${format("%02d",count.index)}"
   size                          = var.jumpbox_vm_size
   admin_username                = var.admin_username
   admin_password                = var.admin_password
@@ -40,7 +46,7 @@ resource "azurerm_windows_virtual_machine" "jumpbox_vm" {
   }
 
   os_disk {
-    name                  = "${var.jumpbox_vm_hostname}-osdisk"
+    name                  = "${local.jumpbox_vm_hostname}-osdisk-${format("%02d",count.index)}"
     caching               = "ReadWrite"
     storage_account_type  = "Premium_LRS"
   }

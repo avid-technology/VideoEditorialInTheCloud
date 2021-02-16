@@ -1,20 +1,21 @@
 locals {
-  
+  resource_group_name   = "${var.resource_prefix}-rg"
+  protools_vm_hostname  = "${var.resource_prefix}-pt"
 }
 
 resource "azurerm_public_ip" "protools_ip" {
   count               = var.protools_internet_access ? var.protools_nb_instances : 0
-  name                = "${var.protools_vm_hostname}-ip"
+  name                = "${local.protools_vm_hostname}-ip${format("%02d",count.index)}"
   location            = var.resource_group_location
-  resource_group_name = var.resource_group_name
+  resource_group_name = local.resource_group_name
   allocation_method   = "Dynamic"
 }
 
 resource "azurerm_network_interface" "protools_nic" {
   count                         = var.protools_nb_instances
-  name                          = "${var.protools_vm_hostname}-nic"
+  name                          = "${local.protools_vm_hostname}-nic${format("%02d",count.index)}"
   location                      = var.resource_group_location
-  resource_group_name           = var.resource_group_name
+  resource_group_name           = local.resource_group_name
   enable_accelerated_networking = true
 
   ip_configuration {
@@ -27,10 +28,10 @@ resource "azurerm_network_interface" "protools_nic" {
 
 resource "azurerm_windows_virtual_machine" "protools_vm" {
   count                         = var.protools_nb_instances
-  name                          = "${var.protools_vm_hostname}-vm"
-  resource_group_name           = var.resource_group_name
+  name                          = "${local.protools_vm_hostname}-vm${format("%02d",count.index)}"
+  resource_group_name           = local.resource_group_name
   location                      = var.resource_group_location
-  computer_name                 = var.protools_vm_hostname
+  computer_name                 = "${local.protools_vm_hostname}-vm-${format("%02d",count.index)}"
   size                          = var.protools_vm_size
   admin_username                = var.admin_username
   admin_password                = var.admin_password
@@ -44,6 +45,7 @@ resource "azurerm_windows_virtual_machine" "protools_vm" {
   }
 
   os_disk {
+    name                  = "${local.protools_vm_hostname}-osdisk-${format("%02d",count.index)}"
     caching               = "ReadWrite"
     storage_account_type  = "Premium_LRS"
   }
