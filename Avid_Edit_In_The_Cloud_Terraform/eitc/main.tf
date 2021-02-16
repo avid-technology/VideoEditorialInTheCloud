@@ -16,9 +16,10 @@ provider "azurerm" {
 }
 
 locals {
-  resource_group_name= "${var.resource_prefix}-rg"
+  resource_group_name = "${var.resource_prefix}-rg"
   github_url          = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/eitc/scripts/"
   storage_account_url = "https://eitcstore01.blob.core.windows.net/installers"
+  mediacomposerScript = "setupMediaComposer_NVIDIA_${mediacomposerVersion}.ps1"
 }
 
 module "editorial_networking" {
@@ -93,7 +94,7 @@ module "mediacomposer_deployment" {
   mediacomposer_vm_size             = var.mediacomposer_vm_size
   mediacomposer_nb_instances        = var.mediacomposer_nb_instances
   mediacomposer_internet_access     = var.mediacomposer_internet_access 
-  mediacomposerScript               = "${local.github_url}${var.mediacomposerScript}"
+  mediacomposerScript               = "${local.github_url}${local.mediacomposerScript}"
   TeradiciKey                       = var.TeradiciKey
   TeradiciURL                       = var.TeradiciURL
   mediacomposerURL                  = "${local.storage_account_url}/Media_Composer_${var.mediacomposerVersion}_Win.zip"
