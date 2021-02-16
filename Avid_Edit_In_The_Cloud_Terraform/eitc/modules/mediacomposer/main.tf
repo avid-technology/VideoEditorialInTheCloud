@@ -1,6 +1,7 @@
 locals {
   resource_group_name       = "${var.resource_prefix}-rg"
   mediacomposer_vm_hostname = "${var.resource_prefix}-mc"
+  mediacomposerScripturl    = "${var.github_url}${var.mediacomposerScript}"
 }
 
 resource "azurerm_public_ip" "mediacomposer_ip" {
@@ -64,12 +65,12 @@ resource "azurerm_virtual_machine_extension" "mediacomposer_extension" {
   # CustomVMExtension Documentation: https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-windows
   settings = <<SETTINGS
     {
-        "fileUris": ["${var.mediacomposerScript}"]
+        "fileUris": ["${local.mediacomposerScripturl}"]
     }
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File setupMediaComposer_NVIDIA_202.ps1 ${var.TeradiciKey} ${var.TeradiciURL} ${var.mediacomposerURL} ${var.NvidiaURL} ${var.AvidNexisInstallerUrl}"
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.mediacomposerScript} ${var.TeradiciKey} ${var.TeradiciURL} ${var.mediacomposerURL} ${var.NvidiaURL} ${var.AvidNexisInstallerUrl}"
     }
   PROTECTED_SETTINGS
 }

@@ -31,6 +31,10 @@ variable "resource_prefix" {
   description = ""
 }
 
+variable "github_url" {
+  description = ""
+}
+
 #variable "mediacomposer_vm_hostname" {
 #  description = "description"
 #}

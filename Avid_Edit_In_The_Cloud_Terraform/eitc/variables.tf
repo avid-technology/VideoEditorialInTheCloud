@@ -153,9 +153,9 @@ variable "mediacomposer_nb_instances" {
     type = number 
 }
 
-variable "mediacomposerScript" {
-    type = string 
-}
+#variable "mediacomposerScript" {
+#    type = string 
+#}
 
 variable "mediacomposerVersion" {
     type = string 
