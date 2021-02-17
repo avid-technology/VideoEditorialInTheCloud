@@ -16,10 +16,16 @@ provider "azurerm" {
 }
 
 locals {
+
   resource_group_name = "${var.resource_prefix}-rg"
   github_url          = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/eitc/scripts/"
   storage_account_url = "https://eitcstore01.blob.core.windows.net/installers"
   mediacomposerScript = "setupMediaComposer_NVIDIA_${var.mediacomposerVersion}.ps1"
+  nexis_storage_configuration         = {
+                                        "CloudNearline" = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/eitc/scripts/installNexis.bash,installNexis.bash,https://ssengreleng.blob.core.windows.net/nexisgold/20.12.0/installers,AvidNEXISCloud_20.12.0-9.run,0100-38171-00"
+                                        "CloudOnline"   = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/eitc/scripts/installNexis.bash,installNexis.bash,https://ssengreleng.blob.core.windows.net/nexisgold/20.12.0/installers,AvidNEXISCloud_20.12.0-9.run,0100-40109-00"
+                                    }
+
 }
 
 module "editorial_networking" {
@@ -38,21 +44,13 @@ locals {
   stored_subnet_id                = module.editorial_networking.azurerm_subnet_ids
 }
 
-#resource "random_string" "general" {
-#  length  = 5
-#  special = false
-#  upper   = false
-#}
-
 module "jumpbox_deployment" {
   source                        = "./modules/jumpbox"
   admin_username                = var.admin_username
   admin_password                = var.admin_password
   resource_prefix               = var.resource_prefix
-  #resource_group_name           = local.resource_group_name
   resource_group_location       = var.resource_group_location
   vnet_subnet_id                = local.stored_subnet_id[0]
-  #jumpbox_vm_hostname           = "${var.resource_prefix}-jpbx"
   jumpbox_vm_size               = var.jumpbox_vm_size
   jumpbox_nb_instances          = var.jumpbox_nb_instances
   JumpboxScript                 = "${local.github_url}${var.JumpboxScript}"
@@ -87,10 +85,8 @@ module "mediacomposer_deployment" {
   admin_username                    = var.admin_username
   admin_password                    = var.admin_password
   resource_prefix                   = var.resource_prefix
-  #resource_group_name               = local.resource_group_name
   resource_group_location           = var.resource_group_location
   vnet_subnet_id                    = local.stored_subnet_id[0]
-  #mediacomposer_vm_hostname         = "${var.resource_prefix}-mc"
   mediacomposer_vm_size             = var.mediacomposer_vm_size
   mediacomposer_nb_instances        = var.mediacomposer_nb_instances
   mediacomposer_internet_access     = var.mediacomposer_internet_access 
@@ -113,7 +109,7 @@ module "nexis_online_deployment" {
   resource_group_location             = var.resource_group_location
   vnet_subnet_id                      = local.stored_subnet_id[0]
   source_address_prefix               = var.resource_prefix 
-  nexis_storage_configuration         = var.nexis_storage_configuration
+  nexis_storage_configuration         = local.nexis_storage_configuration
   nexis_storage_account_configuration = var.nexis_storage_account_configuration
   nexis_storage_type                  = "CloudOnline"
   nexis_storage_vm_size               = var.nexis_vm_size
@@ -130,7 +126,7 @@ module "nexis_nearline_deployment" {
   resource_group_location             = var.resource_group_location
   vnet_subnet_id                      = local.stored_subnet_id[0]
   source_address_prefix               = var.resource_prefix 
-  nexis_storage_configuration         = var.nexis_storage_configuration
+  nexis_storage_configuration         = local.nexis_storage_configuration
   nexis_storage_account_configuration = var.nexis_storage_account_configuration
   nexis_storage_type                  = "CloudNearline"
   nexis_storage_vm_size               = var.nexis_vm_size

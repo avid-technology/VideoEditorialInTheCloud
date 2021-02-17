@@ -77,9 +77,9 @@ variable "nexis_online_nb_instances" {
     type = number
 }
 
-variable "nexis_storage_configuration" {
-    type = map
-}
+#variable "nexis_storage_configuration" {
+#    type = map
+#}
 
 variable "nexis_storage_account_configuration" {
     type = map
