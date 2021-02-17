@@ -1,37 +1,16 @@
 #########################
 # Input Variables       #
 #########################
-variable "hostname" {
-  description = "description"
+
+variable "admin_username" {
+  description = "Admin Username for Virtual Machines"
 }
 
 variable "admin_password" {
   description = "Admin Password for Virtual Machines"
 }
 
-variable "admin_username" {
-  description = "Admin Username for Virtual Machines"
-}
-
-variable "jump_box_vm_number_public_ip" {
-  description = "description"
-  default = 0
-}
-
-variable "jump_box_vm_remote_port" {
-  description = "description"
-  default = 3389
-}
-
-variable "jump_box_vm_instances" {
-  description = "description"
-}
-
-variable "jump_box_vm_size" {
-  description = "description"
-}
-
-variable "resource_group_name" {
+variable "resource_prefix" {
   description = ""
 }
 
@@ -39,13 +18,8 @@ variable "resource_group_location" {
   description = ""
 }
 
-variable "subnet_id" {
+variable "vnet_subnet_id" {
   description = ""
-}
-
-variable "source_address_prefix" {
-  description = "CIDR or source IP range or * to match any IP. Tags such as ‘VirtualNetwork’, ‘AzureLoadBalancer’ and ‘Internet’ can also be used."
-  default = "*"
 }
 
 variable "base_index" {
@@ -53,19 +27,22 @@ variable "base_index" {
   default = 0
 }
 
-variable "tags" {
+variable "jumpbox_vm_size" {
   description = "description"
 }
 
-variable "proximity_placement_group_id" {
-  description = "The proximity placement group for VMs"
+variable "jumpbox_nb_instances" {
+  description = "description"
 }
 
-#########################
-# General Variables     #
-#########################
-resource "random_string" "mediacomposer" {
-    length  = 5
-    special = false
-    upper   = false
+variable "jumpbox_internet_access" {
+  description = "Internet access for Jumpbox"
+}
+
+variable "JumpboxScript" {
+  description = "Script forJumbpox"
+}
+
+variable "AvidNexisInstallerUrl" {
+  description = "Script forJumbpox"
 }
