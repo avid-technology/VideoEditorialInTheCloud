@@ -1,57 +1,78 @@
 locals {
-  mediacomposer_vm_script_url = "${var.software_install_urls["mediacomposer_vm_script_url"]}"
-  avid_nexis_client_url       = "${var.software_install_urls["avid_nexis_client_url"]}"
-  mediaComposer_url           = "${var.software_install_urls["mediaComposer_url"]}"
-  teradici_url                = "${var.software_install_urls["teradici_url"]}"
-  nvidia_url                  = "${var.software_install_urls["nvidia_url"]}"
-  teradici_key                = "${var.software_install_urls["teradici_key"]}"
+  resource_group_name       = "${var.resource_prefix}-rg"
+  mediacomposer_vm_hostname = "${var.resource_prefix}-mc"
+  mediacomposerScripturl    = "${var.github_url}${var.mediacomposerScript}"
 }
 
-###################################
-# Window VM(s) for Media Composer #
-###################################
-module "media_composer" {
-  source                          = "../azurevm"
-  resource_group_name             = var.resource_group_name
-  location                        = var.resource_group_location
-  vm_hostname                     = var.hostname
-  admin_password                  = var.admin_password
-  admin_username                  = var.admin_username
-  base_index                      = var.base_index
-  proximity_placement_group_id    = var.proximity_placement_group_id 
-  vm_os_simple                    = "Desktop"
-  storage_account_type            = "Standard_LRS"
-  nb_public_ip                    = var.mediacomposer_vm_number_public_ip
-  remote_port                     = var.mediacomposer_vm_remote_port
-  nb_instances                    = var.mediacomposer_vm_instances
-  vm_size                         = var.mediacomposer_vm_size
-  vnet_subnet_id                  = var.subnet_id
-  boot_diagnostics                = "false"
-  delete_os_disk_on_termination   = "true"
-  enable_accelerated_networking   = "false"
-  is_windows_image                = "true"
-  tags                            = var.tags
+resource "azurerm_public_ip" "mediacomposer_ip" {
+  count               = var.mediacomposer_internet_access ? var.mediacomposer_nb_instances : 0
+  name                = "${local.mediacomposer_vm_hostname}-ip-${format("%02d",count.index)}"
+  location            = var.resource_group_location
+  resource_group_name = local.resource_group_name
+  allocation_method   = "Dynamic"
 }
 
-resource "azurerm_virtual_machine_extension" "media_composer" {
-  name                  = format("${var.hostname}-%02.0f",count.index + var.base_index)
-  count                 = var.mediacomposer_vm_instances
-  virtual_machine_id    = module.media_composer.vm_ids[count.index]
+resource "azurerm_network_interface" "mediacomposer_nic" {
+  count                         = var.mediacomposer_nb_instances
+  name                          = "${local.mediacomposer_vm_hostname}-nic-${format("%02d",count.index)}"
+  location                      = var.resource_group_location
+  resource_group_name           = local.resource_group_name
+  enable_accelerated_networking = true
+
+  ip_configuration {
+    name                          = "ipconfig"
+    subnet_id                     = var.vnet_subnet_id
+    private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = var.mediacomposer_internet_access ? azurerm_public_ip.mediacomposer_ip[count.index].id : ""
+  }
+}
+
+resource "azurerm_windows_virtual_machine" "mediacomposer_vm" {
+  count                         = var.mediacomposer_nb_instances
+  name                          = "${local.mediacomposer_vm_hostname}-vm-${format("%02d",count.index)}"
+  resource_group_name           = local.resource_group_name
+  location                      = var.resource_group_location
+  computer_name                 = "${local.mediacomposer_vm_hostname}-vm-${format("%02d",count.index)}"
+  size                          = var.mediacomposer_vm_size
+  admin_username                = var.admin_username
+  admin_password                = var.admin_password
+  network_interface_ids         = [azurerm_network_interface.mediacomposer_nic[count.index].id]
+
+  source_image_reference {
+    publisher = "MicrosoftWindowsDesktop"
+    offer     = "Windows-10"
+    sku       = "rs5-pro"
+    version   = "latest"
+  }
+
+  os_disk {
+    name                  = "${local.mediacomposer_vm_hostname}-osdisk-${format("%02d",count.index)}"
+    caching               = "ReadWrite"
+    storage_account_type  = "Premium_LRS"
+  }
+
+}
+
+resource "azurerm_virtual_machine_extension" "mediacomposer_extension" {
+  count                 = var.mediacomposer_nb_instances
+  name                  = "mediacomposer"
+  virtual_machine_id    = azurerm_windows_virtual_machine.mediacomposer_vm[count.index].id
   publisher             = "Microsoft.Compute"
   type                  = "CustomScriptExtension"
   type_handler_version  = "1.9"
-  depends_on            = [module.media_composer]
-  tags                  = var.tags
+  depends_on            = [azurerm_windows_virtual_machine.mediacomposer_vm]
 
-  # CustomVMExtension Documetnation: https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-windows
+  # CustomVMExtension Documentation: https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-windows
   settings = <<SETTINGS
     {
-        "fileUris": ["${local.mediacomposer_vm_script_url}"]
+        "fileUris": ["${local.mediacomposerScripturl}"]
     }
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File setupMediaComposer_NVIDIA_20204.ps1 ${local.teradici_key} ${local.mediaComposer_url} ${local.teradici_url} ${local.nvidia_url} ${local.avid_nexis_client_url}"
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.mediacomposerScript} ${var.TeradiciKey} ${var.TeradiciURL} ${var.mediacomposerURL} ${var.NvidiaURL} ${var.AvidNexisInstallerUrl}"
     }
   PROTECTED_SETTINGS
 }
+
+

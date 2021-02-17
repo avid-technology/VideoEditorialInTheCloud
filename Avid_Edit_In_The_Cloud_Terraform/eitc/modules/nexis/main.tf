@@ -1,12 +1,16 @@
 locals{
-  nexis_storage_vm_script_url         = element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 0)
-  nexis_storage_vm_script_name        = element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 1)
-  nexis_storage_vm_artifacts_location = element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 2)
-  nexis_storage_vm_build              = element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 3)
-  nexis_storage_vm_part_number        = element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 4)
-  nexis_storage_performance           = element(split(",", lookup(var.nexis_storage_account_configuration, var.nexis_storage_type, "")), 0)
-  nexis_storage_replication           = element(split(",", lookup(var.nexis_storage_account_configuration, var.nexis_storage_type, "")), 1)
-  nexis_storage_account_kind          = element(split(",", lookup(var.nexis_storage_account_configuration, var.nexis_storage_type, "")), 2)
+  #nexis_storage_vm_script_url         = element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 0)
+  #nexis_storage_vm_script_name        = element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 1)
+  #nexis_storage_vm_artifacts_location = element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 2)
+  #nexis_storage_vm_build              = element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 3)
+  #nexis_storage_vm_part_number        = element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 4)
+  #nexis_storage_performance           = element(split(",", lookup(var.nexis_storage_account_configuration, var.nexis_storage_type, "")), 0)
+  #nexis_storage_replication           = element(split(",", lookup(var.nexis_storage_account_configuration, var.nexis_storage_type, "")), 1)
+  #nexis_storage_account_kind          = element(split(",", lookup(var.nexis_storage_account_configuration, var.nexis_storage_type, "")), 2)
+  resource_group_name         = "${var.resource_prefix}-rg"
+  hostname                    = var.hostname
+  nexis_storage_vm_script_url = "${var.nexis_storage_vm_script_url}${var.nexis_storage_vm_script_name}"
+
 }
 
 resource "random_string" "nexis" {
@@ -21,25 +25,25 @@ resource "random_string" "nexis" {
 #############################
 resource "azurerm_storage_account" "nexis_storage_account" {
   count                     = var.nexis_storage_nb_instances
-  name                      = "${var.hostname}${random_string.nexis[count.index].result}"
-  resource_group_name       = var.resource_group_name
+  name                      = "${local.hostname}${format("%02d",count.index)}${random_string.nexis[count.index].result}"
+  resource_group_name       = local.resource_group_name
   location                  = var.resource_group_location
-  account_kind              = local.nexis_storage_account_kind
-  account_tier              = local.nexis_storage_performance
-  account_replication_type  = local.nexis_storage_replication
+  account_kind              = var.nexis_storage_account_kind
+  account_tier              = var.nexis_storage_performance
+  account_replication_type  = var.nexis_storage_replication
   depends_on = [ random_string.nexis]
 }
 
 resource "azurerm_private_endpoint" "nexis_storage_account" {
   count               = var.nexis_storage_nb_instances
-  name                = "${var.hostname}${random_string.nexis[count.index].result}-pe"
-  resource_group_name = var.resource_group_name
+  name                = "${local.hostname}${format("%02d",count.index)}${random_string.nexis[count.index].result}-pe"
+  resource_group_name = local.resource_group_name
   location            = var.resource_group_location
   subnet_id           = var.vnet_subnet_id
   depends_on = [ random_string.nexis]
 
   private_service_connection {
-    name                           = "${var.hostname}${random_string.nexis[count.index].result}-psc"
+    name                           = "${local.hostname}${format("%02d",count.index)}${random_string.nexis[count.index].result}-psc"
     is_manual_connection           = false
     private_connection_resource_id = azurerm_storage_account.nexis_storage_account.*.id[0]
     subresource_names              = ["blob"]
@@ -48,9 +52,9 @@ resource "azurerm_private_endpoint" "nexis_storage_account" {
 
 resource "azurerm_network_interface" "nexis_nic" {
   count                         = var.nexis_storage_nb_instances
-  name                          = "${var.hostname}-nic"
+  name                          = "${local.hostname}${format("%02d",count.index)}-nic"
   location                      = var.resource_group_location
-  resource_group_name           = var.resource_group_name
+  resource_group_name           = local.resource_group_name
   enable_accelerated_networking = true
 
   ip_configuration {
@@ -63,9 +67,9 @@ resource "azurerm_network_interface" "nexis_nic" {
 
 resource "azurerm_virtual_machine" "nexis_vm" {
   count                         = var.nexis_storage_nb_instances
-  name                          = var.hostname
+  name                          = "${local.hostname}${format("%02d",count.index)}"
   location                      = var.resource_group_location
-  resource_group_name           = var.resource_group_name
+  resource_group_name           = local.resource_group_name
   vm_size                       = var.nexis_storage_vm_size
   network_interface_ids         = [azurerm_network_interface.nexis_nic[count.index].id]
 
@@ -77,7 +81,7 @@ resource "azurerm_virtual_machine" "nexis_vm" {
   }
 
   storage_os_disk {
-    name              = "${var.hostname}-osdisk"
+    name              = "${local.hostname}${format("%02d",count.index)}-osdisk"
     create_option     = "FromImage"
     caching           = "ReadWrite"
     managed_disk_type = "Premium_LRS"
@@ -85,7 +89,7 @@ resource "azurerm_virtual_machine" "nexis_vm" {
   }
 
   storage_data_disk {
-    name              = "${var.hostname}-datadisk"
+    name              = "${local.hostname}${format("%02d",count.index)}-datadisk"
     create_option     = "Empty"
     lun               = 0
     disk_size_gb      = "768"
@@ -93,7 +97,7 @@ resource "azurerm_virtual_machine" "nexis_vm" {
   }
 
   os_profile {
-    computer_name  = var.hostname
+    computer_name  = "${local.hostname}${format("%02d",count.index)}"
     admin_username = "avid"
     admin_password = var.admin_password
     custom_data    = ""
@@ -107,7 +111,7 @@ resource "azurerm_virtual_machine" "nexis_vm" {
 
 resource "azurerm_virtual_machine_extension" "nexis_storage_servers" {
   count                 = var.nexis_storage_nb_instances
-  name                  = var.hostname
+  name                  = "nexis"
   virtual_machine_id    = azurerm_virtual_machine.nexis_vm[count.index].id
   publisher             = "Microsoft.Azure.Extensions"
   type                  = "CustomScript"
@@ -116,7 +120,7 @@ resource "azurerm_virtual_machine_extension" "nexis_storage_servers" {
 
   settings = <<EOF
     {
-       "commandToExecute": "wget '${local.nexis_storage_vm_script_url}' -O ${local.nexis_storage_vm_script_name} && echo ${var.admin_password} | sudo -S /bin/bash ${local.nexis_storage_vm_script_name} ${var.hostname} ${local.nexis_storage_vm_artifacts_location} ${local.nexis_storage_vm_build} ${local.nexis_storage_vm_part_number}" 
+       "commandToExecute": "wget '${local.nexis_storage_vm_script_url}' -O ${var.nexis_storage_vm_script_name} && echo ${var.admin_password} | sudo -S /bin/bash ${var.nexis_storage_vm_script_name} ${local.hostname}${format("%02d",count.index)} ${var.nexis_storage_vm_artifacts_location} ${var.nexis_storage_vm_build} ${var.nexis_storage_vm_part_number}" 
     }
   EOF
 }

@@ -14,6 +14,10 @@ variable "admin_password" {
 #  description = ""
 #}
 
+variable "resource_prefix" {
+  description = ""
+}
+
 variable "resource_group_location" {
   description = ""
 }
@@ -27,35 +31,27 @@ variable "base_index" {
   default = 0
 }
 
-variable "resource_prefix" {
-  description = ""
-}
-
-variable "github_url" {
-  description = ""
-}
-
-#variable "mediacomposer_vm_hostname" {
+#variable "protools_vm_hostname" {
 #  description = "description"
 #}
 
-variable "mediacomposer_vm_size" {
+variable "protools_vm_size" {
   description = "description"
 }
 
-variable "mediacomposer_nb_instances" {
+variable "protools_nb_instances" {
   description = "description"
 }
 
-variable "mediacomposerScript" {
+variable "ProToolsScript" {
     type = string 
 }
 
-variable "mediacomposerURL" {
+variable "ProToolsURL" {
     type = string 
 }
 
-variable "mediacomposer_internet_access" {
+variable "protools_internet_access" {
     type = bool 
 }
 
