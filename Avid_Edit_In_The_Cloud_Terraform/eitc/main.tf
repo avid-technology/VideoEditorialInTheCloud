@@ -16,16 +16,15 @@ provider "azurerm" {
 }
 
 locals {
-
-  resource_group_name = "${var.resource_prefix}-rg"
-  github_url          = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/eitc/scripts/"
-  storage_account_url = "https://eitcstore01.blob.core.windows.net/installers"
-  mediacomposerScript = "setupMediaComposer_NVIDIA_${var.mediacomposerVersion}.ps1"
+  resource_group_name                 = "${var.resource_prefix}-rg"
+  github_url                          = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/eitc/scripts/"
+  storage_account_url                 = "https://eitcstore01.blob.core.windows.net/installers"
+  mediacomposerScript                 = "setupMediaComposer_NVIDIA_${var.mediacomposerVersion}.ps1"
   nexis_storage_configuration         = {
                                         "CloudNearline" = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/eitc/scripts/installNexis.bash,installNexis.bash,https://ssengreleng.blob.core.windows.net/nexisgold/20.12.0/installers,AvidNEXISCloud_20.12.0-9.run,0100-38171-00"
                                         "CloudOnline"   = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/eitc/scripts/installNexis.bash,installNexis.bash,https://ssengreleng.blob.core.windows.net/nexisgold/20.12.0/installers,AvidNEXISCloud_20.12.0-9.run,0100-40109-00"
-                                    }
-
+                                        }
+  stored_subnet_id                = module.editorial_networking.azurerm_subnet_ids                                     
 }
 
 module "editorial_networking" {
@@ -38,10 +37,6 @@ module "editorial_networking" {
   subnets                 = var.subnets
   sg_name                 = "${var.resource_prefix}-rg-nsg"
   tags                    = var.azureTags
-}
-
-locals {
-  stored_subnet_id                = module.editorial_networking.azurerm_subnet_ids
 }
 
 module "jumpbox_deployment" {
