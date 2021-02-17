@@ -1,6 +1,7 @@
 #########################
 # Input Variables       #
 #########################
+
 variable "hostname" {
   description = "description"
 }
@@ -11,11 +12,6 @@ variable "admin_password" {
 
 variable "admin_username" {
   description = "Admin Username for Virtual Machines"
-  default = "avid"
-}
-
-variable "nexis_storage_vm_number_public_ip" {
-  description = "description"
 }
 
 variable "nexis_storage_vm_remote_port" {
@@ -32,23 +28,19 @@ variable "nexis_storage_vm_size" {
   description = "description"
 }
 
-variable "nexis_storage_type" {
-    description = ""
-}
-
-variable "resource_group_name" {
-  description = ""
+variable "nexis_storage_nb_instances" {
+  description = "description"
 }
 
 variable "resource_group_location" {
   description = ""
 }
 
-variable "subnet_id" {
+variable "vnet_subnet_id" {
   description = ""
 }
 
-variable "source_address_prefix" {
+variable "resource_prefix" {
   description = "CIDR or source IP range or * to match any IP. Tags such as ‘VirtualNetwork’, ‘AzureLoadBalancer’ and ‘Internet’ can also be used."
   default = "*"
 }
@@ -58,36 +50,34 @@ variable "base_index" {
   default = 0
 }
 
-variable "tags" {
-  description = "description"
+variable "nexis_storage_vm_script_url" { 
+  type = string
 }
 
-variable "proximity_placement_group_id" {
-  description = "The proximity placement group for VMs"
+variable "nexis_storage_vm_script_name" { 
+  type = string
 }
 
-#########################
-# General Variables     #
-#########################
-resource "random_string" "nexis" {
-    length  = 5
-    special = false
-    upper   = false
+variable "nexis_storage_vm_artifacts_location" { 
+  type = string
 }
 
-#########################
-# Maps                  #
-#########################
-variable "nexis_storage_configuration" { # nexis_storage_vm_script_url, nexis_storage_vm_script_name, nexis_storage_vm_artifacts_location, nexis_storage_vm_build, nexis_storage_vm_part_number
-  default       = {
-    "CloudNearline" = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/scripts/installNexis.bash,installNexis.bash,https://ssengreleng.blob.core.windows.net/nexisgold/20.5.0/installers,AvidNexisCloud_20.5.0-6.run,0100-38171-00"
-    "CloudOnline"   = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/scripts/installNexis.bash,installNexis.bash,https://ssengreleng.blob.core.windows.net/nexisgold/20.5.0/installers,AvidNexisCloud_20.5.0-6.run,0100-40109-00"
-  }
+variable "nexis_storage_vm_build" { 
+  type = string
 }
 
-variable "nexis_storage_account_configuration" { # nexis_storage_vm_script_url, nexis_storage_vm_script_name, nexis_storage_vm_artifacts_location, nexis_storage_vm_build, nexis_storage_vm_part_number
-  default       = {
-    "CloudNearline" = "Standard,LRS,StorageV2"
-    "CloudOnline"   = "Premium,LRS,BlockBlobStorage"
-  }
+variable "nexis_storage_vm_part_number" { 
+  type = string
+}
+
+variable "nexis_storage_performance" { 
+  type = string
+}
+
+variable "nexis_storage_replication" { 
+  type = string
+}
+
+variable "nexis_storage_account_kind" { 
+  type = string
 }

@@ -5,10 +5,10 @@
     "resourcePrefix": {
       "type": "string",
       "minLength": 5,
-      "maxLength": 10,
-      "defaultValue": "show-jpbx",
+      "maxLength": 15,
+      "defaultValue": "show-jpbx-01",
       "metadata": {
-      "description": "Prefix must be 5-char min, 10-char max, lowercase alphanumeric"
+      "description": "Prefix must be 5-char min, 15-char max, lowercase alphanumeric"
       }
     },
     "adminUsername": {
@@ -23,13 +23,6 @@
         "description": "Password for the Virtual Machine."
       }
     },
-    "numberOfInstances": {
-            "type": "int",
-            "metadata": {
-                "description": "Number of instances to launch"
-            },
-            "defaultValue": 1
-        },
     "general-VnetResourceGroup": {
             "type": "string",
             "metadata": {
@@ -65,11 +58,10 @@
     "subnetId": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]",
     "location": "[resourceGroup().location]",
     "vmSize": "Standard_D4s_v3",
-    "nicName": "[concat(variables('uniqueName'),'-jpbx-nic-')]",
-    "numberOfInstances": "[parameters('numberOfInstances')]",
-    "publicIPAddressName": "[concat(variables('uniqueName'),'-jpbx-ip-')]",
-    "vmName": "[concat(variables('uniqueName'),'-jpbx-')]",
-    "networkSecurityGroupName": "[concat(variables('uniqueName'),'-jpbx-nsg')]",
+    "nicName": "[concat(variables('uniqueName'),'-nic')]",
+    "publicIPAddressName": "[concat(variables('uniqueName'),'-ip')]",
+    "vmName": "[variables('uniqueName')]",
+    "networkSecurityGroupName": "[concat(variables('uniqueName'),'-nsg')]",
     "adminUsername": "[parameters('adminUsername')]",
     "adminPassword": "[parameters('adminPassword')]",
     "scriptFileName": "installJumpbox.ps1",
@@ -120,12 +112,8 @@
     {
       "apiVersion": "2017-06-01",
       "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[concat(variables('publicIPAddressName'),padLeft(copyindex(1),2,'0'))]",
+      "name": "[variables('publicIPAddressName')]",
       "location": "[variables('location')]",
-      "copy": {
-                "name": "publicIPLoop",
-                "count": "[variables('numberOfInstances')]"
-      },
       "properties": {
         "publicIPAllocationMethod": "Static"
       }
@@ -133,14 +121,10 @@
     {
       "apiVersion": "2018-04-01",
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(variables('nicName'), padLeft(copyindex(1),2,'0'))]",
+      "name": "[variables('nicName')]",
       "location": "[variables('location')]",
-      "copy": {
-                "name": "nicLoop",
-                "count": "[variables('numberOfInstances')]"
-            },
       "dependsOn": [
-        "publicIPLoop",
+        "[variables('publicIPAddressName')]",
         "[variables('networkSecurityGroupName')]"
       ],
       "properties": {
@@ -150,7 +134,7 @@
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses',concat(variables('publicIPAddressName'), padLeft(copyindex(1),2,'0')))]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
               },
               "subnet": {
                 "id": "[variables('subnetId')]"
@@ -166,21 +150,17 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "apiVersion": "2018-10-01",
-      "name": "[concat(variables('vmName'),  padLeft(copyindex(1),2,'0'))]",
+      "name": "[variables('vmName')]",
       "location": "[variables('location')]",
-      "copy": {
-                "name": "virtualMachineLoop",
-                "count": "[variables('numberOfInstances')]"
-            },
       "dependsOn": [
-        "nicLoop"
+        "[variables('nicName')]"
       ],
       "properties": {
         "hardwareProfile": {
           "vmSize": "[variables('vmSize')]"
         },
         "osProfile": {
-          "computername": "[concat(variables('vmName'), padLeft(copyindex(1),2,'0'))]",
+          "computername": "[variables('vmName')]",
           "adminUsername": "[variables('adminUsername')]",
           "adminPassword": "[variables('adminPassword')]",
           "windowsConfiguration": {
@@ -198,13 +178,13 @@
           },
           "osDisk": {
             "createOption": "FromImage",
-            "name": "[concat(variables('vmName'),'-os-disk-', padLeft(copyindex(1),2,'0'))]"
+            "name": "[concat(variables('vmName'),'-os-disk')]"
           }
         },
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(variables('nicName'), padLeft(copyindex(1),2,'0')))]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
             }
           ]
         }
@@ -212,15 +192,11 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(concat(variables('vmName'),  padLeft(copyindex(1),2,'0')),'/create.Jumpbox.v1.0.0')]",
+      "name": "[concat(concat(variables('vmName'),'/create.Jumpbox.v1.0.0'))]",
       "apiVersion": "2017-12-01",
       "location": "[variables('location')]",
-      "copy": {
-                "name": "extensionLoop",
-                "count": "[variables('numberOfInstances')]"
-            },
       "dependsOn": [
-        "virtualMachineLoop"
+        "[variables('vmName')]"
       ],
       "properties": {
         "publisher": "Microsoft.Compute",

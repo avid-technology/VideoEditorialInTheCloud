@@ -1,9 +1,17 @@
-<# Custom Script for Windows to install a file from Azure Storage using the staging folder created by the deployment script #>
+<#
+    .SYNOPSIS
+        Configure Windows 10 Workstation with Avid ProTools.
+
+    .DESCRIPTION
+        Configure Windows 10 Workstation with Avid ProTools.
+
+        Example command line: .\setupMachine.ps1 Avid ProTools
+#>
+[CmdletBinding(DefaultParameterSetName = "Standard")]
 param (
+    [string]
     [ValidateNotNullOrEmpty()]
-    $FileCatalystURL,
-    [ValidateNotNullOrEmpty()]
-    $AvidNEXISClientURL
+    $AvidNexisInstallerUrl
 )
 
 filter Timestamp {"$(Get-Date -Format o): $_"}
@@ -34,14 +42,12 @@ DownloadFileOverHttp($Url, $DestinationPath) {
 
 function 
 Install-NexisClient {
-   
-    Write-Log "downloading Nexus Client"
+    Write-Log "downloading Nexis Client"
     $NexisDestinationPath = "D:\AzureData\AvidNEXISClient.msi"
     Write-Log $DestinationPath
-    DownloadFileOverHttp $AvidNEXISClientURL $NexisDestinationPath
+    DownloadFileOverHttp $AvidNexisInstallerUrl $NexisDestinationPath
 
     Start-Process -FilePath $NexisDestinationPath -ArgumentList "/quiet", "/passive", "/norestart" -Wait
-    
 }
 
 function
@@ -52,19 +58,8 @@ Install-ChocolatyAndPackages {
     Write-Log "choco Install Google Chrome"
     choco install -y googlechrome -ignore-checksum
 
-    Write-Log "choco install -y 7zip.install"
-    choco install -y 7zip.install
-
-}
-
-function 
-Install-FileCatalyst {
-   
-    Write-Log "downloading FileCatalyst Server"
-    $FileCatalystDestinationPath = "C:\Users\Public\Desktop\Install_FileCatalyst.exe"
-
-    Write-Log $FileCatalystDestinationPath
-    DownloadFileOverHttp $FileCatalystURL $FileCatalystDestinationPath
+    #Write-Log "install Microsoft Azure Storage Explorer 1.17.0"
+    #choco install microsoftazurestorageexplorer
 
 }
 
@@ -79,12 +74,10 @@ try {
         catch {
             # chocolaty is best effort
         }
-    
-    Write-Log "Call Install-NexisCLient"
-    Install-NexisClient
 
-    Write-Log "Call Install-FileCatalyst"
-    Install-FileCatalyst
+        Write-Log "Call Install-NexisClient"
+        Install-NexisClient
+
 }
 catch {
     Write-Error $_

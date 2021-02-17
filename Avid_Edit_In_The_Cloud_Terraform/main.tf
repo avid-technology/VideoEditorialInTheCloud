@@ -1,143 +1,133 @@
-#Set the terraform required version and the backend
+# Configure the Azure provider
 terraform {
+  required_providers {
+    azurerm = {
+      source = "hashicorp/azurerm"
+      version = ">= 2.26"
+    }
+    random = {
+      version = "~> 2.2"
+    }
+  }
 }
 
-# Configure the Azure Provider
 provider "azurerm" {
-  # It is recommended to pin to a given version of the Provider
-  #subscription_id = var.subscription_id
-  #client_id       = var.client_id
-  #client_secret   = var.client_secret
-  #tenant_id       = var.tenant_id
   features {}
-  version         = "~>2.6"
-  partner_id      = "6ae4d712-3974-76c4-96de-50fc79fa69fc"
 }
 
-provider "random" {
-  version = "~> 2.2"
-}
-
-#############################
-# Locals:(Non-Tradional)    #
-# Please change the values  # 
-# in this section to        #
-# customize the setup for   # 
-# environment               #
-#############################
 locals {
-  resource_group_name               = "BYOL"
-  location                          = "westus2"
-  
-  admin_username                    = "azureuser"
-  admin_password                    = "Password12345"
-  
-  address_space                     = "10.1.0.0/16"
-  subnet_prefixes                   = ["10.1.1.0/24","10.1.2.0/24"]
-  dns_servers                       = []
-  subnet_names                      = ["default","storage"]
-  
-  source_address_prefix             = "*"
-  
-  jump_box_vm_size                  = "Standard_B2ms"
-  jump_box_base_index               = 0
-  jump_box_vm_instances             = 0
-  jump_box_vm_number_public_ip      = 0
-
-  mediacomposer_vm_size             = "Standard_NV12s_v3"
-  mediacomposer_base_index          = 0
-  mediacomposer_vm_instances        = 0
-  mediacomposer_vm_number_public_ip = 0
-
-  nexis_vm_size                     = "Standard_DS4_V2"
-  nexis_base_index                  = 0
-  nexis_instances                   = 0
-  nexis_storage_vm_number_public_ip = 0
-  nexis_type                        = "CloudNearline" # options "CloudNearline" or "CloudOnline"
-   
-  azureTags = {
-                "environment" = "BYOL"
-              }
+  resource_group_name                     = "${var.resource_prefix}-rg"
+  github_url                              = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/eitc/scripts/"
+  AvidNexisInstallerUrl                   = var.AvidNexisInstallerUrl 
+  mediacomposerScript                     = "setupMediaComposer_NVIDIA_${var.mediacomposerVersion}.ps1"
+  stored_subnet_id                        = module.editorial_networking.azurerm_subnet_ids                                     
 }
 
-#############################
-# Resources                 #
-#############################
 module "editorial_networking" {
-  source              = "./modules/azurenetwork"
-  vnet_name           = "${local.resource_group_name}-vnet" 
-  resource_group_name = "${local.resource_group_name}-rg" 
-  location            = local.location
-  address_space       = local.address_space
-  dns_servers         = local.dns_servers
-  subnet_prefixes     = local.subnet_prefixes
-  subnet_names        = local.subnet_names
-  allow_rdp_traffic   = true  
-  allow_ssh_traffic   = true  
-  sg_name             = "${local.resource_group_name}-secgrp"
-  tags                = local.azureTags
+  source                  = "./modules/network"
+  vnet_name               = "${var.resource_prefix}-rg-vnet" 
+  resource_group_name     = local.resource_group_name
+  resource_group_location = var.resource_group_location
+  address_space           = var.vnet_address_space
+  dns_servers             = var.dns_servers
+  subnets                 = var.subnets
+  sg_name                 = "${var.resource_prefix}-rg-nsg"
+  tags                    = var.azureTags
 }
 
-locals {
-  stored_resource_group_name      = module.editorial_networking.azurerm_resource_group_name
-  stored_resource_group_location  = module.editorial_networking.azurerm_resource_group_location
-  stored_subnet_id                = module.editorial_networking.azurerm_subnet_ids
-  proximity_placement_group_id    = module.editorial_networking.proximity_placement_group_id
-}
-
-resource "random_string" "general" {
-  length  = 5
-  special = false
-  upper   = false
-}
-
-module "jump_box_deployment" {
+module "jumpbox_deployment" {
   source                        = "./modules/jumpbox"
-  hostname                      = "jumpbox"
-  admin_username                = local.admin_username
-  admin_password                = local.admin_password
-  resource_group_name           = local.stored_resource_group_name
-  resource_group_location       = local.stored_resource_group_location
-  subnet_id                     = local.stored_subnet_id[0]
-  source_address_prefix         = local.source_address_prefix
-  base_index                    = local.jump_box_base_index
-  proximity_placement_group_id  = local.proximity_placement_group_id  
-  jump_box_vm_size              = local.jump_box_vm_size
-  jump_box_vm_instances         = local.jump_box_vm_instances
-  jump_box_vm_number_public_ip  = local.jump_box_vm_number_public_ip
-  tags                          = local.azureTags
+  admin_username                = var.admin_username
+  admin_password                = var.admin_password
+  resource_prefix               = var.resource_prefix
+  resource_group_location       = var.resource_group_location
+  vnet_subnet_id                = local.stored_subnet_id[0]
+  jumpbox_vm_size               = var.jumpbox_vm_size
+  jumpbox_nb_instances          = var.jumpbox_nb_instances
+  JumpboxScript                 = "${local.github_url}${var.JumpboxScript}"
+  jumpbox_internet_access       = var.jumpbox_internet_access 
+  AvidNexisInstallerUrl         = var.AvidNexisInstallerUrl 
+  depends_on                    = [module.editorial_networking]
 }
 
-module "media_composer_deployment" {
+module "protools_deployment" {
+  source                            = "./modules/protools"
+  admin_username                    = var.admin_username
+  admin_password                    = var.admin_password
+  resource_prefix                   = var.resource_prefix
+  resource_group_location           = var.resource_group_location
+  vnet_subnet_id                    = local.stored_subnet_id[0]
+  protools_vm_size                  = var.protools_vm_size
+  protools_nb_instances             = var.protools_nb_instances
+  protools_internet_access          = var.protools_internet_access 
+  ProToolsScript                    = "${local.github_url}${var.ProToolsScript}"
+  TeradiciKey                       = var.TeradiciKey
+  TeradiciURL                       = var.TeradiciURL
+  ProToolsURL                       = var.ProToolsURL
+  NvidiaURL                         = var.NvidiaURL
+  AvidNexisInstallerUrl             = var.AvidNexisInstallerUrl 
+  depends_on                        = [module.editorial_networking]
+}
+
+module "mediacomposer_deployment" {
   source                            = "./modules/mediacomposer"
-  hostname                          = "mcomposer"
-  admin_username                    = local.admin_username
-  admin_password                    = local.admin_password
-  resource_group_name               = local.stored_resource_group_name
-  resource_group_location           = local.stored_resource_group_location
-  subnet_id                         = local.stored_subnet_id[0]
-  source_address_prefix             = local.source_address_prefix
-  base_index                        = local.mediacomposer_base_index
-  proximity_placement_group_id      = ""  
-  mediacomposer_vm_size             = local.mediacomposer_vm_size
-  mediacomposer_vm_instances        = local.mediacomposer_vm_instances
-  mediacomposer_vm_number_public_ip = local.mediacomposer_vm_number_public_ip
-  tags                              = local.azureTags
+  admin_username                    = var.admin_username
+  admin_password                    = var.admin_password
+  resource_prefix                   = var.resource_prefix
+  resource_group_location           = var.resource_group_location
+  vnet_subnet_id                    = local.stored_subnet_id[0]
+  mediacomposer_vm_size             = var.mediacomposer_vm_size
+  mediacomposer_nb_instances        = var.mediacomposer_nb_instances
+  mediacomposer_internet_access     = var.mediacomposer_internet_access 
+  github_url                        = local.github_url
+  mediacomposerScript               = local.mediacomposerScript
+  TeradiciKey                       = var.TeradiciKey
+  TeradiciURL                       = var.TeradiciURL
+  mediacomposerURL                  = "${var.storage_account_url}/Media_Composer_${var.mediacomposerVersion}_Win.zip"
+  NvidiaURL                         = var.NvidiaURL
+  AvidNexisInstallerUrl             = var.AvidNexisInstallerUrl 
+  depends_on                        = [module.editorial_networking]
 }
 
-module "nexis_deployment" {
-  source                            = "./modules/nexis"
-  hostname                          = "nexis"
-  admin_password                    = local.admin_password
-  resource_group_name               = local.stored_resource_group_name
-  resource_group_location           = local.stored_resource_group_location
-  subnet_id                         = local.stored_subnet_id[1]
-  source_address_prefix             = local.source_address_prefix
-  base_index                        = local.nexis_base_index 
-  proximity_placement_group_id      = local.proximity_placement_group_id 
-  nexis_storage_type                = local.nexis_type
-  nexis_storage_vm_size             = local.nexis_vm_size
-  nexis_storage_vm_instances        = local.nexis_instances
-  nexis_storage_vm_number_public_ip = local.nexis_storage_vm_number_public_ip
-  tags                              = local.azureTags
+module "nexis_online_deployment" {
+  source                              = "./modules/nexis"
+  admin_username                      = var.admin_username
+  admin_password                      = var.admin_password
+  hostname                            = "${var.resource_prefix}on"
+  resource_group_location             = var.resource_group_location
+  vnet_subnet_id                      = local.stored_subnet_id[0]
+  resource_prefix                     = var.resource_prefix 
+  nexis_storage_vm_size               = var.nexis_vm_size
+  nexis_storage_nb_instances          = var.nexis_online_nb_instances
+  nexis_storage_vm_script_url         = local.github_url
+  nexis_storage_vm_script_name        = var.nexis_storage_vm_script_name
+  nexis_storage_vm_artifacts_location = var.storage_account_url
+  nexis_storage_vm_build              = var.nexis_storage_vm_build
+  nexis_storage_vm_part_number        = var.nexis_storage_vm_part_number_online
+  nexis_storage_performance           = var.nexis_storage_performance_online
+  nexis_storage_replication           = var.nexis_storage_replication_online
+  nexis_storage_account_kind          = var.nexis_storage_account_kind_online
+  depends_on                          = [module.editorial_networking]
 }
+
+module "nexis_nearline_deployment" {
+  source                              = "./modules/nexis"
+  admin_username                      = var.admin_username
+  admin_password                      = var.admin_password
+  hostname                            = "${var.resource_prefix}nl"
+  resource_group_location             = var.resource_group_location
+  vnet_subnet_id                      = local.stored_subnet_id[0]
+  resource_prefix                     = var.resource_prefix 
+  nexis_storage_vm_size               = var.nexis_vm_size
+  nexis_storage_nb_instances          = var.nexis_nearline_nb_instances
+  nexis_storage_vm_script_url         = local.github_url
+  nexis_storage_vm_script_name        = var.nexis_storage_vm_script_name
+  nexis_storage_vm_artifacts_location = var.storage_account_url
+  nexis_storage_vm_build              = var.nexis_storage_vm_build
+  nexis_storage_vm_part_number        = var.nexis_storage_vm_part_number_nearline
+  nexis_storage_performance           = var.nexis_storage_performance_nearline
+  nexis_storage_replication           = var.nexis_storage_replication_nearline
+  nexis_storage_account_kind          = var.nexis_storage_account_kind_nearline
+  depends_on                          = [module.editorial_networking]
+}
+
