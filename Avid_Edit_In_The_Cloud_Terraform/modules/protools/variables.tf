@@ -10,10 +10,6 @@ variable "admin_password" {
   description = "Admin Password for Virtual Machines"
 }
 
-#variable "resource_group_name" {
-#  description = ""
-#}
-
 variable "resource_prefix" {
   description = ""
 }
@@ -30,10 +26,6 @@ variable "base_index" {
   description = "Base index"
   default = 0
 }
-
-#variable "protools_vm_hostname" {
-#  description = "description"
-#}
 
 variable "protools_vm_size" {
   description = "description"

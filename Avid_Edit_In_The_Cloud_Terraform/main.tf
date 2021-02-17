@@ -18,12 +18,9 @@ provider "azurerm" {
 locals {
   resource_group_name                     = "${var.resource_prefix}-rg"
   github_url                              = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/eitc/scripts/"
-  #storage_account_url                     = "https://eitcstore01.blob.core.windows.net/installers"
   AvidNexisInstallerUrl                   = var.AvidNexisInstallerUrl 
   mediacomposerScript                     = "setupMediaComposer_NVIDIA_${var.mediacomposerVersion}.ps1"
-  #nexis_storage_vm_script_url             = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/eitc/scripts/installNexis.bash"
   nexis_storage_vm_script_name            = "installNexis.bash"
-  #nexis_storage_vm_artifacts_location     = "https://eitcstore01.blob.core.windows.net/installers"
   nexis_storage_vm_build                  = "AvidNEXISCloud_20.12.0-9.run"
   nexis_storage_vm_part_number_nearline   = "0100-38171-00"
   nexis_storage_vm_part_number_online     = "0100-40109-00"
@@ -33,11 +30,7 @@ locals {
   nexis_storage_performance_online        = "Premium"
   nexis_storage_replication_online        = "LRS"
   nexis_storage_account_kind_online       = "BlockBlobStorage"
-  #nexis_storage_configuration         = {
-  #                                      "CloudNearline" = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/eitc/scripts/installNexis.bash,installNexis.bash,https://eitcstore01.blob.core.windows.net/installers,AvidNEXISCloud_20.12.0-9.run,0100-38171-00"
-  #                                      "CloudOnline"   = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/eitc/scripts/installNexis.bash,installNexis.bash,https://eitcstore01.blob.core.windows.net/installers,AvidNEXISCloud_20.12.0-9.run,0100-40109-00"
-  #                                      }
-  stored_subnet_id                = module.editorial_networking.azurerm_subnet_ids                                     
+  stored_subnet_id                        = module.editorial_networking.azurerm_subnet_ids                                     
 }
 
 module "editorial_networking" {
@@ -111,12 +104,9 @@ module "nexis_online_deployment" {
   admin_username                      = var.admin_username
   admin_password                      = var.admin_password
   hostname                            = "${var.resource_prefix}on"
-  #resource_group_name                 = local.resource_group_name
   resource_group_location             = var.resource_group_location
   vnet_subnet_id                      = local.stored_subnet_id[0]
   resource_prefix                     = var.resource_prefix 
-  #nexis_storage_configuration         = local.nexis_storage_configuration
-  #nexis_storage_account_configuration = var.nexis_storage_account_configuration
   nexis_storage_vm_size               = var.nexis_vm_size
   nexis_storage_nb_instances          = var.nexis_online_nb_instances
   nexis_storage_vm_script_url         = local.github_url
@@ -135,12 +125,9 @@ module "nexis_nearline_deployment" {
   admin_username                      = var.admin_username
   admin_password                      = var.admin_password
   hostname                            = "${var.resource_prefix}nl"
-  #resource_group_name                 = local.resource_group_name
   resource_group_location             = var.resource_group_location
   vnet_subnet_id                      = local.stored_subnet_id[0]
   resource_prefix                     = var.resource_prefix 
-  #nexis_storage_configuration         = local.nexis_storage_configuration
-  #nexis_storage_account_configuration = var.nexis_storage_account_configuration
   nexis_storage_vm_size               = var.nexis_vm_size
   nexis_storage_nb_instances          = var.nexis_nearline_nb_instances
   nexis_storage_vm_script_url         = local.github_url

@@ -32,14 +32,6 @@ variable "nexis_storage_nb_instances" {
   description = "description"
 }
 
-#variable "nexis_storage_type" {
-#    description = ""
-#}
-
-#variable "resource_group_name" {
-#  description = ""
-#}
-
 variable "resource_group_location" {
   description = ""
 }
@@ -57,17 +49,6 @@ variable "base_index" {
   description = "Base index"
   default = 0
 }
-
-#########################
-# Maps                  #
-#########################
-#variable "nexis_storage_configuration" { 
-#  type = map
-#}
-
-#variable "nexis_storage_account_configuration" { 
-#  type = map
-#}
 
 variable "nexis_storage_vm_script_url" { 
   type = string

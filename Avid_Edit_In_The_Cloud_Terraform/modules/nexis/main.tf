@@ -1,12 +1,4 @@
 locals{
-  #nexis_storage_vm_script_url         = element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 0)
-  #nexis_storage_vm_script_name        = element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 1)
-  #nexis_storage_vm_artifacts_location = element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 2)
-  #nexis_storage_vm_build              = element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 3)
-  #nexis_storage_vm_part_number        = element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 4)
-  #nexis_storage_performance           = element(split(",", lookup(var.nexis_storage_account_configuration, var.nexis_storage_type, "")), 0)
-  #nexis_storage_replication           = element(split(",", lookup(var.nexis_storage_account_configuration, var.nexis_storage_type, "")), 1)
-  #nexis_storage_account_kind          = element(split(",", lookup(var.nexis_storage_account_configuration, var.nexis_storage_type, "")), 2)
   resource_group_name         = "${var.resource_prefix}-rg"
   hostname                    = var.hostname
   nexis_storage_vm_script_url = "${var.nexis_storage_vm_script_url}${var.nexis_storage_vm_script_name}"

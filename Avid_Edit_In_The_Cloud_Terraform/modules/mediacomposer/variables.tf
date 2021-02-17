@@ -10,10 +10,6 @@ variable "admin_password" {
   description = "Admin Password for Virtual Machines"
 }
 
-#variable "resource_group_name" {
-#  description = ""
-#}
-
 variable "resource_group_location" {
   description = ""
 }
@@ -34,10 +30,6 @@ variable "resource_prefix" {
 variable "github_url" {
   description = ""
 }
-
-#variable "mediacomposer_vm_hostname" {
-#  description = "description"
-#}
 
 variable "mediacomposer_vm_size" {
   description = "description"
