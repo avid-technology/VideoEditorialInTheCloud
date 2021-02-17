@@ -81,13 +81,45 @@ variable "nexis_online_nb_instances" {
     type = number
 }
 
-#variable "nexis_storage_configuration" {
-#    type = map
-#}
+variable "nexis_storage_vm_script_name" {
+    type = string
+}
 
-#variable "nexis_storage_account_configuration" {
-#    type = map
-#}
+variable "nexis_storage_vm_build" {
+    type = string
+}
+
+variable "nexis_storage_vm_part_number_nearline" {
+    type = string
+}
+
+variable "nexis_storage_vm_part_number_online" {
+    type = string
+}
+
+variable "nexis_storage_performance_nearline" {
+    type = string
+}
+
+variable "nexis_storage_replication_nearline" {
+    type = string
+}
+
+variable "nexis_storage_account_kind_nearline" {
+    type = string
+}
+
+variable "nexis_storage_performance_online" {
+    type = string
+}
+
+variable "nexis_storage_replication_online" {
+    type = string
+}
+
+variable "nexis_storage_account_kind_online" {
+    type = string
+}
 
 ######################
 ### Teradici       ###
