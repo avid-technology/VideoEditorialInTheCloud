@@ -19,6 +19,7 @@ locals {
   resource_group_name                     = "${var.resource_prefix}-rg"
   github_url                              = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/scripts/"
   mediacomposerScript                     = "setupMediaComposer_NVIDIA_${var.mediacomposerVersion}.ps1"
+  ProToolsScript                          = "setupProTools_${var.ProToolsVersion}.ps1"
   stored_subnet_id                        = module.editorial_networking.azurerm_subnet_ids                                     
 }
 
@@ -59,11 +60,12 @@ module "protools_deployment" {
   gpu_type                          = "${var.gpu_type}GpuDriverWindows"
   protools_vm_size                  = var.protools_vm_size
   protools_nb_instances             = var.protools_nb_instances
-  protools_internet_access          = var.protools_internet_access 
-  ProToolsScript                    = "${local.github_url}${var.ProToolsScript}"
+  protools_internet_access          = var.protools_internet_access
+  github_url                        = local.github_url 
+  ProToolsScript                    = local.ProToolsScript
   TeradiciKey                       = var.TeradiciKey
   TeradiciURL                       = "${var.storage_account_url}/${var.TeradiciURL}"
-  ProToolsURL                       = "${var.storage_account_url}/${var.ProToolsURL}"
+  ProToolsURL                       = "${var.storage_account_url}/Pro_Tools_${var.ProToolsVersion}_Win.zip"
   NvidiaURL                         = var.NvidiaURL
   AvidNexisInstallerUrl             = "${var.storage_account_url}/${var.AvidNexisInstallerUrl}"
   depends_on                        = [module.editorial_networking]

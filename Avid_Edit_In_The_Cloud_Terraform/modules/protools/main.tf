@@ -1,6 +1,7 @@
 locals {
   resource_group_name   = "${var.resource_prefix}-rg"
   protools_vm_hostname  = "${var.resource_prefix}-pt"
+  protoolsScripturl     = "${var.github_url}${var.ProToolsScript}"
 }
 
 resource "azurerm_public_ip" "protools_ip" {
@@ -64,7 +65,7 @@ resource "azurerm_virtual_machine_extension" "protools_extension_1" {
   # CustomVMExtension Documentation: https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-windows
   settings = <<SETTINGS
     {
-        "fileUris": ["${var.ProToolsScript}"]
+        "fileUris": ["${local.protoolsScripturl}"]
     }
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
@@ -77,7 +78,7 @@ SETTINGS
 resource "azurerm_virtual_machine_extension" "protools_extension_2" {
   count                       = var.protools_nb_instances
   name                        = "protools2"
-  virtual_machine_id          = azurerm_windows_virtual_machine.mediacomposer_vm[count.index].id
+  virtual_machine_id          = azurerm_windows_virtual_machine.protools_vm[count.index].id
   publisher                   = "Microsoft.HpcCompute"
   type                        = var.gpu_type
   type_handler_version        = "1.0"

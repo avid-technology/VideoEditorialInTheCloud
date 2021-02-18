@@ -18,6 +18,10 @@ variable "resource_group_location" {
   description = ""
 }
 
+variable "github_url" {
+  description = ""
+}
+
 variable "vnet_subnet_id" {
   description = ""
 }
