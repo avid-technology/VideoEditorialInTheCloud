@@ -17,7 +17,7 @@ provider "azurerm" {
 
 locals {
   resource_group_name                     = "${var.resource_prefix}-rg"
-  github_url                              = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/eitc/scripts/"
+  github_url                              = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/scripts/"
   AvidNexisInstallerUrl                   = var.AvidNexisInstallerUrl 
   mediacomposerScript                     = "setupMediaComposer_NVIDIA_${var.mediacomposerVersion}.ps1"
   stored_subnet_id                        = module.editorial_networking.azurerm_subnet_ids                                     
