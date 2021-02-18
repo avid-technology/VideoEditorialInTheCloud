@@ -24,6 +24,10 @@ variable "NvidiaURL" {
     type = string 
 }
 
+variable "gpu_type" {
+    type = string 
+}
+
 variable "branch"{
     type = string
 }

@@ -52,9 +52,9 @@ resource "azurerm_windows_virtual_machine" "protools_vm" {
 
 }
 
-resource "azurerm_virtual_machine_extension" "protools_extension" {
+resource "azurerm_virtual_machine_extension" "protools_extension_1" {
   count                 = var.protools_nb_instances
-  name                  = "protools"
+  name                  = "protools1"
   virtual_machine_id    = azurerm_windows_virtual_machine.protools_vm[count.index].id
   publisher             = "Microsoft.Compute"
   type                  = "CustomScriptExtension"
@@ -72,6 +72,23 @@ SETTINGS
       "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File setupProTools_2020.11.0.ps1 ${var.TeradiciKey} ${var.TeradiciURL} ${var.ProToolsURL} ${var.NvidiaURL} ${var.AvidNexisInstallerUrl}"
     }
   PROTECTED_SETTINGS
+}
+
+resource "azurerm_virtual_machine_extension" "protools_extension_2" {
+  count                       = var.protools_nb_instances
+  name                        = "protools2"
+  virtual_machine_id          = azurerm_windows_virtual_machine.mediacomposer_vm[count.index].id
+  publisher                   = "Microsoft.HpcCompute"
+  type                        = var.gpu_type
+  type_handler_version        = "1.0"
+  auto_upgrade_minor_version  = true
+  depends_on                  = [azurerm_virtual_machine_extension.protools_extension_1]
+
+  settings = <<SETTINGS
+    {
+    
+    }
+SETTINGS
 }
 
 

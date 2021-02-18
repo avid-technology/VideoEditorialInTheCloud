@@ -67,3 +67,7 @@ variable "AvidNexisInstallerUrl" {
     type = string 
 }
 
+variable "gpu_type" {
+    type = string 
+}
+

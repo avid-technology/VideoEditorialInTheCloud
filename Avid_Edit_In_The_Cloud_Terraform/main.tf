@@ -18,7 +18,6 @@ provider "azurerm" {
 locals {
   resource_group_name                     = "${var.resource_prefix}-rg"
   github_url                              = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/scripts/"
-  #AvidNexisInstallerUrl                   = var.AvidNexisInstallerUrl 
   mediacomposerScript                     = "setupMediaComposer_NVIDIA_${var.mediacomposerVersion}.ps1"
   stored_subnet_id                        = module.editorial_networking.azurerm_subnet_ids                                     
 }
@@ -46,7 +45,7 @@ module "jumpbox_deployment" {
   jumpbox_nb_instances          = var.jumpbox_nb_instances
   JumpboxScript                 = "${local.github_url}${var.JumpboxScript}"
   jumpbox_internet_access       = var.jumpbox_internet_access 
-  AvidNexisInstallerUrl         = "${var.storage_account_url}/$var.AvidNexisInstallerUrl}"
+  AvidNexisInstallerUrl         = "${var.storage_account_url}/${var.AvidNexisInstallerUrl}"
   depends_on                    = [module.editorial_networking]
 }
 
@@ -57,6 +56,7 @@ module "protools_deployment" {
   resource_prefix                   = var.resource_prefix
   resource_group_location           = var.resource_group_location
   vnet_subnet_id                    = local.stored_subnet_id[0]
+  gpu_type                          = "${var.gpu_type}GpuDriverWindows"
   protools_vm_size                  = var.protools_vm_size
   protools_nb_instances             = var.protools_nb_instances
   protools_internet_access          = var.protools_internet_access 
@@ -65,7 +65,7 @@ module "protools_deployment" {
   TeradiciURL                       = "${var.storage_account_url}/${var.TeradiciURL}"
   ProToolsURL                       = "${var.storage_account_url}/${var.ProToolsURL}"
   NvidiaURL                         = var.NvidiaURL
-  AvidNexisInstallerUrl             = "${var.storage_account_url}/$var.AvidNexisInstallerUrl}"
+  AvidNexisInstallerUrl             = "${var.storage_account_url}/${var.AvidNexisInstallerUrl}"
   depends_on                        = [module.editorial_networking]
 }
 
@@ -76,6 +76,7 @@ module "mediacomposer_deployment" {
   resource_prefix                   = var.resource_prefix
   resource_group_location           = var.resource_group_location
   vnet_subnet_id                    = local.stored_subnet_id[0]
+  gpu_type                          = "${var.gpu_type}GpuDriverWindows"
   mediacomposer_vm_size             = var.mediacomposer_vm_size
   mediacomposer_nb_instances        = var.mediacomposer_nb_instances
   mediacomposer_internet_access     = var.mediacomposer_internet_access 
@@ -85,7 +86,7 @@ module "mediacomposer_deployment" {
   TeradiciURL                       = "${var.storage_account_url}/${var.TeradiciURL}"
   mediacomposerURL                  = "${var.storage_account_url}/Media_Composer_${var.mediacomposerVersion}_Win.zip"
   NvidiaURL                         = var.NvidiaURL
-  AvidNexisInstallerUrl             = "${var.storage_account_url}/$var.AvidNexisInstallerUrl}" 
+  AvidNexisInstallerUrl             = "${var.storage_account_url}/${var.AvidNexisInstallerUrl}" 
   depends_on                        = [module.editorial_networking]
 }
 
