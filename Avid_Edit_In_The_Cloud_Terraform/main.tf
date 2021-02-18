@@ -18,7 +18,7 @@ provider "azurerm" {
 locals {
   resource_group_name                     = "${var.resource_prefix}-rg"
   github_url                              = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/scripts/"
-  AvidNexisInstallerUrl                   = var.AvidNexisInstallerUrl 
+  #AvidNexisInstallerUrl                   = var.AvidNexisInstallerUrl 
   mediacomposerScript                     = "setupMediaComposer_NVIDIA_${var.mediacomposerVersion}.ps1"
   stored_subnet_id                        = module.editorial_networking.azurerm_subnet_ids                                     
 }
@@ -46,7 +46,7 @@ module "jumpbox_deployment" {
   jumpbox_nb_instances          = var.jumpbox_nb_instances
   JumpboxScript                 = "${local.github_url}${var.JumpboxScript}"
   jumpbox_internet_access       = var.jumpbox_internet_access 
-  AvidNexisInstallerUrl         = var.AvidNexisInstallerUrl 
+  AvidNexisInstallerUrl         = "${var.storage_account_url}/$var.AvidNexisInstallerUrl}"
   depends_on                    = [module.editorial_networking]
 }
 
@@ -62,10 +62,10 @@ module "protools_deployment" {
   protools_internet_access          = var.protools_internet_access 
   ProToolsScript                    = "${local.github_url}${var.ProToolsScript}"
   TeradiciKey                       = var.TeradiciKey
-  TeradiciURL                       = var.TeradiciURL
-  ProToolsURL                       = var.ProToolsURL
+  TeradiciURL                       = "${var.storage_account_url}/${var.TeradiciURL}"
+  ProToolsURL                       = "${var.storage_account_url}/${var.ProToolsURL}"
   NvidiaURL                         = var.NvidiaURL
-  AvidNexisInstallerUrl             = var.AvidNexisInstallerUrl 
+  AvidNexisInstallerUrl             = "${var.storage_account_url}/$var.AvidNexisInstallerUrl}"
   depends_on                        = [module.editorial_networking]
 }
 
@@ -82,10 +82,10 @@ module "mediacomposer_deployment" {
   github_url                        = local.github_url
   mediacomposerScript               = local.mediacomposerScript
   TeradiciKey                       = var.TeradiciKey
-  TeradiciURL                       = var.TeradiciURL
+  TeradiciURL                       = "${var.storage_account_url}/${var.TeradiciURL}"
   mediacomposerURL                  = "${var.storage_account_url}/Media_Composer_${var.mediacomposerVersion}_Win.zip"
   NvidiaURL                         = var.NvidiaURL
-  AvidNexisInstallerUrl             = var.AvidNexisInstallerUrl 
+  AvidNexisInstallerUrl             = "${var.storage_account_url}/$var.AvidNexisInstallerUrl}" 
   depends_on                        = [module.editorial_networking]
 }
 
