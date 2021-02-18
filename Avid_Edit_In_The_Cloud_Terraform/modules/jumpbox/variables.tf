@@ -11,38 +11,44 @@ variable "admin_password" {
 }
 
 variable "resource_prefix" {
-  description = ""
+  description = "4 max characters to prefix each resource built"
 }
 
 variable "resource_group_location" {
-  description = ""
+  description = "Location of resource group where to build resources"
 }
 
 variable "vnet_subnet_id" {
-  description = ""
-}
-
-variable "base_index" {
-  description = "Base index"
-  default = 0
+  description = "Subnet where resources will be built"
 }
 
 variable "jumpbox_vm_size" {
-  description = "description"
+  description = "Size of Jumpbox VM"
 }
 
 variable "jumpbox_nb_instances" {
-  description = "description"
+  description = "Nb of jumpbox instances"
 }
 
 variable "jumpbox_internet_access" {
-  description = "Internet access for Jumpbox"
+  description = "Internet access for Jumpbox true or false"
+  type        = bool
+}
+
+variable "script_url" {
+  description = "Location of all the scrips"
+  type        = bool
+}
+
+variable "installers_url" {
+  description = "Location of all the installers"
+  type        = bool
 }
 
 variable "JumpboxScript" {
   description = "Script forJumbpox"
 }
 
-variable "AvidNexisInstallerUrl" {
-  description = "Script forJumbpox"
+variable "AvidNexisInstaller" {
+  description = "MSI name of Cloud Nexis installer"
 }

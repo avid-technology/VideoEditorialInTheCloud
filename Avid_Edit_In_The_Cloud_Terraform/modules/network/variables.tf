@@ -1,11 +1,9 @@
 variable "vnet_name" {
   description = "Name of the vnet to create"
-  default = "acctvnet"
 }
 
 variable "resource_group_name" {
-  description = "Default resource group name that the network will be created in."
-  default = "myapp-rg"
+  description = "Resource group name that the network will be created in."
 }
 
 variable "resource_group_location" {

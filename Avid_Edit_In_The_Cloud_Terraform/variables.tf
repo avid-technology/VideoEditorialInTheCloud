@@ -20,10 +20,6 @@ variable "resource_prefix" {
     }
 }
 
-variable "NvidiaURL" {
-    type = string 
-}
-
 variable "gpu_type" {
     type = string 
 
@@ -41,7 +37,7 @@ variable "branch"{
     type = string
 }
 
-variable "storage_account_url"{
+variable "installers_url"{
     type = string
 }
 
@@ -78,7 +74,7 @@ variable "azureTags" {
 ### Nexis          ###
 #######################
 
-variable "AvidNexisInstallerUrl" {
+variable "AvidNexisInstaller" {
     type = string 
 }
 

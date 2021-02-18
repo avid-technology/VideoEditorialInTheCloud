@@ -1,7 +1,9 @@
 
 locals {
-  resource_group_name = "${var.resource_prefix}-rg"
-  jumpbox_vm_hostname = "${var.resource_prefix}-jx"
+  resource_group_name       = "${var.resource_prefix}-rg"
+  jumpbox_vm_hostname       = "${var.resource_prefix}-jx"
+  JumpboxScriptUrl          = "${var.script_url}${var.JumpboxScript}"
+  AvidNexisInstallerUrl     = "${var.installers_url}${var.AvidNexisInstaller}"
 }
 
 resource "azurerm_public_ip" "jumpbox_ip" {
@@ -64,12 +66,12 @@ resource "azurerm_virtual_machine_extension" "jumpbox_extension" {
   # CustomVMExtension Documentation: https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-windows
   settings = <<SETTINGS
     {
-        "fileUris": ["${var.JumpboxScript}"]
+        "fileUris": ["${local.JumpboxScriptUrl}"]
     }
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File jumpbox_v0.1.ps1 ${var.AvidNexisInstallerUrl}"
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.JumpboxScript} ${local.AvidNexisInstallerUrl}"
     }
   PROTECTED_SETTINGS
 }

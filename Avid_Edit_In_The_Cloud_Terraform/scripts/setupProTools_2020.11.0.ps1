@@ -17,8 +17,6 @@ param(
     [ValidateNotNullOrEmpty()]
     $ProToolsURL,
     [ValidateNotNullOrEmpty()]
-    $NvidiaURL,
-    [ValidateNotNullOrEmpty()]
     $AvidNexisInstallerUrl
 )
 

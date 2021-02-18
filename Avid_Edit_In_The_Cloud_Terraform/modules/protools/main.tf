@@ -70,7 +70,7 @@ resource "azurerm_virtual_machine_extension" "protools_extension_1" {
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File setupProTools_2020.11.0.ps1 ${var.TeradiciKey} ${var.TeradiciURL} ${var.ProToolsURL} ${var.NvidiaURL} ${var.AvidNexisInstallerUrl}"
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File setupProTools_2020.11.0.ps1 ${var.TeradiciKey} ${var.TeradiciURL} ${var.ProToolsinstaller} ${var.AvidNexisInstaller}"
     }
   PROTECTED_SETTINGS
 }

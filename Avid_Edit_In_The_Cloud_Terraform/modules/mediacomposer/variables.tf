@@ -51,10 +51,6 @@ variable "mediacomposer_internet_access" {
     type = bool 
 }
 
-variable "NvidiaURL" {
-    type = string 
-}
-
 variable "TeradiciKey" {
     type = string 
 }

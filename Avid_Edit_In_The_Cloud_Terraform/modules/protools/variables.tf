@@ -11,48 +11,40 @@ variable "admin_password" {
 }
 
 variable "resource_prefix" {
-  description = ""
+  description = "4 max characters to prefix each resource built"
 }
 
 variable "resource_group_location" {
-  description = ""
+  description = "Location of resource group where to build resources"
 }
 
 variable "github_url" {
-  description = ""
+  description = "Path to scripts location"
 }
 
 variable "vnet_subnet_id" {
-  description = ""
-}
-
-variable "base_index" {
-  description = "Base index"
-  default = 0
+  description = "Subnet where resources will be built"
 }
 
 variable "protools_vm_size" {
-  description = "description"
+  description = "Size of ProTools VM"
 }
 
 variable "protools_nb_instances" {
-  description = "description"
+  description = "Nb of Protools instances"
 }
 
 variable "ProToolsScript" {
-    type = string 
+  description = "Name of ProTools script"
+  type = string 
 }
 
-variable "ProToolsURL" {
+variable "ProToolsinstaller" {
     type = string 
 }
 
 variable "protools_internet_access" {
     type = bool 
-}
-
-variable "NvidiaURL" {
-    type = string 
 }
 
 variable "TeradiciKey" {
@@ -63,7 +55,7 @@ variable "TeradiciURL" {
     type = string 
 }
 
-variable "AvidNexisInstallerUrl" {
+variable "AvidNexisInstaller" {
     type = string 
 }
 
