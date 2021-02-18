@@ -112,10 +112,11 @@ Install-ProTools {
 
     #Install PACE License Support
     Write-Log "Installing PACE License Support"
-    New-Item -ItemType Directory -Force -Path "$PreReqBasePath\pace"
-    $PaceLicenseSupportExe = "$PreReqBasePath\PACE License Support\License Support Win64.exe"
-    Start-Process -FilePath $PaceLicenseSupportExe -ArgumentList "/s", "/x", "/b$PreReqBasePath\pace", "/v/qn" -Wait
-    Start-Process -FilePath "$PreReqBasePath\pace\PACE License Support Win64.msi" -ArgumentList "/quiet", "/passive", "/norestart" -Wait
+    $PreReqBasePath2 = "D:\AzureData\"
+    New-Item -ItemType Directory -Force -Path "$PreReqBasePath2\temp"
+    $PaceLicenseSupportExe = "$PreReqBasePath2\Pro Tools\ISSetupPrerequisites\PACE License Support\License Support Win64.exe"
+    Start-Process -FilePath $PaceLicenseSupportExe -ArgumentList "/s", "/x", "/b$PreReqBasePath2\temp", "/V/qn" -Wait
+    Start-Process -FilePath "$PreReqBasePath2\temp\PACE License Support Win64.msi" -ArgumentList "/quiet", "/passive", "/norestart" -Wait
 
     # Fixing the InstallShield response file...
    # $PaceSetupIss = @"
