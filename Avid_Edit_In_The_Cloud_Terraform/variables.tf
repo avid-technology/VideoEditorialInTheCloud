@@ -20,15 +20,24 @@ variable "resource_prefix" {
     }
 }
 
-variable "NvidiaURL" {
+variable "gpu_type" {
     type = string 
+
+    validation {
+            condition       = (
+                var.gpu_type == "Nvidia" || 
+                var.gpu_type == "Amd" 
+            )
+            error_message   = "Only the following gpu are supported: Nvidia, Amd."
+        }
+
 }
 
 variable "branch"{
     type = string
 }
 
-variable "storage_account_url"{
+variable "installers_url"{
     type = string
 }
 
@@ -65,7 +74,7 @@ variable "azureTags" {
 ### Nexis          ###
 #######################
 
-variable "AvidNexisInstallerUrl" {
+variable "AvidNexisInstaller" {
     type = string 
 }
 
@@ -129,7 +138,7 @@ variable "TeradiciKey" {
     type = string 
 }
 
-variable "TeradiciURL" {
+variable "TeradiciInstaller" {
     type = string 
 }
 
@@ -159,17 +168,29 @@ variable "JumpboxScript" {
 
 variable "protools_vm_size" {
     type = string 
+
+    validation {
+            condition       = (
+                var.protools_vm_size == "Standard_NV8as_v4" || 
+                var.protools_vm_size == "Standard_NV16as_v4" ||
+                var.protools_vm_size == "Standard_NV32as_v4" ||
+                var.protools_vm_size == "Standard_NV12s_v3" ||
+                var.protools_vm_size == "Standard_NV24s_v3" ||
+                var.protools_vm_size == "Standard_NV48s_v3"
+            )
+            error_message   = "Only the following sku are supported: Standard_NV8as_v4, Standard_NV16as_v4, Standard_NV32as_v4, Standard_NV12s_v3, Standard_NV24s_v3, Standard_NV48s_v3."
+        }
 }
 
 variable "protools_nb_instances" {
     type = number 
 }
 
-variable "ProToolsScript" {
-    type = string 
-}
+#variable "ProToolsScript" {
+#    type = string 
+#}
 
-variable "ProToolsURL" {
+variable "ProToolsVersion" {
     type = string 
 }
 
@@ -183,6 +204,18 @@ variable "protools_internet_access" {
 
 variable "mediacomposer_vm_size" {
     type = string 
+
+validation {
+            condition       = (
+                var.mediacomposer_vm_size == "Standard_NV8as_v4" || 
+                var.mediacomposer_vm_size == "Standard_NV16as_v4" ||
+                var.mediacomposer_vm_size == "Standard_NV32as_v4" ||
+                var.mediacomposer_vm_size == "Standard_NV12s_v3" ||
+                var.mediacomposer_vm_size == "Standard_NV24s_v3" ||
+                var.mediacomposer_vm_size == "Standard_NV48s_v3"
+            )
+            error_message   = "Only the following sku are supported: Standard_NV8as_v4, Standard_NV16as_v4, Standard_NV32as_v4, Standard_NV12s_v3, Standard_NV24s_v3, Standard_NV48s_v3."
+        }
 }
 
 variable "mediacomposer_nb_instances" {

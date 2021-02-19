@@ -17,8 +17,6 @@ param(
     [ValidateNotNullOrEmpty()]
     $MediaComposerURL,
     [ValidateNotNullOrEmpty()]
-    $NvidiaURL,
-    [ValidateNotNullOrEmpty()]
     $AvidNexisInstallerUrl
 )
 
@@ -105,7 +103,7 @@ Install-MediaComposer {
     #Install PACE License Support
     Write-Log "Installing PACE License Support"
     New-Item -ItemType Directory -Force -Path "$PreReqBasePath\pace"
-    $PaceLicenseSupportExe = "$PreReqBasePath\PACE License Support 4.0.3\License Support Win64.exe"
+    $PaceLicenseSupportExe = "$PreReqBasePath\PACE License Support 5.0.3\License Support Win64.exe"
     Start-Process -FilePath $PaceLicenseSupportExe -ArgumentList "/s", "/x", "/b$PreReqBasePath\pace", "/v/qn" -Wait
     Start-Process -FilePath "$PreReqBasePath\pace\PACE License Support Win64.msi" -ArgumentList "/quiet", "/passive", "/norestart" -Wait
 
@@ -171,20 +169,6 @@ Install-NexisClient {
     
 }
 
-function 
-Install-NvidiaGPU {
-    
-    Write-Log "Download Nvidia Tesla Driver"
-    $NvidiaDestinationPath = "D:\AzureData\Nvidia.exe"
-
-    Write-Log $DestinationPath
-    DownloadFileOverHttp $NvidiaURL $NvidiaDestinationPath  
-    
-    Write-Log "Install Nvidia"
-    Start-Process -FilePath $NvidiaDestinationPath -ArgumentList "-s", "-noreboot" -Verb RunAs -Wait 
-}
-
-
 try {
     # Set to false for debugging.  This will output the start script to
     # c:\AzureData\CustomDataSetupScript.log, and then you can RDP
@@ -203,9 +187,6 @@ try {
 
         Write-Log "Create Download folder"
         mkdir D:\AzureData
-        
-        #Write-Log "Call Install-NvidiaGPU"
-        #Install-NvidiaGPU
 
         Write-Log "Call Install-Teradici"
         Install-Teradici

@@ -17,8 +17,6 @@ param(
     [ValidateNotNullOrEmpty()]
     $MediaComposerURL,
     [ValidateNotNullOrEmpty()]
-    $NvidiaURL,
-    [ValidateNotNullOrEmpty()]
     $AvidNexisInstallerUrl
 )
 
@@ -170,20 +168,6 @@ Install-NexisClient {
     Start-Process -FilePath $NexisDestinationPath -ArgumentList "/quiet", "/passive", "/norestart" -Wait
     
 }
-
-function 
-Install-NvidiaGPU {
-    
-    Write-Log "Download Nvidia Tesla Driver"
-    $NvidiaDestinationPath = "D:\AzureData\Nvidia.exe"
-
-    Write-Log $DestinationPath
-    DownloadFileOverHttp $NvidiaURL $NvidiaDestinationPath  
-    
-    Write-Log "Install Nvidia"
-    Start-Process -FilePath $NvidiaDestinationPath -ArgumentList "-s", "-noreboot" -Verb RunAs -Wait 
-}
-
 
 try {
     # Set to false for debugging.  This will output the start script to

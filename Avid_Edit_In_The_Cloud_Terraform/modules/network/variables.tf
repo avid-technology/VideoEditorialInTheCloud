@@ -1,11 +1,9 @@
 variable "vnet_name" {
   description = "Name of the vnet to create"
-  default = "acctvnet"
 }
 
 variable "resource_group_name" {
-  description = "Default resource group name that the network will be created in."
-  default = "myapp-rg"
+  description = "Resource group name that the network will be created in."
 }
 
 variable "resource_group_location" {
@@ -28,25 +26,15 @@ variable "subnets" {
   default     = {default = "10.1.0.0/24"}
 }
 
+variable "sg_name" {
+  description = "Give a name to security group"
+  default = "acctsecgrp"
+}
+
 variable "tags" {
   description = "The tags to associate with your network and subnets."
   default = {
     tag1 = ""
     tag2 = ""
   }
-}
-
-variable "allow_rdp_traffic" {
-  description = "This optional variable, when set to true, adds a security rule allowing RDP traffic to flow through to the newly created network. The default value is false."
-  default = false  
-}
-
-variable "sg_name" {
-  description = "Give a name to security group"
-  default = "acctsecgrp"
-}
-
-variable "source_address_prefix" {
-  description = "CIDR or source IP range or * to match any IP. Tags such as ‘VirtualNetwork’, ‘AzureLoadBalancer’ and ‘Internet’ can also be used."
-  default = "*"
 }
