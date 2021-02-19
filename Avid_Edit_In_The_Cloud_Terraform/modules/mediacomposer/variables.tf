@@ -48,7 +48,7 @@ variable "TeradiciKey" {
 }
 
 variable "installers_url" {
-  description = "Path to scripts location"
+  description = "Path to installer location"
   default     = "https://eitcstore01.blob.core.windows.net/installers/"
 }
 

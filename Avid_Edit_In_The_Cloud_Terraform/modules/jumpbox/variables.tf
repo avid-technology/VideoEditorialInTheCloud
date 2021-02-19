@@ -24,10 +24,12 @@ variable "vnet_subnet_id" {
 
 variable "jumpbox_vm_size" {
   description = "Size of Jumpbox VM"
+  default     = "Standard_D4s_v3"
 }
 
 variable "jumpbox_nb_instances" {
   description = "Number of jumpbox instances"
+  default     = 0
 }
 
 variable "script_url" {
