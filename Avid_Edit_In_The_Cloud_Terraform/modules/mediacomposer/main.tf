@@ -1,7 +1,12 @@
 locals {
   resource_group_name       = "${var.resource_prefix}-rg"
   mediacomposer_vm_hostname = "${var.resource_prefix}-mc"
-  mediacomposerScripturl    = "${var.github_url}${var.mediacomposerScript}"
+  mediacomposerScripturl    = "${var.script_url}setupMediaComposer_${var.mediacomposerVersion}.ps1"
+  gpu_driver                = "${var.gpu_type}GpuDriverWindows"
+  TeradiciURL               = "${var.installers_url}${var.TeradiciInstaller}"
+  MediacomposerURL          = "${var.installers_url}Media_Composer_${var.mediacomposerVersion}_Win.zip"
+  AvidNexisInstallerUrl     = "${var.installers_url}${var.AvidNexisInstaller}"
+  mediacomposerScript       = "setupMediaComposer_${var.mediacomposerVersion}.ps1"
 }
 
 resource "azurerm_public_ip" "mediacomposer_ip" {
@@ -70,7 +75,7 @@ resource "azurerm_virtual_machine_extension" "mediacomposer_extension_1" {
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.mediacomposerScript} ${var.TeradiciKey} ${var.TeradiciURL} ${var.mediacomposerURL} ${var.AvidNexisInstallerUrl}"
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${local.mediacomposerScript} ${var.TeradiciKey} ${local.TeradiciURL} ${local.MediacomposerURL} ${local.AvidNexisInstallerUrl}"
     }
   PROTECTED_SETTINGS
 }
@@ -80,7 +85,7 @@ resource "azurerm_virtual_machine_extension" "mediacomposer_extension_2" {
   name                        = "mediacomposer2"
   virtual_machine_id          = azurerm_windows_virtual_machine.mediacomposer_vm[count.index].id
   publisher                   = "Microsoft.HpcCompute"
-  type                        = var.gpu_type
+  type                        = local.gpu_driver
   type_handler_version        = "1.0"
   auto_upgrade_minor_version  = true
   depends_on                  = [azurerm_virtual_machine_extension.mediacomposer_extension_1]

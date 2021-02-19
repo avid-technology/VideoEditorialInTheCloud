@@ -3,33 +3,15 @@
 #########################
 
 variable "hostname" {
-  description = "description"
+  description = "Hostname of Cloud Nexis"
+}
+
+variable "admin_username" {
+  description = "Admin Username to administrate Virtual Machines OS. Avid user is default Cloud Nexis administrator"
 }
 
 variable "admin_password" {
   description = "Admin Password for Virtual Machines"
-}
-
-variable "admin_username" {
-  description = "Admin Username for Virtual Machines"
-}
-
-variable "nexis_storage_vm_remote_port" {
-  description = "description"
-  default = 22
-}
-
-variable "nexis_storage_vm_instances" {
-  description = "description"
-  default = 1
-}
-
-variable "nexis_storage_vm_size" {
-  description = "description"
-}
-
-variable "nexis_storage_nb_instances" {
-  description = "description"
 }
 
 variable "resource_group_location" {
@@ -45,9 +27,12 @@ variable "resource_prefix" {
   default = "*"
 }
 
-variable "base_index" {
-  description = "Base index"
-  default = 0
+variable "nexis_storage_vm_size" {
+  description = "description"
+}
+
+variable "nexis_storage_nb_instances" {
+  description = "description"
 }
 
 variable "nexis_storage_vm_script_url" { 

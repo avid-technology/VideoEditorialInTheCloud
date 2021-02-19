@@ -1,7 +1,12 @@
 locals {
-  resource_group_name   = "${var.resource_prefix}-rg"
-  protools_vm_hostname  = "${var.resource_prefix}-pt"
-  protoolsScripturl     = "${var.github_url}${var.ProToolsScript}"
+  resource_group_name       = "${var.resource_prefix}-rg"
+  protools_vm_hostname      = "${var.resource_prefix}-pt"
+  protoolsScripturl         = "${var.script_url}setupProTools_${var.ProToolsVersion}.ps1"
+  gpu_driver                = "${var.gpu_type}GpuDriverWindows"
+  TeradiciURL               = "${var.installers_url}${var.TeradiciInstaller}"
+  ProToolsinstaller         = "${var.installers_url}Pro_Tools_${var.ProToolsVersion}_Win.zip"
+  AvidNexisInstallerUrl     = "${var.installers_url}${var.AvidNexisInstaller}"
+  protoolsScript            = "setupProTools_${var.ProToolsVersion}.ps1"
 }
 
 resource "azurerm_public_ip" "protools_ip" {
@@ -70,7 +75,7 @@ resource "azurerm_virtual_machine_extension" "protools_extension_1" {
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File setupProTools_2020.11.0.ps1 ${var.TeradiciKey} ${var.TeradiciURL} ${var.ProToolsinstaller} ${var.AvidNexisInstaller}"
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${local.protoolsScript} ${var.TeradiciKey} ${local.TeradiciURL} ${local.ProToolsinstaller} ${local.AvidNexisInstallerUrl}"
     }
   PROTECTED_SETTINGS
 }
@@ -80,7 +85,7 @@ resource "azurerm_virtual_machine_extension" "protools_extension_2" {
   name                        = "protools2"
   virtual_machine_id          = azurerm_windows_virtual_machine.protools_vm[count.index].id
   publisher                   = "Microsoft.HpcCompute"
-  type                        = var.gpu_type
+  type                        = local.gpu_driver
   type_handler_version        = "1.0"
   auto_upgrade_minor_version  = true
   depends_on                  = [azurerm_virtual_machine_extension.protools_extension_1]

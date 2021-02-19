@@ -27,7 +27,15 @@ variable "jumpbox_vm_size" {
 }
 
 variable "jumpbox_nb_instances" {
-  description = "Nb of jumpbox instances"
+  description = "Number of jumpbox instances"
+}
+
+variable "script_url" {
+  description = "Location of all the powershell and bash scripts"
+}
+
+variable "JumpboxScript" {
+  description = "Script name forJumbpox"
 }
 
 variable "jumpbox_internet_access" {
@@ -35,20 +43,10 @@ variable "jumpbox_internet_access" {
   type        = bool
 }
 
-variable "script_url" {
-  description = "Location of all the scrips"
-  type        = bool
-}
-
 variable "installers_url" {
   description = "Location of all the installers"
-  type        = bool
-}
-
-variable "JumpboxScript" {
-  description = "Script forJumbpox"
 }
 
 variable "AvidNexisInstaller" {
-  description = "MSI name of Cloud Nexis installer"
+  description = "Cloud Nexis installer MSI name"
 }

@@ -18,12 +18,13 @@ variable "resource_group_location" {
   description = "Location of resource group where to build resources"
 }
 
-variable "github_url" {
-  description = "Path to scripts location"
-}
-
 variable "vnet_subnet_id" {
   description = "Subnet where resources will be built"
+}
+
+variable "gpu_type" {
+  description = "Gpu type either Nvidia or Amd"
+  type = string 
 }
 
 variable "protools_vm_size" {
@@ -31,35 +32,45 @@ variable "protools_vm_size" {
 }
 
 variable "protools_nb_instances" {
-  description = "Nb of Protools instances"
-}
-
-variable "ProToolsScript" {
-  description = "Name of ProTools script"
-  type = string 
-}
-
-variable "ProToolsinstaller" {
-    type = string 
+  description = "Number of Protools instances"
+  default     = 0
 }
 
 variable "protools_internet_access" {
-    type = bool 
+    type        = bool
+    default     = false 
+}
+
+variable "script_url" {
+  description = "Location of all the powershell and bash scripts"
+  default     = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/scripts/"
 }
 
 variable "TeradiciKey" {
-    type = string 
+    type    = string 
+    default = "0000"
 }
 
-variable "TeradiciURL" {
-    type = string 
+variable "TeradiciInstaller" {
+    type    = string 
+    default = "pcoip-agent-graphics_21.01.2.exe"
+}
+
+variable "installers_url" {
+  description = "Path to scripts location"
+  default     = "https://eitcstore01.blob.core.windows.net/installers/"
+}
+
+variable "ProToolsVersion" {
+    type    = string 
+    description = "Options available: 2020.11.0"
+    default = "2020.11.0"
 }
 
 variable "AvidNexisInstaller" {
-    type = string 
+    type    = string 
+    default = "AvidNEXISClient_Win64_20.12.0.9.msi"
 }
 
-variable "gpu_type" {
-    type = string 
-}
+
 

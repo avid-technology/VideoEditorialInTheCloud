@@ -18,8 +18,8 @@ provider "azurerm" {
 locals {
   resource_group_name                     = "${var.resource_prefix}-rg"
   script_url                              = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/scripts/"
-  mediacomposerScript                     = "setupMediaComposer_${var.mediacomposerVersion}.ps1"
-  ProToolsScript                          = "setupProTools_${var.ProToolsVersion}.ps1"
+  #mediacomposerScript                     = "setupMediaComposer_${var.mediacomposerVersion}.ps1"
+  #ProToolsScript                          = "setupProTools_${var.ProToolsVersion}.ps1"
   stored_subnet_id                        = module.editorial_networking.azurerm_subnet_ids                                     
 }
 
@@ -59,16 +59,17 @@ module "protools_deployment" {
   resource_prefix                   = var.resource_prefix
   resource_group_location           = var.resource_group_location
   vnet_subnet_id                    = local.stored_subnet_id[0]
-  gpu_type                          = "${var.gpu_type}GpuDriverWindows"
+  gpu_type                          = var.gpu_type
   protools_vm_size                  = var.protools_vm_size
   protools_nb_instances             = var.protools_nb_instances
   protools_internet_access          = var.protools_internet_access
-  github_url                        = local.script_url 
-  ProToolsScript                    = local.ProToolsScript
+  script_url                        = local.script_url 
+  #ProToolsScript                   = local.ProToolsScript
   TeradiciKey                       = var.TeradiciKey
-  TeradiciURL                       = "${var.installers_url}/${var.TeradiciURL}"
-  ProToolsinstaller                 = "${var.installers_url}/Pro_Tools_${var.ProToolsVersion}_Win.zip"
-  AvidNexisInstaller                = "${var.installers_url}/${var.AvidNexisInstaller}"
+  TeradiciInstaller                 = var.TeradiciInstaller
+  installers_url                    = var.installers_url
+  ProToolsVersion                   = var.ProToolsVersion
+  AvidNexisInstaller                = var.AvidNexisInstaller
   depends_on                        = [module.editorial_networking]
 }
 
@@ -76,27 +77,28 @@ module "mediacomposer_deployment" {
   source                            = "./modules/mediacomposer"
   admin_username                    = var.admin_username
   admin_password                    = var.admin_password
+  script_url                        = local.script_url
+  installers_url                    = var.installers_url
   resource_prefix                   = var.resource_prefix
   resource_group_location           = var.resource_group_location
   vnet_subnet_id                    = local.stored_subnet_id[0]
-  gpu_type                          = "${var.gpu_type}GpuDriverWindows"
+  gpu_type                          = var.gpu_type
   mediacomposer_vm_size             = var.mediacomposer_vm_size
   mediacomposer_nb_instances        = var.mediacomposer_nb_instances
   mediacomposer_internet_access     = var.mediacomposer_internet_access 
-  github_url                        = local.script_url
-  mediacomposerScript               = local.mediacomposerScript
+  #mediacomposerScript              = local.mediacomposerScript
   TeradiciKey                       = var.TeradiciKey
-  TeradiciURL                       = "${var.installers_url}/${var.TeradiciURL}"
-  mediacomposerURL                  = "${var.installers_url}/Media_Composer_${var.mediacomposerVersion}_Win.zip"
-  AvidNexisInstallerUrl             = "${var.installers_url}/${var.AvidNexisInstaller}" 
+  TeradiciInstaller                 = var.TeradiciInstaller
+  mediacomposerVersion              = var.mediacomposerVersion
+  AvidNexisInstaller                = var.AvidNexisInstaller 
   depends_on                        = [module.editorial_networking]
 }
 
 module "nexis_online_deployment" {
   source                              = "./modules/nexis"
+  hostname                            = "${var.resource_prefix}on"
   admin_username                      = var.admin_username
   admin_password                      = var.admin_password
-  hostname                            = "${var.resource_prefix}on"
   resource_group_location             = var.resource_group_location
   vnet_subnet_id                      = local.stored_subnet_id[0]
   resource_prefix                     = var.resource_prefix 
@@ -115,9 +117,9 @@ module "nexis_online_deployment" {
 
 module "nexis_nearline_deployment" {
   source                              = "./modules/nexis"
+  hostname                            = "${var.resource_prefix}nl"
   admin_username                      = var.admin_username
   admin_password                      = var.admin_password
-  hostname                            = "${var.resource_prefix}nl"
   resource_group_location             = var.resource_group_location
   vnet_subnet_id                      = local.stored_subnet_id[0]
   resource_prefix                     = var.resource_prefix 

@@ -138,7 +138,7 @@ variable "TeradiciKey" {
     type = string 
 }
 
-variable "TeradiciURL" {
+variable "TeradiciInstaller" {
     type = string 
 }
 
