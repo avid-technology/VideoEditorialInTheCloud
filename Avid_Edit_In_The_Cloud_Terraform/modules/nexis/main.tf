@@ -1,8 +1,8 @@
 locals{
-  resource_group_name               = "${var.resource_prefix}-rg"
-  hostname                          = var.hostname
-  nexis_storage_vm_script_url       = "${var.nexis_storage_vm_script_url}${var.nexis_storage_vm_script_name}"
-  nexis_storage_vm_artifacts_location = trimsuffix(var.nexis_storage_vm_artifacts_location, "/") # remove last forward slash in path
+  resource_group_name                   = "${var.resource_prefix}-rg"
+  hostname                              = var.hostname
+  nexis_storage_vm_script_url           = "${var.nexis_storage_vm_script_url}${var.nexis_storage_vm_script_name}"
+  nexis_storage_vm_artifacts_location   = trimsuffix(var.nexis_storage_vm_artifacts_location, "/") # remove last forward slash in path
 }
 
 resource "random_string" "nexis" {
@@ -112,7 +112,14 @@ resource "azurerm_virtual_machine_extension" "nexis_storage_servers" {
 
   settings = <<EOF
     {
-       "commandToExecute": "wget '${local.nexis_storage_vm_script_url}' -O ${var.nexis_storage_vm_script_name} && echo ${var.admin_password} | sudo -S /bin/bash ${var.nexis_storage_vm_script_name} ${local.hostname}${format("%02d",count.index)} ${local.nexis_storage_vm_artifacts_location} ${var.nexis_storage_vm_build} ${var.nexis_storage_vm_part_number}" 
+    "fileUris": [
+          "${local.nexis_storage_vm_script_url}"
+        ]
     }
   EOF
+  protected_settings = <<PROT
+    {
+        "commandToExecute": "/bin/bash ${var.nexis_storage_vm_script_name} ${local.hostname}${format("%02d",count.index)} ${local.nexis_storage_vm_artifacts_location} ${var.nexis_storage_vm_build} ${var.nexis_storage_vm_part_number}"
+    }
+    PROT
 }

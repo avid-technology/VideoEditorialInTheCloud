@@ -97,21 +97,4 @@ resource "azurerm_virtual_machine_extension" "mediacomposer_extension_2" {
 SETTINGS
 }
 
-#resource "azurerm_virtual_machine_extension" "mediacomposer_extension_2" {
-#  count                       = var.mediacomposer_nb_instances
-#  name                        = "mediacomposer2"
-#  virtual_machine_id          = azurerm_windows_virtual_machine.mediacomposer_vm[count.index].id
-#  publisher                   = "Microsoft.HpcCompute"
-#  type                        = "AmdGpuDriverWindows"
-#  type_handler_version        = "1.0"
-#  auto_upgrade_minor_version  = true
-#  depends_on                  = [azurerm_virtual_machine_extension.mediacomposer_extension_1]
-#
-#  settings = <<SETTINGS
-#    {
-#    
-#    }
-#SETTINGS
-#}
-
 
