@@ -65,6 +65,12 @@ variable "ProToolsVersion" {
     type    = string 
     description = "Options available: 2020.11.0"
     default = "2020.11.0"
+    validation {
+            condition       = (
+                var.ProToolsVersion == "2020.11.0"
+            )
+            error_message   = "Only the following versions are supported: 2020.11.0."
+        }
 }
 
 variable "AvidNexisInstaller" {

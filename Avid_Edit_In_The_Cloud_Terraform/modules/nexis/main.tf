@@ -78,7 +78,6 @@ resource "azurerm_linux_virtual_machine" "nexis_vm" {
 
   os_disk {
     name                          = "${local.hostname}${format("%02d",count.index)}-osdisk"
-    #create_option                 = "FromImage"
     caching                       = "ReadWrite"
     storage_account_type          = "Premium_LRS"
     disk_size_gb                  = "1024"

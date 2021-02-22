@@ -39,7 +39,7 @@ variable "script_url" {
 
 variable "zabbixScript" {
   description   = "Script name forJumbpox"
-  default       = "zabbix.ps1"
+  default       = "zabbix_v0.1.bash"
 }
 
 variable "zabbix_internet_access" {
