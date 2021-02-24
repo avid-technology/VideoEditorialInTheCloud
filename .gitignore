@@ -5,3 +5,4 @@
 .terraform
 *.tfvars
 *.hcl
+Avid_Edit_In_The_Cloud_Terraform/modules/Ansible/*
