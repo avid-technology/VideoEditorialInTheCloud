@@ -143,7 +143,7 @@ Install-Teradici {
     Write-Log $DestinationPath
     DownloadFileOverHttp $TeradiciURL $TeradiciDestinationPath   
 
-    Start-Process -FilePath $TeradiciDestinationPath -ArgumentList "/Force /S /NoPostReboot _?$TeradiciDestinationPath" -Verb RunAs -Wait
+    #Start-Process -FilePath $TeradiciDestinationPath -ArgumentList "/Force /S /NoPostReboot _?$TeradiciDestinationPath" -Verb RunAs -Wait
     
     #Write-Log "Install Teradici"
     #Start-Process -FilePath $TeradiciDestinationPath -ArgumentList "/S", "/NoPostReboot" -Verb RunAs -Wait
@@ -194,10 +194,10 @@ try {
         Install-Teradici
 
         Write-Log "Call Install-NexisCLient"
-        #Install-NexisClient
+        Install-NexisClient
 
         Write-Log "Call Install-MediaComposer"
-        #Install-MediaComposer
+        Install-MediaComposer
 
         # Write-Log "Cleanup"
         # Remove-Item D:\AzureData -Force  -Recurse -ErrorAction SilentlyContinue
