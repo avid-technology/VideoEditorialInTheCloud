@@ -8,6 +8,16 @@
         Example command line: .\setupMachine.ps1 Avid ProTools
 #>
 
+[CmdletBinding(DefaultParameterSetName = "Standard")]
+param (
+    [string]
+    [ValidateNotNullOrEmpty()]
+    $DomainName
+    [string]
+    [ValidateNotNullOrEmpty()]
+    $DomainPassword
+)
+
 filter Timestamp {"$(Get-Date -Format o): $_"}
 
 function
@@ -59,11 +69,11 @@ try {
             # chocolaty is best effort
         }
 
-    $domainName                         = "sdbx01.internal"
-    $netBIOSname                        = "SDBX01"
-    $mode                               = "Win2016R2"
-    $password                           = "Avid1234567$"
-    $encrypted_password                 = ConvertTo-SecureString $password -AsPlainText -Force
+    $domainsplit                        = $DomainName.Split(".")
+    $domain                             = $domainsplit[0]
+    $topdomain                          = $domainsplit[1] 
+    $netBIOSname                        = $domain.ToUpper()
+    $encrypted_password                 = ConvertTo-SecureString $DomainPassword -AsPlainText -Force
 
     #Install-WindowsFeature AD-Domain-Services -IncludeAllSubFeature -IncludeManagementTools
     Install-WindowsFeature AD-Domain-Services -IncludeManagementTools
@@ -71,7 +81,7 @@ try {
     #Import-Module ADDSDeployment
 
     $forestProperties = @{
-    DomainName                          = $domainName
+    DomainName                          = $DomainName
     DomainNetbiosName                   = $netBIOSname
     SafeModeAdministratorPassword       = $encrypted_password
     CreateDnsDelegation                 = $false

@@ -40,6 +40,11 @@ variable "domaincontroller_nb_instances" {
   default     = 0
 }
 
+variable "DomainName" {
+  description = "Domain Name"
+  type        = string
+}
+
 variable "domaincontrollerScript" {
   description = "Script name forJumbpox"
   default     = "domaincontroller_v0.1.ps1"

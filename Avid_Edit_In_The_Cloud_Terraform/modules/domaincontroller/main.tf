@@ -2,7 +2,7 @@
 locals {
   resource_group_name           = "${var.resource_prefix}-rg"
   domaincontroller_vm_hostname  = "${var.resource_prefix}-dc"
- domaincontrollerScriptUrl      = "${var.script_url}${var.domaincontrollerScript}"
+  domaincontrollerScriptUrl      = "${var.script_url}${var.domaincontrollerScript}"
 }
 
 resource "azurerm_public_ip" "domaincontroller_ip" {
@@ -70,7 +70,7 @@ resource "azurerm_virtual_machine_extension" "domaincontroller_extension" {
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.domaincontrollerScript}"
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.domaincontrollerScript} ${var.DomainName} ${var.admin_password}"
     }
   PROTECTED_SETTINGS
 }
