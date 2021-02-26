@@ -142,6 +142,8 @@ Install-Teradici {
 
     Write-Log $DestinationPath
     DownloadFileOverHttp $TeradiciURL $TeradiciDestinationPath   
+
+    #Start-Process -FilePath $TeradiciDestinationPath -ArgumentList "/Force /S /NoPostReboot _?$TeradiciDestinationPath" -Verb RunAs -Wait
     
     #Write-Log "Install Teradici"
     #Start-Process -FilePath $TeradiciDestinationPath -ArgumentList "/S", "/NoPostReboot" -Verb RunAs -Wait
@@ -160,7 +162,7 @@ Install-Teradici {
 function 
 Install-NexisClient {
    
-    Write-Log "downloading Nexus Client"
+    Write-Log "downloading Nexis Client"
     $NexisDestinationPath = "D:\AzureData\AvidNEXISClient.msi"
     Write-Log $DestinationPath
     DownloadFileOverHttp $AvidNexisInstallerUrl $NexisDestinationPath

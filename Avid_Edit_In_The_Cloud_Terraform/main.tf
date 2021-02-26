@@ -52,6 +52,23 @@ module "jumpbox_deployment" {
   depends_on                    = [module.editorial_networking]
 }
 
+module "domaincontroller_deployment" {
+  source                            = "./modules/domaincontroller"
+  admin_username                  = var.admin_username
+  admin_password                  = var.admin_password
+  resource_prefix                 = var.resource_prefix
+  resource_group_location         = var.resource_group_location
+  vnet_subnet_id                  = local.stored_subnet_id[0]
+  #jumpbox_vm_size                = var.jumpbox_vm_size
+  domaincontroller_nb_instances   = var.domaincontroller_nb_instances
+  script_url                      = local.script_url
+  #JumpboxScript                  = var.JumpboxScript
+  #jumpbox_internet_access        = var.jumpbox_internet_access 
+  installers_url                  = var.installers_url
+  depends_on                      = [module.editorial_networking]
+}
+
+
 module "protools_deployment" {
   source                            = "./modules/protools"
   admin_username                    = var.admin_username
@@ -136,3 +153,18 @@ module "nexis_nearline_deployment" {
   depends_on                          = [module.editorial_networking]
 }
 
+module "zabbix_deployment" {
+  source                        = "./modules/zabbix"
+  admin_username                = var.admin_username
+  admin_password                = var.admin_password
+  resource_prefix               = var.resource_prefix
+  resource_group_location       = var.resource_group_location
+  vnet_subnet_id                = local.stored_subnet_id[0]
+  zabbix_vm_size                = var.zabbix_vm_size
+  zabbix_nb_instances           = var.zabbix_nb_instances
+  script_url                    = local.script_url
+  zabbixScript                  = var.zabbixScript
+  zabbix_internet_access        = var.zabbix_internet_access 
+  installers_url                = var.installers_url
+  depends_on                    = [module.editorial_networking]
+}

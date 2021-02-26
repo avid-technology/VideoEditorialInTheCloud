@@ -58,7 +58,7 @@ variable "nexis_storage_vm_artifacts_location" {
 variable "nexis_storage_vm_build" { 
   type        = string
   description = "Name of Nexis installer"
-  default     = "AvidNEXISCloud_20.12.0-9.run"
+  default     = "AvidNEXISCloud_20.7.5-23.run"
 }
 
 variable "nexis_storage_vm_part_number" { 

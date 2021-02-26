@@ -1,8 +1,8 @@
 locals{
-  resource_group_name               = "${var.resource_prefix}-rg"
-  hostname                          = var.hostname
-  nexis_storage_vm_script_url       = "${var.nexis_storage_vm_script_url}${var.nexis_storage_vm_script_name}"
-  nexis_storage_vm_artifacts_location = trimsuffix(var.nexis_storage_vm_artifacts_location, "/") # remove last forward slash in path
+  resource_group_name                   = "${var.resource_prefix}-rg"
+  hostname                              = var.hostname
+  nexis_storage_vm_script_url           = "${var.nexis_storage_vm_script_url}${var.nexis_storage_vm_script_name}"
+  nexis_storage_vm_artifacts_location   = trimsuffix(var.nexis_storage_vm_artifacts_location, "/") # remove last forward slash in path
 }
 
 resource "random_string" "nexis" {
@@ -57,62 +57,73 @@ resource "azurerm_network_interface" "nexis_nic" {
   }
 }
 
-resource "azurerm_virtual_machine" "nexis_vm" {
+resource "azurerm_linux_virtual_machine" "nexis_vm" {
   count                         = var.nexis_storage_nb_instances
   name                          = "${local.hostname}${format("%02d",count.index)}"
   location                      = var.resource_group_location
   resource_group_name           = local.resource_group_name
-  vm_size                       = var.nexis_storage_vm_size
+  size                          = var.nexis_storage_vm_size
   network_interface_ids         = [azurerm_network_interface.nexis_nic[count.index].id]
+  admin_username                = "avid"
+  admin_password                = var.admin_password
+  computer_name                 = "${local.hostname}${format("%02d",count.index)}"
+  disable_password_authentication = false
 
-  storage_image_reference {
-    publisher = "debian"
-    offer     = "debian-10"
-    sku       = "10"
-    version   = "latest"
+  source_image_reference {
+    publisher = "credativ"
+    offer     = "Debian"
+    sku       = "8"
+    version   = "8.0.201901221"
   }
 
-  storage_os_disk {
-    name              = "${local.hostname}${format("%02d",count.index)}-osdisk"
-    create_option     = "FromImage"
-    caching           = "ReadWrite"
-    managed_disk_type = "Premium_LRS"
-    disk_size_gb      = "1024"
+  os_disk {
+    name                          = "${local.hostname}${format("%02d",count.index)}-osdisk"
+    caching                       = "ReadWrite"
+    storage_account_type          = "Premium_LRS"
+    disk_size_gb                  = "1024"
   }
+}
 
-  storage_data_disk {
-    name              = "${local.hostname}${format("%02d",count.index)}-datadisk"
-    create_option     = "Empty"
-    lun               = 0
-    disk_size_gb      = "768"
-    managed_disk_type = "Premium_LRS"
-  }
+resource "azurerm_managed_disk" "nexis_datadisk" {
+  count                = var.nexis_storage_nb_instances
+  name                 = "${local.hostname}${format("%02d",count.index)}-datadisk"
+  location             = var.resource_group_location
+  resource_group_name  = local.resource_group_name
+  storage_account_type = "Premium_LRS"
+  create_option        = "Empty"
+  disk_size_gb         = 768
+}
 
-  os_profile {
-    computer_name  = "${local.hostname}${format("%02d",count.index)}"
-    admin_username = "avid"
-    admin_password = var.admin_password
-    custom_data    = ""
-  }
-
-  os_profile_linux_config {
-    disable_password_authentication = false
-  }
-
+resource "azurerm_virtual_machine_data_disk_attachment" "nexis_datadisk_attachement" {
+  count              = var.nexis_storage_nb_instances
+  managed_disk_id    = azurerm_managed_disk.nexis_datadisk[count.index].id
+  virtual_machine_id = azurerm_linux_virtual_machine.nexis_vm[count.index].id
+  lun                = 0
+  caching            = "ReadWrite"
 }
 
 resource "azurerm_virtual_machine_extension" "nexis_storage_servers" {
   count                 = var.nexis_storage_nb_instances
   name                  = "nexis"
-  virtual_machine_id    = azurerm_virtual_machine.nexis_vm[count.index].id
+  virtual_machine_id    = azurerm_linux_virtual_machine.nexis_vm[count.index].id
   publisher             = "Microsoft.Azure.Extensions"
   type                  = "CustomScript"
   type_handler_version  = "2.0"
-  depends_on            = [azurerm_virtual_machine.nexis_vm]
+  depends_on            = [azurerm_virtual_machine_data_disk_attachment.nexis_datadisk_attachement]
 
   settings = <<EOF
     {
-       "commandToExecute": "wget '${local.nexis_storage_vm_script_url}' -O ${var.nexis_storage_vm_script_name} && echo ${var.admin_password} | sudo -S /bin/bash ${var.nexis_storage_vm_script_name} ${local.hostname}${format("%02d",count.index)} ${local.nexis_storage_vm_artifacts_location} ${var.nexis_storage_vm_build} ${var.nexis_storage_vm_part_number}" 
+    "fileUris": [
+          "${local.nexis_storage_vm_script_url}"
+        ]
     }
   EOF
+  protected_settings = <<PROT
+    {
+        
+        "commandToExecute": "/bin/bash ${var.nexis_storage_vm_script_name} ${azurerm_linux_virtual_machine.nexis_vm[count.index].name} ${local.nexis_storage_vm_artifacts_location} ${var.nexis_storage_vm_build} ${var.nexis_storage_vm_part_number}"
+    }
+    PROT
 }
+
+# "commandToExecute": "/bin/bash ${var.nexis_storage_vm_script_name} ${local.hostname}${format("%02d",count.index)} ${local.nexis_storage_vm_artifacts_location} ${var.nexis_storage_vm_build} ${var.nexis_storage_vm_part_number}"

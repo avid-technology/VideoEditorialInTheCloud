@@ -48,9 +48,9 @@ resource "azurerm_windows_virtual_machine" "jumpbox_vm" {
   }
 
   os_disk {
-    name                  = "${local.jumpbox_vm_hostname}-osdisk-${format("%02d",count.index)}"
-    caching               = "ReadWrite"
-    storage_account_type  = "Premium_LRS"
+    name                          = "${local.jumpbox_vm_hostname}-osdisk-${format("%02d",count.index)}"
+    caching                       = "ReadWrite"
+    storage_account_type          = "Premium_LRS"
   }
 }
 
