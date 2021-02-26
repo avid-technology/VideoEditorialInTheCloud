@@ -66,7 +66,7 @@ try {
     $encrypted_password                 = ConvertTo-SecureString $password -AsPlainText -Force
 
     #Install-WindowsFeature AD-Domain-Services -IncludeAllSubFeature -IncludeManagementTools
-    Install-WindowsFeature AD-Domain-Services -IncludeManagementTools -Restart False
+    Install-WindowsFeature AD-Domain-Services -IncludeManagementTools
 
     #Import-Module ADDSDeployment
 
