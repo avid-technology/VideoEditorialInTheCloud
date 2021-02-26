@@ -143,6 +143,14 @@ variable "TeradiciInstaller" {
 }
 
 ######################
+### Domaincontroller      ###
+#######################
+
+variable "domaincontroller_nb_instances" {
+    type = number
+}
+
+######################
 ### Jumpbox Module ###
 #######################
 
