@@ -59,9 +59,9 @@ try {
             # chocolaty is best effort
         }
 
-    $domainName  = "sdbx01.internal"
-    $netBIOSname = "TEST"
-    $mode  = "Win2016R2"
+    $domainName                         = "sdbx01.internal"
+    $netBIOSname                        = "SDBX01"
+    $mode                               = "Win2016R2"
     $password                           = "Avid1234567$"
     $encrypted_password                 = ConvertTo-SecureString $password -AsPlainText -Force
 
