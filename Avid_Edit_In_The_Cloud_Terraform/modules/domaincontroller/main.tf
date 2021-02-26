@@ -6,7 +6,7 @@ locals {
 }
 
 resource "azurerm_public_ip" "domaincontroller_ip" {
-  count               = var.domaincontroller_nb_instances
+  count               = var.domaincontroller_internet_access ? var.domaincontroller_nb_instances : 0
   name                = "${local.domaincontroller_vm_hostname}-ip-${format("%02d",count.index)}"
   location            = var.resource_group_location
   resource_group_name = local.resource_group_name

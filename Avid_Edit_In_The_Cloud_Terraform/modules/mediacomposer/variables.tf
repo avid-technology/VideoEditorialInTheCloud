@@ -90,6 +90,14 @@ variable "AvidNexisInstaller" {
 
 variable "gpu_type" {
     description = "Gpu type either Nvidia or Amd"
-    type = string 
+    type = string
+    default = "Nvidia"
+    validation {
+            condition       = (
+                var.gpu_type == "Nvidia" || 
+                var.gpu_type == "Amd" 
+            )
+            error_message   = "Only the following gpu are supported: Nvidia, Amd."
+        }
 }
 

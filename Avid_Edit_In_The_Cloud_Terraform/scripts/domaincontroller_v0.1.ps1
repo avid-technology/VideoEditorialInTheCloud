@@ -7,7 +7,6 @@
 
         Example command line: .\setupMachine.ps1 Avid ProTools
 #>
-[CmdletBinding(DefaultParameterSetName = "Standard")]
 
 filter Timestamp {"$(Get-Date -Format o): $_"}
 

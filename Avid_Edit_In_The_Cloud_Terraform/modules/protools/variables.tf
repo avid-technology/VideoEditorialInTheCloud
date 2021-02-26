@@ -24,11 +24,32 @@ variable "vnet_subnet_id" {
 
 variable "gpu_type" {
   description = "Gpu type either Nvidia or Amd"
-  type = string 
+  type = string
+  default = "Nvidia" 
+  validation {
+            condition       = (
+                var.gpu_type == "Nvidia" || 
+                var.gpu_type == "Amd" 
+            )
+            error_message   = "Only the following gpu are supported: Nvidia, Amd."
+        }
 }
 
 variable "protools_vm_size" {
   description = "Size of ProTools VM"
+  default     = "Standard_NV12s_v3"
+  type = string
+  validation {
+            condition       = (
+                var.protools_vm_size == "Standard_NV8as_v4" || 
+                var.protools_vm_size == "Standard_NV16as_v4" ||
+                var.protools_vm_size == "Standard_NV32as_v4" ||
+                var.protools_vm_size == "Standard_NV12s_v3" ||
+                var.protools_vm_size == "Standard_NV24s_v3" ||
+                var.protools_vm_size == "Standard_NV48s_v3"
+            )
+            error_message   = "Only the following sku are supported: Standard_NV8as_v4, Standard_NV16as_v4, Standard_NV32as_v4, Standard_NV12s_v3, Standard_NV24s_v3, Standard_NV48s_v3."
+        }
 }
 
 variable "protools_nb_instances" {
