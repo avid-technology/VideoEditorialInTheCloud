@@ -125,5 +125,3 @@ resource "azurerm_virtual_machine_extension" "nexis_storage_servers" {
     }
     PROT
 }
-
-# "commandToExecute": "/bin/bash ${var.nexis_storage_vm_script_name} ${local.hostname}${format("%02d",count.index)} ${local.nexis_storage_vm_artifacts_location} ${var.nexis_storage_vm_build} ${var.nexis_storage_vm_part_number}"

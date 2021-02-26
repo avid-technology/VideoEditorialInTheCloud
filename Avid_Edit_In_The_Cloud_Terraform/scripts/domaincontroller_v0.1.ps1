@@ -59,6 +59,31 @@ try {
             # chocolaty is best effort
         }
 
+    $domainName  = "sdbx01.internal"
+    $netBIOSname = "TEST"
+    $mode  = "Win2016R2"
+
+    #Install-WindowsFeature AD-Domain-Services -IncludeAllSubFeature -IncludeManagementTools
+    Install-WindowsFeature AD-Domain-Services -IncludeManagementTools
+
+    #Import-Module ADDSDeployment
+
+    $forestProperties = @{
+
+    $password                           = "Avid1234567$"
+    $encrypted_password                 = ConvertTo-SecureString $password -AsPlainText -Force
+    DomainName                          = $domainName
+    DomainNetbiosName                   = $netBIOSname
+    SafeModeAdministratorPassword       = $encrypted_password
+    CreateDnsDelegation                 = $false
+    InstallDns                          = $true
+    NoRebootOnCompletion                = $true
+    Force                               = $true
+
+}
+
+Install-ADDSForest @forestProperties
+
 }
 catch {
     Write-Error $_
