@@ -18,6 +18,12 @@ variable "resource_group_location" {
   description = "Location of resource group where to build resources"
 }
 
+variable "DomainName" {
+  description = "Domain Name"
+  type        = string
+  default     = null
+}
+
 variable "vnet_subnet_id" {
   description = "Subnet where resources will be built"
 }

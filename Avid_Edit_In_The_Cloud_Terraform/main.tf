@@ -18,8 +18,8 @@ provider "azurerm" {
 locals {
   resource_group_name                     = "${var.resource_prefix}-rg"
   script_url                              = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/scripts/"
-  #mediacomposerScript                     = "setupMediaComposer_${var.mediacomposerVersion}.ps1"
-  #ProToolsScript                          = "setupProTools_${var.ProToolsVersion}.ps1"
+  #mediacomposerScript                    = "setupMediaComposer_${var.mediacomposerVersion}.ps1"
+  #ProToolsScript                         = "setupProTools_${var.ProToolsVersion}.ps1"
   stored_subnet_id                        = module.editorial_networking.azurerm_subnet_ids
   DomainName                              = "ben01.internal"                                     
 }
@@ -36,23 +36,6 @@ module "editorial_networking" {
   tags                          = var.azureTags
 }
 
-module "jumpbox_deployment" {
-  source                        = "./modules/jumpbox"
-  admin_username                = var.admin_username
-  admin_password                = var.admin_password
-  resource_prefix               = var.resource_prefix
-  resource_group_location       = var.resource_group_location
-  vnet_subnet_id                = local.stored_subnet_id[0]
-  jumpbox_vm_size               = var.jumpbox_vm_size
-  jumpbox_nb_instances          = var.jumpbox_nb_instances
-  script_url                    = local.script_url
-  JumpboxScript                 = var.JumpboxScript
-  jumpbox_internet_access       = var.jumpbox_internet_access 
-  installers_url                = var.installers_url
-  AvidNexisInstaller            = var.AvidNexisInstaller
-  depends_on                    = [module.editorial_networking]
-}
-
 module "domaincontroller_deployment" {
   source                            = "./modules/domaincontroller"
   admin_username                  = var.admin_username
@@ -65,6 +48,24 @@ module "domaincontroller_deployment" {
   script_url                      = local.script_url
   installers_url                  = var.installers_url
   depends_on                      = [module.editorial_networking]
+}
+
+module "jumpbox_deployment" {
+  source                        = "./modules/jumpbox"
+  admin_username                = var.admin_username
+  admin_password                = var.admin_password
+  resource_prefix               = var.resource_prefix
+  resource_group_location       = var.resource_group_location
+  vnet_subnet_id                = local.stored_subnet_id[0]
+  DomainName                    = local.DomainName
+  jumpbox_vm_size               = var.jumpbox_vm_size
+  jumpbox_nb_instances          = var.jumpbox_nb_instances
+  script_url                    = local.script_url
+  JumpboxScript                 = var.JumpboxScript
+  jumpbox_internet_access       = var.jumpbox_internet_access 
+  installers_url                = var.installers_url
+  AvidNexisInstaller            = var.AvidNexisInstaller
+  depends_on                    = [module.domaincontroller_deployment]
 }
 
 module "protools_deployment" {

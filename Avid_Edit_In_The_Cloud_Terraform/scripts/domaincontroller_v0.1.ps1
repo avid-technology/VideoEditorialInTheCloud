@@ -91,6 +91,8 @@ try {
 
     Install-ADDSForest @forestProperties
 
+    Install-WindowsFeature DNS -IncludeManagementTools
+
     Restart-Computer
 }
 catch {
