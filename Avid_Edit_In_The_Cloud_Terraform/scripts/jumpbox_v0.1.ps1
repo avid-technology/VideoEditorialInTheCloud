@@ -11,7 +11,9 @@
 param (
     [string]
     [ValidateNotNullOrEmpty()]
-    $AvidNexisInstallerUrl
+    $AvidNexisInstallerUrl,
+    [ValidateNotNullOrEmpty()]
+    $DomainName
 )
 
 filter Timestamp {"$(Get-Date -Format o): $_"}
