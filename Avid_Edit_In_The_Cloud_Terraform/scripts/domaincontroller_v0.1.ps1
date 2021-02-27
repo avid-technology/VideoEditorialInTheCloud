@@ -12,8 +12,7 @@
 param (
     [string]
     [ValidateNotNullOrEmpty()]
-    $DomainName
-    [string]
+    $DomainName,
     [ValidateNotNullOrEmpty()]
     $DomainPassword
 )
