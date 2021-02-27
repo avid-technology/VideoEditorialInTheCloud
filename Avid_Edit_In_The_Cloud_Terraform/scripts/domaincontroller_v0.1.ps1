@@ -56,6 +56,36 @@ Install-ChocolatyAndPackages {
 
 }
 
+function
+Set-DomainController {
+    
+    $domainsplit                        = $DomainName.Split(".")
+    $domain                             = $domainsplit[0]
+    $topdomain                          = $domainsplit[1] 
+    $netBIOSname                        = $domain.ToUpper()
+    $encrypted_password                 = ConvertTo-SecureString $DomainPassword -AsPlainText -Force
+
+    #Install-WindowsFeature AD-Domain-Services -IncludeAllSubFeature -IncludeManagementTools
+    Install-WindowsFeature AD-Domain-Services -IncludeManagementTools
+
+    #Import-Module ADDSDeployment
+
+    $forestProperties = @{
+    DomainName                          = $DomainName
+    DomainNetbiosName                   = $netBIOSname
+    SafeModeAdministratorPassword       = $encrypted_password
+    CreateDnsDelegation                 = $false
+    InstallDns                          = $true
+    NoRebootOnCompletion                = $true
+    Force                               = $true
+    }
+
+    Install-ADDSForest @forestProperties
+
+    Install-WindowsFeature DNS -IncludeManagementTools
+
+}
+
 try {
     $dest = "D:\AzureData"
     New-Item -Path $dest -ItemType directory -Force

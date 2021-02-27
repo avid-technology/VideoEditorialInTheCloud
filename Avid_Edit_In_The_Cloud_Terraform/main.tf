@@ -21,7 +21,7 @@ locals {
   #mediacomposerScript                    = "setupMediaComposer_${var.mediacomposerVersion}.ps1"
   #ProToolsScript                         = "setupProTools_${var.ProToolsVersion}.ps1"
   stored_subnet_id                        = module.editorial_networking.azurerm_subnet_ids
-  DomainName                              = "ben01.internal"                                     
+  DomainName                              = "ben02.internal"                                     
 }
 
 module "editorial_networking" {

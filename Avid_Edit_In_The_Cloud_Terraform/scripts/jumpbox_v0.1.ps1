@@ -78,6 +78,13 @@ try {
         Write-Log "Call Install-NexisClient"
         Install-NexisClient
 
+    #$domain = "ben01.internal"
+    #$password = "Avid1234567$" | ConvertTo-SecureString -asPlainText -Force
+    #$username = "$domain\avid-adm-01" 
+    #$credential = New-Object System.Management.Automation.PSCredential($username,$password)
+
+    #Add-Computer -DomainName $domain -Credential $credential
+
 }
 catch {
     Write-Error $_
