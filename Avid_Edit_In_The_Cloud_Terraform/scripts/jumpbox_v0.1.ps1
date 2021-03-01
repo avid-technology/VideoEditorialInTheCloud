@@ -13,9 +13,9 @@ param (
     [ValidateNotNullOrEmpty()]
     $AvidNexisInstallerUrl,
     [ValidateNotNullOrEmpty()]
-    $DomainName
+    $DomainName,
     [ValidateNotNullOrEmpty()]
-    $admin_username
+    $admin_username,
     [ValidateNotNullOrEmpty()]
     $admin_password
 )
