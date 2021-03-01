@@ -84,7 +84,7 @@ Set-DomainController {
 
     Install-WindowsFeature DNS -IncludeManagementTools
 
-    Add-DnsServerPrimaryZone -Name $DomainName -ReplicationScope "Forest" -PassThru
+    #Add-DnsServerPrimaryZone -Name $DomainName -ReplicationScope "Forest" -PassThru
 
 }
 
