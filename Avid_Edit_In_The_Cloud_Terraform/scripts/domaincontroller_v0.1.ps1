@@ -100,9 +100,9 @@ try {
             # chocolaty is best effort
         }
 
-    Set-DomainController
+    #Set-DomainController
 
-    Restart-Computer -Force
+    #Restart-Computer -Force
 }
 catch {
     Write-Error $_

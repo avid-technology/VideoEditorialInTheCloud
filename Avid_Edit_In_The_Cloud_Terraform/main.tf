@@ -18,10 +18,7 @@ provider "azurerm" {
 locals {
   resource_group_name                     = "${var.resource_prefix}-rg"
   script_url                              = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/scripts/"
-  #mediacomposerScript                    = "setupMediaComposer_${var.mediacomposerVersion}.ps1"
-  #ProToolsScript                         = "setupProTools_${var.ProToolsVersion}.ps1"
-  stored_subnet_id                        = module.editorial_networking.azurerm_subnet_ids
-  #DomainName                              = "ben02.internal"                                     
+  stored_subnet_id                        = module.editorial_networking.azurerm_subnet_ids                                    
 }
 
 module "editorial_networking" {
@@ -38,16 +35,17 @@ module "editorial_networking" {
 
 module "domaincontroller_deployment" {
   source                            = "./modules/domaincontroller"
-  admin_username                  = var.admin_username
-  admin_password                  = var.admin_password
-  resource_prefix                 = var.resource_prefix
-  resource_group_location         = var.resource_group_location
-  domainName                      = var.domainName
-  vnet_subnet_id                  = local.stored_subnet_id[0]
-  domaincontroller_nb_instances   = var.domaincontroller_nb_instances
-  script_url                      = local.script_url
-  installers_url                  = var.installers_url
-  depends_on                      = [module.editorial_networking]
+  admin_username                    = var.admin_username
+  admin_password                    = var.admin_password
+  resource_prefix                   = var.resource_prefix
+  resource_group_location           = var.resource_group_location
+  domainName                        = var.domainName
+  vnet_subnet_id                    = local.stored_subnet_id[0]
+  domaincontroller_nb_instances     = var.domaincontroller_nb_instances
+  script_url                        = local.script_url
+  installers_url                    = var.installers_url
+  depends_on                        = [module.editorial_networking]
+  domaincontroller_internet_access  = true
 }
 
 module "jumpbox_deployment" {

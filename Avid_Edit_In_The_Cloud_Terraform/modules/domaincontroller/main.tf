@@ -53,25 +53,25 @@ resource "azurerm_windows_virtual_machine" "domaincontroller_vm" {
   }
 }
 
-resource "azurerm_virtual_machine_extension" "domaincontroller_extension" {
-  count                 = var.domaincontroller_nb_instances
-  name                  = "domaincontroller_extension"
-  virtual_machine_id    = azurerm_windows_virtual_machine.domaincontroller_vm[count.index].id
-  publisher             = "Microsoft.Compute"
-  type                  = "CustomScriptExtension"
-  type_handler_version  = "1.9"
-  depends_on            = [azurerm_windows_virtual_machine.domaincontroller_vm]
+#resource "azurerm_virtual_machine_extension" "domaincontroller_extension" {
+#  count                 = var.domaincontroller_nb_instances
+#  name                  = "domaincontroller_extension"
+#  virtual_machine_id    = azurerm_windows_virtual_machine.domaincontroller_vm[count.index].id
+#  publisher             = "Microsoft.Compute"
+#  type                  = "CustomScriptExtension"
+#  type_handler_version  = "1.9"
+#  depends_on            = [azurerm_windows_virtual_machine.domaincontroller_vm]
 
   # CustomVMExtension Documentation: https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-windows
-  settings = <<SETTINGS
-    {
-        "fileUris": ["${local.domaincontrollerScriptUrl}"]
-    }
-SETTINGS
-  protected_settings = <<PROTECTED_SETTINGS
-    {
-      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.domaincontrollerScript} ${var.domainName} ${var.admin_password}"
-    }
-  PROTECTED_SETTINGS
-}
+#  settings = <<SETTINGS
+#    {
+#        "fileUris": ["${local.domaincontrollerScriptUrl}"]
+#    }
+#SETTINGS
+#  protected_settings = <<PROTECTED_SETTINGS
+#   {
+#      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.domaincontrollerScript} ${var.domainName} ${var.admin_password}"
+#    }
+#  PROTECTED_SETTINGS
+#}
 
