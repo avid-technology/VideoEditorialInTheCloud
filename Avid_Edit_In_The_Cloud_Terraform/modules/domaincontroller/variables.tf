@@ -40,7 +40,7 @@ variable "domaincontroller_nb_instances" {
   default     = 0
 }
 
-variable "DomainName" {
+variable "domainName" {
   description = "Domain Name"
   type        = string
 }

@@ -21,7 +21,7 @@ locals {
   #mediacomposerScript                    = "setupMediaComposer_${var.mediacomposerVersion}.ps1"
   #ProToolsScript                         = "setupProTools_${var.ProToolsVersion}.ps1"
   stored_subnet_id                        = module.editorial_networking.azurerm_subnet_ids
-  DomainName                              = "ben02.internal"                                     
+  #DomainName                              = "ben02.internal"                                     
 }
 
 module "editorial_networking" {
@@ -42,7 +42,7 @@ module "domaincontroller_deployment" {
   admin_password                  = var.admin_password
   resource_prefix                 = var.resource_prefix
   resource_group_location         = var.resource_group_location
-  DomainName                      = local.DomainName
+  domainName                      = var.domainName
   vnet_subnet_id                  = local.stored_subnet_id[0]
   domaincontroller_nb_instances   = var.domaincontroller_nb_instances
   script_url                      = local.script_url
@@ -57,7 +57,7 @@ module "jumpbox_deployment" {
   resource_prefix               = var.resource_prefix
   resource_group_location       = var.resource_group_location
   vnet_subnet_id                = local.stored_subnet_id[0]
-  DomainName                    = local.DomainName
+  domainName                    = var.domainName
   jumpbox_vm_size               = var.jumpbox_vm_size
   jumpbox_nb_instances          = var.jumpbox_nb_instances
   script_url                    = local.script_url

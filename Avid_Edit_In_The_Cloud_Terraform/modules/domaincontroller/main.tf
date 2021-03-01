@@ -70,7 +70,7 @@ resource "azurerm_virtual_machine_extension" "domaincontroller_extension" {
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.domaincontrollerScript} ${var.DomainName} ${var.admin_password}"
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.domaincontrollerScript} ${var.domainName} ${var.admin_password}"
     }
   PROTECTED_SETTINGS
 }

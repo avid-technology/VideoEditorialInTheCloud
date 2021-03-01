@@ -18,7 +18,7 @@ variable "resource_group_location" {
   description = "Location of resource group where to build resources"
 }
 
-variable "DomainName" {
+variable "domainName" {
   description = "Domain Name"
   type        = string
   default     = null

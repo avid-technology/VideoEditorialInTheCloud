@@ -41,6 +41,12 @@ variable "installers_url"{
     type = string
 }
 
+variable "domainName" {
+  description = "Domain Name"
+  type        = string
+  default     = null
+}
+
 ######################
 ### Network Module ###
 ######################
