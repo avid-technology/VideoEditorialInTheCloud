@@ -102,7 +102,7 @@ try {
 
     Set-DomainController
 
-    Restart-Computer
+    Restart-Computer -Force
 }
 catch {
     Write-Error $_

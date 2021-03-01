@@ -71,7 +71,7 @@ resource "azurerm_virtual_machine_extension" "jumpbox_extension" {
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.JumpboxScript} ${local.AvidNexisInstallerUrl} ${var.domainName}"
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.JumpboxScript} ${local.AvidNexisInstallerUrl} ${var.domainName} ${var.admin_username} ${var.admin_password}"
     }
   PROTECTED_SETTINGS
 }

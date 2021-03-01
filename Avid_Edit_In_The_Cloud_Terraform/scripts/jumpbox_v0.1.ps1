@@ -14,6 +14,10 @@ param (
     $AvidNexisInstallerUrl,
     [ValidateNotNullOrEmpty()]
     $DomainName
+    [ValidateNotNullOrEmpty()]
+    $admin_username
+    [ValidateNotNullOrEmpty()]
+    $admin_password
 )
 
 filter Timestamp {"$(Get-Date -Format o): $_"}
@@ -65,6 +69,17 @@ Install-ChocolatyAndPackages {
 
 }
 
+function
+Add-HostDomain {
+    
+    $password = $admin_password | ConvertTo-SecureString -asPlainText -Force
+    $username = "$DomainName\$admin_username" 
+    $credential = New-Object System.Management.Automation.PSCredential($username,$password)
+
+    Add-Computer -DomainName $DomainName -Credential $credential
+
+}
+
 try {
     $dest = "D:\AzureData"
     New-Item -Path $dest -ItemType directory -Force
@@ -80,13 +95,13 @@ try {
         Write-Log "Call Install-NexisClient"
         Install-NexisClient
 
-    #$domain = "ben01.internal"
-    #$password = "Avid1234567$" | ConvertTo-SecureString -asPlainText -Force
-    #$username = "$domain\avid-adm-01" 
-    #$credential = New-Object System.Management.Automation.PSCredential($username,$password)
-
-    #Add-Computer -DomainName $domain -Credential $credential
-
+        Write-Log "Add server to Domain"
+        if ([string]::IsNullOrWhiteSpace(${DomainName})) {
+                    Add-HostDomain
+            } else {
+                    Write-Log "Not added to any domain as domain specified"
+            }
+        
 }
 catch {
     Write-Error $_
