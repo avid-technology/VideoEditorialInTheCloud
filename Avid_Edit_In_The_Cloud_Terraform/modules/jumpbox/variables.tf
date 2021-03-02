@@ -11,13 +11,14 @@ variable "local_admin_password" {
 }
 
 variable "domain_admin_username" {
-  description = "Domain admin user to register server into domain"
+  description = "Domain admin user to join domain"
   default     = null
 }
 
 variable "domain_admin_password" {
-  description = "Domain admin password to register server into domain"
+  description = "Domain admin password to join domain"
   default     = null
+  sensitive   = true
 }
 
 variable "resource_prefix" {
