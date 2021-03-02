@@ -35,8 +35,8 @@ module "editorial_networking" {
 
 module "domaincontroller_deployment" {
   source                            = "./modules/domaincontroller"
-  admin_username                    = var.admin_username
-  admin_password                    = var.admin_password
+  local_admin_username              = var.local_admin_username
+  local_admin_password              = var.local_admin_password
   resource_prefix                   = var.resource_prefix
   resource_group_location           = var.resource_group_location
   domainName                        = var.domainName
@@ -50,8 +50,10 @@ module "domaincontroller_deployment" {
 
 module "jumpbox_deployment" {
   source                        = "./modules/jumpbox"
-  admin_username                = var.admin_username
-  admin_password                = var.admin_password
+  local_admin_username          = var.local_admin_username
+  local_admin_password          = var.local_admin_password
+  domain_admin_username         = var.domain_admin_username
+  domain_admin_password         = var.domain_admin_password
   resource_prefix               = var.resource_prefix
   resource_group_location       = var.resource_group_location
   vnet_subnet_id                = local.stored_subnet_id[0]
@@ -68,17 +70,19 @@ module "jumpbox_deployment" {
 
 module "protools_deployment" {
   source                            = "./modules/protools"
-  admin_username                    = var.admin_username
-  admin_password                    = var.admin_password
+  local_admin_username              = var.local_admin_username
+  local_admin_password              = var.local_admin_password
+  domain_admin_username             = var.domain_admin_username
+  domain_admin_password             = var.domain_admin_password
   resource_prefix                   = var.resource_prefix
   resource_group_location           = var.resource_group_location
   vnet_subnet_id                    = local.stored_subnet_id[0]
   gpu_type                          = var.gpu_type
+  domainName                        = var.domainName
   protools_vm_size                  = var.protools_vm_size
   protools_nb_instances             = var.protools_nb_instances
   protools_internet_access          = var.protools_internet_access
   script_url                        = local.script_url 
-  #ProToolsScript                   = local.ProToolsScript
   TeradiciKey                       = var.TeradiciKey
   TeradiciInstaller                 = var.TeradiciInstaller
   installers_url                    = var.installers_url
@@ -89,10 +93,13 @@ module "protools_deployment" {
 
 module "mediacomposer_deployment" {
   source                            = "./modules/mediacomposer"
-  admin_username                    = var.admin_username
-  admin_password                    = var.admin_password
+  local_admin_username              = var.local_admin_username
+  local_admin_password              = var.local_admin_password
+  domain_admin_username             = var.domain_admin_username
+  domain_admin_password             = var.domain_admin_password
   script_url                        = local.script_url
   installers_url                    = var.installers_url
+  domainName                        = var.domainName
   resource_prefix                   = var.resource_prefix
   resource_group_location           = var.resource_group_location
   vnet_subnet_id                    = local.stored_subnet_id[0]
@@ -110,8 +117,8 @@ module "mediacomposer_deployment" {
 module "nexis_online_deployment" {
   source                              = "./modules/nexis"
   hostname                            = "${var.resource_prefix}on"
-  admin_username                      = var.admin_username
-  admin_password                      = var.admin_password
+  local_admin_username                = var.local_admin_username
+  local_admin_password                = var.local_admin_password
   resource_group_location             = var.resource_group_location
   vnet_subnet_id                      = local.stored_subnet_id[0]
   resource_prefix                     = var.resource_prefix 
@@ -131,8 +138,8 @@ module "nexis_online_deployment" {
 module "nexis_nearline_deployment" {
   source                              = "./modules/nexis"
   hostname                            = "${var.resource_prefix}nl"
-  admin_username                      = var.admin_username
-  admin_password                      = var.admin_password
+  local_admin_username                = var.local_admin_username
+  local_admin_password                = var.local_admin_password
   resource_group_location             = var.resource_group_location
   vnet_subnet_id                      = local.stored_subnet_id[0]
   resource_prefix                     = var.resource_prefix 
@@ -151,12 +158,15 @@ module "nexis_nearline_deployment" {
 
 module "zabbix_deployment" {
   source                        = "./modules/zabbix"
-  admin_username                = var.admin_username
-  admin_password                = var.admin_password
+  local_admin_username          = var.local_admin_username
+  local_admin_password          = var.local_admin_password
+  domain_admin_username         = var.domain_admin_username
+  domain_admin_password         = var.domain_admin_password
   resource_prefix               = var.resource_prefix
   resource_group_location       = var.resource_group_location
   vnet_subnet_id                = local.stored_subnet_id[0]
   zabbix_vm_size                = var.zabbix_vm_size
+  domainName                    = var.domainName
   zabbix_nb_instances           = var.zabbix_nb_instances
   script_url                    = local.script_url
   zabbixScript                  = var.zabbixScript

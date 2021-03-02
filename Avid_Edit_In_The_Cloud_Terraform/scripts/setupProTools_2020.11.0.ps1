@@ -17,7 +17,13 @@ param(
     [ValidateNotNullOrEmpty()]
     $ProToolsURL,
     [ValidateNotNullOrEmpty()]
-    $AvidNexisInstallerUrl
+    $AvidNexisInstallerUrl,
+    [ValidateNotNullOrEmpty()]
+    $DomainName,
+    [ValidateNotNullOrEmpty()]
+    $domain_admin_username,
+    [ValidateNotNullOrEmpty()]
+    $domain_admin_password
 )
 
 filter Timestamp {"$(Get-Date -Format o): $_"}
@@ -116,29 +122,6 @@ Install-ProTools {
     Start-Process -FilePath $PaceLicenseSupportExe -ArgumentList "/s", "/x", "/b$PreReqBasePath2\temp", "/V/qn" -Wait
     Start-Process -FilePath "$PreReqBasePath2\temp\PACE License Support Win64.msi" -ArgumentList "/quiet", "/passive", "/norestart" -Wait
 
-    # Fixing the InstallShield response file...
-   # $PaceSetupIss = @"
-#[{5AC59014-E7D8-447e-ABE2-5D7FA0626522}-DlgOrder]
-#Dlg0={5AC59014-E7D8-447e-ABE2-5D7FA0626522}-SdWelcome-0
-#Count=4
-#Dlg1={5AC59014-E7D8-447e-ABE2-5D7FA0626522}-SdLicenseRtf-0
-#Dlg2={5AC59014-E7D8-447e-ABE2-5D7FA0626522}-SdStartCopy2-0
-#Dlg3={5AC59014-E7D8-447e-ABE2-5D7FA0626522}-SdFinish-0
-#[{5AC59014-E7D8-447e-ABE2-5D7FA0626522}-SdWelcome-0]
-#Result=1
-#[{5AC59014-E7D8-447e-ABE2-5D7FA0626522}-SdLicenseRtf-0]
-#Result=1
-#[{5AC59014-E7D8-447e-ABE2-5D7FA0626522}-SdStartCopy2-0]
-#Result=1
-#[{5AC59014-E7D8-447e-ABE2-5D7FA0626522}-SdFinish-0]
-#Result=1
-#bOpt1=0
-#bOpt2=0
-#"@
-#    Set-Content -Path "$PreReqBasePath\Pace License Support\setup.iss" -Value $PaceSetupIss
-#    $PaceLicenseSupportBaseName = "$PreReqBasePath\PACE License Support\License Support Win64.exe"
-#    Start-Process -FilePath "$PaceLicenseSupportBaseName" -ArgumentList "/s" -Wait
-
     #Install Avid Cloud Client Services
     Write-Log "Installing Avid Cloud Client Services"   
     Start-Process -FilePath "$PreReqBasePath\Avid Cloud Client\Avid_Cloud_Client_Services.exe" -ArgumentList "/s", "/v/qn" -Wait
@@ -153,6 +136,17 @@ Install-ProTools {
 
     # Install Pro Tools
     Start-Process -FilePath 'D:\AzureData\Pro Tools\Avid Pro Tools.msi' -ArgumentList "/quiet", "/passive", "/norestart" -Wait
+}
+
+function
+Add-HostDomain {
+    
+    $password = $domain_admin_password | ConvertTo-SecureString -asPlainText -Force
+    $username = "$DomainName\$domain_admin_username" 
+    $credential = New-Object System.Management.Automation.PSCredential($username,$password)
+
+    Add-Computer -DomainName $DomainName -Credential $credential
+
 }
 
 try {
@@ -183,8 +177,12 @@ try {
         Write-Log "Call Install-ProTools"
         Install-ProTools
 
-        # Write-Log "Cleanup"
-        # Remove-Item D:\AzureData -Force  -Recurse -ErrorAction SilentlyContinue
+        Write-Log "Add server to Domain"
+        if ([string]::IsNullOrWhiteSpace(${DomainName})) {
+                    Write-Log "Not added to any domain as no domain specified by user"
+            } else {
+                    Add-HostDomain
+            }
         
         Write-Log "Complete"
 

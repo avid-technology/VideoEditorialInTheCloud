@@ -15,9 +15,9 @@ param (
     [ValidateNotNullOrEmpty()]
     $DomainName,
     [ValidateNotNullOrEmpty()]
-    $admin_username,
+    $domain_admin_username,
     [ValidateNotNullOrEmpty()]
-    $admin_password
+    $domain_admin_password
 )
 
 filter Timestamp {"$(Get-Date -Format o): $_"}
@@ -72,8 +72,8 @@ Install-ChocolatyAndPackages {
 function
 Add-HostDomain {
     
-    $password = $admin_password | ConvertTo-SecureString -asPlainText -Force
-    $username = "$DomainName\$admin_username" 
+    $password = $domain_admin_password | ConvertTo-SecureString -asPlainText -Force
+    $username = "$DomainName\$domain_admin_username" 
     $credential = New-Object System.Management.Automation.PSCredential($username,$password)
 
     Add-Computer -DomainName $DomainName -Credential $credential

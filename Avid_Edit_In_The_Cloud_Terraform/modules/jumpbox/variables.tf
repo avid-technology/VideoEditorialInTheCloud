@@ -2,12 +2,22 @@
 # Input Variables       #
 #########################
 
-variable "admin_username" {
+variable "local_admin_username" {
   description = "Admin Username for Virtual Machines"
 }
 
-variable "admin_password" {
+variable "local_admin_password" {
   description = "Admin Password for Virtual Machines"
+}
+
+variable "domain_admin_username" {
+  description = "Domain admin user to register server into domain"
+  default     = null
+}
+
+variable "domain_admin_password" {
+  description = "Domain admin password to register server into domain"
+  default     = null
 }
 
 variable "resource_prefix" {

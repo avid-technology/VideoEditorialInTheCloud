@@ -17,7 +17,13 @@ param(
     [ValidateNotNullOrEmpty()]
     $MediaComposerURL,
     [ValidateNotNullOrEmpty()]
-    $AvidNexisInstallerUrl
+    $AvidNexisInstallerUrl,
+    [ValidateNotNullOrEmpty()]
+    $DomainName,
+    [ValidateNotNullOrEmpty()]
+    $domain_admin_username,
+    [ValidateNotNullOrEmpty()]
+    $domain_admin_password
 )
 
 filter Timestamp {"$(Get-Date -Format o): $_"}
@@ -171,6 +177,17 @@ Install-NexisClient {
     
 }
 
+function
+Add-HostDomain {
+    
+    $password = $domain_admin_password | ConvertTo-SecureString -asPlainText -Force
+    $username = "$DomainName\$domain_admin_username" 
+    $credential = New-Object System.Management.Automation.PSCredential($username,$password)
+
+    Add-Computer -DomainName $DomainName -Credential $credential
+
+}
+
 try {
     # Set to false for debugging.  This will output the start script to
     # c:\AzureData\CustomDataSetupScript.log, and then you can RDP
@@ -199,8 +216,12 @@ try {
         Write-Log "Call Install-MediaComposer"
         Install-MediaComposer
 
-        # Write-Log "Cleanup"
-        # Remove-Item D:\AzureData -Force  -Recurse -ErrorAction SilentlyContinue
+        Write-Log "Add server to Domain"
+        if ([string]::IsNullOrWhiteSpace(${DomainName})) {
+                    Write-Log "Not added to any domain as no domain specified by user"
+            } else {
+                    Add-HostDomain
+            }
         
         Write-Log "Complete"
 

@@ -6,11 +6,11 @@ variable "hostname" {
   description = "Hostname of Cloud Nexis. Maximum 8 characters."
 }
 
-variable "admin_username" {
-  description = "Admin Username to administrate Virtual Machines OS. Avid user is default Cloud Nexis administrator"
+variable "local_admin_username" {
+  description = "Admin Username for Virtual Machines"
 }
 
-variable "admin_password" {
+variable "local_admin_password" {
   description = "Admin Password for Virtual Machines"
 }
 

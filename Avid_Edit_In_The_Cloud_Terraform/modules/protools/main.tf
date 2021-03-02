@@ -39,8 +39,8 @@ resource "azurerm_windows_virtual_machine" "protools_vm" {
   location                      = var.resource_group_location
   computer_name                 = "${local.protools_vm_hostname}-vm-${format("%02d",count.index)}"
   size                          = var.protools_vm_size
-  admin_username                = var.admin_username
-  admin_password                = var.admin_password
+  admin_username                = var.local_admin_username
+  admin_password                = var.local_admin_password
   network_interface_ids         = [azurerm_network_interface.protools_nic[count.index].id]
 
   source_image_reference {

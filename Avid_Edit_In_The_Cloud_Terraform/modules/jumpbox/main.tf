@@ -36,8 +36,8 @@ resource "azurerm_windows_virtual_machine" "jumpbox_vm" {
   location                      = var.resource_group_location
   computer_name                 = "${local.jumpbox_vm_hostname}-vm-${format("%02d",count.index)}"
   size                          = var.jumpbox_vm_size
-  admin_username                = var.admin_username
-  admin_password                = var.admin_password
+  admin_username                = var.local_admin_username
+  admin_password                = var.local_admin_password
   network_interface_ids         = [azurerm_network_interface.jumpbox_nic[count.index].id]
 
   source_image_reference {
@@ -71,7 +71,7 @@ resource "azurerm_virtual_machine_extension" "jumpbox_extension" {
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.JumpboxScript} ${local.AvidNexisInstallerUrl} ${var.domainName} ${var.admin_username} ${var.admin_password}"
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.JumpboxScript} ${local.AvidNexisInstallerUrl} ${var.domainName} ${var.domain_admin_username} ${var.domain_admin_password}"
     }
   PROTECTED_SETTINGS
 }

@@ -39,8 +39,8 @@ resource "azurerm_windows_virtual_machine" "mediacomposer_vm" {
   location                      = var.resource_group_location
   computer_name                 = "${local.mediacomposer_vm_hostname}-vm-${format("%02d",count.index)}"
   size                          = var.mediacomposer_vm_size
-  admin_username                = var.admin_username
-  admin_password                = var.admin_password
+  admin_username                = var.local_admin_username
+  admin_password                = var.local_admin_password
   network_interface_ids         = [azurerm_network_interface.mediacomposer_nic[count.index].id]
 
   source_image_reference {
@@ -75,7 +75,7 @@ resource "azurerm_virtual_machine_extension" "mediacomposer_extension_1" {
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${local.mediacomposerScript} ${var.TeradiciKey} ${local.TeradiciURL} ${local.MediacomposerURL} ${local.AvidNexisInstallerUrl}"
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${local.mediacomposerScript} ${var.TeradiciKey} ${local.TeradiciURL} ${local.MediacomposerURL} ${local.AvidNexisInstallerUrl} ${var.domainName} ${var.domain_admin_username} ${var.domain_admin_password}"
     }
   PROTECTED_SETTINGS
 }

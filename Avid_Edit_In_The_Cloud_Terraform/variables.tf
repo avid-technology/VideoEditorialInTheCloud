@@ -2,11 +2,20 @@
 ### Generic ###
 ###############
 
-variable "admin_username" {
+variable "local_admin_username" {
     type = string
 }
 
-variable "admin_password" {
+variable "local_admin_password" {
+    type = string 
+    sensitive = true
+}
+
+variable "domain_admin_username" {
+    type = string
+}
+
+variable "domain_admin_password" {
     type = string 
     sensitive = true
 }

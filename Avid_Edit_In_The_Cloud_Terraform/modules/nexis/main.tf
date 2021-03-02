@@ -65,7 +65,7 @@ resource "azurerm_linux_virtual_machine" "nexis_vm" {
   size                          = var.nexis_storage_vm_size
   network_interface_ids         = [azurerm_network_interface.nexis_nic[count.index].id]
   admin_username                = "avid"
-  admin_password                = var.admin_password
+  admin_password                = var.local_admin_password
   computer_name                 = "${local.hostname}${format("%02d",count.index)}"
   disable_password_authentication = false
 

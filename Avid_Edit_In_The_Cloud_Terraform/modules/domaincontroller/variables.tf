@@ -2,11 +2,11 @@
 # Input Variables       #
 #########################
 
-variable "admin_username" {
+variable "local_admin_username" {
   description = "Admin Username for Virtual Machines"
 }
 
-variable "admin_password" {
+variable "local_admin_password" {
   description = "Admin Password for Virtual Machines"
 }
 
