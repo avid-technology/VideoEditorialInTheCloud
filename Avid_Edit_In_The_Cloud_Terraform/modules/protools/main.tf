@@ -1,12 +1,12 @@
 locals {
   resource_group_name       = "${var.resource_prefix}-rg"
   protools_vm_hostname      = "${var.resource_prefix}-pt"
-  protoolsScripturl         = "${var.script_url}setupProTools_${var.ProToolsVersion}.ps1"
+  protoolsScripturl         = "${var.script_url}${var.protoolsScript}"
   gpu_driver                = "${var.gpu_type}GpuDriverWindows"
   TeradiciURL               = "${var.installers_url}${var.TeradiciInstaller}"
   ProToolsinstaller         = "${var.installers_url}Pro_Tools_${var.ProToolsVersion}_Win.zip"
   AvidNexisInstallerUrl     = "${var.installers_url}${var.AvidNexisInstaller}"
-  protoolsScript            = "setupProTools_${var.ProToolsVersion}.ps1"
+  #protoolsScript            = "setupProTools_${var.ProToolsVersion}.ps1"
 }
 
 resource "azurerm_public_ip" "protools_ip" {
@@ -75,7 +75,7 @@ resource "azurerm_virtual_machine_extension" "protools_extension_1" {
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${local.protoolsScript} ${var.TeradiciKey} ${local.TeradiciURL} ${local.ProToolsinstaller} ${local.AvidNexisInstallerUrl} ${var.domainName} ${var.domain_admin_username} ${var.domain_admin_password}"
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.protoolsScript} ${var.TeradiciKey} ${local.TeradiciURL} ${local.ProToolsinstaller} ${local.AvidNexisInstallerUrl} ${var.domainName} ${var.domain_admin_username} ${var.domain_admin_password}"
     }
   PROTECTED_SETTINGS
 }

@@ -1,12 +1,12 @@
 locals {
   resource_group_name       = "${var.resource_prefix}-rg"
   mediacomposer_vm_hostname = "${var.resource_prefix}-mc"
-  mediacomposerScripturl    = "${var.script_url}setupMediaComposer_v0.1.ps1"
+  mediacomposerScripturl    = "${var.script_url}${var.mediacomposerScript}"
   gpu_driver                = "${var.gpu_type}GpuDriverWindows"
   TeradiciURL               = "${var.installers_url}${var.TeradiciInstaller}"
   MediacomposerURL          = "${var.installers_url}Media_Composer_${var.mediacomposerVersion}_Win.zip"
   AvidNexisInstallerUrl     = "${var.installers_url}${var.AvidNexisInstaller}"
-  mediacomposerScript       = "setupMediaComposer_${var.mediacomposerVersion}.ps1"
+  #mediacomposerScript       = "${var.mediacomposerScript}"
 }
 
 resource "azurerm_public_ip" "mediacomposer_ip" {
@@ -75,7 +75,7 @@ resource "azurerm_virtual_machine_extension" "mediacomposer_extension_1" {
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${local.mediacomposerScript} ${var.TeradiciKey} ${local.TeradiciURL} ${local.MediacomposerURL} ${local.AvidNexisInstallerUrl} ${var.domainName} ${var.domain_admin_username} ${var.domain_admin_password}"
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.mediacomposerScript} ${var.TeradiciKey} ${local.TeradiciURL} ${local.MediacomposerURL} ${local.AvidNexisInstallerUrl} ${var.domainName} ${var.domain_admin_username} ${var.domain_admin_password}"
     }
   PROTECTED_SETTINGS
 }

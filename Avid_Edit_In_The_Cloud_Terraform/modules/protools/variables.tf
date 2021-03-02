@@ -22,6 +22,11 @@ variable "domain_admin_password" {
   sensitive   = true
 }
 
+variable "protoolsScript" {
+  description = "Pscript to install MediaComposer"
+  default     = "setupProTools_2020.11.0.ps1"
+}
+
 variable "domainName" {
   description = "Domain Name"
   type        = string

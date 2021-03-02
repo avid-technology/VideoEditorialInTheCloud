@@ -213,6 +213,10 @@ variable "ProToolsVersion" {
     type = string 
 }
 
+variable "protoolsScript" {
+    type = string 
+}
+
 variable "protools_internet_access" {
     type = bool 
 }
@@ -235,6 +239,11 @@ variable "mediacomposerVersion" {
 
 variable "mediacomposer_internet_access" {
     type = bool 
+}
+
+variable "mediacomposerScript" {
+  description = "Pscript to install MediaComposer"
+  default     = "setupMediaComposer_v0.1.ps1"
 }
 
 ############################

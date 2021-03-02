@@ -82,6 +82,11 @@ variable "installers_url" {
   default     = "https://eitcstore01.blob.core.windows.net/installers/"
 }
 
+variable "mediacomposerScript" {
+  description = "Pscript to install MediaComposer"
+  default     = "setupMediaComposer_v0.1.ps1"
+}
+
 variable "TeradiciInstaller" {
     type    = string 
     default = "pcoip-agent-graphics_21.01.2.exe"
