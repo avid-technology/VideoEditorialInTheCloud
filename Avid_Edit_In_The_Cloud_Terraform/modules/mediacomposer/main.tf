@@ -1,7 +1,7 @@
 locals {
   resource_group_name       = "${var.resource_prefix}-rg"
   mediacomposer_vm_hostname = "${var.resource_prefix}-mc"
-  mediacomposerScripturl    = "${var.script_url}setupMediaComposer_${var.mediacomposerVersion}.ps1"
+  mediacomposerScripturl    = "setupMediaComposer_v0.1.ps1"
   gpu_driver                = "${var.gpu_type}GpuDriverWindows"
   TeradiciURL               = "${var.installers_url}${var.TeradiciInstaller}"
   MediacomposerURL          = "${var.installers_url}Media_Composer_${var.mediacomposerVersion}_Win.zip"

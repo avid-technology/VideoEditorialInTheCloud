@@ -75,7 +75,7 @@ resource "azurerm_virtual_machine_extension" "protools_extension_1" {
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${local.protoolsScript} ${var.TeradiciKey} ${local.TeradiciURL} ${local.ProToolsinstaller} ${local.AvidNexisInstallerUrl}"
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${local.protoolsScript} ${var.TeradiciKey} ${local.TeradiciURL} ${local.ProToolsinstaller} ${local.AvidNexisInstallerUrl} ${var.domainName} ${var.domain_admin_username} ${var.domain_admin_password}"
     }
   PROTECTED_SETTINGS
 }
