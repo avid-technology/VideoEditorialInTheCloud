@@ -18,11 +18,8 @@ param(
     $MediaComposerURL,
     [ValidateNotNullOrEmpty()]
     $AvidNexisInstallerUrl,
-    [ValidateNotNullOrEmpty()]
     $DomainName,
-    [ValidateNotNullOrEmpty()]
     $domain_admin_username,
-    [ValidateNotNullOrEmpty()]
     $domain_admin_password
 )
 
