@@ -76,7 +76,7 @@ Set-DomainController {
     SafeModeAdministratorPassword       = $encrypted_password
     CreateDnsDelegation                 = $false
     InstallDns                          = $true
-    NoRebootOnCompletion                = $true
+    NoRebootOnCompletion                = $false
     Force                               = $true
     }
 

@@ -97,9 +97,9 @@ try {
 
         Write-Log "Add server to Domain"
         if ([string]::IsNullOrWhiteSpace(${DomainName})) {
-                    Add-HostDomain
+                    Write-Log "Not added to any domain as no domain specified by user"
             } else {
-                    Write-Log "Not added to any domain as domain specified"
+                    Add-HostDomain
             }
         
 }
