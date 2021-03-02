@@ -11,21 +11,21 @@ variable "local_admin_password" {
   sensitive   = true
 }
 
+variable "domainName" {
+  description = "Domain Name"
+  type        = string
+  default     = ""
+}
+
 variable "domain_admin_username" {
   description = "Domain admin user to join domain"
-  default     = null
+  default     = ""
 }
 
 variable "domain_admin_password" {
   description = "Domain admin password to join domain"
-  default     = null
+  default     = ""
   sensitive   = true
-}
-
-variable "domainName" {
-  description = "Domain Name"
-  type        = string
-  default     = null
 }
 
 variable "resource_prefix" {
@@ -38,6 +38,11 @@ variable "resource_group_location" {
 
 variable "vnet_subnet_id" {
   description = "Subnet where resources will be built"
+}
+
+variable "script_url" {
+  description = "Location of all the powershell and bash scripts"
+  default     = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/scripts/"
 }
 
 variable "mediacomposer_vm_size" {
@@ -65,11 +70,6 @@ variable "mediacomposer_nb_instances" {
 variable "mediacomposer_internet_access" {
     type        = bool
     default     = false 
-}
-
-variable "script_url" {
-  description = "Location of all the powershell and bash scripts"
-  default     = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/scripts/"
 }
 
 variable "TeradiciKey" {

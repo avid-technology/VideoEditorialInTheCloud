@@ -12,12 +12,18 @@ variable "local_admin_password" {
 
 variable "domain_admin_username" {
   description = "Domain admin user to join domain"
-  default     = null
+  default     = ""
+}
+
+variable "domainName" {
+  description = "Domain Name"
+  type        = string
+  default     = ""
 }
 
 variable "domain_admin_password" {
   description = "Domain admin password to join domain"
-  default     = null
+  default     = ""
   sensitive   = true
 }
 
@@ -27,12 +33,6 @@ variable "resource_prefix" {
 
 variable "resource_group_location" {
   description = "Location of resource group where to build resources"
-}
-
-variable "domainName" {
-  description = "Domain Name"
-  type        = string
-  default     = null
 }
 
 variable "vnet_subnet_id" {
