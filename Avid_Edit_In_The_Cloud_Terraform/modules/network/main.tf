@@ -48,3 +48,9 @@ resource "azurerm_network_security_rule" "security_rule_rdp" {
   resource_group_name         = azurerm_resource_group.resource_group.name
   network_security_group_name = azurerm_network_security_group.security_group.name
 }
+
+#resource "azurerm_subnet_network_security_group_association" "associate_nsg_subnet" {
+ # for_each = var.subnets
+ # subnet_id                 = azurerm_subnet.example[each.key].id
+ # network_security_group_id = azurerm_network_security_group.security_group.id
+#}

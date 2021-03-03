@@ -70,24 +70,24 @@ module "jumpbox_deployment" {
 
 module "protools_deployment" {
   source                            = "./modules/protools"
-  local_admin_username              = var.local_admin_username
-  local_admin_password              = var.local_admin_password
-  #domain_admin_username            = var.domain_admin_username
-  #domain_admin_password            = var.domain_admin_password
-  #domainName                       = var.domainName
   resource_prefix                   = var.resource_prefix
   resource_group_location           = var.resource_group_location
   vnet_subnet_id                    = local.stored_subnet_id[0]
   gpu_type                          = var.gpu_type
+  script_url                        = local.script_url 
+  installers_url                    = var.installers_url
+  local_admin_username              = var.local_admin_username
+  local_admin_password              = var.local_admin_password
+  #domainName                       = var.domainName
+  #domain_admin_username            = var.domain_admin_username
+  #domain_admin_password            = var.domain_admin_password
   protools_vm_size                  = var.protools_vm_size
   protools_nb_instances             = var.protools_nb_instances
   protools_internet_access          = var.protools_internet_access
-  protoolsScript                    = var.protoolsScript
-  script_url                        = local.script_url 
-  TeradiciKey                       = var.TeradiciKey
-  TeradiciInstaller                 = var.TeradiciInstaller
-  installers_url                    = var.installers_url
+  protoolsScript                    = var.protoolsScript 
   ProToolsVersion                   = var.ProToolsVersion
+  #TeradiciKey                      = var.TeradiciKey
+  TeradiciInstaller                 = var.TeradiciInstaller
   AvidNexisInstaller                = var.AvidNexisInstaller
   depends_on                        = [module.editorial_networking]
 }
@@ -96,9 +96,9 @@ module "mediacomposer_deployment" {
   source                            = "./modules/mediacomposer"
   local_admin_username              = var.local_admin_username
   local_admin_password              = var.local_admin_password
+  #domainName                       = var.domainName
   #domain_admin_username            = var.domain_admin_username
   #domain_admin_password            = var.domain_admin_password
-  #domainName                       = var.domainName
   script_url                        = local.script_url
   installers_url                    = var.installers_url
   resource_prefix                   = var.resource_prefix
@@ -108,8 +108,9 @@ module "mediacomposer_deployment" {
   mediacomposer_vm_size             = var.mediacomposer_vm_size
   mediacomposer_nb_instances        = var.mediacomposer_nb_instances
   mediacomposer_internet_access     = var.mediacomposer_internet_access
-  mediacomposerScript               = var.mediacomposerScript 
-  TeradiciKey                       = var.TeradiciKey
+  #mediacomposerScript               = var.mediacomposerScript 
+  mediacomposerScript               = var.mediacomposerScript
+  #TeradiciKey                      = var.TeradiciKey
   TeradiciInstaller                 = var.TeradiciInstaller
   mediacomposerVersion              = var.mediacomposerVersion
   AvidNexisInstaller                = var.AvidNexisInstaller 
@@ -162,13 +163,10 @@ module "zabbix_deployment" {
   source                        = "./modules/zabbix"
   local_admin_username          = var.local_admin_username
   local_admin_password          = var.local_admin_password
-  domain_admin_username         = var.domain_admin_username
-  domain_admin_password         = var.domain_admin_password
   resource_prefix               = var.resource_prefix
   resource_group_location       = var.resource_group_location
   vnet_subnet_id                = local.stored_subnet_id[0]
   zabbix_vm_size                = var.zabbix_vm_size
-  domainName                    = var.domainName
   zabbix_nb_instances           = var.zabbix_nb_instances
   script_url                    = local.script_url
   zabbixScript                  = var.zabbixScript

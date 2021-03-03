@@ -159,7 +159,7 @@ Install-Teradici {
     Write-Log $DestinationPath
     DownloadFileOverHttp $TeradiciURL $TeradiciDestinationPath   
 
-    #Start-Process -FilePath $TeradiciDestinationPath -ArgumentList "/Force /S /NoPostReboot _?$TeradiciDestinationPath" -Verb RunAs -Wait
+    Start-Process -FilePath $TeradiciDestinationPath -ArgumentList "/S", "/nopostreboot", "/EnableUSB", "/force" -Wait 
     
     #Write-Log "Install Teradici"
     #Start-Process -FilePath $TeradiciDestinationPath -ArgumentList "/S", "/NoPostReboot" -Verb RunAs -Wait

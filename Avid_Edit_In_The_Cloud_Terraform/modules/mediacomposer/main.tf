@@ -72,7 +72,7 @@ resource "azurerm_virtual_machine_extension" "mediacomposer_extension_1" {
     {
         "fileUris": ["${local.mediacomposerScripturl}"]
     }
-SETTINGS
+  SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
       "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.mediacomposerScript} ${var.TeradiciKey} ${local.TeradiciURL} ${local.MediacomposerURL} ${local.AvidNexisInstallerUrl} ${var.domainName} ${var.domain_admin_username} ${var.domain_admin_password}"

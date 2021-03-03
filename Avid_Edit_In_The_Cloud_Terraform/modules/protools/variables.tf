@@ -1,6 +1,39 @@
-#########################
-# Input Variables       #
-#########################
+##### Environment Variable #####
+
+variable "resource_prefix" {
+  description = "4 max characters to prefix each resource built"
+}
+
+variable "resource_group_location" {
+  description = "Location of resource group where to build resources"
+}
+
+variable "vnet_subnet_id" {
+  description = "Subnet where resources will be built"
+}
+
+variable "gpu_type" {
+  description = "Gpu type either Nvidia or Amd"
+  type = string
+  default = "Nvidia" 
+  validation {
+            condition       = (
+                var.gpu_type == "Nvidia" || 
+                var.gpu_type == "Amd" 
+            )
+            error_message   = "Only the following gpu are supported: Nvidia, Amd."
+        }
+}
+
+variable "script_url" {
+  description = "Location of all the powershell and bash scripts"
+  default     = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/scripts/"
+}
+
+variable "installers_url" {
+  description = "Path to all the installers"
+  default     = "https://eitcstore01.blob.core.windows.net/installers/"
+}
 
 variable "local_admin_username" {
   description = "Admin Username for Virtual Machines"
@@ -28,35 +61,7 @@ variable "domain_admin_password" {
   sensitive   = true
 }
 
-variable "protoolsScript" {
-  description = "Pscript to install MediaComposer"
-  default     = "setupProTools_2020.11.0.ps1"
-}
-
-variable "resource_prefix" {
-  description = "4 max characters to prefix each resource built"
-}
-
-variable "resource_group_location" {
-  description = "Location of resource group where to build resources"
-}
-
-variable "vnet_subnet_id" {
-  description = "Subnet where resources will be built"
-}
-
-variable "gpu_type" {
-  description = "Gpu type either Nvidia or Amd"
-  type = string
-  default = "Nvidia" 
-  validation {
-            condition       = (
-                var.gpu_type == "Nvidia" || 
-                var.gpu_type == "Amd" 
-            )
-            error_message   = "Only the following gpu are supported: Nvidia, Amd."
-        }
-}
+##### ProTools Variable #####
 
 variable "protools_vm_size" {
   description = "Size of ProTools VM"
@@ -85,24 +90,9 @@ variable "protools_internet_access" {
     default     = false 
 }
 
-variable "script_url" {
-  description = "Location of all the powershell and bash scripts"
-  default     = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/scripts/"
-}
-
-variable "TeradiciKey" {
-    type    = string 
-    default = "0000"
-}
-
-variable "TeradiciInstaller" {
-    type    = string 
-    default = "pcoip-agent-graphics_21.01.2.exe"
-}
-
-variable "installers_url" {
-  description = "Path to scripts location"
-  default     = "https://eitcstore01.blob.core.windows.net/installers/"
+variable "protoolsScript" {
+  description = "Script to install ProTools"
+  default     = "setupProTools_2020.11.0.ps1"
 }
 
 variable "ProToolsVersion" {
@@ -116,6 +106,20 @@ variable "ProToolsVersion" {
             error_message   = "Only the following versions are supported: 2020.11.0."
         }
 }
+
+##### Teradici Variable #####
+
+variable "TeradiciKey" {
+    type    = string 
+    default = "0000"
+}
+
+variable "TeradiciInstaller" {
+    type    = string 
+    default = "pcoip-agent-graphics_21.01.2.exe"
+}
+
+##### Nexis Variable #####
 
 variable "AvidNexisInstaller" {
     type    = string 

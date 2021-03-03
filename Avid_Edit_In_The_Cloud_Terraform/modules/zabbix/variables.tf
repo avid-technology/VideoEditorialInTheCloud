@@ -11,23 +11,6 @@ variable "local_admin_password" {
   sensitive   = true
 }
 
-variable "domain_admin_username" {
-  description = "Domain admin user to join domain"
-  default     = null
-}
-
-variable "domain_admin_password" {
-  description = "Domain admin password to join domain"
-  default     = null
-  sensitive   = true
-}
-
-variable "domainName" {
-  description = "Domain Name"
-  type        = string
-  default     = null
-}
-
 variable "resource_prefix" {
   description = "4 max characters to prefix each resource built"
 }
