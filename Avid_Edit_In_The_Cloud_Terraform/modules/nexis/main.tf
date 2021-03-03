@@ -42,6 +42,14 @@ resource "azurerm_private_endpoint" "nexis_storage_account" {
   } 
 }
 
+resource "azurerm_public_ip" "nexis_ip" {
+  count               = var.nexis_storage_nb_instances
+  name                = "${local.hostname}-ip-${format("%02d",count.index)}"
+  location            = var.resource_group_location
+  resource_group_name = local.resource_group_name
+  allocation_method   = "Dynamic"
+}
+
 resource "azurerm_network_interface" "nexis_nic" {
   count                         = var.nexis_storage_nb_instances
   name                          = "${local.hostname}${format("%02d",count.index)}-nic"
@@ -53,7 +61,7 @@ resource "azurerm_network_interface" "nexis_nic" {
     name                          = "ipconfig"
     subnet_id                     = var.vnet_subnet_id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = ""
+    public_ip_address_id          = var.nexis_internet_access ? azurerm_public_ip.nexis_ip[count.index].id : ""
   }
 }
 

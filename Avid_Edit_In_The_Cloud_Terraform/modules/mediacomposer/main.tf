@@ -90,11 +90,11 @@ resource "azurerm_virtual_machine_extension" "mediacomposer_extension_2" {
   auto_upgrade_minor_version  = true
   depends_on                  = [azurerm_virtual_machine_extension.mediacomposer_extension_1]
 
-  settings = <<SETTINGS
-    {
-    
-    }
-SETTINGS
+  ##settings = <<SETTINGS
+  #  {
+  ##  
+  #  }
+  #SETTINGS
 }
 
 

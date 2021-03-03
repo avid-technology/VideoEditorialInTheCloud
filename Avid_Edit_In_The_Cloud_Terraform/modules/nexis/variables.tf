@@ -84,3 +84,9 @@ variable "nexis_storage_account_kind" {
   description = "Storage account type. Should be either StorageV2 (Nearline) or BlockBlobStorage (Online)"
   default     = "StorageV2"
 }
+
+variable "nexis_internet_access" { 
+  type        = bool
+  description = "Internet access for Cloud Nexis."
+  default     = false
+}

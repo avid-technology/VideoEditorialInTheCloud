@@ -113,6 +113,10 @@ variable "nexis_storage_vm_build" {
     type = string
 }
 
+variable "nexis_internet_access" {
+    type = bool
+}
+
 variable "nexis_storage_vm_part_number_nearline" {
     type = string
 }
