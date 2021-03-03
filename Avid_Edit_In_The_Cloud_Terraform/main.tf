@@ -52,9 +52,9 @@ module "jumpbox_deployment" {
   source                        = "./modules/jumpbox"
   local_admin_username          = var.local_admin_username
   local_admin_password          = var.local_admin_password
-  #domain_admin_username        = var.domain_admin_username
-  #domain_admin_password        = var.domain_admin_password
-  #domainName                   = var.domainName
+  domain_admin_username        = var.domain_admin_username
+  domain_admin_password        = var.domain_admin_password
+  domainName                   = var.domainName
   resource_prefix               = var.resource_prefix
   resource_group_location       = var.resource_group_location
   vnet_subnet_id                = local.stored_subnet_id[0]

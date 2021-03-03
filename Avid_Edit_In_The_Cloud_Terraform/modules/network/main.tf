@@ -36,7 +36,7 @@ resource "azurerm_network_security_group" "security_group" {
 }
 
 resource "azurerm_network_security_rule" "security_rule_rdp" {
-  name                        = "rdp"
+  name                        = "Rdp"
   priority                    = 101
   direction                   = "Inbound"
   access                      = "Allow"
@@ -49,8 +49,22 @@ resource "azurerm_network_security_rule" "security_rule_rdp" {
   network_security_group_name = azurerm_network_security_group.security_group.name
 }
 
-#resource "azurerm_subnet_network_security_group_association" "associate_nsg_subnet" {
- # for_each = var.subnets
- # subnet_id                 = azurerm_subnet.example[each.key].id
- # network_security_group_id = azurerm_network_security_group.security_group.id
-#}
+resource "azurerm_network_security_rule" "security_rule_ansible" {
+  name                        = "Ansible_Winrm"
+  priority                    = 102
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "5986"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.resource_group.name
+  network_security_group_name = azurerm_network_security_group.security_group.name
+}
+
+resource "azurerm_subnet_network_security_group_association" "associate_nsg_subnet" {
+  for_each = var.subnets
+  subnet_id                 = azurerm_subnet.subnet[each.key].id
+  network_security_group_id = azurerm_network_security_group.security_group.id
+}
