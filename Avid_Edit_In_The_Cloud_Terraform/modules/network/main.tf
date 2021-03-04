@@ -49,9 +49,23 @@ resource "azurerm_network_security_rule" "security_rule_rdp" {
   network_security_group_name = azurerm_network_security_group.security_group.name
 }
 
+resource "azurerm_network_security_rule" "security_rule_ssh" {
+  name                        = "Ssh"
+  priority                    = 102
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "22"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.resource_group.name
+  network_security_group_name = azurerm_network_security_group.security_group.name
+}
+
 resource "azurerm_network_security_rule" "security_rule_ansible" {
   name                        = "Ansible_Winrm"
-  priority                    = 102
+  priority                    = 103
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "Tcp"

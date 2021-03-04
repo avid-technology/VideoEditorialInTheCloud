@@ -153,17 +153,10 @@ Install-Teradici {
     Set-Location -Path "D:\AzureData"
         
     Write-Log "Downloading Teradici"
-    $TeradiciDestinationPath = "D:\AzureData\PCoIP_agent_release_installer_graphic.exe"
+    $TeradiciDestinationPath = "C:\Users\Public\Desktop\PCoIP_agent_release_installer_graphic.exe"
 
     Write-Log $DestinationPath
-    DownloadFileOverHttp $TeradiciURL $TeradiciDestinationPath   
-
-    $username2 = "avid-adm-01" 
-    $password2 = "Avid1234567$"
-
-    $credentials2 = New-Object System.Management.Automation.PSCredential -ArgumentList @($username2,(ConvertTo-SecureString -String $password2 -AsPlainText -Force))
-    
-    Start-Process $TeradiciDestinationPath -Credential $credentials2 -ArgumentList "/S", "/nopostreboot", "/EnableUSB", "/force" -Wait 
+    DownloadFileOverHttp $TeradiciURL $TeradiciDestinationPath    
     
     #Write-Log "Install Teradici"
     #Start-Process -FilePath $TeradiciDestinationPath -ArgumentList "/S", "/NoPostReboot" -Verb RunAs -Wait
