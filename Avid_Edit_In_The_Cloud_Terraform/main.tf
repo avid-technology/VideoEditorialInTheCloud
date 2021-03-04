@@ -28,6 +28,7 @@ module "editorial_networking" {
   resource_group_location       = var.resource_group_location
   address_space                 = var.vnet_address_space
   dns_servers                   = var.dns_servers
+  whitelist_ip                  = var.whitelist_ip
   subnets                       = var.subnets
   sg_name                       = "${var.resource_prefix}-rg-nsg"
   tags                          = var.azureTags
@@ -135,6 +136,7 @@ module "nexis_online_deployment" {
   nexis_storage_replication           = var.nexis_storage_replication_online
   nexis_storage_account_kind          = var.nexis_storage_account_kind_online
   nexis_internet_access               = var.nexis_internet_access
+  nexis_image_reference               = var.nexis_image_reference
   depends_on                          = [module.editorial_networking]
 }
 

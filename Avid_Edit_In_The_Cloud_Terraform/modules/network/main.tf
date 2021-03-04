@@ -36,28 +36,28 @@ resource "azurerm_network_security_group" "security_group" {
 }
 
 resource "azurerm_network_security_rule" "security_rule_rdp" {
-  name                        = "Rdp"
+  name                        = "RDP_Remote"
   priority                    = 101
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "Tcp"
   source_port_range           = "*"
   destination_port_range      = "3389"
-  source_address_prefix       = "*"
+  source_address_prefixes     = var.whitelist_ip
   destination_address_prefix  = "*"
   resource_group_name         = azurerm_resource_group.resource_group.name
   network_security_group_name = azurerm_network_security_group.security_group.name
 }
 
 resource "azurerm_network_security_rule" "security_rule_ssh" {
-  name                        = "Ssh"
+  name                        = "SSH_Remote"
   priority                    = 102
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "Tcp"
   source_port_range           = "*"
   destination_port_range      = "22"
-  source_address_prefix       = "*"
+  source_address_prefixes     = var.whitelist_ip
   destination_address_prefix  = "*"
   resource_group_name         = azurerm_resource_group.resource_group.name
   network_security_group_name = azurerm_network_security_group.security_group.name
@@ -71,7 +71,7 @@ resource "azurerm_network_security_rule" "security_rule_ansible" {
   protocol                    = "Tcp"
   source_port_range           = "*"
   destination_port_range      = "5986"
-  source_address_prefix       = "*"
+  source_address_prefixes     = var.whitelist_ip
   destination_address_prefix  = "*"
   resource_group_name         = azurerm_resource_group.resource_group.name
   network_security_group_name = azurerm_network_security_group.security_group.name

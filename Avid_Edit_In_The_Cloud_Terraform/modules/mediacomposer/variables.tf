@@ -1,6 +1,4 @@
-#########################
-# Input Variables       #
-#########################
+############## Environment Variables ##############
 
 variable "local_admin_username" {
   description = "Admin Username for Virtual Machines"
@@ -45,6 +43,26 @@ variable "script_url" {
   default     = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/scripts/"
 }
 
+variable "installers_url" {
+  description = "Path to installer location"
+  default     = "https://eitcstore01.blob.core.windows.net/installers/"
+}
+
+variable "gpu_type" {
+    description = "Gpu type either Nvidia or Amd"
+    type = string
+    default = "Nvidia"
+    validation {
+            condition       = (
+                var.gpu_type == "Nvidia" || 
+                var.gpu_type == "Amd" 
+            )
+            error_message   = "Only the following gpu are supported: Nvidia, Amd."
+        }
+}
+
+############## MediaComposer Variables ##############
+
 variable "mediacomposer_vm_size" {
   description = "Size of MediaComposer VM. Options available: Standard_NV8as_v4, Standard_NV16as_v4, Standard_NV32as_v4, Standard_NV12s_v3, Standard_NV24s_v3, Standard_NV48s_v3."
   default     = "Standard_NV12s_v3"
@@ -72,24 +90,9 @@ variable "mediacomposer_internet_access" {
     default     = false 
 }
 
-variable "TeradiciKey" {
-    type    = string  
-    default = "0000"  
-}
-
-variable "installers_url" {
-  description = "Path to installer location"
-  default     = "https://eitcstore01.blob.core.windows.net/installers/"
-}
-
 variable "mediacomposerScript" {
   description = "Pscript to install MediaComposer"
   default     = "setupMediaComposer_v0.1.ps1"
-}
-
-variable "TeradiciInstaller" {
-    type    = string 
-    default = "pcoip-agent-graphics_21.01.2.exe"
 }
 
 variable "mediacomposerVersion" {   
@@ -106,21 +109,24 @@ variable "mediacomposerVersion" {
         }
 }
 
+############## Teradici Variables ##############
+
+variable "TeradiciKey" {
+    type    = string  
+    default = "0000"  
+}
+
+variable "TeradiciInstaller" {
+    type    = string 
+    default = "pcoip-agent-graphics_21.01.2.exe"
+}
+
+############## Nexis Client Variables ##############
+
 variable "AvidNexisInstaller" {
     type = string 
     default = "AvidNEXISClient_Win64_20.7.5.23.msi"
 }
 
-variable "gpu_type" {
-    description = "Gpu type either Nvidia or Amd"
-    type = string
-    default = "Nvidia"
-    validation {
-            condition       = (
-                var.gpu_type == "Nvidia" || 
-                var.gpu_type == "Amd" 
-            )
-            error_message   = "Only the following gpu are supported: Nvidia, Amd."
-        }
-}
+
 

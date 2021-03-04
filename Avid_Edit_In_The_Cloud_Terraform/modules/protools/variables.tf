@@ -1,4 +1,4 @@
-##### Environment Variable #####
+############## Environment Variables ##############
 
 variable "resource_prefix" {
   description = "4 max characters to prefix each resource built"
@@ -61,7 +61,7 @@ variable "domain_admin_password" {
   sensitive   = true
 }
 
-##### ProTools Variable #####
+############## ProTools Variables ##############
 
 variable "protools_vm_size" {
   description = "Size of ProTools VM"
@@ -107,7 +107,7 @@ variable "ProToolsVersion" {
         }
 }
 
-##### Teradici Variable #####
+############## Teradici Variables ##############
 
 variable "TeradiciKey" {
     type    = string 
@@ -119,7 +119,7 @@ variable "TeradiciInstaller" {
     default = "pcoip-agent-graphics_21.01.2.exe"
 }
 
-##### Nexis Variable #####
+############## Nexis Client Variables ##############
 
 variable "AvidNexisInstaller" {
     type    = string 

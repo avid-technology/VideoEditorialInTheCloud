@@ -78,10 +78,15 @@ resource "azurerm_linux_virtual_machine" "nexis_vm" {
   disable_password_authentication = false
 
   source_image_reference {
-    publisher = "credativ"
-    offer     = "Debian"
-    sku       = "8"
-    version   = "8.0.201901221"
+    publisher = var.nexis_image_reference["publisher"]
+    offer     = var.nexis_image_reference["offer"]
+    sku       = var.nexis_image_reference["sku"]
+    version   = var.nexis_image_reference["version"]
+
+    #publisher = "credativ"
+    #offer     = "Debian"
+    #sku       = "8"
+    #version   = "8.0.201901221"
   }
 
   os_disk {

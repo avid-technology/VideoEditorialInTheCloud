@@ -61,6 +61,16 @@ variable "nexis_storage_vm_build" {
   default     = "AvidNEXISCloud_20.7.5-23.run"
 }
 
+variable "nexis_image_reference" {
+  type = map
+  default = {
+    publisher = "credativ"
+    offer     = "Debian"
+    sku       = "8"
+    version   = "8.0.201901221"
+  }
+}
+
 variable "nexis_storage_vm_part_number" { 
   type        = string
   description = "Type of Cloud Nexis. Should be either 0100-38171-00 (Nearline) or 0100-40109-00 (Online)"

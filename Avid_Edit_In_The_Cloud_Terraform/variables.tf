@@ -1,6 +1,4 @@
-###############
-### Generic ###
-###############
+############## Environment Variables ##############
 
 variable "local_admin_username" {
     type = string
@@ -9,6 +7,12 @@ variable "local_admin_username" {
 variable "local_admin_password" {
     type = string 
     sensitive = true
+}
+
+variable "domainName" {
+  description = "Domain Name"
+  type        = string
+  default     = null
 }
 
 variable "domain_admin_username" {
@@ -50,20 +54,45 @@ variable "installers_url"{
     type = string
 }
 
-variable "domainName" {
-  description = "Domain Name"
-  type        = string
-  default     = null
-}
-
-######################
-### Network Module ###
-######################
-
 variable "resource_group_location"{
     type = string
     description = "resource group name"
 }
+
+variable "azureTags" {
+    type = map
+    description = "resource group name"
+}
+
+############## DomainController Variables ##############
+
+variable "domaincontroller_nb_instances" {
+  description = "Number of domaincontroller instances"
+  default     = 0
+}
+
+############## Jumpbox Variables ##############
+
+variable "jumpbox_vm_size" {
+  description = "Size of Jumpbox VM"
+  default     = "Standard_D4s_v3"
+}
+
+variable "jumpbox_nb_instances" {
+  description = "Number of jumpbox instances"
+  default     = 0
+}
+
+variable "JumpboxScript" {
+  description = "Script name forJumbpox"
+}
+
+variable "jumpbox_internet_access" {
+  description = "Internet access for Jumpbox true or false"
+  type        = bool
+}
+
+############## Network Variables ##############
 
 variable "vnet_address_space" {
     type = list(string)
@@ -75,23 +104,24 @@ variable "dns_servers" {
     description = "resource group name"
 }
 
+variable "whitelist_ip" {
+    type = list(string)
+    description = "List of whitelist ip addresses"
+}
+
 variable "subnets" {
     type = map
     description = "resource group name"
 }
 
-variable "azureTags" {
-    type = map
-    description = "resource group name"
-}
-
-######################
-### Nexis          ###
-#######################
+############## Nexis Client Variables ##############
 
 variable "AvidNexisInstaller" {
     type = string 
+    default = "AvidNEXISClient_Win64_20.7.5.23.msi"
 }
+
+############## Nexis System Director Variables ##############
 
 variable "nexis_vm_size" {
     type = string 
@@ -149,54 +179,71 @@ variable "nexis_storage_account_kind_online" {
     type = string
 }
 
-######################
-### Teradici       ###
-#######################
-
-variable "TeradiciKey" {
-    type = string 
+variable "nexis_image_reference" {
+  type = map
+  default = {
+    publisher = "credativ"
+    offer     = "Debian"
+    sku       = "8"
+    version   = "8.0.201901221"
+  }
 }
 
-variable "TeradiciInstaller" {
-    type = string 
+############## MediaComposer Variables ##############
+
+variable "mediacomposer_vm_size" {
+  description = "Size of MediaComposer VM. Options available: Standard_NV8as_v4, Standard_NV16as_v4, Standard_NV32as_v4, Standard_NV12s_v3, Standard_NV24s_v3, Standard_NV48s_v3."
+  default     = "Standard_NV12s_v3"
+  type = string
+  validation {
+            condition       = (
+                var.mediacomposer_vm_size == "Standard_NV8as_v4" || 
+                var.mediacomposer_vm_size == "Standard_NV16as_v4" ||
+                var.mediacomposer_vm_size == "Standard_NV32as_v4" ||
+                var.mediacomposer_vm_size == "Standard_NV12s_v3" ||
+                var.mediacomposer_vm_size == "Standard_NV24s_v3" ||
+                var.mediacomposer_vm_size == "Standard_NV48s_v3"
+            )
+            error_message   = "Only the following sku are supported: Standard_NV8as_v4, Standard_NV16as_v4, Standard_NV32as_v4, Standard_NV12s_v3, Standard_NV24s_v3, Standard_NV48s_v3."
+        }
 }
 
-######################
-### Domaincontroller      ###
-#######################
-
-variable "domaincontroller_nb_instances" {
-    type = number
+variable "mediacomposer_nb_instances" {
+  description = "Number of MediaComposer instances"
+  default     = 0
 }
 
-######################
-### Jumpbox Module ###
-#######################
-
-variable "jumpbox_vm_size" {
-    type = string 
+variable "mediacomposer_internet_access" {
+    type        = bool
+    default     = false 
 }
 
-variable "jumpbox_nb_instances" {
-    type = number
+variable "mediacomposerScript" {
+  description = "Pscript to install MediaComposer"
+  default     = "setupMediaComposer_v0.1.ps1"
 }
 
-variable "jumpbox_internet_access" {
-    type = bool 
+variable "mediacomposerVersion" {   
+    type        = string 
+    description = "Options available: 2018.12.14, 2020.12.0, 2021.2.0"
+    default     = "2021.2.0"
+    validation {
+            condition       = (
+                var.mediacomposerVersion == "2021.2.0" || 
+                var.mediacomposerVersion == "2020.12.0" ||
+                var.mediacomposerVersion == "2018.12.14"
+            )
+            error_message   = "Only the following versions are supported: 2020.12.0, 2020.12.0 and 2018.12.14."
+        }
 }
 
-variable "JumpboxScript" {
-    type = string 
-}
-
-#######################
-### ProTools Module ###
-#######################
+############## ProTools Variables ##############
 
 variable "protools_vm_size" {
-    type = string 
-
-    validation {
+  description = "Size of ProTools VM"
+  default     = "Standard_NV12s_v3"
+  type = string
+  validation {
             condition       = (
                 var.protools_vm_size == "Standard_NV8as_v4" || 
                 var.protools_vm_size == "Standard_NV16as_v4" ||
@@ -210,49 +257,45 @@ variable "protools_vm_size" {
 }
 
 variable "protools_nb_instances" {
-    type = number 
-}
-
-variable "ProToolsVersion" {
-    type = string 
-}
-
-variable "protoolsScript" {
-    type = string 
+  description = "Number of Protools instances"
+  default     = 0
 }
 
 variable "protools_internet_access" {
-    type = bool 
+    type        = bool
+    default     = false 
 }
 
-############################
-### MediaComposer Module ###
-############################
-
-variable "mediacomposer_vm_size" {
-    type = string 
+variable "protoolsScript" {
+  description = "Script to install ProTools"
+  default     = "setupProTools_2020.11.0.ps1"
 }
 
-variable "mediacomposer_nb_instances" {
-    type = number 
+variable "ProToolsVersion" {
+    type    = string 
+    description = "Options available: 2020.11.0"
+    default = "2020.11.0"
+    validation {
+            condition       = (
+                var.ProToolsVersion == "2020.11.0"
+            )
+            error_message   = "Only the following versions are supported: 2020.11.0."
+        }
 }
 
-variable "mediacomposerVersion" {
-    type = string 
+############## Teradici Variables ##############
+
+variable "TeradiciKey" {
+    type    = string  
+    default = "0000"  
 }
 
-variable "mediacomposer_internet_access" {
-    type = bool 
+variable "TeradiciInstaller" {
+    type    = string 
+    default = "pcoip-agent-graphics_21.01.2.exe"
 }
 
-variable "mediacomposerScript" {
-  description = "Pscript to install MediaComposer"
-  default     = "setupMediaComposer_v0.1.ps1"
-}
-
-############################
-### Zabbix Module ###
-############################
+############## Zabbix Variables ##############
 
 variable "zabbix_vm_size" {
   description = "Size of Jumpbox VM"
@@ -266,7 +309,7 @@ variable "zabbix_nb_instances" {
 
 variable "zabbixScript" {
   description   = "Script name forJumbpox"
-  default       = "zabbix_v0.1.ps1"
+  default       = "zabbix_v0.1.bash"
 }
 
 variable "zabbix_internet_access" {

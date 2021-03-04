@@ -1,6 +1,4 @@
-#########################
-# Input Variables       #
-#########################
+############## Environment Variables ##############
 
 variable "local_admin_username" {
   description = "Admin Username for Virtual Machines"
@@ -39,6 +37,16 @@ variable "vnet_subnet_id" {
   description = "Subnet where resources will be built"
 }
 
+variable "script_url" {
+  description = "Location of all the powershell and bash scripts"
+}
+
+variable "installers_url" {
+  description = "Location of all the installers"
+}
+
+############## Jumpbox Variables ##############
+
 variable "jumpbox_vm_size" {
   description = "Size of Jumpbox VM"
   default     = "Standard_D4s_v3"
@@ -47,10 +55,6 @@ variable "jumpbox_vm_size" {
 variable "jumpbox_nb_instances" {
   description = "Number of jumpbox instances"
   default     = 0
-}
-
-variable "script_url" {
-  description = "Location of all the powershell and bash scripts"
 }
 
 variable "JumpboxScript" {
@@ -62,9 +66,7 @@ variable "jumpbox_internet_access" {
   type        = bool
 }
 
-variable "installers_url" {
-  description = "Location of all the installers"
-}
+############## Nexis Client Variables ##############
 
 variable "AvidNexisInstaller" {
   description = "Cloud Nexis installer MSI name"

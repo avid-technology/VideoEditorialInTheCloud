@@ -1,6 +1,4 @@
-#########################
-# Input Variables       #
-#########################
+############## Environment Variables ##############
 
 variable "local_admin_username" {
   description = "Admin Username for Virtual Machines"
@@ -35,11 +33,6 @@ variable "domaincontroller_vm_size" {
   default     = "Standard_D4s_v3"
 }
 
-variable "domaincontroller_nb_instances" {
-  description = "Number of domaincontroller instances"
-  default     = 0
-}
-
 variable "domainName" {
   description = "Domain Name"
   type        = string
@@ -55,4 +48,13 @@ variable "domaincontroller_internet_access" {
   type        = bool
   default     = false
 }
+
+############## DomainController Variables ##############
+
+variable "domaincontroller_nb_instances" {
+  description = "Number of domaincontroller instances"
+  default     = 0
+}
+
+
 
