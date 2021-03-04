@@ -117,8 +117,8 @@ module "mediacomposer_deployment" {
   depends_on                        = [module.editorial_networking]
 }
 
-module "mamcontrolcenterdeployment" {
-  source                            = "./modules/mamcontrolcenter"
+module "mccenterdeployment" {
+  source                            = "./modules/mccenter"
   local_admin_username              = var.local_admin_username
   local_admin_password              = var.local_admin_password
   domain_admin_username             = var.domain_admin_username
@@ -128,16 +128,16 @@ module "mamcontrolcenterdeployment" {
   resource_group_location           = var.resource_group_location
   installers_url                    = var.installers_url
   vnet_subnet_id                    = local.stored_subnet_id[0]
-  mamcontrolcenter_vm_size          = "Standard_D16s_v3"
-  mamcontrolcenter_nb_instances     = 1
+  mccenter_vm_size                  = "Standard_D16s_v3"
+  mccenter_nb_instances             = var.mccenter_nb_instances
   script_url                        = local.script_url
-  mamcontrolcenterScript            = "mamcontrolcenter_v0.1.ps1"
-  mamcontrolcenter_internet_access  = false 
+  mccenterScript                    = "mccenter_v0.1.ps1"
+  mccenter_internet_access          = false 
   depends_on                        = [module.domaincontroller_deployment]
 }
 
-module "mamcontrolcentersqldeployment" {
-  source                                = "./modules/mamcontrolcentersql"
+module "mccentersqldeployment" {
+  source                                = "./modules/mccentersql"
   local_admin_username                  = var.local_admin_username
   local_admin_password                  = var.local_admin_password
   domain_admin_username                 = var.domain_admin_username
@@ -147,11 +147,30 @@ module "mamcontrolcentersqldeployment" {
   resource_group_location               = var.resource_group_location
   installers_url                        = var.installers_url
   vnet_subnet_id                        = local.stored_subnet_id[0]
-  mamcontrolcentersql_vm_size           = "Standard_D8s_v3"
-  mamcontrolcentersql_nb_instances      = 1
+  mccentersql_vm_size                   = "Standard_D8s_v3"
+  mccentersql_nb_instances              = var.mccentersql_nb_instances
   script_url                            = local.script_url
-  mamcontrolcentersqlScript             = "mamcontrolcenter_v0.1.ps1"
-  mamcontrolcentersql_internet_access   = false 
+  mccentersqlScript                     = "mccenter_v0.1.ps1"
+  mccentersql_internet_access           = false 
+  depends_on                            = [module.domaincontroller_deployment]
+}
+
+module "mcworkerdeployment" {
+  source                                = "./modules/mccentersql"
+  local_admin_username                  = var.local_admin_username
+  local_admin_password                  = var.local_admin_password
+  domain_admin_username                 = var.domain_admin_username
+  domain_admin_password                 = var.domain_admin_password
+  domainName                            = var.domainName
+  resource_prefix                       = var.resource_prefix
+  resource_group_location               = var.resource_group_location
+  installers_url                        = var.installers_url
+  vnet_subnet_id                        = local.stored_subnet_id[0]
+  mcworker_vm_size                      = "Standard_D8s_v3"
+  mcworker_nb_instances                 = 0
+  script_url                            = local.script_url
+  mcworkerScript                        = "mccenter_v0.1.ps1"
+  mcworker_internet_access              = false 
   depends_on                            = [module.domaincontroller_deployment]
 }
 

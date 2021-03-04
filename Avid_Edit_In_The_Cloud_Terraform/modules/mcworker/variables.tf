@@ -47,21 +47,21 @@ variable "installers_url" {
 
 ############## Jumpbox Variables ##############
 
-variable "mamcontrolcentersql_vm_size" {
+variable "mcworker_vm_size" {
   description = "Size of Jumpbox VM"
   default     = "Standard_D4s_v3"
 }
 
-variable "mamcontrolcentersql_nb_instances" {
-  description = "Number of mamcontrolcenter instances"
+variable "mcworker_nb_instances" {
+  description = "Number of mcworker instances"
   default     = 0
 }
 
-variable "mamcontrolcentersqlScript" {
+variable "mcworkerScript" {
   description = "Script name forJumbpox"
 }
 
-variable "mamcontrolcentersql_internet_access" {
+variable "mcworker_internet_access" {
   description = "Internet access for Jumpbox true or false"
   type        = bool
 }

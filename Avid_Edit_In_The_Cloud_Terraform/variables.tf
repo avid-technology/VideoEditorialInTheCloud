@@ -189,6 +189,20 @@ variable "nexis_image_reference" {
   }
 }
 
+############## MediaCentral Variables ##############
+
+variable "mccenter_nb_instances" {
+    type = number
+}
+
+variable "mccentersql_nb_instances" {
+    type = number
+}
+
+variable "mcworker_nb_instances" {
+    type = number
+}
+
 ############## MediaComposer Variables ##############
 
 variable "mediacomposer_vm_size" {
