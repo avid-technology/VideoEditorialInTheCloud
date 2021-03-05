@@ -9,9 +9,6 @@
 #>
 [CmdletBinding(DefaultParameterSetName = "Standard")]
 param (
-    [string]
-    [ValidateNotNullOrEmpty()]
-    $MCAMInstallerUrl,
     $DomainName,
     $domain_admin_username,
     $domain_admin_password
@@ -53,16 +50,6 @@ Install-ChocolatyAndPackages {
 
     #Write-Log "install Microsoft Azure Storage Explorer 1.17.0"
     #choco install microsoftazurestorageexplorer
-
-}
-
-function
-Install-MediaCentralControlCenter {
-    
-    Write-Log "downloading MediaCentral Installer"
-    $NexisDestinationPath = "D:\AzureData\MediaCentralAssetManagement.zip"
-    Write-Log $DestinationPath
-    DownloadFileOverHttp $MCAMInstallerUrl $NexisDestinationPath
 
 }
 

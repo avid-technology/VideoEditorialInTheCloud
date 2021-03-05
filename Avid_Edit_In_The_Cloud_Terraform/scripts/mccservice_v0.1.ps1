@@ -44,6 +44,16 @@ DownloadFileOverHttp($Url, $DestinationPath) {
 }
 
 function
+Install-MediaCentralControlService {
+    
+    Write-Log "downloading MediaCentral Installer"
+    $NexisDestinationPath = "D:\AzureData\MediaCentralAssetManagement.zip"
+    Write-Log $DestinationPath
+    DownloadFileOverHttp $MCAMInstallerUrl $NexisDestinationPath
+
+}
+
+function
 Install-ChocolatyAndPackages {
     
     Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
@@ -53,16 +63,6 @@ Install-ChocolatyAndPackages {
 
     #Write-Log "install Microsoft Azure Storage Explorer 1.17.0"
     #choco install microsoftazurestorageexplorer
-
-}
-
-function
-Install-MediaCentralControlCenter {
-    
-    Write-Log "downloading MediaCentral Installer"
-    $NexisDestinationPath = "D:\AzureData\MediaCentralAssetManagement.zip"
-    Write-Log $DestinationPath
-    DownloadFileOverHttp $MCAMInstallerUrl $NexisDestinationPath
 
 }
 
@@ -89,7 +89,7 @@ try {
             # chocolaty is best effort
         }
 
-        Install-MediaCentralControlCenter
+        Install-MediaCentralControlService
 
         Write-Log "Add server to Domain"
         if ([string]::IsNullOrWhiteSpace(${DomainName})) {

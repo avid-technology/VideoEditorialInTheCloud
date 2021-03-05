@@ -3,6 +3,7 @@ locals {
   resource_group_name      = "${var.resource_prefix}-rg"
   mcworker_vm_hostname    = "${var.resource_prefix}-mcw"
   mcworkerScriptUrl       = "${var.script_url}${var.mcworkerScript}"
+  mcaminstallerUrl        = "${var.installers_url}MediaCentral_Asset_Management_${var.mcamversion}_Win.zip"
 }
 
 resource "azurerm_public_ip" "mcworker_ip" {
@@ -70,7 +71,7 @@ resource "azurerm_virtual_machine_extension" "mcworker_extension" {
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.mcworkerScript} ${var.domainName} ${var.domain_admin_username} ${var.domain_admin_password}"
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.mcworkerScript} ${local.mcaminstallerUrl} ${var.domainName} ${var.domain_admin_username} ${var.domain_admin_password}"
     }
   PROTECTED_SETTINGS
 }

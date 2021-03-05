@@ -61,6 +61,11 @@ variable "mcworkerScript" {
   description = "Script name forJumbpox"
 }
 
+variable "mcamversion" {
+  description = "MediaCentral AM Version"
+  default     = "2020_9"
+}
+
 variable "mcworker_internet_access" {
   description = "Internet access for Jumpbox true or false"
   type        = bool

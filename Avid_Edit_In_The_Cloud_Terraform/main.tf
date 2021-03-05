@@ -97,9 +97,9 @@ module "mediacomposer_deployment" {
   source                            = "./modules/mediacomposer"
   local_admin_username              = var.local_admin_username
   local_admin_password              = var.local_admin_password
-  domainName                       = var.domainName
-  domain_admin_username            = var.domain_admin_username
-  domain_admin_password            = var.domain_admin_password
+  domainName                        = var.domainName
+  domain_admin_username             = var.domain_admin_username
+  domain_admin_password             = var.domain_admin_password
   script_url                        = local.script_url
   installers_url                    = var.installers_url
   resource_prefix                   = var.resource_prefix
@@ -110,7 +110,7 @@ module "mediacomposer_deployment" {
   mediacomposer_nb_instances        = var.mediacomposer_nb_instances
   mediacomposer_internet_access     = var.mediacomposer_internet_access
   mediacomposerScript               = var.mediacomposerScript 
-  TeradiciKey                      = var.TeradiciKey
+  TeradiciKey                       = var.TeradiciKey
   TeradiciInstaller                 = var.TeradiciInstaller
   mediacomposerVersion              = var.mediacomposerVersion
   AvidNexisInstaller                = var.AvidNexisInstaller 
@@ -130,6 +130,7 @@ module "mccenterdeployment" {
   vnet_subnet_id                    = local.stored_subnet_id[0]
   mccenter_vm_size                  = "Standard_D16s_v3"
   mccenter_nb_instances             = var.mccenter_nb_instances
+  mcamversion                       = "2020_9"
   script_url                        = local.script_url
   mccenterScript                    = "mccenter_v0.1.ps1"
   mccenter_internet_access          = false 
@@ -150,13 +151,13 @@ module "mccentersqldeployment" {
   mccentersql_vm_size                   = "Standard_D8s_v3"
   mccentersql_nb_instances              = var.mccentersql_nb_instances
   script_url                            = local.script_url
-  mccentersqlScript                     = "mccenter_v0.1.ps1"
+  mccentersqlScript                     = "mccentersql_v0.1.ps1"
   mccentersql_internet_access           = false 
   depends_on                            = [module.domaincontroller_deployment]
 }
 
 module "mcworkerdeployment" {
-  source                                = "./modules/mccentersql"
+  source                                = "./modules/mcworker"
   local_admin_username                  = var.local_admin_username
   local_admin_password                  = var.local_admin_password
   domain_admin_username                 = var.domain_admin_username
@@ -167,9 +168,10 @@ module "mcworkerdeployment" {
   installers_url                        = var.installers_url
   vnet_subnet_id                        = local.stored_subnet_id[0]
   mcworker_vm_size                      = "Standard_D8s_v3"
-  mcworker_nb_instances                 = 0
+  mcworker_nb_instances                 = var.mcworker_nb_instances
   script_url                            = local.script_url
-  mcworkerScript                        = "mccenter_v0.1.ps1"
+  mcamversion                           = "2020_9"
+  mcworkerScript                        = "mccservice_v0.1.ps1"
   mcworker_internet_access              = false 
   depends_on                            = [module.domaincontroller_deployment]
 }

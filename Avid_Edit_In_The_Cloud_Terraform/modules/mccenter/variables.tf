@@ -52,6 +52,11 @@ variable "mccenter_vm_size" {
   default     = "Standard_D4s_v3"
 }
 
+variable "mcamversion" {
+  description = "MediaCentral AM Version"
+  default     = "2020_9"
+}
+
 variable "mccenter_nb_instances" {
   description = "Number of mccenter instances"
   default     = 0

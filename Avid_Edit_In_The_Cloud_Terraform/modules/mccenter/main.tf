@@ -1,8 +1,9 @@
 
 locals {
-  resource_group_name             = "${var.resource_prefix}-rg"
+  resource_group_name     = "${var.resource_prefix}-rg"
   mccenter_vm_hostname    = "${var.resource_prefix}-mcc"
   mccenterScriptUrl       = "${var.script_url}${var.mccenterScript}"
+  mcaminstallerUrl        = "${var.installers_url}MediaCentral_Asset_Management_${var.mcamversion}_Win.zip"
 }
 
 resource "azurerm_public_ip" "mccenter_ip" {
@@ -70,7 +71,7 @@ resource "azurerm_virtual_machine_extension" "mccenter_extension" {
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.mccenterScript} ${var.domainName} ${var.domain_admin_username} ${var.domain_admin_password}"
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.mccenterScript} ${local.mcaminstallerUrl} ${var.domainName} ${var.domain_admin_username} ${var.domain_admin_password}"
     }
   PROTECTED_SETTINGS
 }
