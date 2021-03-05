@@ -76,7 +76,7 @@ try {
             # chocolaty is best effort
         }
 
-        Install-MediaCentralControlCenter
+        #Install-MediaCentralControlCenter
 
         Write-Log "Add server to Domain"
         if ([string]::IsNullOrWhiteSpace(${DomainName})) {

@@ -78,6 +78,15 @@ Install-MediaCentralControlCenter {
     
     # Create Data Mam folder
     New-Item -Path "C:\" -Name "Data_MAM" -ItemType "directory"
+
+    # Create Local Security Group MC_Administrators
+    New-LocalGroup -Name "MC_Administrators"
+
+    # Add mc_service to Local Administrator group
+    Add-LocalGroupMember -Group "Administrators" -Member "ABC0\mc_service"
+
+    # Add mc_service to Local MC_Administrators group
+    Add-LocalGroupMember -Group "MC_Administrators" -Member "ABC0\mc_service"
 }
 
 function
