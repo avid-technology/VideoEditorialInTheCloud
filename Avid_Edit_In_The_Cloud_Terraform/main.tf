@@ -46,7 +46,7 @@ module "domaincontroller_deployment" {
   script_url                        = local.script_url
   installers_url                    = var.installers_url
   depends_on                        = [module.editorial_networking]
-  domaincontroller_internet_access  = false
+  domaincontroller_internet_access  = true
 }
 
 module "jumpbox_deployment" {

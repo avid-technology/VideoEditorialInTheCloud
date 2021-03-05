@@ -1,7 +1,7 @@
 
 locals {
   resource_group_name     = "${var.resource_prefix}-rg"
-  mccenter_vm_hostname    = "${var.resource_prefix}-mcc"
+  mccenter_vm_hostname    = "${var.resource_prefix}-mamcc"
   mccenterScriptUrl       = "${var.script_url}${var.mccenterScript}"
   mcaminstallerUrl        = "${var.installers_url}MediaCentral_Asset_Management_${var.mcamversion}_Win.zip"
 }
@@ -31,10 +31,10 @@ resource "azurerm_network_interface" "mccenter_nic" {
 
 resource "azurerm_windows_virtual_machine" "mccenter_vm" {
   count                         = var.mccenter_nb_instances
-  name                          = "${local.mccenter_vm_hostname}${format("%02d",count.index)}"
+  name                          = "${local.mccenter_vm_hostname}-${format("%02d",count.index)}"
   resource_group_name           = local.resource_group_name
   location                      = var.resource_group_location
-  computer_name                 = "${local.mccenter_vm_hostname}${format("%02d",count.index)}"
+  computer_name                 = "${local.mccenter_vm_hostname}-${format("%02d",count.index)}"
   size                          = var.mccenter_vm_size
   admin_username                = var.local_admin_username
   admin_password                = var.local_admin_password

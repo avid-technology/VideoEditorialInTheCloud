@@ -1,7 +1,7 @@
 
 locals {
   resource_group_name      = "${var.resource_prefix}-rg"
-  mcworker_vm_hostname    = "${var.resource_prefix}-mcw"
+  mcworker_vm_hostname    = "${var.resource_prefix}-mamw"
   mcworkerScriptUrl       = "${var.script_url}${var.mcworkerScript}"
   mcaminstallerUrl        = "${var.installers_url}MediaCentral_Asset_Management_${var.mcamversion}_Win.zip"
 }
@@ -31,10 +31,10 @@ resource "azurerm_network_interface" "mcworker_nic" {
 
 resource "azurerm_windows_virtual_machine" "mcworker_vm" {
   count                         = var.mcworker_nb_instances
-  name                          = "${local.mcworker_vm_hostname}${format("%02d",count.index)}"
+  name                          = "${local.mcworker_vm_hostname}-${format("%02d",count.index)}"
   resource_group_name           = local.resource_group_name
   location                      = var.resource_group_location
-  computer_name                 = "${local.mcworker_vm_hostname}${format("%02d",count.index)}"
+  computer_name                 = "${local.mcworker_vm_hostname}-${format("%02d",count.index)}"
   size                          = var.mcworker_vm_size
   admin_username                = var.local_admin_username
   admin_password                = var.local_admin_password

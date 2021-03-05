@@ -1,7 +1,7 @@
 
 locals {
   resource_group_name        = "${var.resource_prefix}-rg"
-  mccentersql_vm_hostname    = "${var.resource_prefix}-mcsql"
+  mccentersql_vm_hostname    = "${var.resource_prefix}-mamsql"
   mccentersqlScriptUrl       = "${var.script_url}${var.mccentersqlScript}"
 }
 
@@ -30,12 +30,12 @@ resource "azurerm_network_interface" "mccentersql_nic" {
 
 resource "azurerm_windows_virtual_machine" "mccentersql_vm" {
   count                 = var.mccentersql_nb_instances
-  name                  = "${local.mccentersql_vm_hostname}${format("%02d",count.index)}"
+  name                  = "${local.mccentersql_vm_hostname}-${format("%02d",count.index)}"
   location              = var.resource_group_location
   resource_group_name   = local.resource_group_name
   network_interface_ids = [azurerm_network_interface.mccentersql_nic[count.index].id]
   size                  = var.mccentersql_vm_size
-  computer_name         = "${local.mccentersql_vm_hostname}${format("%02d",count.index)}"
+  computer_name         = "${local.mccentersql_vm_hostname}-${format("%02d",count.index)}"
   admin_username        = var.local_admin_username
   admin_password        = var.local_admin_password
 
