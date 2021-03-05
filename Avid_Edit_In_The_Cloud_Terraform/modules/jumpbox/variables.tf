@@ -64,6 +64,7 @@ variable "JumpboxScript" {
 variable "jumpbox_internet_access" {
   description = "Internet access for Jumpbox true or false"
   type        = bool
+  default     = false
 }
 
 ############## Nexis Client Variables ##############

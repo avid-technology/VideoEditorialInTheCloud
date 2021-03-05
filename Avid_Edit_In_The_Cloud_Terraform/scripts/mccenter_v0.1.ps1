@@ -51,6 +51,9 @@ Install-ChocolatyAndPackages {
     Write-Log "choco Install Google Chrome"
     choco install -y googlechrome -ignore-checksum
 
+    Write-Log "choco install -y 7zip.install"
+    choco install -y 7zip.install
+
     #Write-Log "install Microsoft Azure Storage Explorer 1.17.0"
     #choco install microsoftazurestorageexplorer
 
@@ -60,10 +63,21 @@ function
 Install-MediaCentralControlCenter {
     
     Write-Log "downloading MediaCentral Installer"
-    $NexisDestinationPath = "D:\AzureData\MediaCentralAssetManagement.zip"
+    $MCAMDestinationPath = "D:\AzureData\MediaCentralAssetManagement.zip"
+    
     Write-Log $DestinationPath
-    DownloadFileOverHttp $MCAMInstallerUrl $NexisDestinationPath
+    DownloadFileOverHttp $MCAMInstallerUrl $MCAMDestinationPath
 
+    # unzip MediaCentral Asset Management
+    Write-Log "unzip MediaCentral Asset Management"
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($MCAMDestinationPath, "D:\AzureData\")
+
+    # Create Logs folder
+    New-Item -Path "C:\" -Name "Logs" -ItemType "directory"
+    
+    # Create Data Mam folder
+    New-Item -Path "C:\" -Name "Data_MAM" -ItemType "directory"
 }
 
 function

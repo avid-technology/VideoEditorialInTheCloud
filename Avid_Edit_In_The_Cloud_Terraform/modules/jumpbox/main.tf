@@ -7,7 +7,7 @@ locals {
 }
 
 resource "azurerm_public_ip" "jumpbox_ip" {
-  count               = var.jumpbox_nb_instances
+  count               = var.jumpbox_internet_access ? var.jumpbox_nb_instances : 0
   name                = "${local.jumpbox_vm_hostname}-ip-${format("%02d",count.index)}"
   location            = var.resource_group_location
   resource_group_name = local.resource_group_name

@@ -6,7 +6,7 @@ locals {
 }
 
 resource "azurerm_public_ip" "mccentersql_ip" {
-  count               = var.mccentersql_nb_instances
+  count               = var.mmccentersql_internet_access ? var.mccentersql_nb_instances : 0
   name                = "${local.mccentersql_vm_hostname}-ip-${format("%02d",count.index)}"
   location            = var.resource_group_location
   resource_group_name = local.resource_group_name

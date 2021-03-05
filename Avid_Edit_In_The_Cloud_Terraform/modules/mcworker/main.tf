@@ -7,7 +7,7 @@ locals {
 }
 
 resource "azurerm_public_ip" "mcworker_ip" {
-  count               = var.mcworker_nb_instances
+  count               = var.mcworker_internet_access ? var.mcworker_nb_instances : 0
   name                = "${local.mcworker_vm_hostname}-ip-${format("%02d",count.index)}"
   location            = var.resource_group_location
   resource_group_name = local.resource_group_name
