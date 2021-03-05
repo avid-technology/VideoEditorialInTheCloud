@@ -64,4 +64,5 @@ variable "mccentersqlScript" {
 variable "mccentersql_internet_access" {
   description = "Internet access for Jumpbox true or false"
   type        = bool
+  default     = false
 }
