@@ -234,7 +234,7 @@ module "teradicicac_deployment" {
   teradicicac_nb_instances      = 1
   script_url                    = local.script_url
   teradicicacScript             = "teradicicac_v0.1.bash"
-  teradicicac_internet_access   = false
+  teradicicac_internet_access   = true
   installers_url                = var.installers_url
   depends_on                    = [module.editorial_networking]
 }

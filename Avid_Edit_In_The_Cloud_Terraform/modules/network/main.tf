@@ -42,8 +42,8 @@ resource "azurerm_network_security_rule" "security_rule_rdp" {
   access                      = "Allow"
   protocol                    = "Tcp"
   source_port_range           = "*"
-  destination_port_range      = "3389"
   source_address_prefixes     = var.whitelist_ip
+  destination_port_range      = "3389"
   destination_address_prefix  = "*"
   resource_group_name         = azurerm_resource_group.resource_group.name
   network_security_group_name = azurerm_network_security_group.security_group.name
@@ -56,8 +56,8 @@ resource "azurerm_network_security_rule" "security_rule_ssh" {
   access                      = "Allow"
   protocol                    = "Tcp"
   source_port_range           = "*"
-  destination_port_range      = "22"
   source_address_prefixes     = var.whitelist_ip
+  destination_port_range      = "22"
   destination_address_prefix  = "*"
   resource_group_name         = azurerm_resource_group.resource_group.name
   network_security_group_name = azurerm_network_security_group.security_group.name
@@ -70,8 +70,50 @@ resource "azurerm_network_security_rule" "security_rule_ansible" {
   access                      = "Allow"
   protocol                    = "Tcp"
   source_port_range           = "*"
-  destination_port_range      = "5986"
   source_address_prefixes     = var.whitelist_ip
+  destination_port_range      = "5986"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.resource_group.name
+  network_security_group_name = azurerm_network_security_group.security_group.name
+}
+
+resource "azurerm_network_security_rule" "security_rule_https" {
+  name                        = "HTTPS_In"
+  priority                    = 104
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  source_address_prefixes     = var.whitelist_ip
+  destination_port_range      = "443"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.resource_group.name
+  network_security_group_name = azurerm_network_security_group.security_group.name
+}
+
+resource "azurerm_network_security_rule" "security_rule_teradici_in_tcp" {
+  name                        = "Teradici_In_TCP"
+  priority                    = 105
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  source_address_prefixes     = var.whitelist_ip
+  destination_port_range      = "4172,60443"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.resource_group.name
+  network_security_group_name = azurerm_network_security_group.security_group.name
+}
+
+resource "azurerm_network_security_rule" "security_rule_teradici_in_udp" {
+  name                        = "Teradici_In_UDP"
+  priority                    = 101
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Udp"
+  source_port_range           = "*"
+  source_address_prefixes     = var.whitelist_ip
+  destination_port_range      = "4172"
   destination_address_prefix  = "*"
   resource_group_name         = azurerm_resource_group.resource_group.name
   network_security_group_name = azurerm_network_security_group.security_group.name
