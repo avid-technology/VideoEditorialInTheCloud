@@ -21,18 +21,7 @@ locals {
   stored_subnet_id                        = module.editorial_networking.azurerm_subnet_ids                                    
 }
 
-module "editorial_networking" {
-  source                        = "./modules/network"
-  vnet_name                     = "${var.resource_prefix}-rg-vnet" 
-  resource_group_name           = local.resource_group_name
-  resource_group_location       = var.resource_group_location
-  address_space                 = var.vnet_address_space
-  dns_servers                   = var.dns_servers
-  whitelist_ip                  = var.whitelist_ip
-  subnets                       = var.subnets
-  sg_name                       = "${var.resource_prefix}-rg-nsg"
-  tags                          = var.azureTags
-}
+
 
 module "domaincontroller_deployment" {
   source                            = "./modules/domaincontroller"
@@ -47,6 +36,19 @@ module "domaincontroller_deployment" {
   installers_url                    = var.installers_url
   depends_on                        = [module.editorial_networking]
   domaincontroller_internet_access  = true
+}
+
+module "editorial_networking" {
+  source                        = "./modules/network"
+  vnet_name                     = "${var.resource_prefix}-rg-vnet" 
+  resource_group_name           = local.resource_group_name
+  resource_group_location       = var.resource_group_location
+  address_space                 = var.vnet_address_space
+  dns_servers                   = var.dns_servers
+  whitelist_ip                  = var.whitelist_ip
+  subnets                       = var.subnets
+  sg_name                       = "${var.resource_prefix}-rg-nsg"
+  tags                          = var.azureTags
 }
 
 module "jumpbox_deployment" {
@@ -67,30 +69,6 @@ module "jumpbox_deployment" {
   installers_url                = var.installers_url
   AvidNexisInstaller            = var.AvidNexisInstaller
   depends_on                    = [module.domaincontroller_deployment]
-}
-
-module "protools_deployment" {
-  source                            = "./modules/protools"
-  resource_prefix                   = var.resource_prefix
-  resource_group_location           = var.resource_group_location
-  vnet_subnet_id                    = local.stored_subnet_id[0]
-  gpu_type                          = var.gpu_type
-  script_url                        = local.script_url 
-  installers_url                    = var.installers_url
-  local_admin_username              = var.local_admin_username
-  local_admin_password              = var.local_admin_password
-  domainName                       = var.domainName
-  domain_admin_username            = var.domain_admin_username
-  domain_admin_password            = var.domain_admin_password
-  protools_vm_size                  = var.protools_vm_size
-  protools_nb_instances             = var.protools_nb_instances
-  protools_internet_access          = var.protools_internet_access
-  protoolsScript                    = var.protoolsScript 
-  ProToolsVersion                   = var.ProToolsVersion
-  TeradiciKey                      = var.TeradiciKey
-  TeradiciInstaller                 = var.TeradiciInstaller
-  AvidNexisInstaller                = var.AvidNexisInstaller
-  depends_on                        = [module.editorial_networking]
 }
 
 module "mediacomposer_deployment" {
@@ -118,7 +96,7 @@ module "mediacomposer_deployment" {
 }
 
 module "mccenterdeployment" {
-  source                            = "./modules/mccenter"
+  source                            = "./modules/mediacentral/mccenter"
   local_admin_username              = var.local_admin_username
   local_admin_password              = var.local_admin_password
   domain_admin_username             = var.domain_admin_username
@@ -138,7 +116,7 @@ module "mccenterdeployment" {
 }
 
 module "mccentersqldeployment" {
-  source                                = "./modules/mccentersql"
+  source                                = "./modules/mediacentral/mccentersql"
   local_admin_username                  = var.local_admin_username
   local_admin_password                  = var.local_admin_password
   domain_admin_username                 = var.domain_admin_username
@@ -157,7 +135,7 @@ module "mccentersqldeployment" {
 }
 
 module "mcworkerdeployment" {
-  source                                = "./modules/mcworker"
+  source                                = "./modules/mediacentral/mcworker"
   local_admin_username                  = var.local_admin_username
   local_admin_password                  = var.local_admin_password
   domain_admin_username                 = var.domain_admin_username
@@ -219,6 +197,46 @@ module "nexis_nearline_deployment" {
   nexis_storage_account_kind          = var.nexis_storage_account_kind_nearline
   nexis_internet_access               = var.nexis_internet_access
   depends_on                          = [module.editorial_networking]
+}
+
+module "protools_deployment" {
+  source                            = "./modules/protools"
+  resource_prefix                   = var.resource_prefix
+  resource_group_location           = var.resource_group_location
+  vnet_subnet_id                    = local.stored_subnet_id[0]
+  gpu_type                          = var.gpu_type
+  script_url                        = local.script_url 
+  installers_url                    = var.installers_url
+  local_admin_username              = var.local_admin_username
+  local_admin_password              = var.local_admin_password
+  domainName                       = var.domainName
+  domain_admin_username            = var.domain_admin_username
+  domain_admin_password            = var.domain_admin_password
+  protools_vm_size                  = var.protools_vm_size
+  protools_nb_instances             = var.protools_nb_instances
+  protools_internet_access          = var.protools_internet_access
+  protoolsScript                    = var.protoolsScript 
+  ProToolsVersion                   = var.ProToolsVersion
+  TeradiciKey                      = var.TeradiciKey
+  TeradiciInstaller                 = var.TeradiciInstaller
+  AvidNexisInstaller                = var.AvidNexisInstaller
+  depends_on                        = [module.editorial_networking]
+}
+
+module "teradicicac_deployment" {
+  source                        = "./modules/teradici/teradici_cac"
+  local_admin_username          = var.local_admin_username
+  #local_admin_password          = var.local_admin_password
+  resource_prefix               = var.resource_prefix
+  resource_group_location       = var.resource_group_location
+  vnet_subnet_id                = local.stored_subnet_id[0]
+  teradicicac_vm_size           = "Standard_D2s_v3"
+  teradicicac_nb_instances      = 1
+  script_url                    = local.script_url
+  teradicicacScript             = "teradicicac_v0.1.bash"
+  teradicicac_internet_access   = false
+  installers_url                = var.installers_url
+  depends_on                    = [module.editorial_networking]
 }
 
 module "zabbix_deployment" {
