@@ -103,7 +103,6 @@ module "mediacomposer_deployment" {
   mediacomposer_vm_size             = var.mediacomposer_vm_size
   mediacomposer_nb_instances        = var.mediacomposer_nb_instances
   mediacomposer_internet_access     = var.mediacomposer_internet_access 
-  #mediacomposerScript              = local.mediacomposerScript
   TeradiciKey                       = var.TeradiciKey
   TeradiciInstaller                 = var.TeradiciInstaller
   mediacomposerVersion              = var.mediacomposerVersion
