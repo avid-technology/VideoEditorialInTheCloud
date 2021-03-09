@@ -81,7 +81,6 @@ module "protools_deployment" {
   protools_nb_instances             = var.protools_nb_instances
   protools_internet_access          = var.protools_internet_access
   script_url                        = local.script_url 
-  #ProToolsScript                   = local.ProToolsScript
   TeradiciKey                       = var.TeradiciKey
   TeradiciInstaller                 = var.TeradiciInstaller
   installers_url                    = var.installers_url
