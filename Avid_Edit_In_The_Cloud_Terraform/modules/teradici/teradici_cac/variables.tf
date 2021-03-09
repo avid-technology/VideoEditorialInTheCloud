@@ -31,25 +31,25 @@ variable "installers_url" {
   default     = "https://eitcstore01.blob.core.windows.net/installers/"
 }
 
-############## Zabbix Variables ##############
+############## Teradici Variables ##############
 
 variable "teradicicac_vm_size" {
-  description = "Size of Jumpbox VM"
+  description = "Size of Teradici cac VM"
   default     = "Standard_D2s_v3"
 }
 
 variable "teradicicac_nb_instances" {
-  description = "Number of jumpbox instances"
+  description = "Number of Teradici cac instances"
   default     = 0
 }
 
 variable "teradicicacScript" {
-  description   = "Script name forJumbpox"
+  description   = "Script name for Teradici cac"
   default       = "teradicicac_v0.1.bash"
 }
 
 variable "teradicicac_internet_access" {
-  description = "Internet access for Jumpbox true or false"
+  description = "Internet access for Teradici cac true or false"
   type        = bool
   default     = true 
 }

@@ -99,7 +99,7 @@ resource "azurerm_network_security_rule" "security_rule_teradici_in_tcp" {
   protocol                    = "Tcp"
   source_port_range           = "*"
   source_address_prefixes     = var.whitelist_ip
-  destination_port_range      = "4172,60443"
+  destination_port_ranges     = ["4172","60443"]
   destination_address_prefix  = "*"
   resource_group_name         = azurerm_resource_group.resource_group.name
   network_security_group_name = azurerm_network_security_group.security_group.name
@@ -108,7 +108,7 @@ resource "azurerm_network_security_rule" "security_rule_teradici_in_tcp" {
 resource "azurerm_network_security_rule" "security_rule_teradici_in_udp" {
   name                        = "Teradici_In_UDP"
   priority                    = 101
-  direction                   = "Inbound"
+  direction                   = "Outbound"
   access                      = "Allow"
   protocol                    = "Udp"
   source_port_range           = "*"

@@ -154,6 +154,22 @@ module "mcworkerdeployment" {
   depends_on                            = [module.domaincontroller_deployment]
 }
 
+module "mccloudux_deployment" {
+  source                        = "./modules/mediacentral/mccloudux"
+  local_admin_username          = var.local_admin_username
+  local_admin_password          = var.local_admin_password
+  resource_prefix               = var.resource_prefix
+  resource_group_location       = var.resource_group_location
+  vnet_subnet_id                = local.stored_subnet_id[0]
+  mccloudux_vm_size             = "Standard_D16s_v3"
+  mccloudux_nb_instances        = 1
+  script_url                    = local.script_url
+  #mcclouduxScript              = "teradicicac_v0.1.bash"
+  mccloudux_internet_access     = true
+  installers_url                = var.installers_url
+  depends_on                    = [module.editorial_networking]
+}
+
 module "nexis_online_deployment" {
   source                              = "./modules/nexis"
   hostname                            = "${var.resource_prefix}on"
@@ -231,7 +247,7 @@ module "teradicicac_deployment" {
   resource_group_location       = var.resource_group_location
   vnet_subnet_id                = local.stored_subnet_id[0]
   teradicicac_vm_size           = "Standard_D2s_v3"
-  teradicicac_nb_instances      = 1
+  teradicicac_nb_instances      = 0
   script_url                    = local.script_url
   teradicicacScript             = "teradicicac_v0.1.bash"
   teradicicac_internet_access   = true
