@@ -162,9 +162,8 @@ module "mccloudux_deployment" {
   resource_group_location       = var.resource_group_location
   vnet_subnet_id                = local.stored_subnet_id[0]
   mccloudux_vm_size             = "Standard_D16s_v3"
-  mccloudux_nb_instances        = 1
+  mccloudux_nb_instances        = 0
   script_url                    = local.script_url
-  #mcclouduxScript              = "teradicicac_v0.1.bash"
   mccloudux_internet_access     = true
   installers_url                = var.installers_url
   depends_on                    = [module.editorial_networking]

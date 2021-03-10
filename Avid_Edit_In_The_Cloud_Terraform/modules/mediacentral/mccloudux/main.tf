@@ -50,7 +50,7 @@ admin_ssh_key {
   }
 
   os_disk {
-    name                  = "${local.hostname}${format("%02d",count.index)}-osdisk"
+    name                  = "${local.hostname}-osdisk-${format("%02d",count.index)}"
     caching               = "ReadWrite"
     storage_account_type  = "Premium_LRS"
     disk_size_gb          = 1024
@@ -60,7 +60,7 @@ admin_ssh_key {
 
 resource "azurerm_managed_disk" "mccloudux_datadisk" {
   count                = var.mccloudux_nb_instances
-  name                 = "${local.hostname}${format("%02d",count.index)}-datadisk"
+  name                 = "${local.hostname}-datadisk-${format("%02d",count.index)}"
   location             = var.resource_group_location
   resource_group_name  = local.resource_group_name
   storage_account_type = "Premium_LRS"
@@ -69,9 +69,25 @@ resource "azurerm_managed_disk" "mccloudux_datadisk" {
 }
 
 resource "azurerm_virtual_machine_data_disk_attachment" "mccloudux_datadisk_attachement" {
-  count              = var.nexis_storage_nb_instances
-  managed_disk_id    = azurerm_managed_disk.nexis_datadisk[count.index].id
-  virtual_machine_id = azurerm_linux_virtual_machine.nexis_vm[count.index].id
+  count              = var.mccloudux_nb_instances
+  managed_disk_id    = azurerm_managed_disk.mccloudux_datadisk[count.index].id
+  virtual_machine_id = azurerm_linux_virtual_machine.mccloudux_vm[count.index].id
   lun                = 0
   caching            = "ReadWrite"
+}
+
+resource "azurerm_virtual_machine_extension" "mccloudux_extension" {
+  count                 = var.mccloudux_nb_instances
+  name                  = "mccloudux"
+  virtual_machine_id    = azurerm_linux_virtual_machine.mccloudux_vm[count.index].id
+  publisher             = "Microsoft.Azure.Extensions"
+  type                  = "CustomScript"
+  type_handler_version  = "2.0"
+  depends_on            = [azurerm_virtual_machine_data_disk_attachment.mccloudux_datadisk_attachement]
+
+  settings = <<SETTINGS
+    {
+    "script": "IyEvYmluL2Jhc2gKY3AgL2V0Yy9yYy5kL3JjLmxvY2FsIC9ldGMvcmMuZC9yYy5sb2NhbC5iYWsKY2htb2QgK3ggL2V0Yy9yYy5kL3JjLmxvY2FsCmVjaG8gJ1Blcm1pdFJvb3RMb2dpbiB5ZXMnID4+IC9ldGMvc3NoL3NzaGRfY29uZmlnCmVjaG8gJ3hmc19ncm93ZnMgL2Rldi9zZGEyJyA+PiAvZXRjL3JjLmQvcmMubG9jYWwKZWNobyAnbXYgLWYgL2V0Yy9yYy5kL3JjLmxvY2FsLmJhayAvZXRjL3JjLmQvcmMubG9jYWwnID4+IC9ldGMvcmMuZC9yYy5sb2NhbAplY2hvIC1lICJkXG5cbm5cblxuXG5cblxudyIgfCBmZGlzayAvZGV2L3NkYQpzaHV0ZG93biAtcgo="
+    }
+  SETTINGS
 }

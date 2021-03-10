@@ -28,13 +28,13 @@ resource "azurerm_network_interface" "zabbix_nic" {
 
 resource "azurerm_linux_virtual_machine" "zabbix_vm" {
   count                         = var.zabbix_nb_instances
-  name                          = "${local.hostname}${format("%02d",count.index)}"
+  name                          = "${local.hostname}-${format("%02d",count.index)}"
   location                      = var.resource_group_location
   resource_group_name           = local.resource_group_name
   size                          = var.zabbix_vm_size
   admin_username                = var.local_admin_username
   admin_password                = var.local_admin_password
-  computer_name                 = "${local.hostname}${format("%02d",count.index)}"
+  computer_name                 = "${local.hostname}-${format("%02d",count.index)}"
   disable_password_authentication = false
   network_interface_ids         = [azurerm_network_interface.zabbix_nic[count.index].id]
 
