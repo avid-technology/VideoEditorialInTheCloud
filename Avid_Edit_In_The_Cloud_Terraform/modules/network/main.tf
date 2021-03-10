@@ -28,29 +28,8 @@ locals {
   subnet_ids = [for v in azurerm_subnet.subnet : v.id]
 }
 
-resource "azurerm_network_security_group" "nsg_storage" {
-  name                  = "${var.resource_group_name}-nsg-storage" 
-  location              = var.resource_group_location
-  resource_group_name   = azurerm_resource_group.resource_group.name
-  tags                  = var.tags
-}
-
-resource "azurerm_network_security_group" "nsg_monitor" {
-  name                  = "${var.resource_group_name}-nsg-monitor" 
-  location              = var.resource_group_location
-  resource_group_name   = azurerm_resource_group.resource_group.name
-  tags                  = var.tags
-}
-
-resource "azurerm_network_security_group" "nsg_core" {
-  name                  = "${var.resource_group_name}-nsg-core"  
-  location              = var.resource_group_location
-  resource_group_name   = azurerm_resource_group.resource_group.name
-  tags                  = var.tags
-}
-
-resource "azurerm_network_security_group" "nsg_workstations" {
-  name                  = "${var.resource_group_name}-nsg-workstations"  
+resource "azurerm_network_security_group" "nsg_default" {
+  name                  = "${var.resource_group_name}-nsg_default" 
   location              = var.resource_group_location
   resource_group_name   = azurerm_resource_group.resource_group.name
   tags                  = var.tags
@@ -58,20 +37,6 @@ resource "azurerm_network_security_group" "nsg_workstations" {
 
 resource "azurerm_network_security_group" "nsg_remote" {
   name                  = "${var.resource_group_name}-nsg-remote"  
-  location              = var.resource_group_location
-  resource_group_name   = azurerm_resource_group.resource_group.name
-  tags                  = var.tags
-}
-
-resource "azurerm_network_security_group" "nsg_mediacentral" {
-  name                  = "${var.resource_group_name}-nsg-mediacentral"  
-  location              = var.resource_group_location
-  resource_group_name   = azurerm_resource_group.resource_group.name
-  tags                  = var.tags
-}
-
-resource "azurerm_network_security_group" "nsg_transfer" {
-  name                  = "${var.resource_group_name}-nsg-transfer" 
   location              = var.resource_group_location
   resource_group_name   = azurerm_resource_group.resource_group.name
   tags                  = var.tags
@@ -161,44 +126,44 @@ resource "azurerm_network_security_rule" "security_rule_teradici_in_udp" {
   network_security_group_name = azurerm_network_security_group.nsg_remote.name
 }
 
-resource "azurerm_subnet_network_security_group_association" "associate_nsg_storage" {
+resource "azurerm_subnet_network_security_group_association" "associate_subnet_storage" {
   #for_each = var.subnets
   subnet_id                 = azurerm_subnet.subnet["subnet_storage"].id
-  network_security_group_id = azurerm_network_security_group.nsg_storage.id
+  network_security_group_id = azurerm_network_security_group.nsg_default.id
 }
 
-resource "azurerm_subnet_network_security_group_association" "associate_nsg_monitor" {
+resource "azurerm_subnet_network_security_group_association" "associate_subnet_monitor" {
   #for_each = var.subnets
   subnet_id                 = azurerm_subnet.subnet["subnet_monitor"].id
-  network_security_group_id = azurerm_network_security_group.nsg_monitor.id
+  network_security_group_id = azurerm_network_security_group.nsg_default.id
 }
 
-resource "azurerm_subnet_network_security_group_association" "associate_nsg_core" {
+resource "azurerm_subnet_network_security_group_association" "associate_subnet_core2" {
   #for_each = var.subnets
   subnet_id                 = azurerm_subnet.subnet["subnet_core"].id
-  network_security_group_id = azurerm_network_security_group.nsg_core.id
+  network_security_group_id = azurerm_network_security_group.nsg_default.id
 }
 
-resource "azurerm_subnet_network_security_group_association" "associate_nsg_workstations" {
+resource "azurerm_subnet_network_security_group_association" "associate_subnet_workstations" {
   #for_each = var.subnets
   subnet_id                 = azurerm_subnet.subnet["subnet_workstations"].id
-  network_security_group_id = azurerm_network_security_group.nsg_workstations.id
+  network_security_group_id = azurerm_network_security_group.nsg_default.id
 }
 
-resource "azurerm_subnet_network_security_group_association" "associate_nsg_remote" {
+resource "azurerm_subnet_network_security_group_association" "associate_subnet_remote" {
   #for_each = var.subnets
   subnet_id                 = azurerm_subnet.subnet["subnet_remote"].id
   network_security_group_id = azurerm_network_security_group.nsg_remote.id
 }
 
-resource "azurerm_subnet_network_security_group_association" "associate_nsg_mediacentral" {
+resource "azurerm_subnet_network_security_group_association" "associate_subnet_mediacentral" {
   #for_each = var.subnets
   subnet_id                 = azurerm_subnet.subnet["subnet_mediacentral"].id
-  network_security_group_id = azurerm_network_security_group.nsg_mediacentral.id
+  network_security_group_id = azurerm_network_security_group.nsg_default.id
 }
 
-resource "azurerm_subnet_network_security_group_association" "associate_nsg_transfer" {
+resource "azurerm_subnet_network_security_group_association" "associate_subnet_transfer" {
   #for_each = var.subnets
   subnet_id                 = azurerm_subnet.subnet["subnet_transfer"].id
-  network_security_group_id = azurerm_network_security_group.nsg_transfer.id
+  network_security_group_id = azurerm_network_security_group.nsg_default.id
 }

@@ -304,6 +304,11 @@ variable "TeradiciKey" {
     default = "0000"  
 }
 
+variable "teradicicac_nb_instances" {
+    type    = number  
+    default = 0  
+}
+
 variable "TeradiciInstaller" {
     type    = string 
     default = "pcoip-agent-graphics_21.01.2.exe"

@@ -9,6 +9,10 @@ variable "local_admin_password" {
   sensitive   = true
 }
 
+variable "resource_group_name" {
+  description = "Name of resource group where to build resources"
+}
+
 variable "domainName" {
   description = "Domain Name"
   type        = string
@@ -24,10 +28,6 @@ variable "domain_admin_password" {
   description = "Domain admin password to join domain"
   default     = ""
   sensitive   = true
-}
-
-variable "resource_prefix" {
-  description = "4 max characters to prefix each resource built"
 }
 
 variable "resource_group_location" {
@@ -83,6 +83,10 @@ variable "mediacomposer_vm_size" {
 variable "mediacomposer_nb_instances" {
   description = "Number of MediaComposer instances"
   default     = 0
+}
+
+variable "mediacomposer_vm_hostname" {
+  description = "Hostname of MediaComposer"
 }
 
 variable "mediacomposer_internet_access" {

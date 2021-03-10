@@ -1,6 +1,6 @@
 locals {
-  resource_group_name       = "${var.resource_prefix}-rg"
-  mediacomposer_vm_hostname = "${var.resource_prefix}-mc"
+  #resource_group_name       = "${var.resource_prefix}-rg"
+  #mediacomposer_vm_hostname = "${var.resource_prefix}-mc"
   mediacomposerScripturl    = "${var.script_url}${var.mediacomposerScript}"
   gpu_driver                = "${var.gpu_type}GpuDriverWindows"
   TeradiciURL               = "${var.installers_url}${var.TeradiciInstaller}"
@@ -11,17 +11,17 @@ locals {
 
 resource "azurerm_public_ip" "mediacomposer_ip" {
   count               = var.mediacomposer_internet_access ? var.mediacomposer_nb_instances : 0
-  name                = "${local.mediacomposer_vm_hostname}-ip-${format("%02d",count.index)}"
+  name                = "${var.mediacomposer_vm_hostname}-ip-${format("%02d",count.index)}"
   location            = var.resource_group_location
-  resource_group_name = local.resource_group_name
+  resource_group_name = var.resource_group_name
   allocation_method   = "Dynamic"
 }
 
 resource "azurerm_network_interface" "mediacomposer_nic" {
   count                         = var.mediacomposer_nb_instances
-  name                          = "${local.mediacomposer_vm_hostname}-nic-${format("%02d",count.index)}"
+  name                          = "${var.mediacomposer_vm_hostname}-nic-${format("%02d",count.index)}"
   location                      = var.resource_group_location
-  resource_group_name           = local.resource_group_name
+  resource_group_name           = var.resource_group_name
   enable_accelerated_networking = true
 
   ip_configuration {
@@ -34,10 +34,10 @@ resource "azurerm_network_interface" "mediacomposer_nic" {
 
 resource "azurerm_windows_virtual_machine" "mediacomposer_vm" {
   count                         = var.mediacomposer_nb_instances
-  name                          = "${local.mediacomposer_vm_hostname}-vm-${format("%02d",count.index)}"
-  resource_group_name           = local.resource_group_name
+  name                          = "${var.mediacomposer_vm_hostname}-vm-${format("%02d",count.index)}"
+  resource_group_name           = var.resource_group_name
   location                      = var.resource_group_location
-  computer_name                 = "${local.mediacomposer_vm_hostname}-vm-${format("%02d",count.index)}"
+  computer_name                 = "${var.mediacomposer_vm_hostname}-vm-${format("%02d",count.index)}"
   size                          = var.mediacomposer_vm_size
   admin_username                = var.local_admin_username
   admin_password                = var.local_admin_password
@@ -51,7 +51,7 @@ resource "azurerm_windows_virtual_machine" "mediacomposer_vm" {
   }
 
   os_disk {
-    name                          = "${local.mediacomposer_vm_hostname}-osdisk-${format("%02d",count.index)}"
+    name                          = "${var.mediacomposer_vm_hostname}-osdisk-${format("%02d",count.index)}"
     caching                       = "ReadWrite"
     storage_account_type          = "Premium_LRS"
   }

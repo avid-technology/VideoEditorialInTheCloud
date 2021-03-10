@@ -9,8 +9,8 @@ variable "local_admin_username" {
 #  sensitive   = true
 #}
 
-variable "resource_prefix" {
-  description = "4 max characters to prefix each resource built"
+variable "resource_group_name" {
+  description = "Name of resource group where to build resources"
 }
 
 variable "resource_group_location" {
@@ -32,6 +32,10 @@ variable "installers_url" {
 }
 
 ############## Teradici Variables ##############
+
+variable "teradicicac_vm_hostname" {
+  description = "Teradici CAC hostname"
+}
 
 variable "teradicicac_vm_size" {
   description = "Size of Teradici cac VM"

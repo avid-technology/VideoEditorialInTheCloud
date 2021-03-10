@@ -1,9 +1,5 @@
 ############## Environment Variables ##############
 
-variable "resource_prefix" {
-  description = "4 max characters to prefix each resource built"
-}
-
 variable "resource_group_location" {
   description = "Location of resource group where to build resources"
 }
@@ -28,6 +24,10 @@ variable "gpu_type" {
 variable "script_url" {
   description = "Location of all the powershell and bash scripts"
   default     = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/scripts/"
+}
+
+variable "resource_group_name" {
+  description = "Name of resource group where to build resources"
 }
 
 variable "installers_url" {
@@ -93,6 +93,10 @@ variable "protools_internet_access" {
 variable "protoolsScript" {
   description = "Script to install ProTools"
   default     = "setupProTools_2020.11.0.ps1"
+}
+
+variable "protools_vm_hostname" {
+  description = "ProTools hostname"
 }
 
 variable "ProToolsVersion" {

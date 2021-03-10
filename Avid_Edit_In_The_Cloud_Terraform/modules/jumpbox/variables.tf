@@ -73,6 +73,6 @@ variable "jumpbox_internet_access" {
 
 ############## Nexis Client Variables ##############
 
-variable "AvidNexisInstaller" {
-  description = "Cloud Nexis installer MSI name"
-}
+#variable "AvidNexisInstaller" {
+#  description = "Cloud Nexis installer MSI name"
+#}
