@@ -8,8 +8,8 @@ variable "local_admin_password" {
   description = "Admin Password for Virtual Machines"
 }
 
-variable "resource_prefix" {
-  description = "4 max characters to prefix each resource built"
+variable "resource_group_name" {
+  description = "Name of resource group where to build resources"
 }
 
 variable "resource_group_location" {
@@ -28,6 +28,12 @@ variable "script_url" {
   description = "Location of all the powershell and bash scripts"
 }
 
+############## DomainController Variables ##############
+
+variable "domaincontroller_vm_hostname" {
+  description = "Hostname of Domain Controller"
+}
+
 variable "domaincontroller_vm_size" {
   description = "Size of domaincontroller VM"
   default     = "Standard_D4s_v3"
@@ -38,18 +44,11 @@ variable "domainName" {
   type        = string
 }
 
-variable "domaincontrollerScript" {
-  description = "Script name forJumbpox"
-  default     = "domaincontroller_v0.1.ps1"
-}
-
 variable "domaincontroller_internet_access" {
   description = "Internet access for domaincontroller true or false"
   type        = bool
   default     = false
 }
-
-############## DomainController Variables ##############
 
 variable "domaincontroller_nb_instances" {
   description = "Number of domaincontroller instances"

@@ -9,6 +9,9 @@
 #>
 [CmdletBinding(DefaultParameterSetName = "Standard")]
 param (
+    [string]
+    [ValidateNotNullOrEmpty()]
+    $AvidNexisInstallerUrl,
     $DomainName,
     $domain_admin_username,
     $domain_admin_password
@@ -86,8 +89,8 @@ try {
             # chocolaty is best effort
         }
 
-        #Write-Log "Call Install-NexisClient"
-        #Install-NexisClient
+        Write-Log "Call Install-NexisClient"
+        Install-NexisClient
 
         Write-Log "Add server to Domain"
         if ([string]::IsNullOrWhiteSpace(${DomainName})) {

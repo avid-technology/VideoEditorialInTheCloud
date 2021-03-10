@@ -13,7 +13,7 @@ resource "azurerm_public_ip" "zabbix_ip" {
 
 resource "azurerm_network_interface" "zabbix_nic" {
   count                         = var.zabbix_nb_instances
-  name                          = "${local.hostname}${format("%02d",count.index)}-nic"
+  name                          = "${local.hostname}-nic-${format("%02d",count.index)}"
   location                      = var.resource_group_location
   resource_group_name           = local.resource_group_name
   enable_accelerated_networking = true
@@ -46,7 +46,7 @@ resource "azurerm_linux_virtual_machine" "zabbix_vm" {
   }
 
   os_disk {
-    name                  = "${local.hostname}${format("%02d",count.index)}-osdisk"
+    name                  = "${local.hostname}-osdisk-${format("%02d",count.index)}"
     caching               = "ReadWrite"
     storage_account_type  = "Premium_LRS"
     disk_size_gb          = "1024"

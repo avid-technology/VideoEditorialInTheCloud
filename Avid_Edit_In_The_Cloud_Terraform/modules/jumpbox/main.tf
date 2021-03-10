@@ -1,24 +1,24 @@
 
 locals {
-  resource_group_name       = "${var.resource_prefix}-rg"
-  jumpbox_vm_hostname       = "${var.resource_prefix}-jx"
+  #resource_group_name       = "${var.resource_prefix}-rg"
+  #jumpbox_vm_hostname       = "${var.resource_prefix}-jx"
   JumpboxScriptUrl          = "${var.script_url}${var.JumpboxScript}"
-  AvidNexisInstallerUrl     = "${var.installers_url}${var.AvidNexisInstaller}"
+  #AvidNexisInstallerUrl     = "${var.installers_url}${var.AvidNexisInstaller}"
 }
 
 resource "azurerm_public_ip" "jumpbox_ip" {
   count               = var.jumpbox_internet_access ? var.jumpbox_nb_instances : 0
-  name                = "${local.jumpbox_vm_hostname}-ip-${format("%02d",count.index)}"
+  name                = "${var.jumpbox_vm_hostname}-ip-${format("%02d",count.index)}"
   location            = var.resource_group_location
-  resource_group_name = local.resource_group_name
+  resource_group_name = var.resource_group_name
   allocation_method   = "Dynamic"
 }
 
 resource "azurerm_network_interface" "jumpbox_nic" {
   count                         = var.jumpbox_nb_instances
-  name                          = "${local.jumpbox_vm_hostname}-nic-${format("%02d",count.index)}"
+  name                          = "${var.jumpbox_vm_hostname}-nic-${format("%02d",count.index)}"
   location                      = var.resource_group_location
-  resource_group_name           = local.resource_group_name
+  resource_group_name           = var.resource_group_name
   enable_accelerated_networking = true
 
   ip_configuration {
@@ -31,10 +31,10 @@ resource "azurerm_network_interface" "jumpbox_nic" {
 
 resource "azurerm_windows_virtual_machine" "jumpbox_vm" {
   count                         = var.jumpbox_nb_instances
-  name                          = "${local.jumpbox_vm_hostname}-vm-${format("%02d",count.index)}"
-  resource_group_name           = local.resource_group_name
+  name                          = "${var.jumpbox_vm_hostname}-vm-${format("%02d",count.index)}"
+  resource_group_name           = var.resource_group_name
   location                      = var.resource_group_location
-  computer_name                 = "${local.jumpbox_vm_hostname}-vm-${format("%02d",count.index)}"
+  computer_name                 = "${var.jumpbox_vm_hostname}-vm-${format("%02d",count.index)}"
   size                          = var.jumpbox_vm_size
   admin_username                = var.local_admin_username
   admin_password                = var.local_admin_password
@@ -48,7 +48,7 @@ resource "azurerm_windows_virtual_machine" "jumpbox_vm" {
   }
 
   os_disk {
-    name                          = "${local.jumpbox_vm_hostname}-osdisk-${format("%02d",count.index)}"
+    name                          = "${var.jumpbox_vm_hostname}-osdisk-${format("%02d",count.index)}"
     caching                       = "ReadWrite"
     storage_account_type          = "Premium_LRS"
   }
@@ -71,7 +71,7 @@ resource "azurerm_virtual_machine_extension" "jumpbox_extension" {
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.JumpboxScript} ${local.AvidNexisInstallerUrl} ${var.domainName} ${var.domain_admin_username} ${var.domain_admin_password}"
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.JumpboxScript} ${var.domainName} ${var.domain_admin_username} ${var.domain_admin_password}"
     }
   PROTECTED_SETTINGS
 }

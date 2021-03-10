@@ -13,6 +13,10 @@ variable "domain_admin_username" {
   default     = ""
 }
 
+variable "resource_group_name" {
+  description = "Name of resource group where to build resources"
+}
+
 variable "domainName" {
   description = "Domain Name"
   type        = string
@@ -23,10 +27,6 @@ variable "domain_admin_password" {
   description = "Domain admin password to join domain"
   default     = ""
   sensitive   = true
-}
-
-variable "resource_prefix" {
-  description = "4 max characters to prefix each resource built"
 }
 
 variable "resource_group_location" {
@@ -55,6 +55,10 @@ variable "jumpbox_vm_size" {
 variable "jumpbox_nb_instances" {
   description = "Number of jumpbox instances"
   default     = 0
+}
+
+variable "jumpbox_vm_hostname" {
+  description = "Jumpbox hostname"
 }
 
 variable "JumpboxScript" {

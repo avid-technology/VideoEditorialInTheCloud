@@ -38,11 +38,6 @@ variable "subnets" {
   default     = {default = "10.1.0.0/24"}
 }
 
-variable "sg_name" {
-  description = "Give a name to security group"
-  default = "acctsecgrp"
-}
-
 variable "whitelist_ip" {
   description = "Give a name to security group"
   type        = list(string)

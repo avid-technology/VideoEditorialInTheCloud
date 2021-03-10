@@ -16,27 +16,12 @@ provider "azurerm" {
 }
 
 locals {
-  resource_group_name                     = "${var.resource_prefix}-rg"
-  script_url                              = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/scripts/"
-  stored_subnet_id                        = module.editorial_networking.azurerm_subnet_ids                                    
+  resource_group_name   = "${var.resource_prefix}-rg"
+  script_url            = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/scripts/"
+  stored_subnet_id      = module.editorial_networking.azurerm_subnet_ids                                    
 }
 
-
-
-module "domaincontroller_deployment" {
-  source                            = "./modules/domaincontroller"
-  local_admin_username              = var.local_admin_username
-  local_admin_password              = var.local_admin_password
-  resource_prefix                   = var.resource_prefix
-  resource_group_location           = var.resource_group_location
-  domainName                        = var.domainName
-  vnet_subnet_id                    = local.stored_subnet_id[0]
-  domaincontroller_nb_instances     = var.domaincontroller_nb_instances
-  script_url                        = local.script_url
-  installers_url                    = var.installers_url
-  depends_on                        = [module.editorial_networking]
-  domaincontroller_internet_access  = true
-}
+#0: Core | 1: MediaCentral | 2: Monitor | 3: Remote | 4: Storage | 5: Transfer | 6: Workstations
 
 module "editorial_networking" {
   source                        = "./modules/network"
@@ -47,27 +32,44 @@ module "editorial_networking" {
   dns_servers                   = var.dns_servers
   whitelist_ip                  = var.whitelist_ip
   subnets                       = var.subnets
-  sg_name                       = "${var.resource_prefix}-rg-nsg"
   tags                          = var.azureTags
+}
+
+module "domaincontroller_deployment" {
+  source                            = "./modules/domaincontroller"
+  local_admin_username              = var.local_admin_username
+  local_admin_password              = var.local_admin_password
+  resource_group_name               = "${var.resource_prefix}-rg"
+  resource_group_location           = var.resource_group_location
+  domainName                        = var.domainName
+  vnet_subnet_id                    = local.stored_subnet_id[0]
+  script_url                        = local.script_url
+  installers_url                    = var.installers_url
+  domaincontroller_vm_size          = "Standard_D4s_v3"
+  domaincontroller_vm_hostname      = "${var.resource_prefix}-dc"
+  domaincontroller_nb_instances     = var.domaincontroller_nb_instances
+  domaincontroller_internet_access  = true
+  depends_on                        = [module.editorial_networking]
 }
 
 module "jumpbox_deployment" {
   source                        = "./modules/jumpbox"
   local_admin_username          = var.local_admin_username
   local_admin_password          = var.local_admin_password
-  domain_admin_username        = var.domain_admin_username
-  domain_admin_password        = var.domain_admin_password
-  domainName                   = var.domainName
-  resource_prefix               = var.resource_prefix
+  domain_admin_username         = var.domain_admin_username
+  domain_admin_password         = var.domain_admin_password
+  domainName                    = var.domainName
+  resource_group_name           = "${var.resource_prefix}-rg"
   resource_group_location       = var.resource_group_location
-  vnet_subnet_id                = local.stored_subnet_id[0]
-  jumpbox_vm_size               = var.jumpbox_vm_size
-  jumpbox_nb_instances          = var.jumpbox_nb_instances
+  vnet_subnet_id                = local.stored_subnet_id[3]
   script_url                    = local.script_url
-  JumpboxScript                 = var.JumpboxScript
-  jumpbox_internet_access       = var.jumpbox_internet_access 
   installers_url                = var.installers_url
   AvidNexisInstaller            = var.AvidNexisInstaller
+  jumpbox_vm_hostname           = "${var.resource_prefix}-jx"
+  jumpbox_vm_size               = var.jumpbox_vm_size
+  jumpbox_nb_instances          = var.jumpbox_nb_instances
+  JumpboxScript                 = var.JumpboxScript
+  jumpbox_internet_access       = var.jumpbox_internet_access 
   depends_on                    = [module.domaincontroller_deployment]
 }
 
@@ -82,7 +84,7 @@ module "mediacomposer_deployment" {
   installers_url                    = var.installers_url
   resource_prefix                   = var.resource_prefix
   resource_group_location           = var.resource_group_location
-  vnet_subnet_id                    = local.stored_subnet_id[0]
+  vnet_subnet_id                    = local.stored_subnet_id[6]
   gpu_type                          = var.gpu_type
   mediacomposer_vm_size             = var.mediacomposer_vm_size
   mediacomposer_nb_instances        = var.mediacomposer_nb_instances

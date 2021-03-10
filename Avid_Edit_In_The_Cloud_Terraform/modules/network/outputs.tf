@@ -20,7 +20,7 @@ output "vnet_address_space" {
 
 output "security_group_id" {
   description = "The id of the security group attached to subnets inside the newly created vNet. Use this id to associate additional network security rules to subnets."    
-  value = azurerm_network_security_group.security_group.id
+  value = azurerm_network_security_group.nsg_remote.id
 }
 output "azurerm_resource_group_name" {
   value       = azurerm_resource_group.resource_group.name
