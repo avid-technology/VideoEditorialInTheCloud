@@ -230,7 +230,7 @@ module "nexis_online_deployment" {
   local_admin_username                = var.local_admin_username
   local_admin_password                = var.local_admin_password
   resource_group_location             = var.resource_group_location
-  vnet_subnet_id                      = local.stored_subnet_id[0]
+  vnet_subnet_id                      = local.stored_subnet_id[4]
   resource_prefix                     = var.resource_prefix 
   nexis_storage_vm_size               = var.nexis_vm_size
   nexis_storage_nb_instances          = var.nexis_online_nb_instances
@@ -253,7 +253,7 @@ module "nexis_nearline_deployment" {
   local_admin_username                = var.local_admin_username
   local_admin_password                = var.local_admin_password
   resource_group_location             = var.resource_group_location
-  vnet_subnet_id                      = local.stored_subnet_id[0]
+  vnet_subnet_id                      = local.stored_subnet_id[4]
   resource_prefix                     = var.resource_prefix 
   nexis_storage_vm_size               = var.nexis_vm_size
   nexis_storage_nb_instances          = var.nexis_nearline_nb_instances
@@ -266,6 +266,7 @@ module "nexis_nearline_deployment" {
   nexis_storage_replication           = var.nexis_storage_replication_nearline
   nexis_storage_account_kind          = var.nexis_storage_account_kind_nearline
   nexis_internet_access               = var.nexis_internet_access
+  nexis_image_reference               = var.nexis_image_reference
   depends_on                          = [module.editorial_networking]
 }
 
@@ -275,8 +276,9 @@ module "zabbix_deployment" {
   source                        = "./modules/zabbix"
   local_admin_username          = var.local_admin_username
   local_admin_password          = var.local_admin_password
-  resource_prefix               = var.resource_prefix
+  resource_group_name           = "${var.resource_prefix}-rg"
   resource_group_location       = var.resource_group_location
+  zabbix_vm_hostname            = "${var.resource_prefix}-zbx"
   vnet_subnet_id                = local.stored_subnet_id[0]
   zabbix_vm_size                = var.zabbix_vm_size
   zabbix_nb_instances           = var.zabbix_nb_instances

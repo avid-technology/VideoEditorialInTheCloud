@@ -1,21 +1,21 @@
 locals{
-  resource_group_name         = "${var.resource_prefix}-rg"
-  hostname                    = "${var.resource_prefix}-zbx"
+  #resource_group_name         = "${var.resource_prefix}-rg"
+  #hostname                    = "${var.resource_prefix}-zbx"
 }
 
 resource "azurerm_public_ip" "zabbix_ip" {
   count               = var.zabbix_nb_instances
-  name                = "${local.hostname}-ip-${format("%02d",count.index)}"
+  name                = "${var.zabbix_vm_hostname}-ip-${format("%02d",count.index)}"
   location            = var.resource_group_location
-  resource_group_name = local.resource_group_name
+  resource_group_name = var.resource_group_name
   allocation_method   = "Dynamic"
 }
 
 resource "azurerm_network_interface" "zabbix_nic" {
   count                         = var.zabbix_nb_instances
-  name                          = "${local.hostname}-nic-${format("%02d",count.index)}"
+  name                          = "${var.zabbix_vm_hostname}-nic-${format("%02d",count.index)}"
   location                      = var.resource_group_location
-  resource_group_name           = local.resource_group_name
+  resource_group_name           = var.resource_group_name
   enable_accelerated_networking = true
 
   ip_configuration {
@@ -28,13 +28,13 @@ resource "azurerm_network_interface" "zabbix_nic" {
 
 resource "azurerm_linux_virtual_machine" "zabbix_vm" {
   count                         = var.zabbix_nb_instances
-  name                          = "${local.hostname}-${format("%02d",count.index)}"
+  name                          = "${var.zabbix_vm_hostname}-vm-${format("%02d",count.index)}"
   location                      = var.resource_group_location
-  resource_group_name           = local.resource_group_name
+  resource_group_name           = var.resource_group_name
   size                          = var.zabbix_vm_size
   admin_username                = var.local_admin_username
   admin_password                = var.local_admin_password
-  computer_name                 = "${local.hostname}-${format("%02d",count.index)}"
+  computer_name                 = "${var.zabbix_vm_hostname}-vm-${format("%02d",count.index)}"
   disable_password_authentication = false
   network_interface_ids         = [azurerm_network_interface.zabbix_nic[count.index].id]
 
@@ -46,7 +46,7 @@ resource "azurerm_linux_virtual_machine" "zabbix_vm" {
   }
 
   os_disk {
-    name                  = "${local.hostname}-osdisk-${format("%02d",count.index)}"
+    name                  = "${var.zabbix_vm_hostname}-osdisk-${format("%02d",count.index)}"
     caching               = "ReadWrite"
     storage_account_type  = "Premium_LRS"
     disk_size_gb          = "1024"

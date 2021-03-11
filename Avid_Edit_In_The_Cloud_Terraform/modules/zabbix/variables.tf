@@ -9,8 +9,8 @@ variable "local_admin_password" {
   sensitive   = true
 }
 
-variable "resource_prefix" {
-  description = "4 max characters to prefix each resource built"
+variable "resource_group_name" {
+  description = "Name of resource group where to build resources"
 }
 
 variable "resource_group_location" {
@@ -41,6 +41,10 @@ variable "zabbix_vm_size" {
 variable "zabbix_nb_instances" {
   description = "Number of jumpbox instances"
   default     = 0
+}
+
+variable "zabbix_vm_hostname" {
+  description   = "Zabbix hostname"
 }
 
 variable "zabbixScript" {

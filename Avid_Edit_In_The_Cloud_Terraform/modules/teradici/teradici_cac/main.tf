@@ -29,13 +29,13 @@ resource "azurerm_network_interface" "teradicicac_nic" {
 
 resource "azurerm_linux_virtual_machine" "teradicicac_vm" {
   count                             = var.teradicicac_nb_instances
-  name                              = "${var.teradicicac_vm_hostname}-${format("%02d",count.index)}"
+  name                              = "${var.teradicicac_vm_hostname}-vm-${format("%02d",count.index)}"
   location                          = var.resource_group_location
   resource_group_name               = var.resource_group_name
   size                              = var.teradicicac_vm_size
   admin_username                    = var.local_admin_username
   #admin_password                   = var.local_admin_password
-  computer_name                     = "${var.teradicicac_vm_hostname}-${format("%02d",count.index)}"
+  computer_name                     = "${var.teradicicac_vm_hostname}-vm-${format("%02d",count.index)}"
   disable_password_authentication   = true
   network_interface_ids             = [azurerm_network_interface.teradicicac_nic[count.index].id]
 

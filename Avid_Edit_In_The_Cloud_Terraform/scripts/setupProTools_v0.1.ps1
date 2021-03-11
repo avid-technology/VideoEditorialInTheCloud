@@ -84,7 +84,7 @@ Install-NexisClient {
 function
 Install-Teradici {
     Write-Log "Downloading Teradici"
-    $TeradiciDestinationPath = "D:\AzureData\PCoIP_graphic_agent.exe"
+    $TeradiciDestinationPath = "C:\Users\Public\Desktop\PCoIP_agent_release_installer_graphic.exe"
 
     Write-Log $DestinationPath
     DownloadFileOverHttp $TeradiciURL $TeradiciDestinationPath   

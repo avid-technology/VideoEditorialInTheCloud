@@ -43,7 +43,7 @@ resource "azurerm_private_endpoint" "nexis_storage_account" {
 }
 
 resource "azurerm_public_ip" "nexis_ip" {
-  count               = var.nexis_storage_nb_instances
+  count               = var.nexis_internet_access ? var.nexis_storage_nb_instances : 0
   name                = "${local.hostname}-ip-${format("%02d",count.index)}"
   location            = var.resource_group_location
   resource_group_name = local.resource_group_name
@@ -52,7 +52,7 @@ resource "azurerm_public_ip" "nexis_ip" {
 
 resource "azurerm_network_interface" "nexis_nic" {
   count                         = var.nexis_storage_nb_instances
-  name                          = "${local.hostname}${format("%02d",count.index)}-nic"
+  name                          = "${local.hostname}-nic-${format("%02d",count.index)}"
   location                      = var.resource_group_location
   resource_group_name           = local.resource_group_name
   enable_accelerated_networking = true
@@ -90,7 +90,7 @@ resource "azurerm_linux_virtual_machine" "nexis_vm" {
   }
 
   os_disk {
-    name                          = "${local.hostname}${format("%02d",count.index)}-osdisk"
+    name                          = "${local.hostname}-osdisk-${format("%02d",count.index)}"
     caching                       = "ReadWrite"
     storage_account_type          = "Premium_LRS"
     disk_size_gb                  = "1024"
@@ -99,7 +99,7 @@ resource "azurerm_linux_virtual_machine" "nexis_vm" {
 
 resource "azurerm_managed_disk" "nexis_datadisk" {
   count                = var.nexis_storage_nb_instances
-  name                 = "${local.hostname}${format("%02d",count.index)}-datadisk"
+  name                 = "${local.hostname}-datadisk-${format("%02d",count.index)}"
   location             = var.resource_group_location
   resource_group_name  = local.resource_group_name
   storage_account_type = "Premium_LRS"
