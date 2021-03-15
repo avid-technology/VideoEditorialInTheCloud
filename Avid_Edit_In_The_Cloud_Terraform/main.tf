@@ -78,7 +78,7 @@ module "jumpbox_deployment" {
 }
 
 module "teradicicac_deployment" {
-  source                        = "./modules/teradici/teradici_cac"
+  source                        = "./modules/remote/teradici/teradici_cac"
   local_admin_username          = var.local_admin_username
   #local_admin_password         = var.local_admin_password
   resource_group_name           = "${var.resource_prefix}-rg"
@@ -97,7 +97,7 @@ module "teradicicac_deployment" {
 ########################## Workstations ##########################
 
 module "mediacomposer_deployment" {
-  source                            = "./modules/mediacomposer"
+  source                            = "./modules/workstations/mediacomposer"
   local_admin_username              = var.local_admin_username
   local_admin_password              = var.local_admin_password
   domainName                        = var.domainName
@@ -122,7 +122,7 @@ module "mediacomposer_deployment" {
 }
 
 module "protools_deployment" {
-  source                            = "./modules/protools"
+  source                            = "./modules/workstations/protools"
   resource_group_name               = "${var.resource_prefix}-rg"
   resource_group_location           = var.resource_group_location
   vnet_subnet_id                    = local.stored_subnet_id[6]
@@ -213,9 +213,9 @@ module "mccloudux_deployment" {
   local_admin_password          = var.local_admin_password
   resource_prefix               = var.resource_prefix
   resource_group_location       = var.resource_group_location
-  vnet_subnet_id                = local.stored_subnet_id[0]
+  vnet_subnet_id                = local.stored_subnet_id[1]
   mccloudux_vm_size             = "Standard_D16s_v3"
-  mccloudux_nb_instances        = 0
+  mccloudux_nb_instances        = 1
   script_url                    = local.script_url
   mccloudux_internet_access     = true
   installers_url                = var.installers_url
@@ -273,7 +273,7 @@ module "nexis_nearline_deployment" {
 ########################## Monitor ##########################
 
 module "zabbix_deployment" {
-  source                        = "./modules/zabbix"
+  source                        = "./modules/monitor/zabbix"
   local_admin_username          = var.local_admin_username
   local_admin_password          = var.local_admin_password
   resource_group_name           = "${var.resource_prefix}-rg"
@@ -288,3 +288,5 @@ module "zabbix_deployment" {
   installers_url                = var.installers_url
   depends_on                    = [module.editorial_networking]
 }
+
+########################## Transfer ##########################

@@ -89,12 +89,6 @@ resource "azurerm_virtual_machine_extension" "mediacomposer_extension_2" {
   type_handler_version        = "1.0"
   auto_upgrade_minor_version  = true
   depends_on                  = [azurerm_virtual_machine_extension.mediacomposer_extension_1]
-
-  ##settings = <<SETTINGS
-  #  {
-  ##  
-  #  }
-  #SETTINGS
 }
 
 
