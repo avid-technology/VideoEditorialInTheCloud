@@ -215,7 +215,7 @@ module "mccloudux_deployment" {
   resource_group_location       = var.resource_group_location
   vnet_subnet_id                = local.stored_subnet_id[1]
   mccloudux_vm_size             = "Standard_D16s_v3"
-  mccloudux_nb_instances        = 1
+  mccloudux_nb_instances        = var.mccloudux_nb_instances
   script_url                    = local.script_url
   mccloudux_internet_access     = true
   installers_url                = var.installers_url
@@ -231,7 +231,9 @@ module "nexis_online_deployment" {
   local_admin_password                = var.local_admin_password
   resource_group_location             = var.resource_group_location
   vnet_subnet_id                      = local.stored_subnet_id[4]
-  resource_prefix                     = var.resource_prefix 
+  resource_group_name                 = "${var.resource_prefix}-rg"
+  storage_account_public_access       = false
+  storage_account_subnet_access       = [local.stored_subnet_id[1],local.stored_subnet_id[4],local.stored_subnet_id[5]] 
   nexis_storage_vm_size               = var.nexis_vm_size
   nexis_storage_nb_instances          = var.nexis_online_nb_instances
   nexis_storage_vm_script_url         = local.script_url
@@ -254,7 +256,9 @@ module "nexis_nearline_deployment" {
   local_admin_password                = var.local_admin_password
   resource_group_location             = var.resource_group_location
   vnet_subnet_id                      = local.stored_subnet_id[4]
-  resource_prefix                     = var.resource_prefix 
+  resource_group_name               = "${var.resource_prefix}-rg"
+  blob_public_access                  = true
+  subnet_access                       = [local.stored_subnet_id[1],local.stored_subnet_id[4],local.stored_subnet_id[5]] 
   nexis_storage_vm_size               = var.nexis_vm_size
   nexis_storage_nb_instances          = var.nexis_nearline_nb_instances
   nexis_storage_vm_script_url         = local.script_url

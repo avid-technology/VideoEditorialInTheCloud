@@ -203,6 +203,10 @@ variable "mcworker_nb_instances" {
     type = number
 }
 
+variable "mccloudux_nb_instances" {
+    type = number
+}
+
 ############## MediaComposer Variables ##############
 
 variable "mediacomposer_vm_size" {
