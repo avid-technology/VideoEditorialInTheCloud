@@ -22,6 +22,10 @@ resource "azurerm_subnet" "subnet" {
   resource_group_name                             = azurerm_resource_group.resource_group.name
   address_prefixes                                = [each.value]
   enforce_private_link_endpoint_network_policies  = true
+  enforce_private_link_service_network_policies   = true
+  service_endpoints                               = ["Microsoft.Storage"]   # Need to be enable to access Nexis.
+  #enforce_private_link_endpoint_network_policies = (each.key == "subnet_storage") ? true : false
+  #enforce_private_link_service_network_policies  = (var.subnet_names[count.index] == "subnet_storage") ? true : false
 }
 
 locals {
