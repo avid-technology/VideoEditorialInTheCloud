@@ -27,7 +27,7 @@ resource "azurerm_storage_account" "nexis_storage_account" {
 }
 
 resource "azurerm_storage_account_network_rules" "nexis_network_rules" {
-  count                       = var.storage_account_public_access ? var.nexis_storage_nb_instances : 0
+  count                       = var.storage_account_public_access ? 0 : var.nexis_storage_nb_instances
   resource_group_name         = var.resource_group_name
   storage_account_name        = azurerm_storage_account.nexis_storage_account[count.index].name
   default_action              = "Deny"
