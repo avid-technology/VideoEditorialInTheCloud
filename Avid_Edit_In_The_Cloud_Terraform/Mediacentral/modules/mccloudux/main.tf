@@ -1,21 +1,21 @@
 locals{
-  resource_group_name         = "${var.resource_prefix}-rg"
-  hostname                    = "${var.resource_prefix}-mcux"
+  #resource_group_name         = "${var.resource_prefix}-rg"
+  #hostname                    = "${var.resource_prefix}-mcux"
 }
 
 resource "azurerm_public_ip" "mccloudux_ip" {
   count               = var.mccloudux_internet_access ? var.mccloudux_nb_instances : 0
-  name                = "${local.hostname}-ip-${format("%02d",count.index)}"
+  name                = "${var.mccloudux_hostname}-ip-${format("%02d",count.index)}"
   location            = var.resource_group_location
-  resource_group_name = local.resource_group_name
+  resource_group_name = var.resource_group_name
   allocation_method   = "Dynamic"
 }
 
 resource "azurerm_network_interface" "mccloudux_nic" {
   count                         = var.mccloudux_nb_instances
-  name                          = "${local.hostname}-nic-${format("%02d",count.index)}"
+  name                          = "${var.mccloudux_hostname}-nic-${format("%02d",count.index)}"
   location                      = var.resource_group_location
-  resource_group_name           = local.resource_group_name
+  resource_group_name           = var.resource_group_name
 
   ip_configuration {
     name                          = "ipconfig"
@@ -27,13 +27,13 @@ resource "azurerm_network_interface" "mccloudux_nic" {
 
 resource "azurerm_linux_virtual_machine" "mccloudux_vm" {
   count                             = var.mccloudux_nb_instances
-  name                              = "${local.hostname}-${format("%02d",count.index)}"
+  name                              = "${var.mccloudux_hostname}-${format("%02d",count.index)}"
   location                          = var.resource_group_location
-  resource_group_name               = local.resource_group_name
+  resource_group_name               = var.resource_group_name
   size                              = var.mccloudux_vm_size
   admin_username                    = var.local_admin_username
   admin_password                    = var.local_admin_password
-  computer_name                     = "${local.hostname}-${format("%02d",count.index)}"
+  computer_name                     = "${var.mccloudux_hostname}-${format("%02d",count.index)}"
   disable_password_authentication   = false
   network_interface_ids             = [azurerm_network_interface.mccloudux_nic[count.index].id]
 
@@ -50,7 +50,7 @@ admin_ssh_key {
   }
 
   os_disk {
-    name                  = "${local.hostname}-osdisk-${format("%02d",count.index)}"
+    name                  = "${var.mccloudux_hostname}-osdisk-${format("%02d",count.index)}"
     caching               = "ReadWrite"
     storage_account_type  = "Premium_LRS"
     disk_size_gb          = 1024
@@ -60,9 +60,9 @@ admin_ssh_key {
 
 resource "azurerm_managed_disk" "mccloudux_datadisk" {
   count                = var.mccloudux_nb_instances
-  name                 = "${local.hostname}-datadisk-${format("%02d",count.index)}"
+  name                 = "${var.mccloudux_hostname}-datadisk-${format("%02d",count.index)}"
   location             = var.resource_group_location
-  resource_group_name  = local.resource_group_name
+  resource_group_name  = var.resource_group_name
   storage_account_type = "Premium_LRS"
   create_option        = "Empty"
   disk_size_gb         = 256

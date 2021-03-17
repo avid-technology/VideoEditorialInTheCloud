@@ -91,7 +91,8 @@ module "mccloudux_deployment" {
   source                        = "./modules/mccloudux"
   local_admin_username          = var.local_admin_username
   local_admin_password          = var.local_admin_password
-  resource_prefix               = var.resource_prefix
+  resource_group_name         = "${var.resource_prefix}-rg"
+  mccloudux_hostname            = "${var.resource_prefix}-mcux"
   resource_group_location       = var.resource_group_location
   vnet_subnet_id                = data.azurerm_subnet.data_subnet_mediacentral.id
   mccloudux_vm_size             = "Standard_D16s_v3"

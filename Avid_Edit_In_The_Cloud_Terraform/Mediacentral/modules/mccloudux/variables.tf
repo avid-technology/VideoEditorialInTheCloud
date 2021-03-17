@@ -9,8 +9,12 @@ variable "local_admin_password" {
   sensitive   = true
 }
 
-variable "resource_prefix" {
-  description = "4 max characters to prefix each resource built"
+variable "mccloudux_hostname" {
+  description = "Cloud UX Hostname"
+}
+
+variable "resource_group_name" {
+  description = "Name of resource group"
 }
 
 variable "resource_group_location" {

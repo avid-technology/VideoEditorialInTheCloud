@@ -257,8 +257,8 @@ module "nexis_nearline_deployment" {
   resource_group_location             = var.resource_group_location
   vnet_subnet_id                      = local.stored_subnet_id[4]
   resource_group_name               = "${var.resource_prefix}-rg"
-  blob_public_access                  = true
-  subnet_access                       = [local.stored_subnet_id[1],local.stored_subnet_id[4],local.stored_subnet_id[5]] 
+  storage_account_public_access       = false
+  storage_account_subnet_access       = [local.stored_subnet_id[1],local.stored_subnet_id[4],local.stored_subnet_id[5]] 
   nexis_storage_vm_size               = var.nexis_vm_size
   nexis_storage_nb_instances          = var.nexis_nearline_nb_instances
   nexis_storage_vm_script_url         = local.script_url
