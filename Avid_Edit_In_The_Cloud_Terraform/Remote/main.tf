@@ -17,13 +17,8 @@ provider "azurerm" {
 
 locals {
   resource_group_name   = "${var.resource_prefix}-rg"
-  script_url            = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/scripts/"
-  #stored_subnet_id      = module.editorial_networking.azurerm_subnet_ids                                    
+  script_url            = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/scripts/"                                   
 }
-
-#0: Core | 1: Mediacentral | 2: Monitor | 3: Remote | 4: Storage | 5: Transfer | 6: Workstations
-
-########################## Core ##########################
 
 data "azurerm_subnet" "data_subnet_remote" {
   name                 = "subnet_remote"

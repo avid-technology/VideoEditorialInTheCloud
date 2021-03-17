@@ -17,13 +17,8 @@ provider "azurerm" {
 
 locals {
   resource_group_name   = "${var.resource_prefix}-rg"
-  script_url            = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/scripts/"
-  #stored_subnet_id      = module.editorial_networking.azurerm_subnet_ids                                    
+  script_url            = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/scripts/"                                  
 }
-
-#0: Core | 1: Mediacentral | 2: Monitor | 3: Remote | 4: Storage | 5: Transfer | 6: Workstations
-
-########################## Core ##########################
 
 data "azurerm_subnet" "data_subnet_storage" {
   name                 = "subnet_storage"
@@ -57,8 +52,9 @@ module "nexis_online_deployment" {
   resource_group_location                     = var.resource_group_location
   vnet_subnet_id                              = data.azurerm_subnet.data_subnet_storage.id
   resource_group_name                         = "${var.resource_prefix}-rg"
-  nexis_storage_account_public_access         = true 
-  nexis_storage_account_subnet_access         = []
+  nexis_storage_account_public_access         = false 
+  nexis_storage_account_subnet_access         = [data.azurerm_subnet.data_subnet_storage.id,data.azurerm_subnet.data_subnet_workstations.id,data.azurerm_subnet.data_subnet_transfer.id,data.azurerm_subnet.data_subnet_mediacentral.id]
+  private_dns_zone_resource_group             = "${var.resource_prefix}-rg"
   nexis_system_director_vm_size               = var.nexis_vm_size
   nexis_system_director_nb_instances          = var.nexis_online_nb_instances
   nexis_system_director_vm_script_url         = local.script_url
@@ -69,7 +65,7 @@ module "nexis_online_deployment" {
   nexis_system_director_performance           = var.nexis_storage_performance_online
   nexis_system_director_replication           = var.nexis_storage_replication_online
   nexis_system_director_account_kind          = var.nexis_storage_account_kind_online
-  nexis_system_director_internet_access       = true
+  nexis_system_director_internet_access       = false
   nexis_system_director_image_reference       = var.nexis_image_reference
 }
 
@@ -81,8 +77,9 @@ module "nexis_nearline_deployment" {
   resource_group_location                     = var.resource_group_location
   vnet_subnet_id                              = data.azurerm_subnet.data_subnet_storage.id
   resource_group_name                         = "${var.resource_prefix}-rg"
-  nexis_storage_account_public_access         = false
-  nexis_storage_account_subnet_access         = [data.azurerm_subnet.data_subnet_storage.id,data.azurerm_subnet.data_subnet_workstations.id,data.azurerm_subnet.data_subnet_transfer.id,data.azurerm_subnet.data_subnet_mediacentral.id]  
+  nexis_storage_account_public_access         = true
+  nexis_storage_account_subnet_access         = []  
+  private_dns_zone_resource_group             = ""
   nexis_system_director_vm_size               = var.nexis_vm_size
   nexis_system_director_nb_instances          = var.nexis_nearline_nb_instances
   nexis_system_director_vm_script_url         = local.script_url
@@ -93,6 +90,6 @@ module "nexis_nearline_deployment" {
   nexis_system_director_performance           = var.nexis_storage_performance_nearline
   nexis_system_director_replication           = var.nexis_storage_replication_nearline
   nexis_system_director_account_kind          = var.nexis_storage_account_kind_nearline
-  nexis_system_director_internet_access       = false
+  nexis_system_director_internet_access       = true
   nexis_system_director_image_reference       = var.nexis_image_reference
 }

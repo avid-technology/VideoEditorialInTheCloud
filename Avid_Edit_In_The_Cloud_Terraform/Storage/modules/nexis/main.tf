@@ -1,6 +1,6 @@
 locals{
   #resource_group_name                   = "${var.resource_prefix}-rg"
-  hostname                              = var.hostname
+  #hostname                              = var.hostname
   nexis_storage_vm_script_url           = "${var.nexis_system_director_vm_script_url}${var.nexis_system_director_vm_script_name}"
   nexis_storage_vm_artifacts_location   = trimsuffix(var.nexis_system_director_vm_artifacts_location, "/") # remove last forward slash in path
 }
@@ -17,7 +17,7 @@ resource "random_string" "nexis" {
 #############################
 resource "azurerm_storage_account" "nexis_storage_account" {
   count                     = var.nexis_system_director_nb_instances
-  name                      = "${local.hostname}${format("%02d",count.index)}${random_string.nexis[count.index].result}"
+  name                      = "${var.hostname}${format("%02d",count.index)}${random_string.nexis[count.index].result}"
   resource_group_name       = var.resource_group_name
   location                  = var.resource_group_location
   account_kind              = var.nexis_system_director_account_kind
@@ -37,23 +37,32 @@ resource "azurerm_storage_account_network_rules" "nexis_storage_account_network_
 resource "azurerm_private_endpoint" "nexis_storage_account_private_endpoint" {
   count               = var.nexis_storage_account_public_access ? 0 : var.nexis_system_director_nb_instances
   #count               = var.nexis_storage_nb_instances
-  name                = "${local.hostname}${format("%02d",count.index)}${random_string.nexis[count.index].result}-pe"
+  name                = "${var.hostname}${format("%02d",count.index)}${random_string.nexis[count.index].result}-pe"
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
   subnet_id           = var.vnet_subnet_id
-  depends_on = [ random_string.nexis]
+  depends_on = [random_string.nexis]
 
   private_service_connection {
-    name                           = "${local.hostname}${format("%02d",count.index)}${random_string.nexis[count.index].result}-psc"
+    name                           = "${var.hostname}${format("%02d",count.index)}${random_string.nexis[count.index].result}-psc"
     is_manual_connection           = false
-    private_connection_resource_id = azurerm_storage_account.nexis_storage_account.*.id[0]
+    private_connection_resource_id = azurerm_storage_account.nexis_storage_account[count.index].id
     subresource_names              = ["blob"]
   } 
 }
 
+resource "azurerm_private_dns_a_record" "nexis_private_endpoint_record" {
+  count               = var.nexis_storage_account_public_access ? 0 : var.nexis_system_director_nb_instances
+  name                = "${var.hostname}${format("%02d",count.index)}${random_string.nexis[count.index].result}" # same name than storage account 
+  zone_name           = "privatelink.blob.core.windows.net"
+  resource_group_name = var.private_dns_zone_resource_group
+  ttl                 = 3600
+  records             = [azurerm_private_endpoint.nexis_storage_account_private_endpoint[count.index].private_service_connection[0].private_ip_address] # Storage account should have only one private service connection so we point to [0] 
+}
+
 resource "azurerm_public_ip" "nexis_system_director_ip" {
   count               = var.nexis_system_director_internet_access ? var.nexis_system_director_nb_instances : 0
-  name                = "${local.hostname}-ip-${format("%02d",count.index)}"
+  name                = "${var.hostname}-ip-${format("%02d",count.index)}"
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
   allocation_method   = "Dynamic"
@@ -61,7 +70,7 @@ resource "azurerm_public_ip" "nexis_system_director_ip" {
 
 resource "azurerm_network_interface" "nexis_system_director_nic" {
   count                         = var.nexis_system_director_nb_instances
-  name                          = "${local.hostname}-nic-${format("%02d",count.index)}"
+  name                          = "${var.hostname}-nic-${format("%02d",count.index)}"
   location                      = var.resource_group_location
   resource_group_name           = var.resource_group_name
   enable_accelerated_networking = true
@@ -76,14 +85,14 @@ resource "azurerm_network_interface" "nexis_system_director_nic" {
 
 resource "azurerm_linux_virtual_machine" "nexis_system_director_vm" {
   count                         = var.nexis_system_director_nb_instances
-  name                          = "${local.hostname}${format("%02d",count.index)}"
+  name                          = "${var.hostname}${format("%02d",count.index)}"
   location                      = var.resource_group_location
   resource_group_name           = var.resource_group_name
   size                          = var.nexis_system_director_vm_size
   network_interface_ids         = [azurerm_network_interface.nexis_system_director_nic[count.index].id]
   admin_username                = "avid"
   admin_password                = var.local_admin_password
-  computer_name                 = "${local.hostname}${format("%02d",count.index)}"
+  computer_name                 = "${var.hostname}${format("%02d",count.index)}"
   disable_password_authentication = false
 
   source_image_reference {
@@ -94,7 +103,7 @@ resource "azurerm_linux_virtual_machine" "nexis_system_director_vm" {
   }
 
   os_disk {
-    name                          = "${local.hostname}-osdisk-${format("%02d",count.index)}"
+    name                          = "${var.hostname}-osdisk-${format("%02d",count.index)}"
     caching                       = "ReadWrite"
     storage_account_type          = "Premium_LRS"
     disk_size_gb                  = "1024"
@@ -103,7 +112,7 @@ resource "azurerm_linux_virtual_machine" "nexis_system_director_vm" {
 
 resource "azurerm_managed_disk" "nexis_system_director_datadisk" {
   count                = var.nexis_system_director_nb_instances
-  name                 = "${local.hostname}-datadisk-${format("%02d",count.index)}"
+  name                 = "${var.hostname}-datadisk-${format("%02d",count.index)}"
   location             = var.resource_group_location
   resource_group_name  = var.resource_group_name
   storage_account_type = "Premium_LRS"

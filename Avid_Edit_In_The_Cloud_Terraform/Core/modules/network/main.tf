@@ -186,48 +186,41 @@ resource "azurerm_network_security_rule" "security_rule_teradici_in_udp" {
 }
 
 resource "azurerm_subnet_network_security_group_association" "associate_subnet_storage" {
-  #for_each = var.subnets
   count                     = var.create_subnet_Storage ? 1 : 0
   subnet_id                 = azurerm_subnet.subnet_storage[count.index].id
   network_security_group_id = azurerm_network_security_group.nsg_default.id
 }
 
 resource "azurerm_subnet_network_security_group_association" "associate_subnet_monitor" {
-  #for_each = var.subnets
   count                     = var.create_subnet_Monitor ? 1 : 0
   subnet_id                 = azurerm_subnet.subnet_monitor[count.index].id
   network_security_group_id = azurerm_network_security_group.nsg_default.id
 }
 
 resource "azurerm_subnet_network_security_group_association" "associate_subnet_core" {
-  #for_each = var.subnets
   subnet_id                 = azurerm_subnet.subnet_core.id
   network_security_group_id = azurerm_network_security_group.nsg_default.id
 }
 
 resource "azurerm_subnet_network_security_group_association" "associate_subnet_workstations" {
-  #for_each = var.subnets
   count                     = var.create_subnet_Workstations ? 1 : 0
   subnet_id                 = azurerm_subnet.subnet_workstations[count.index].id
   network_security_group_id = azurerm_network_security_group.nsg_default.id
 }
 
 resource "azurerm_subnet_network_security_group_association" "associate_subnet_remote" {
-  #for_each = var.subnets
   count                     = var.create_subnet_Remote ? 1 : 0
   subnet_id                 = azurerm_subnet.subnet_remote[count.index].id
   network_security_group_id = azurerm_network_security_group.nsg_remote[count.index].id
 }
 
 resource "azurerm_subnet_network_security_group_association" "associate_subnet_mediacentral" {
-  #for_each = var.subnets
   count                     = var.create_subnet_Mediacentral ? 1 : 0
   subnet_id                 = azurerm_subnet.subnet_mediacentral[count.index].id
   network_security_group_id = azurerm_network_security_group.nsg_default.id
 }
 
 resource "azurerm_subnet_network_security_group_association" "associate_subnet_transfer" {
-  #for_each = var.subnets
   count                     = var.create_subnet_Transfer ? 1 : 0
   subnet_id                 = azurerm_subnet.subnet_transfer[count.index].id
   network_security_group_id = azurerm_network_security_group.nsg_default.id

@@ -46,11 +46,17 @@ variable "resource_group_location"{
     description = "resource group name"
 }
 
-############## DomainController Variables ##############
+variable "gpu_type" {
+    type = string 
 
-variable "domaincontroller_nb_instances" {
-  description = "Number of domaincontroller instances"
-  default     = 0
+    validation {
+            condition       = (
+                var.gpu_type == "Nvidia" || 
+                var.gpu_type == "Amd" 
+            )
+            error_message   = "Only the following gpu are supported: Nvidia, Amd."
+        }
+
 }
 
 
@@ -153,4 +159,21 @@ variable "ProToolsVersion" {
             )
             error_message   = "Only the following versions are supported: 2020.11.0."
         }
+}
+
+############## Teradici Variables ##############
+
+variable "TeradiciKey" {
+    type    = string  
+    default = "0000"  
+}
+
+variable "teradicicac_nb_instances" {
+    type    = number  
+    default = 0  
+}
+
+variable "TeradiciInstaller" {
+    type    = string 
+    default = "pcoip-agent-graphics_21.01.2.exe"
 }

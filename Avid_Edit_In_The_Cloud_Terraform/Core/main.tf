@@ -17,13 +17,8 @@ provider "azurerm" {
 
 locals {
   resource_group_name   = "${var.resource_prefix}-rg"
-  script_url            = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/scripts/"
-  #stored_subnet_id      = module.editorial_networking.azurerm_subnet_ids                                    
+  script_url            = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/scripts/"                                   
 }
-
-#0: Core | 1: Mediacentral | 2: Monitor | 3: Remote | 4: Storage | 5: Transfer | 6: Workstations
-
-########################## Core ##########################
 
 module "editorial_networking" {
   source                        = "./modules/network"
@@ -58,4 +53,9 @@ module "domaincontroller_deployment" {
   domaincontroller_nb_instances     = var.domaincontroller_nb_instances
   domaincontroller_internet_access  = false
   depends_on                        = [module.editorial_networking]
+}
+
+resource "azurerm_private_dns_zone" "private_dns_zone_storage_account" {
+  name                = "privatelink.blob.core.windows.net"
+  resource_group_name = "${var.resource_prefix}-rg"
 }

@@ -72,6 +72,12 @@ variable "nexis_system_director_vm_build" {
   default     = "AvidNEXISCloud_20.7.5-23.run"
 }
 
+variable "private_dns_zone_resource_group" { 
+  type        = string
+  description = "Resource group where private dns zone is located. Private DNS zone for storage account must be named: privatelink.blob.core.windows.net."
+  default     = ""
+}
+
 variable "nexis_system_director_image_reference" {
   type = map
   default = {
