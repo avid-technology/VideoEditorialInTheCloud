@@ -25,78 +25,56 @@ locals {
 
 ########################## Core ##########################
 
-data "azurerm_subnet" "data_subnet_mediacentral" {
-  name                 = "subnet_mediacentral"
+data "azurerm_subnet" "data_subnet_workstations" {
+  name                 = "subnet_workstations"
   virtual_network_name = "abc2-rg-vnet"
   resource_group_name  = "${var.resource_prefix}-rg"
 }
 
-module "mccenterdeployment" {
-  source                            = "./modules/mccenter"
+module "mediacomposer_deployment" {
+  source                            = "./modules/workstations/mediacomposer"
   local_admin_username              = var.local_admin_username
   local_admin_password              = var.local_admin_password
+  domainName                        = var.domainName
   domain_admin_username             = var.domain_admin_username
   domain_admin_password             = var.domain_admin_password
-  domainName                        = var.domainName
-  resource_prefix                   = var.resource_prefix
-  resource_group_location           = var.resource_group_location
-  installers_url                    = var.installers_url
-  vnet_subnet_id                    = data.azurerm_subnet.data_subnet_mediacentral.id
-  mccenter_vm_size                  = "Standard_D16s_v3"
-  mccenter_nb_instances             = var.mccenter_nb_instances
-  mcamversion                       = "2020_9"
   script_url                        = local.script_url
-  mccenterScript                    = "mccenter_v0.1.ps1"
-  mccenter_internet_access          = false 
+  installers_url                    = var.installers_url
+  resource_group_name               = "${var.resource_prefix}-rg"
+  resource_group_location           = var.resource_group_location
+  vnet_subnet_id                    = data.azurerm_subnet.data_subnet_workstations.id
+  gpu_type                          = var.gpu_type
+  mediacomposer_vm_hostname         = "${var.resource_prefix}-mc"
+  mediacomposer_vm_size             = var.mediacomposer_vm_size
+  mediacomposer_nb_instances        = var.mediacomposer_nb_instances
+  mediacomposer_internet_access     = var.mediacomposer_internet_access
+  mediacomposerScript               = var.mediacomposerScript 
+  mediacomposerVersion              = var.mediacomposerVersion
+  TeradiciKey                       = var.TeradiciKey
+  TeradiciInstaller                 = var.TeradiciInstaller
+  AvidNexisInstaller                = var.AvidNexisInstaller 
 }
 
-module "mccentersqldeployment" {
-  source                                = "./modules/mccentersql"
-  local_admin_username                  = var.local_admin_username
-  local_admin_password                  = var.local_admin_password
-  domain_admin_username                 = var.domain_admin_username
-  domain_admin_password                 = var.domain_admin_password
-  domainName                            = var.domainName
-  resource_prefix                       = var.resource_prefix
-  resource_group_location               = var.resource_group_location
-  installers_url                        = var.installers_url
-  vnet_subnet_id                        = data.azurerm_subnet.data_subnet_mediacentral.id
-  mccentersql_vm_size                   = "Standard_D8s_v3"
-  mccentersql_nb_instances              = var.mccentersql_nb_instances
-  script_url                            = local.script_url
-  mccentersqlScript                     = "mccentersql_v0.1.ps1"
-  mccentersql_internet_access           = false 
-}
-
-module "mcworkerdeployment" {
-  source                                = "./modules/mcworker"
-  local_admin_username                  = var.local_admin_username
-  local_admin_password                  = var.local_admin_password
-  domain_admin_username                 = var.domain_admin_username
-  domain_admin_password                 = var.domain_admin_password
-  domainName                            = var.domainName
-  resource_prefix                       = var.resource_prefix
-  resource_group_location               = var.resource_group_location
-  installers_url                        = var.installers_url
-  vnet_subnet_id                        = data.azurerm_subnet.data_subnet_mediacentral.id
-  mcworker_vm_size                      = "Standard_D8s_v3"
-  mcworker_nb_instances                 = var.mcworker_nb_instances
-  script_url                            = local.script_url
-  mcamversion                           = "2020_9"
-  mcworkerScript                        = "mccservice_v0.1.ps1"
-  mcworker_internet_access              = false 
-}
-
-module "mccloudux_deployment" {
-  source                        = "./modules/mccloudux"
-  local_admin_username          = var.local_admin_username
-  local_admin_password          = var.local_admin_password
-  resource_prefix               = var.resource_prefix
-  resource_group_location       = var.resource_group_location
-  vnet_subnet_id                = data.azurerm_subnet.data_subnet_mediacentral.id
-  mccloudux_vm_size             = "Standard_D16s_v3"
-  mccloudux_nb_instances        = var.mccloudux_nb_instances
-  script_url                    = local.script_url
-  mccloudux_internet_access     = true
-  installers_url                = var.installers_url
+module "protools_deployment" {
+  source                            = "./modules/workstations/protools"
+  resource_group_name               = "${var.resource_prefix}-rg"
+  resource_group_location           = var.resource_group_location
+  vnet_subnet_id                    = data.azurerm_subnet.data_subnet_workstations.id
+  gpu_type                          = var.gpu_type
+  script_url                        = local.script_url 
+  installers_url                    = var.installers_url
+  local_admin_username              = var.local_admin_username
+  local_admin_password              = var.local_admin_password
+  domainName                        = var.domainName
+  domain_admin_username             = var.domain_admin_username
+  domain_admin_password             = var.domain_admin_password
+  protools_vm_hostname              = "${var.resource_prefix}-pt"
+  protools_vm_size                  = var.protools_vm_size
+  protools_nb_instances             = var.protools_nb_instances
+  protools_internet_access          = var.protools_internet_access
+  protoolsScript                    = var.protoolsScript 
+  ProToolsVersion                   = var.ProToolsVersion
+  TeradiciKey                       = var.TeradiciKey
+  TeradiciInstaller                 = var.TeradiciInstaller
+  AvidNexisInstaller                = var.AvidNexisInstaller
 }

@@ -27,52 +27,52 @@ variable "resource_group_name" {
   default = "*"
 }
 
-variable "nexis_storage_vm_size" {
-  description = "Size of Nexis VM. Should be either Standard_F16s_v2 (recommended) or Standard_DS4_v2 (legacy)"
-  default     = "Standard_F16s_v2"
-}
-
-variable "nexis_storage_nb_instances" {
-  description = "Number of Nexis instances"
-  default     = 0
-}
-
-variable "storage_account_public_access" {
-  description = "Number of Nexis instances"
+variable "nexis_storage_account_public_access" {
+  description = "Allow storage account visibility over public internet or restrict to specific subnet"
   type        = bool
   default     = false
 }
 
-variable "storage_account_subnet_access" {
-  description = "Subnet that can get access to Nexis storage account"
+variable "nexis_storage_account_subnet_access" {
+  description = "Subnet that can get access to Nexis storage account. Make sure Service Endpoint 'Microsoft.Storage' has been activated on all subnet(s) that need access to storage account."
   default     = []
 }
 
-variable "nexis_storage_vm_script_url" { 
+variable "nexis_system_director_vm_size" {
+  description = "Size of Nexis VM. Should be either Standard_F16s_v2 (recommended) or Standard_DS4_v2 (legacy)"
+  default     = "Standard_F16s_v2"
+}
+
+variable "nexis_system_director_nb_instances" {
+  description = "Number of Nexis instances"
+  default     = 0
+}
+
+variable "nexis_system_director_vm_script_url" { 
   type = string
   description = "Location of all the powershell and bash scripts" 
   default     = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/scripts/"
 }
 
-variable "nexis_storage_vm_script_name" { 
+variable "nexis_system_director_vm_script_name" { 
   type        = string
   description = "Script installer name"
   default     = "installNexis.bash"
 }
 
-variable "nexis_storage_vm_artifacts_location" { 
+variable "nexis_system_director_vm_artifacts_location" { 
   type        = string
   description = "Path to installer location"
   default     = "https://eitcstore01.blob.core.windows.net/installers/"
 }
 
-variable "nexis_storage_vm_build" { 
+variable "nexis_system_director_vm_build" { 
   type        = string
   description = "Name of Nexis installer"
   default     = "AvidNEXISCloud_20.7.5-23.run"
 }
 
-variable "nexis_image_reference" {
+variable "nexis_system_director_image_reference" {
   type = map
   default = {
     publisher = "credativ"
@@ -82,32 +82,32 @@ variable "nexis_image_reference" {
   }
 }
 
-variable "nexis_storage_vm_part_number" { 
+variable "nexis_system_director_vm_part_number" { 
   type        = string
   description = "Type of Cloud Nexis. Should be either 0100-38171-00 (Nearline) or 0100-40109-00 (Online)"
   default     = "0100-38171-00"
 }
 
-variable "nexis_storage_performance" { 
+variable "nexis_system_director_performance" { 
   type        = string
   description = "Storage account performance type. Should be either Standard (Nearline) or Premium (Online)"
   default     = "Standard"
 }
 
-variable "nexis_storage_replication" { 
+variable "nexis_system_director_replication" { 
   type        = string
   description = "Storage account replication type. Should be LRS."
   default     = "LRS"
 }
 
-variable "nexis_storage_account_kind" { 
+variable "nexis_system_director_account_kind" { 
   type        = string
   description = "Storage account type. Should be either StorageV2 (Nearline) or BlockBlobStorage (Online)"
   default     = "StorageV2"
 }
 
-variable "nexis_internet_access" { 
+variable "nexis_system_director_internet_access" { 
   type        = bool
-  description = "Internet access for Cloud Nexis."
+  description = "Internet access for Cloud Nexis System Director."
   default     = false
 }
