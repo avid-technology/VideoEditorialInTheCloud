@@ -56,6 +56,6 @@ module "domaincontroller_deployment" {
   domaincontroller_vm_size          = "Standard_D4s_v3"
   domaincontroller_vm_hostname      = "${var.resource_prefix}-dc"
   domaincontroller_nb_instances     = var.domaincontroller_nb_instances
-  domaincontroller_internet_access  = true
+  domaincontroller_internet_access  = false
   depends_on                        = [module.editorial_networking]
 }

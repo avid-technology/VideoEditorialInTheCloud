@@ -53,41 +53,28 @@ variable "domaincontroller_nb_instances" {
   default     = 0
 }
 
-############## Jumpbox Variables ##############
 
-variable "jumpbox_vm_size" {
-  description = "Size of Jumpbox VM"
-  default     = "Standard_D4s_v3"
+############## Nexis Client Variables ##############
+
+variable "AvidNexisInstaller" {
+    type = string 
+    default = "AvidNEXISClient_Win64_20.7.5.23.msi"
 }
 
-variable "jumpbox_nb_instances" {
-  description = "Number of jumpbox instances"
-  default     = 0
+############## MediaCentral Variables ##############
+
+variable "mccenter_nb_instances" {
+    type = number
 }
 
-variable "JumpboxScript" {
-  description = "Script name forJumbpox"
+variable "mccentersql_nb_instances" {
+    type = number
 }
 
-variable "jumpbox_internet_access" {
-  description = "Internet access for Jumpbox true or false"
-  type        = bool
+variable "mcworker_nb_instances" {
+    type = number
 }
 
-############## Teradici Variables ##############
-
-variable "TeradiciKey" {
-    type    = string  
-    default = "0000"  
+variable "mccloudux_nb_instances" {
+    type = number
 }
-
-variable "teradicicac_nb_instances" {
-    type    = number  
-    default = 0  
-}
-
-variable "TeradiciInstaller" {
-    type    = string 
-    default = "pcoip-agent-graphics_21.01.2.exe"
-}
-
