@@ -41,7 +41,6 @@ resource "azurerm_private_endpoint" "nexis_storage_account_private_endpoint" {
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
   subnet_id           = var.vnet_subnet_id
-  depends_on = [random_string.nexis]
 
   private_service_connection {
     name                           = "${var.hostname}${format("%02d",count.index)}${random_string.nexis[count.index].result}-psc"
@@ -49,6 +48,8 @@ resource "azurerm_private_endpoint" "nexis_storage_account_private_endpoint" {
     private_connection_resource_id = azurerm_storage_account.nexis_storage_account[count.index].id
     subresource_names              = ["blob"]
   } 
+
+  depends_on          = [azurerm_storage_account_network_rules.nexis_storage_account_network_rules] # Adding network rules and private endpoint to the storage account at the same time may fail as both actions compete to update the same resource.
 }
 
 resource "azurerm_private_dns_a_record" "nexis_private_endpoint_record" {

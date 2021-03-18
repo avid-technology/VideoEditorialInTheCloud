@@ -22,7 +22,7 @@ locals {
 
 data "azurerm_subnet" "data_subnet_workstations" {
   name                 = "subnet_workstations"
-  virtual_network_name = "abc2-rg-vnet"
+  virtual_network_name = "${var.resource_prefix}-rg-vnet"
   resource_group_name  = "${var.resource_prefix}-rg"
 }
 
