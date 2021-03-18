@@ -17,7 +17,7 @@ provider "azurerm" {
 
 locals {
   resource_group_name   = "${var.resource_prefix}-rg"
-  script_url            = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/scripts/"                                   
+  script_url            = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/Core/scripts/"                                   
 }
 
 module "editorial_networking" {
@@ -51,11 +51,19 @@ module "domaincontroller_deployment" {
   domaincontroller_vm_size          = "Standard_D4s_v3"
   domaincontroller_vm_hostname      = "${var.resource_prefix}-dc"
   domaincontroller_nb_instances     = var.domaincontroller_nb_instances
-  domaincontroller_internet_access  = false
+  domaincontroller_internet_access  = true
   depends_on                        = [module.editorial_networking]
 }
 
 resource "azurerm_private_dns_zone" "private_dns_zone_storage_account" {
   name                = "privatelink.blob.core.windows.net"
   resource_group_name = "${var.resource_prefix}-rg"
+  depends_on          = [module.editorial_networking]
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "private_dns_zone_storage_account_link" {
+  name                  = "test"
+  resource_group_name   = "${var.resource_prefix}-rg"
+  private_dns_zone_name = "privatelink.blob.core.windows.net"
+  virtual_network_id    = azurerm_virtual_network.example.id
 }

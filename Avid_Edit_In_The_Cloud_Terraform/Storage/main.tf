@@ -17,30 +17,30 @@ provider "azurerm" {
 
 locals {
   resource_group_name   = "${var.resource_prefix}-rg"
-  script_url            = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/scripts/"                                  
+  script_url            = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/Storage/scripts/"                                  
 }
 
 data "azurerm_subnet" "data_subnet_storage" {
   name                 = "subnet_storage"
-  virtual_network_name = "abc2-rg-vnet"
+  virtual_network_name = "${var.resource_prefix}-rg-vnet"
   resource_group_name  = "${var.resource_prefix}-rg"
 }
 
 data "azurerm_subnet" "data_subnet_workstations" {
   name                 = "subnet_workstations"
-  virtual_network_name = "abc2-rg-vnet"
+  virtual_network_name = "${var.resource_prefix}-rg-vnet"
   resource_group_name  = "${var.resource_prefix}-rg"
 }
 
 data "azurerm_subnet" "data_subnet_transfer" {
   name                 = "subnet_transfer"
-  virtual_network_name = "abc2-rg-vnet"
+  virtual_network_name = "${var.resource_prefix}-rg-vnet"
   resource_group_name  = "${var.resource_prefix}-rg"
 }
 
 data "azurerm_subnet" "data_subnet_mediacentral" {
   name                 = "subnet_mediacentral"
-  virtual_network_name = "abc2-rg-vnet"
+  virtual_network_name = "${var.resource_prefix}-rg-vnet"
   resource_group_name  = "${var.resource_prefix}-rg"
 }
 
@@ -54,7 +54,7 @@ module "nexis_online_deployment" {
   resource_group_name                         = "${var.resource_prefix}-rg"
   nexis_storage_account_public_access         = false 
   nexis_storage_account_subnet_access         = [data.azurerm_subnet.data_subnet_storage.id,data.azurerm_subnet.data_subnet_workstations.id,data.azurerm_subnet.data_subnet_transfer.id,data.azurerm_subnet.data_subnet_mediacentral.id]
-  private_dns_zone_resource_group             = "${var.resource_prefix}-rg"
+  private_dns_zone_resource_group             = "abc3-rg"
   nexis_system_director_vm_size               = var.nexis_vm_size
   nexis_system_director_nb_instances          = var.nexis_online_nb_instances
   nexis_system_director_vm_script_url         = local.script_url

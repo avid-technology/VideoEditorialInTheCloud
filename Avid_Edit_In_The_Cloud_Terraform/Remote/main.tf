@@ -17,12 +17,12 @@ provider "azurerm" {
 
 locals {
   resource_group_name   = "${var.resource_prefix}-rg"
-  script_url            = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/scripts/"                                   
+  script_url            = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/Remote/scripts/"                                   
 }
 
 data "azurerm_subnet" "data_subnet_remote" {
   name                 = "subnet_remote"
-  virtual_network_name = "abc2-rg-vnet"
+  virtual_network_name = "${var.resource_prefix}-rg-vnet"
   resource_group_name  = "${var.resource_prefix}-rg"
 }
 

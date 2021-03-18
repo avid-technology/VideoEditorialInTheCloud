@@ -9,21 +9,6 @@ variable "local_admin_password" {
     sensitive = true
 }
 
-variable "domainName" {
-  description = "Domain Name"
-  type        = string
-  default     = null
-}
-
-variable "domain_admin_username" {
-    type = string
-}
-
-variable "domain_admin_password" {
-    type = string 
-    sensitive = true
-}
-
 variable "resource_prefix" {
     type = string
 
@@ -45,14 +30,6 @@ variable "resource_group_location"{
     type = string
     description = "resource group name"
 }
-
-############## DomainController Variables ##############
-
-variable "domaincontroller_nb_instances" {
-  description = "Number of domaincontroller instances"
-  default     = 0
-}
-
 
 ############## Nexis Client Variables ##############
 
