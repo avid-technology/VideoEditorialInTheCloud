@@ -62,8 +62,8 @@ resource "azurerm_private_dns_zone" "private_dns_zone_storage_account" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "private_dns_zone_storage_account_link" {
-  name                  = "test"
+  name                  = "blob_private_zone_dns_vnet_link"
   resource_group_name   = "${var.resource_prefix}-rg"
   private_dns_zone_name = "privatelink.blob.core.windows.net"
-  virtual_network_id    = azurerm_virtual_network.example.id
+  virtual_network_id    = module.editorial_networking.vnet_id
 }

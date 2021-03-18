@@ -44,6 +44,18 @@ data "azurerm_subnet" "data_subnet_mediacentral" {
   resource_group_name  = "${var.resource_prefix}-rg"
 }
 
+data "azurerm_subnet" "data_subnet_remote" {
+  name                 = "subnet_remote"
+  virtual_network_name = "abc1-rg-vnet"
+  resource_group_name  = "abc1-rg"
+}
+
+data "azurerm_subnet" "data_subnet_core" {
+  name                 = "subnet_core"
+  virtual_network_name = "abc3-rg-vnet"
+  resource_group_name  = "abc3-rg"
+}
+
 module "nexis_online_deployment" {
   source                                      = "./modules/nexis"
   hostname                                    = "${var.resource_prefix}on"
@@ -53,7 +65,7 @@ module "nexis_online_deployment" {
   vnet_subnet_id                              = data.azurerm_subnet.data_subnet_storage.id
   resource_group_name                         = "${var.resource_prefix}-rg"
   nexis_storage_account_public_access         = false 
-  nexis_storage_account_subnet_access         = [data.azurerm_subnet.data_subnet_storage.id,data.azurerm_subnet.data_subnet_workstations.id,data.azurerm_subnet.data_subnet_transfer.id,data.azurerm_subnet.data_subnet_mediacentral.id]
+  nexis_storage_account_subnet_access         = [data.azurerm_subnet.data_subnet_storage.id,data.azurerm_subnet.data_subnet_core.id,data.azurerm_subnet.data_subnet_remote.id,data.azurerm_subnet.data_subnet_workstations.id,data.azurerm_subnet.data_subnet_transfer.id,data.azurerm_subnet.data_subnet_mediacentral.id]
   private_dns_zone_resource_group             = "abc3-rg"
   nexis_system_director_vm_size               = var.nexis_vm_size
   nexis_system_director_nb_instances          = var.nexis_online_nb_instances
