@@ -17,17 +17,12 @@ provider "azurerm" {
 
 locals {
   resource_group_name   = "${var.resource_prefix}-rg"
-  script_url            = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/Mediacentral/scripts/"
-  #stored_subnet_id      = module.editorial_networking.azurerm_subnet_ids                                    
+  script_url            = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/Mediacentral/scripts/"                                   
 }
-
-#0: Core | 1: Mediacentral | 2: Monitor | 3: Remote | 4: Storage | 5: Transfer | 6: Workstations
-
-########################## Core ##########################
 
 data "azurerm_subnet" "data_subnet_mediacentral" {
   name                 = "subnet_mediacentral"
-  virtual_network_name = "abc2-rg-vnet"
+  virtual_network_name = "${var.resource_prefix}-rg-vnet"
   resource_group_name  = "${var.resource_prefix}-rg"
 }
 
@@ -91,7 +86,7 @@ module "mccloudux_deployment" {
   source                        = "./modules/mccloudux"
   local_admin_username          = var.local_admin_username
   local_admin_password          = var.local_admin_password
-  resource_group_name         = "${var.resource_prefix}-rg"
+  resource_group_name           = "${var.resource_prefix}-rg"
   mccloudux_hostname            = "${var.resource_prefix}-mcux"
   resource_group_location       = var.resource_group_location
   vnet_subnet_id                = data.azurerm_subnet.data_subnet_mediacentral.id
