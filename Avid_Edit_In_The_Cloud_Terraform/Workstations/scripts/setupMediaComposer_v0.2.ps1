@@ -70,8 +70,15 @@ Install-ChocolatyAndPackages {
     Set-Service Audiosrv -StartupType Automatic
     Start-Service Audiosrv
 
+    $osInfo = Get-CimInstance -ClassName Win32_OperatingSystem
+
+    if ($osInfo.ProductType -eq 1){
+    Write-Log "Windows Desktop.No need to disable ServerManager"
+    } 
+    else {
     Write-Log "Disable ServerManager on Windows Server"
     Get-ScheduledTask -TaskName ServerManager | Disable-ScheduledTask -Verbose
+    }
 
     # Manually Download and Install Quicktime
     Write-Log "Install Quicktime"

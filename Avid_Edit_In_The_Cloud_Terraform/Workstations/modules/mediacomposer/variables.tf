@@ -96,7 +96,7 @@ variable "mediacomposer_internet_access" {
 
 variable "mediacomposerScript" {
   description = "Pscript to install MediaComposer"
-  default     = "setupMediaComposer_v0.1.ps1"
+  default     = "setupMediaComposer_v0.2.ps1"
 }
 
 variable "mediacomposerVersion" {   
