@@ -8,13 +8,13 @@ Avid will not be accountable for environment taken to production based on this r
 
  Modules are grouped together by collection: 
 
-- **Core**: Resource Group + Network + Domain Controller
-- **Mediacentral**: Asset Management + Cloud UX
-- **Monitor**: Zabbix
-- **Remote**: Jumpbox, Teradici CAC
-- **Transfer**: FileCatalyst, Aspera, Signiant
-- **Storage**: Nexis
-- **Workstations**: MediaComposer, ProTools
+- **Core**: Resource Group,Network, Domain Controller.
+- **Mediacentral**: Asset Management, Cloud UX.
+- **Monitor**: Zabbix.
+- **Remote**: Jumpbox, Teradici CAC.
+- **Transfer**: FileCatalyst, Aspera, Signiant.
+- **Storage**: Nexis.
+- **Workstations**: MediaComposer, ProTools.
 
 For the proof of concept, we will deploy the following network: 
 
