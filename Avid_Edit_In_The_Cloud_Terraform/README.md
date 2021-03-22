@@ -1,44 +1,40 @@
-# EitC - BYOL (Editorial In The Cloud)
+# Editorial In The Cloud - Terraform
 
-Terraform templates used to deploy the following 
+## Introduction
 
--Media Composer ( GPU ) with Teradici  
--Nexis (Online or Nearline)  
--Jumphost ( to access Nexis)  
-in any azure subscription.  
+This repository demonstrates how to deploy an *Editorial In The Cloud* environment based on Avid technology and partners via Terraform. This is a Proof of Concept based on a specific network. You will certainly have a different network architecture and should adapt each module to your specific environment. 
 
-Note : 
-* Make sure you have the right GPU SKU is available in the region  
+Avid will not be accountable for environment taken to production based on this repository. You should work with your own security team to make sure all module deployed follows your specific network rules and best practice. 
 
-## Requirement : 
+ Modules are grouped together by collection: 
 
--Terraform  
--Azure subscription   
--Avid Licenses (Nexis, Media composer)  
--Teradici licenses   
+- **Core**: Resource Group + Network + Domain Controller
+- **Mediacentral**: Asset Management + Cloud UX
+- **Monitor**: Zabbix
+- **Remote**: Jumpbox, Teradici CAC
+- **Transfer**: FileCatalyst, Aspera, Signiant
+- **Storage**: Nexis
+- **Workstations**: MediaComposer, ProTools
 
-## Arch
-![current + Next Version](./Arch.png)
+For the proof of concept, we will deploy the following network: 
+
+![current + Next Version](./network.png)
+
+## Installation 
+
+1. Clone entire repository
+1. Deploy 1 Resource Group with 1 vnet, 7 subnets and 1 Domain Controller (Core section)
+1. Navigate to each other section and add resource as needed (MediaCentral, Transfer, Workstations, Remote etc ...)  
+
+Please contact *Avid Cloud Practice* team to get tfvars files example. 
+
+## Additional documentaiton
+
+- Introduction to Terraform on Azure: [Terraform](https://learn.hashicorp.com/tutorials/terraform/infrastructure-as-code?in=terraform/aws-get-started)
+
+## Maintainer
+
+For any information or to report bug and security issue, feel free to contact benjamin.ghis@avid.com 
 
 
 
-## Basic installation 
-
-#### Setup 
-1. [Install az cli](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)    
-2. [Install Terraform](https://www.terraform.io/downloads.html)  
-3. copy EITC-BYOL to a local directory   
-4. login to Azure using az login command line   
-5. Edit  EITC-BYOL/main.tf with custom information   
-(note : Make sure you lock down source IP address / subnet)   
-6. execute terraform init  
-7. execute terrafrom plan   
-8. run terrafrom apply   
-
-
-
-## Backlog / Next Versions :
-Option to apply Avid License during installation   
-Setup connecting to existing Vnet / subnet  
-Adding firewall rules & seperating subnets (based on security standards)  
-Integrating with Azure AD for authenticatio

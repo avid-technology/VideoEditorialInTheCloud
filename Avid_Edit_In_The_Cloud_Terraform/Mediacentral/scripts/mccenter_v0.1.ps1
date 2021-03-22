@@ -83,10 +83,10 @@ Install-MediaCentralControlCenter {
     New-LocalGroup -Name "MC_Administrators"
 
     # Add mc_service to Local Administrator group
-    Add-LocalGroupMember -Group "Administrators" -Member "ABC0\mc_service"
+    Add-LocalGroupMember -Group "Administrators" -Member "ABC0\mc_service" # Might now work as not in domain yet before reboot 
 
     # Add mc_service to Local MC_Administrators group
-    Add-LocalGroupMember -Group "MC_Administrators" -Member "ABC0\mc_service"
+    Add-LocalGroupMember -Group "MC_Administrators" -Member "ABC0\mc_service" # Might now work as not in domain yet before reboot 
 }
 
 function
@@ -112,14 +112,14 @@ try {
             # chocolaty is best effort
         }
 
-        Install-MediaCentralControlCenter
-
         Write-Log "Add server to Domain"
         if ([string]::IsNullOrWhiteSpace(${DomainName})) {
                     Write-Log "Not added to any domain as no domain specified by user"
             } else {
                     Add-HostDomain
             }
+
+        Install-MediaCentralControlCenter
         
 }
 catch {
