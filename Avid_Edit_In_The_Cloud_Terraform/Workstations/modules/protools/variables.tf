@@ -127,7 +127,7 @@ variable "TeradiciInstaller" {
 
 variable "AvidNexisInstaller" {
     type    = string 
-    default = "AvidNEXISClient_Win64_20.12.0.9.msi"
+    default = "AvidNEXISClient_Win64_21.3.0.21.msi"
 }
 
 
