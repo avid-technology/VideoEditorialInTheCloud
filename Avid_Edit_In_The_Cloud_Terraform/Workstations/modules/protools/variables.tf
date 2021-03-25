@@ -124,7 +124,7 @@ variable "TeradiciKey" {
 
 variable "TeradiciInstaller" {
     type    = string 
-    default = "pcoip-agent-graphics_21.01.2.exe"
+    default = "pcoip-agent-graphics_21.03.0.exe"
 }
 
 ############## Nexis Client Variables ##############
