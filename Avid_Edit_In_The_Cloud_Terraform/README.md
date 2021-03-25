@@ -16,6 +16,8 @@ Avid will not be accountable for environment taken to production based on this r
 - **Storage**: Nexis.
 - **Workstations**: MediaComposer, ProTools.
 
+Each module contains a readme documentation to explain what the collection can build.
+
 For the proof of concept, we will deploy the following network: 
 
 ![current + Next Version](./network.png)
@@ -29,15 +31,14 @@ If you decide to not run this code in a container, make sure you have the follow
 - Terraform >= 0.14.4
 - Azure CLI >= 2.17.1
 - Ansible >= 2.9.6
-- Packer >=1.6.6
+- Packer >= 1.6.6
+- Azurerm >= 2.26
 
 ## Installation 
 
-1. Clone entire repository
-1. Deploy 1 Resource Group with 1 vnet, 7 subnets and 1 Domain Controller (Core section)
-1. Navigate to each other section and add resource as needed (MediaCentral, Transfer, Workstations, Remote etc ...)  
-
-Please contact *Avid Cloud Practice* team to get tfvars files example. 
+1. Clone entire repository.
+1. Navigate to Core collection. Use Terraform apply to deploy 1 Resource Group with 1 vnet, 7 subnets and 1 Domain Controller.
+1. Navigate to each other collection and add resource as needed (MediaCentral, Transfer, Workstations, Remote etc ...)  
 
 ## Additional documentaiton
 

@@ -27,7 +27,8 @@ module "editorial_networking" {
   create_subnet_Remote          = true
   create_subnet_Storage         = true
   create_subnet_Transfer        = true
-  create_subnet_Workstations    = true
+  create_subnet_Workstations    = true  
+  # Subnet core is always created by default
   subnets                       = { 
                                         subnet_core="10.1.0.0/24"
                                         subnet_mediacentral="10.1.1.0/24"
@@ -48,28 +49,28 @@ module "domaincontroller_deployment" {
   local_admin_password              = "Password123$"
   resource_group_name               = "poc-rg"
   resource_group_location           = "southcentralus"
-  domainName                        = "poc.internal"
+  #domainName                        = "poc.internal"
   vnet_name                         = "poc-rg-vnet"
   subnet_name                       = "subnet_core"
-  script_url                        = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/release/0.0.4/Avid_Edit_In_The_Cloud_Terraform/Core/scripts/"
+  script_url                        = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/Core/scripts/"
   installers_url                    = "https://eitcstore01.blob.core.windows.net/installers/"
   domaincontroller_vm_size          = "Standard_D4s_v3"
   domaincontroller_vm_hostname      = "poc-dc"
   domaincontroller_nb_instances     = 1
-  domaincontroller_internet_access  = true
+  domaincontroller_internet_access  = false
   depends_on                        = [module.editorial_networking]
 }
 
-resource "azurerm_private_dns_zone" "private_dns_zone_storage_account" {
-  name                = "privatelink.blob.core.windows.net"
-  resource_group_name = "poc-rg"
-  depends_on          = [module.editorial_networking]
-}
+# resource "azurerm_private_dns_zone" "private_dns_zone_storage_account" {
+#   name                = "privatelink.blob.core.windows.net"
+#   resource_group_name = "poc-rg"
+#   depends_on          = [module.editorial_networking]
+# }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "private_dns_zone_storage_account_link" {
-  name                  = "blob_private_zone_dns_vnet_link"
-  resource_group_name   = "poc-rg"
-  private_dns_zone_name = "privatelink.blob.core.windows.net"
-  virtual_network_id    = module.editorial_networking.vnet_id
-  depends_on            = [azurerm_private_dns_zone.private_dns_zone_storage_account]
-}
+# resource "azurerm_private_dns_zone_virtual_network_link" "private_dns_zone_storage_account_link" {
+#   name                  = "blob_private_zone_dns_vnet_link"
+#   resource_group_name   = "poc-rg"
+#   private_dns_zone_name = "privatelink.blob.core.windows.net"
+#   virtual_network_id    = module.editorial_networking.vnet_id
+#   depends_on            = [azurerm_private_dns_zone.private_dns_zone_storage_account]
+# }
