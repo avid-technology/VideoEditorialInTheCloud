@@ -16,16 +16,14 @@ provider "azurerm" {
 }
 
 locals {
-  #resource_group_name   = "${var.resource_prefix}-rg"
-  #script_url            = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/Workstations/scripts/" 
   resource_prefix       = "abc0" # Max 4 characters                                   
 }
 
-data "azurerm_subnet" "data_subnet_workstations" {
-  name                 = "subnet_workstations"
-  virtual_network_name = "abc0-rg-vnet"
-  resource_group_name  = "abc0-rg"
-}
+# data "azurerm_subnet" "data_subnet_workstations" {
+#   name                 = "subnet_workstations"
+#   virtual_network_name = "abc0-rg-vnet"
+#   resource_group_name  = "abc0-rg"
+# }
 
 module "mediacomposer_deployment" {
   source                            = "./modules/mediacomposer"

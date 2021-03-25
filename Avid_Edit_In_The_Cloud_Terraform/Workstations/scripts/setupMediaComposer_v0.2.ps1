@@ -70,8 +70,6 @@ Install-ChocolatyAndPackages {
     Set-Service Audiosrv -StartupType Automatic
     Start-Service Audiosrv
 
-    $osInfo = Get-CimInstance -ClassName Win32_OperatingSystem
-
     # Manually Download and Install Quicktime
     Write-Log "Install Quicktime"
     $QuicktimeURL = "https://secure-appldnld.apple.com/QuickTime/031-43075-20160107-C0844134-B3CD-11E5-B1C0-43CA8D551951/QuickTimeInstaller.exe"
@@ -83,6 +81,7 @@ Install-ChocolatyAndPackages {
     Start-Process $msiexecPath -ArgumentList "/i", "D:\AzureData\AppleApplicationSupport.msi", "/passive", "/quiet", "/norestart" -Wait
     Start-Process $msiexecPath -ArgumentList "/i", "D:\AzureData\Quicktime.msi", "/quiet", "/passive", "/norestart", "/L*V D:/AzureData/qt_install.log" -Wait
 
+    # $osInfo = Get-CimInstance -ClassName Win32_OperatingSystem
     # if ($osInfo.ProductType -eq 1){
     # Write-Log "Windows Desktop.No need to disable ServerManager"
     # } 
