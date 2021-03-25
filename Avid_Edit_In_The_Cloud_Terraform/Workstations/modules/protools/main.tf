@@ -1,3 +1,9 @@
+data "azurerm_subnet" "data_subnet_workstations" {
+  name                 = var.subnet_name
+  virtual_network_name = var.vnet_name
+  resource_group_name  = var.resource_group_name
+}
+
 locals {
   #resource_group_name       = "${var.resource_prefix}-rg"
   #protools_vm_hostname      = "${var.resource_prefix}-pt"
@@ -26,7 +32,7 @@ resource "azurerm_network_interface" "protools_nic" {
 
   ip_configuration {
     name                          = "ipconfig"
-    subnet_id                     = var.vnet_subnet_id
+    subnet_id                     = data.azurerm_subnet.data_subnet_workstations.id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = var.protools_internet_access ? azurerm_public_ip.protools_ip[count.index].id : ""
   }
