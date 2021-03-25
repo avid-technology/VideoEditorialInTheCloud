@@ -1,3 +1,9 @@
+data "azurerm_subnet" "data_subnet" {
+  name                 = var.subnet_name
+  virtual_network_name = var.vnet_name
+  resource_group_name  = var.resource_group_name
+}
+
 locals{
   #resource_group_name         = "${var.resource_prefix}-rg"
   #hostname                    = "${var.resource_prefix}-cac"
@@ -21,7 +27,7 @@ resource "azurerm_network_interface" "teradicicac_nic" {
 
   ip_configuration {
     name                          = "ipconfig"
-    subnet_id                     = var.vnet_subnet_id
+    subnet_id                     = data.azurerm_subnet.data_subnet.id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = var.teradicicac_internet_access ? azurerm_public_ip.teradicicac_ip[count.index].id : ""
   }
@@ -34,15 +40,15 @@ resource "azurerm_linux_virtual_machine" "teradicicac_vm" {
   resource_group_name               = var.resource_group_name
   size                              = var.teradicicac_vm_size
   admin_username                    = var.local_admin_username
-  #admin_password                   = var.local_admin_password
+  admin_password                   = var.local_admin_password
   computer_name                     = "${var.teradicicac_vm_hostname}-vm-${format("%02d",count.index)}"
-  disable_password_authentication   = true
+  disable_password_authentication   = false
   network_interface_ids             = [azurerm_network_interface.teradicicac_nic[count.index].id]
 
-admin_ssh_key {
-  username   = var.local_admin_username
-  public_key = file("~/.ssh/id_rsa.pub")
-  }
+# admin_ssh_key {
+#   username   = var.local_admin_username
+#   public_key = file("~/.ssh/id_rsa.pub")
+#   }
 
  source_image_reference {
     publisher = "Canonical"
