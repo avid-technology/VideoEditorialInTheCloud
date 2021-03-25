@@ -57,7 +57,7 @@ module "teradicicac_deployment" {
   teradicicac_vm_hostname       = "poc-cac"
   teradicicac_vm_size           = "Standard_D2s_v3"
   teradicicac_nb_instances      = 1
-  script_url                    = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/release/0.0.4/Avid_Edit_In_The_Cloud_Terraform/Remote/scripts/"
+  script_url                    = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/Remote/scripts/"
   teradicicacScript             = "teradicicac_v0.1.bash"
   teradicicac_internet_access   = true
   installers_url                = "https://eitcstore01.blob.core.windows.net/installers/"
