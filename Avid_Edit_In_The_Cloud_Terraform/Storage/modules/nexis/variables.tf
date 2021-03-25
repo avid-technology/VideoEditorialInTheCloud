@@ -18,8 +18,12 @@ variable "resource_group_location" {
   description = "Location of resource group where to build resources"
 }
 
-variable "vnet_subnet_id" {
-  description = "Subnet where resources will be built"
+variable "vnet_name" {
+  description = "Name of vnet where resource will be built"
+}
+
+variable "subnet_name" {
+  description = "Name of subnet where resource will be built"
 }
 
 variable "resource_group_name" {
@@ -33,10 +37,10 @@ variable "nexis_storage_account_public_access" {
   default     = false
 }
 
-variable "nexis_storage_account_subnet_access" {
-  description = "Subnet that can get access to Nexis storage account. Make sure Service Endpoint 'Microsoft.Storage' has been activated on all subnet(s) that need access to storage account."
-  default     = []
-}
+# variable "nexis_storage_account_subnet_access" {
+#   description = "Subnet that can get access to Nexis storage account. Make sure Service Endpoint 'Microsoft.Storage' has been activated on all subnet(s) that need access to storage account."
+#   default     = []
+# }
 
 variable "nexis_system_director_vm_size" {
   description = "Size of Nexis VM. Should be either Standard_F16s_v2 (recommended) or Standard_DS4_v2 (legacy)"
@@ -72,11 +76,11 @@ variable "nexis_system_director_vm_build" {
   default     = "AvidNEXISCloud_20.7.5-23.run"
 }
 
-variable "private_dns_zone_resource_group" { 
-  type        = string
-  description = "Resource group where private dns zone is located. Private DNS zone for storage account must be named: privatelink.blob.core.windows.net."
-  default     = ""
-}
+# variable "private_dns_zone_resource_group" { 
+#   type        = string
+#   description = "Resource group where private dns zone is located. Private DNS zone for storage account must be named: privatelink.blob.core.windows.net."
+#   default     = ""
+# }
 
 variable "nexis_system_director_image_reference" {
   type = map

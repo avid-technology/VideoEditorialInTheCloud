@@ -37,7 +37,7 @@ module "jumpbox_deployment" {
   resource_group_location       = "southcentralus"
   vnet_name                     = "poc-rg-vnet"
   subnet_name                   = "subnet_remote"
-  script_url                    = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/release/0.0.4/Avid_Edit_In_The_Cloud_Terraform/Core/scripts/"
+  script_url                    = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/release/0.0.4/Avid_Edit_In_The_Cloud_Terraform/Remote/scripts/"
   installers_url                = "https://eitcstore01.blob.core.windows.net/installers/"
   jumpbox_vm_hostname           = "poc-jx"
   jumpbox_vm_size               = "Standard_D4s_v3"

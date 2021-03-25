@@ -4,10 +4,10 @@ variable "local_admin_username" {
   description = "Admin Username for Virtual Machines"
 }
 
-#variable "local_admin_password" {
-#  description = "Admin Password for Virtual Machines"
-#  sensitive   = true
-#}
+variable "local_admin_password" {
+ description = "Admin Password for Virtual Machines"
+ sensitive   = true
+}
 
 variable "resource_group_name" {
   description = "Name of resource group where to build resources"

@@ -78,6 +78,7 @@ Install-ChocolatyAndPackages {
     # Start-Process $msiexecPath -ArgumentList "/i", "D:\AzureData\Quicktime.msi", "/quiet", "/passive", "/norestart", "/L*V D:/AzureData/qt_install.log" -Wait
 
     $osInfo = Get-CimInstance -ClassName Win32_OperatingSystem
+    
     if ($osInfo.ProductType -eq 1){
     Write-Log "Windows Desktop.No need to disable ServerManager"
     } 

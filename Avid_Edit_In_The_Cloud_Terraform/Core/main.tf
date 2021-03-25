@@ -15,11 +15,6 @@ provider "azurerm" {
   features {}
 }
 
-locals {
-  #resource_group_name   = "${var.resource_prefix}-rg"
-  #script_url            = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/Core/scripts/"                                   
-}
-
 module "editorial_networking" {
   source                        = "./modules/network"
   vnet_name                     = "poc-rg-vnet" 

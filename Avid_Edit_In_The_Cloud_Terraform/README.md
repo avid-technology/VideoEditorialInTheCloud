@@ -20,6 +20,17 @@ For the proof of concept, we will deploy the following network:
 
 ![current + Next Version](./network.png)
 
+## Prerequisite
+
+There is a dockerfile at the repository root to help you run this code in a container. This solution has been tested with Docker version 20.10.5. 
+
+If you decide to not run this code in a container, make sure you have the following tool and version: 
+
+- Terraform >= 0.14.4
+- Azure CLI >= 2.17.1
+- Ansible >= 2.9.6
+- Packer >=1.6.6
+
 ## Installation 
 
 1. Clone entire repository
