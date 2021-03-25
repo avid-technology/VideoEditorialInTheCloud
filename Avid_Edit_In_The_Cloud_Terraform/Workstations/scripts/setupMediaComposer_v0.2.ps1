@@ -66,29 +66,29 @@ Install-ChocolatyAndPackages {
     Write-Log "choco Install Google Chrome"
     choco install -y googlechrome -ignore-checksum
 
+    # Manually Download and Install Quicktime
+    Write-Log "Download Quicktime"
+    $QuicktimeURL = "https://secure-appldnld.apple.com/QuickTime/031-43075-20160107-C0844134-B3CD-11E5-B1C0-43CA8D551951/QuickTimeInstaller.exe"
+    DownloadFileOverHttp $QuicktimeURL "C:\Users\Public\Desktop\QuicktimeInstaller.exe"
+
+    # $msiexecPath = "C:\Windows\System32\msiexec.exe"
+    # Start-Process "D:\AzureData\QuicktimeInstaller.exe" -ArgumentList "/extract", "D:\AzureData" -Wait
+    # Start-Process $msiexecPath -ArgumentList "/i", "D:\AzureData\AppleSoftwareUpdate.msi", "/passive", "/quiet", "/norestart" -Wait
+    # Start-Process $msiexecPath -ArgumentList "/i", "D:\AzureData\AppleApplicationSupport.msi", "/passive", "/quiet", "/norestart" -Wait
+    # Start-Process $msiexecPath -ArgumentList "/i", "D:\AzureData\Quicktime.msi", "/quiet", "/passive", "/norestart", "/L*V D:/AzureData/qt_install.log" -Wait
+
+    $osInfo = Get-CimInstance -ClassName Win32_OperatingSystem
+    if ($osInfo.ProductType -eq 1){
+    Write-Log "Windows Desktop.No need to disable ServerManager"
+    } 
+    else {
     Write-Log "Enable the Audio service for Windows Server"
     Set-Service Audiosrv -StartupType Automatic
     Start-Service Audiosrv
 
-    # Manually Download and Install Quicktime
-    Write-Log "Install Quicktime"
-    $QuicktimeURL = "https://secure-appldnld.apple.com/QuickTime/031-43075-20160107-C0844134-B3CD-11E5-B1C0-43CA8D551951/QuickTimeInstaller.exe"
-    DownloadFileOverHttp $QuicktimeURL "D:\AzureData\QuicktimeInstaller.exe"
-
-    $msiexecPath = "C:\Windows\System32\msiexec.exe"
-    Start-Process "D:\AzureData\QuicktimeInstaller.exe" -ArgumentList "/extract", "D:\AzureData" -Wait
-    Start-Process $msiexecPath -ArgumentList "/i", "D:\AzureData\AppleSoftwareUpdate.msi", "/passive", "/quiet", "/norestart" -Wait
-    Start-Process $msiexecPath -ArgumentList "/i", "D:\AzureData\AppleApplicationSupport.msi", "/passive", "/quiet", "/norestart" -Wait
-    Start-Process $msiexecPath -ArgumentList "/i", "D:\AzureData\Quicktime.msi", "/quiet", "/passive", "/norestart", "/L*V D:/AzureData/qt_install.log" -Wait
-
-    # $osInfo = Get-CimInstance -ClassName Win32_OperatingSystem
-    # if ($osInfo.ProductType -eq 1){
-    # Write-Log "Windows Desktop.No need to disable ServerManager"
-    # } 
-    # else {
-    # Write-Log "Disable ServerManager on Windows Server"
-    # Get-ScheduledTask -TaskName ServerManager | Disable-ScheduledTask -Verbose
-    # }
+    Write-Log "Disable ServerManager on Windows Server"
+    Get-ScheduledTask -TaskName ServerManager | Disable-ScheduledTask -Verbose
+    }
 
 }
 
@@ -209,6 +209,9 @@ try {
     if ($true) 
     {
         
+        Write-Log "Create Download folder"
+        mkdir D:\AzureData
+
         try {
             Write-Log "Installing chocolaty and packages"
             Install-ChocolatyAndPackages
@@ -216,9 +219,6 @@ try {
         catch {
             # chocolaty is best effort
         }   
-
-        Write-Log "Create Download folder"
-        mkdir D:\AzureData
 
         Write-Log "Call Install-Teradici"
         Install-Teradici

@@ -70,16 +70,16 @@ Install-ChocolatyAndPackages {
     Set-Service Audiosrv -StartupType Automatic
     Start-Service Audiosrv
 
-    # Manually Download and Install Quicktime
-    Write-Log "Install Quicktime"
+    # Download Quicktime on desktop
+    Write-Log "Download Quicktime"
     $QuicktimeURL = "https://secure-appldnld.apple.com/QuickTime/031-43075-20160107-C0844134-B3CD-11E5-B1C0-43CA8D551951/QuickTimeInstaller.exe"
-    DownloadFileOverHttp $QuicktimeURL "D:\AzureData\QuicktimeInstaller.exe"
+    DownloadFileOverHttp $QuicktimeURL "C:\Users\Public\Desktop\QuicktimeInstaller.exe"
 
-    $msiexecPath = "C:\Windows\System32\msiexec.exe"
-    Start-Process "D:\AzureData\QuicktimeInstaller.exe" -ArgumentList "/extract", "D:\AzureData" -Wait
-    Start-Process $msiexecPath -ArgumentList "/i", "D:\AzureData\AppleSoftwareUpdate.msi", "/passive", "/quiet", "/norestart" -Wait
-    Start-Process $msiexecPath -ArgumentList "/i", "D:\AzureData\AppleApplicationSupport.msi", "/passive", "/quiet", "/norestart" -Wait
-    Start-Process $msiexecPath -ArgumentList "/i", "D:\AzureData\Quicktime.msi", "/quiet", "/passive", "/norestart", "/L*V D:/AzureData/qt_install.log" -Wait
+    # $msiexecPath = "C:\Windows\System32\msiexec.exe"
+    # Start-Process "D:\AzureData\QuicktimeInstaller.exe" -ArgumentList "/extract", "D:\AzureData" -Wait
+    # Start-Process $msiexecPath -ArgumentList "/i", "D:\AzureData\AppleSoftwareUpdate.msi", "/passive", "/quiet", "/norestart" -Wait
+    # Start-Process $msiexecPath -ArgumentList "/i", "D:\AzureData\AppleApplicationSupport.msi", "/passive", "/quiet", "/norestart" -Wait
+    # Start-Process $msiexecPath -ArgumentList "/i", "D:\AzureData\Quicktime.msi", "/quiet", "/passive", "/norestart", "/L*V D:/AzureData/qt_install.log" -Wait
 
     # $osInfo = Get-CimInstance -ClassName Win32_OperatingSystem
     # if ($osInfo.ProductType -eq 1){

@@ -46,7 +46,7 @@ module "mediacomposer_deployment" {
   mediacomposerScript               = "setupMediaComposer_v0.2.ps1" 
   mediacomposerVersion              = "2020.12.0"    # Options available: 2018.12.14, 2020.12.0, 2021.2.0
   TeradiciKey                       = "0000"
-  TeradiciInstaller                 = "pcoip-agent-graphics_21.01.4.exe"
+  TeradiciInstaller                 = "pcoip-agent-graphics_21.03.0.exe"
   AvidNexisInstaller                = "AvidNEXISClient_Win64_21.3.0.21.msi" 
 }
 
@@ -69,8 +69,8 @@ module "protools_deployment" {
   protools_nb_instances             = 0
   protools_internet_access          = true
   protoolsScript                    = "setupProTools_v0.1.ps1"
-  ProToolsVersion                   = "2020.11.0"
+  ProToolsVersion                   = "2020.11.0"   # Options available: 2020.11.0
   TeradiciKey                       = "0000"
-  TeradiciInstaller                 = "pcoip-agent-graphics_21.01.4.exe"
+  TeradiciInstaller                 = "pcoip-agent-graphics_21.03.0.exe"
   AvidNexisInstaller                = "AvidNEXISClient_Win64_21.3.0.21.msi"
 }
