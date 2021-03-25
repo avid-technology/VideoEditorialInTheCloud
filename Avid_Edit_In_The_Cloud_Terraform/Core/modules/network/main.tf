@@ -103,7 +103,7 @@ resource "azurerm_network_security_rule" "security_rule_rdp" {
   access                      = "Allow"
   protocol                    = "Tcp"
   source_port_range           = "*"
-  source_address_prefixes     = var.whitelist_ip
+  source_address_prefix       = "*"
   destination_port_range      = "3389"
   destination_address_prefix  = "*"
   resource_group_name         = azurerm_resource_group.resource_group.name
@@ -118,7 +118,7 @@ resource "azurerm_network_security_rule" "security_rule_ssh" {
   access                      = "Allow"
   protocol                    = "Tcp"
   source_port_range           = "*"
-  source_address_prefixes     = var.whitelist_ip
+  source_address_prefix       = "*"
   destination_port_range      = "22"
   destination_address_prefix  = "*"
   resource_group_name         = azurerm_resource_group.resource_group.name
@@ -133,7 +133,7 @@ resource "azurerm_network_security_rule" "security_rule_ansible" {
   access                      = "Allow"
   protocol                    = "Tcp"
   source_port_range           = "*"
-  source_address_prefixes     = var.whitelist_ip
+  source_address_prefix       = "*"
   destination_port_range      = "5986"
   destination_address_prefix  = "*"
   resource_group_name         = azurerm_resource_group.resource_group.name
@@ -148,7 +148,7 @@ resource "azurerm_network_security_rule" "security_rule_https" {
   access                      = "Allow"
   protocol                    = "Tcp"
   source_port_range           = "*"
-  source_address_prefixes     = var.whitelist_ip
+  source_address_prefix       = "*"
   destination_port_range      = "443"
   destination_address_prefix  = "*"
   resource_group_name         = azurerm_resource_group.resource_group.name
@@ -163,7 +163,7 @@ resource "azurerm_network_security_rule" "security_rule_teradici_in_tcp" {
   access                      = "Allow"
   protocol                    = "Tcp"
   source_port_range           = "*"
-  source_address_prefixes     = var.whitelist_ip
+  source_address_prefix       = "*"
   destination_port_ranges     = ["4172","60443"]
   destination_address_prefix  = "*"
   resource_group_name         = azurerm_resource_group.resource_group.name
@@ -178,7 +178,7 @@ resource "azurerm_network_security_rule" "security_rule_teradici_in_udp" {
   access                      = "Allow"
   protocol                    = "Udp"
   source_port_range           = "*"
-  source_address_prefixes     = var.whitelist_ip
+  source_address_prefix       = "*"
   destination_port_range      = "4172"
   destination_address_prefix  = "*"
   resource_group_name         = azurerm_resource_group.resource_group.name

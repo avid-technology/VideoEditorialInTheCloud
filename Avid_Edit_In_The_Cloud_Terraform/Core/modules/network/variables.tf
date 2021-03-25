@@ -38,10 +38,10 @@ variable "subnets" {
   default     = {default = "10.1.0.0/24"}
 }
 
-variable "whitelist_ip" {
-  description = "Give a name to security group"
-  type        = list(string)
-}
+# variable "whitelist_ip" {
+#   description = "Give a name to security group"
+#   type        = list(string)
+# }
 
 variable "create_subnet_Mediacentral" {
   description = "Create Subnet Core"

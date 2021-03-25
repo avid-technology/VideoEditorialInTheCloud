@@ -1,3 +1,8 @@
+data "azurerm_subnet" "data_subnet_workstations" {
+  name                 = var.subnet_name
+  virtual_network_name = var.vnet_name
+  resource_group_name  = var.resource_group_name
+}
 
 resource "azurerm_public_ip" "domaincontroller_ip" {
   count               = var.domaincontroller_internet_access ? var.domaincontroller_nb_instances : 0
@@ -16,7 +21,7 @@ resource "azurerm_network_interface" "domaincontroller_nic" {
 
   ip_configuration {
     name                          = "ipconfig"
-    subnet_id                     = var.vnet_subnet_id
+    subnet_id                     = data.azurerm_subnet.data_subnet_workstations.id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = var.domaincontroller_internet_access ? azurerm_public_ip.domaincontroller_ip[count.index].id : ""
   }
