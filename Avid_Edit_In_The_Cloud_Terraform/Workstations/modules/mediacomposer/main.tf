@@ -1,3 +1,9 @@
+data "azurerm_subnet" "data_subnet" {
+  name                 = var.subnet_name
+  virtual_network_name = var.vnet_name
+  resource_group_name  = var.resource_group_name
+}
+
 locals {
   #resource_group_name       = "${var.resource_prefix}-rg"
   #mediacomposer_vm_hostname = "${var.resource_prefix}-mc"
@@ -26,7 +32,7 @@ resource "azurerm_network_interface" "mediacomposer_nic" {
 
   ip_configuration {
     name                          = "ipconfig"
-    subnet_id                     = var.vnet_subnet_id
+    subnet_id                     = data.azurerm_subnet.data_subnet.id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = var.mediacomposer_internet_access ? azurerm_public_ip.mediacomposer_ip[count.index].id : ""
   }

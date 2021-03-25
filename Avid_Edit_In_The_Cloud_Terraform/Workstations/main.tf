@@ -15,61 +15,62 @@ provider "azurerm" {
   features {}
 }
 
-locals {
-  resource_group_name   = "${var.resource_prefix}-rg"
-  script_url            = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/Workstations/scripts/"                                    
-}
+# locals {
+#   resource_prefix       = "abc0" # Max 4 characters                                   
+# }
 
-data "azurerm_subnet" "data_subnet_workstations" {
-  name                 = "subnet_workstations"
-  virtual_network_name = "${var.resource_prefix}-rg-vnet"
-  resource_group_name  = "${var.resource_prefix}-rg"
-}
+# data "azurerm_subnet" "data_subnet_workstations" {
+#   name                 = "subnet_workstations"
+#   virtual_network_name = "abc0-rg-vnet"
+#   resource_group_name  = "abc0-rg"
+# }
 
 module "mediacomposer_deployment" {
   source                            = "./modules/mediacomposer"
-  local_admin_username              = var.local_admin_username
-  local_admin_password              = var.local_admin_password
-  domainName                        = var.domainName
-  domain_admin_username             = var.domain_admin_username
-  domain_admin_password             = var.domain_admin_password
-  script_url                        = local.script_url
-  installers_url                    = var.installers_url
-  resource_group_name               = "${var.resource_prefix}-rg"
-  resource_group_location           = var.resource_group_location
-  vnet_subnet_id                    = data.azurerm_subnet.data_subnet_workstations.id
-  gpu_type                          = var.gpu_type
-  mediacomposer_vm_hostname         = "${var.resource_prefix}-mc"
-  mediacomposer_vm_size             = var.mediacomposer_vm_size
-  mediacomposer_nb_instances        = var.mediacomposer_nb_instances
-  mediacomposer_internet_access     = var.mediacomposer_internet_access
-  mediacomposerScript               = var.mediacomposerScript 
-  mediacomposerVersion              = var.mediacomposerVersion
-  TeradiciKey                       = var.TeradiciKey
-  TeradiciInstaller                 = var.TeradiciInstaller
-  AvidNexisInstaller                = var.AvidNexisInstaller 
+  local_admin_username              = "local-admin"
+  local_admin_password              = "Password123$"
+  # domainName                        = "poc.internal"
+  # domain_admin_username             = "domain-admin"
+  # domain_admin_password             = "Password123!"
+  script_url                        = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/Workstations/scripts/" 
+  installers_url                    = "https://eitcstore01.blob.core.windows.net/installers/"
+  resource_group_name               = "poc-rg"
+  resource_group_location           = "southcentralus"
+  vnet_name                         = "poc-rg-vnet"
+  subnet_name                       = "subnet_workstations"
+  gpu_type                          = "Nvidia"    # Either Nvidia or Amd
+  mediacomposer_vm_hostname         = "poc-mc"
+  mediacomposer_vm_size             = "Standard_NV12s_v3" # Options available: Standard_NV8as_v4, Standard_NV16as_v4, Standard_NV32as_v4, Standard_NV12s_v3, Standard_NV24s_v3, Standard_NV48s_v3
+  mediacomposer_nb_instances        = 1
+  mediacomposer_internet_access     = false
+  mediacomposerScript               = "setupMediaComposer_v0.2.ps1" 
+  mediacomposerVersion              = "2020.12.0"    # Options available: 2018.12.14, 2020.12.0, 2021.2.0
+  TeradiciKey                       = "0000"
+  TeradiciInstaller                 = "pcoip-agent-graphics_21.03.0.exe"
+  AvidNexisInstaller                = "AvidNEXISClient_Win64_21.3.0.21.msi" 
 }
 
 module "protools_deployment" {
   source                            = "./modules/protools"
-  resource_group_name               = "${var.resource_prefix}-rg"
-  resource_group_location           = var.resource_group_location
-  vnet_subnet_id                    = data.azurerm_subnet.data_subnet_workstations.id
-  gpu_type                          = var.gpu_type
-  script_url                        = local.script_url 
-  installers_url                    = var.installers_url
-  local_admin_username              = var.local_admin_username
-  local_admin_password              = var.local_admin_password
-  domainName                        = var.domainName
-  domain_admin_username             = var.domain_admin_username
-  domain_admin_password             = var.domain_admin_password
-  protools_vm_hostname              = "${var.resource_prefix}-pt"
-  protools_vm_size                  = var.protools_vm_size
-  protools_nb_instances             = var.protools_nb_instances
-  protools_internet_access          = var.protools_internet_access
-  protoolsScript                    = var.protoolsScript 
-  ProToolsVersion                   = var.ProToolsVersion
-  TeradiciKey                       = var.TeradiciKey
-  TeradiciInstaller                 = var.TeradiciInstaller
-  AvidNexisInstaller                = var.AvidNexisInstaller
+  local_admin_username              = "local-admin"
+  local_admin_password              = "Password123$"
+  # domainName                        = "poc.internal"
+  # domain_admin_username             = "domain-admin"
+  # domain_admin_password             = "Password123!"
+  script_url                        = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/Workstations/scripts/" 
+  installers_url                    = "https://eitcstore01.blob.core.windows.net/installers/"
+  resource_group_name               = "poc-rg"
+  resource_group_location           = "southcentralus"
+  vnet_name                         = "poc-rg-vnet"
+  subnet_name                       = "subnet_workstations"
+  gpu_type                          = "Nvidia"
+  protools_vm_hostname              = "poc-pt"
+  protools_vm_size                  = "Standard_NV12s_v3" # Options available: Standard_NV8as_v4, Standard_NV16as_v4, Standard_NV32as_v4, Standard_NV12s_v3, Standard_NV24s_v3, Standard_NV48s_v3
+  protools_nb_instances             = 1
+  protools_internet_access          = false
+  protoolsScript                    = "setupProTools_v0.1.ps1"
+  ProToolsVersion                   = "2020.11.0"   # Options available: 2020.11.0
+  TeradiciKey                       = "0000"
+  TeradiciInstaller                 = "pcoip-agent-graphics_21.03.0.exe"
+  AvidNexisInstaller                = "AvidNEXISClient_Win64_21.3.0.21.msi"
 }

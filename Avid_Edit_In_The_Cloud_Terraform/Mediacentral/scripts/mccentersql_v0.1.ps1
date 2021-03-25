@@ -85,6 +85,9 @@ try {
                     Add-HostDomain
             }
         
+        # Add mc_service to Local Administrator group
+        Add-LocalGroupMember -Group "Administrators" -Member "ABC0\mc_service"
+        
 }
 catch {
     Write-Error $_

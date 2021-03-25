@@ -15,48 +15,50 @@ provider "azurerm" {
   features {}
 }
 
-locals {
-  resource_group_name   = "${var.resource_prefix}-rg"
-  script_url            = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/Remote/scripts/"                                   
-}
+# locals {
+#   resource_group_name   = "${var.resource_prefix}-rg"
+#   script_url            = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/Remote/scripts/"                                   
+# }
 
-data "azurerm_subnet" "data_subnet_remote" {
-  name                 = "subnet_remote"
-  virtual_network_name = "${var.resource_prefix}-rg-vnet"
-  resource_group_name  = "${var.resource_prefix}-rg"
-}
+# data "azurerm_subnet" "data_subnet_remote" {
+#   name                 = "subnet_remote"
+#   virtual_network_name = "${var.resource_prefix}-rg-vnet"
+#   resource_group_name  = "${var.resource_prefix}-rg"
+# }
 
 module "jumpbox_deployment" {
   source                        = "./modules/jumpbox"
-  local_admin_username          = var.local_admin_username
-  local_admin_password          = var.local_admin_password
-  domain_admin_username         = var.domain_admin_username
-  domain_admin_password         = var.domain_admin_password
-  domainName                    = var.domainName
-  resource_group_name           = "${var.resource_prefix}-rg"
-  resource_group_location       = var.resource_group_location
-  vnet_subnet_id                = data.azurerm_subnet.data_subnet_remote.id
-  script_url                    = local.script_url
-  installers_url                = var.installers_url
-  jumpbox_vm_hostname           = "${var.resource_prefix}-jx"
-  jumpbox_vm_size               = var.jumpbox_vm_size
-  jumpbox_nb_instances          = var.jumpbox_nb_instances
-  JumpboxScript                 = var.JumpboxScript
-  jumpbox_internet_access       = var.jumpbox_internet_access 
+  local_admin_username          = "local-admin"
+  local_admin_password          = "Password123$"
+  # domain_admin_username         = "domain-admin"
+  # domain_admin_password         = "Password123!"
+  # domainName                    = "poc.internal"
+  resource_group_name           = "poc-rg"
+  resource_group_location       = "southcentralus"
+  vnet_name                     = "poc-rg-vnet"
+  subnet_name                   = "subnet_remote"
+  script_url                    = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/Remote/scripts/"
+  installers_url                = "https://eitcstore01.blob.core.windows.net/installers/"
+  jumpbox_vm_hostname           = "poc-jx"
+  jumpbox_vm_size               = "Standard_D4s_v3"
+  jumpbox_nb_instances          = 1
+  JumpboxScript                 = "jumpbox_v0.1.ps1"
+  jumpbox_internet_access       = true 
 }
 
 module "teradicicac_deployment" {
   source                        = "./modules/teradici_cac"
-  local_admin_username          = var.local_admin_username
-  #local_admin_password         = var.local_admin_password
-  resource_group_name           = "${var.resource_prefix}-rg"
-  resource_group_location       = var.resource_group_location
-  vnet_subnet_id                = data.azurerm_subnet.data_subnet_remote.id
-  teradicicac_vm_hostname       = "${var.resource_prefix}-cac"
+  local_admin_username          = "local-admin"
+  local_admin_password          = "Password123$"
+  resource_group_name           = "poc-rg"
+  resource_group_location       = "southcentralus"
+  vnet_name                     = "poc-rg-vnet"
+  subnet_name                   = "subnet_remote"
+  teradicicac_vm_hostname       = "poc-cac"
   teradicicac_vm_size           = "Standard_D2s_v3"
-  teradicicac_nb_instances      = var.teradicicac_nb_instances
-  script_url                    = local.script_url
+  teradicicac_nb_instances      = 1
+  script_url                    = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/Remote/scripts/"
   teradicicacScript             = "teradicicac_v0.1.bash"
   teradicicac_internet_access   = true
-  installers_url                = var.installers_url
+  installers_url                = "https://eitcstore01.blob.core.windows.net/installers/"
 }

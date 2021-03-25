@@ -16,8 +16,12 @@ variable "resource_group_location" {
   description = "Location of resource group where to build resources"
 }
 
-variable "vnet_subnet_id" {
-  description = "Subnet where resources will be built"
+variable "vnet_name" {
+  description = "Name of vnet where resource will be built"
+}
+
+variable "subnet_name" {
+  description = "Name of subnet where resource will be built"
 }
 
 variable "installers_url" {
@@ -39,10 +43,10 @@ variable "domaincontroller_vm_size" {
   default     = "Standard_D4s_v3"
 }
 
-variable "domainName" {
-  description = "Domain Name"
-  type        = string
-}
+# variable "domainName" {
+#   description = "Domain Name"
+#   type        = string
+# }
 
 variable "domaincontroller_internet_access" {
   description = "Internet access for domaincontroller true or false"

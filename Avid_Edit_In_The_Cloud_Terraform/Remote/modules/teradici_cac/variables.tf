@@ -4,10 +4,10 @@ variable "local_admin_username" {
   description = "Admin Username for Virtual Machines"
 }
 
-#variable "local_admin_password" {
-#  description = "Admin Password for Virtual Machines"
-#  sensitive   = true
-#}
+variable "local_admin_password" {
+ description = "Admin Password for Virtual Machines"
+ sensitive   = true
+}
 
 variable "resource_group_name" {
   description = "Name of resource group where to build resources"
@@ -17,8 +17,12 @@ variable "resource_group_location" {
   description = "Location of resource group where to build resources"
 }
 
-variable "vnet_subnet_id" {
-  description = "Subnet where resources will be built"
+variable "vnet_name" {
+  description = "Name of vnet where resource will be built"
+}
+
+variable "subnet_name" {
+  description = "Name of subnet where resource will be built"
 }
 
 variable "script_url" {

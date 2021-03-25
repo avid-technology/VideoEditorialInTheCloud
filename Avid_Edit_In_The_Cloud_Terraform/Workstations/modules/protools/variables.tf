@@ -4,8 +4,12 @@ variable "resource_group_location" {
   description = "Location of resource group where to build resources"
 }
 
-variable "vnet_subnet_id" {
-  description = "Subnet where resources will be built"
+variable "vnet_name" {
+  description = "Name of vnet where resource will be built"
+}
+
+variable "subnet_name" {
+  description = "Name of subnet where resource will be built"
 }
 
 variable "gpu_type" {
@@ -120,14 +124,14 @@ variable "TeradiciKey" {
 
 variable "TeradiciInstaller" {
     type    = string 
-    default = "pcoip-agent-graphics_21.01.2.exe"
+    default = "pcoip-agent-graphics_21.03.0.exe"
 }
 
 ############## Nexis Client Variables ##############
 
 variable "AvidNexisInstaller" {
     type    = string 
-    default = "AvidNEXISClient_Win64_20.12.0.9.msi"
+    default = "AvidNEXISClient_Win64_21.3.0.21.msi"
 }
 
 

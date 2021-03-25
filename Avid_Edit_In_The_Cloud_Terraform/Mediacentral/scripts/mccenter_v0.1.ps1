@@ -12,6 +12,8 @@ param (
     [string]
     [ValidateNotNullOrEmpty()]
     $MCAMInstallerUrl,
+    [ValidateNotNullOrEmpty()]
+    $AvidNexisInstallerUrl,
     $DomainName,
     $domain_admin_username,
     $domain_admin_password
@@ -83,10 +85,10 @@ Install-MediaCentralControlCenter {
     New-LocalGroup -Name "MC_Administrators"
 
     # Add mc_service to Local Administrator group
-    Add-LocalGroupMember -Group "Administrators" -Member "ABC0\mc_service"
+    Add-LocalGroupMember -Group "Administrators" -Member "ABC0\mc_service" # Might now work as not in domain yet before reboot 
 
     # Add mc_service to Local MC_Administrators group
-    Add-LocalGroupMember -Group "MC_Administrators" -Member "ABC0\mc_service"
+    Add-LocalGroupMember -Group "MC_Administrators" -Member "ABC0\mc_service" # Might now work as not in domain yet before reboot 
 }
 
 function
@@ -98,6 +100,18 @@ Add-HostDomain {
 
     Add-Computer -DomainName $DomainName -Credential $credential
 
+}
+
+function 
+Install-NexisClient {
+   
+    Write-Log "downloading Nexis Client"
+    $NexisDestinationPath = "D:\AzureData\AvidNEXISClient.msi"
+    Write-Log $DestinationPath
+    DownloadFileOverHttp $AvidNexisInstallerUrl $NexisDestinationPath
+
+    Start-Process -FilePath $NexisDestinationPath -ArgumentList "/quiet", "/passive", "/norestart" -Wait
+    
 }
 
 try {
@@ -112,14 +126,18 @@ try {
             # chocolaty is best effort
         }
 
-        Install-MediaCentralControlCenter
+    Write-Log "Call Install-NexisCLient"
+    Install-NexisClient
 
-        Write-Log "Add server to Domain"
-        if ([string]::IsNullOrWhiteSpace(${DomainName})) {
+    Write-Log "Add server to Domain"
+
+    if ([string]::IsNullOrWhiteSpace(${DomainName})) {
                     Write-Log "Not added to any domain as no domain specified by user"
-            } else {
+    } else {
                     Add-HostDomain
-            }
+    }
+
+        Install-MediaCentralControlCenter
         
 }
 catch {
