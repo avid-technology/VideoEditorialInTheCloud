@@ -8,7 +8,7 @@ Avid will not be accountable for environment taken to production based on this r
 
  Modules are grouped together by collection: 
 
-- **Core**: Resource Group,Network, Domain Controller.
+- **Core**: Resource Group, Network, Domain Controller.
 - **Mediacentral**: Asset Management, Cloud UX.
 - **Monitor**: Zabbix.
 - **Remote**: Jumpbox, Teradici CAC.
@@ -24,9 +24,9 @@ For the proof of concept, we will deploy the following network:
 
 ## Prerequisite
 
-There is a dockerfile at the repository root to help you run this code in a container. This solution has been tested with Docker version 20.10.5. 
+There is a dockerfile at the root of this repository to let you run this code in a container. It has been tested with Docker Desktop version 3.22 (Docker Engine 20.10.5). 
 
-If you decide to not run this code in a container, make sure you have the following tool and version: 
+If you decide not to run this code in a container, make sure you have the following tool and version: 
 
 - Terraform >= 0.14.4
 - Azure CLI >= 2.17.1
