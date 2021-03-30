@@ -90,7 +90,7 @@ module "nexis_nearline_deployment" {
   # nexis_storage_account_subnet_access         = []  
   # private_dns_zone_resource_group             = ""
   nexis_system_director_vm_size               = "Standard_F16s_v2"
-  nexis_system_director_nb_instances          = 1
+  nexis_system_director_nb_instances          = 0
   nexis_system_director_vm_script_url         = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/Storage/scripts/"
   nexis_system_director_vm_script_name        = "installNexis.bash"
   nexis_system_director_vm_artifacts_location = "https://eitcstore01.blob.core.windows.net/installers/"

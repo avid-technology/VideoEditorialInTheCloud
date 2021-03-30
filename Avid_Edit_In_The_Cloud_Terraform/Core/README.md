@@ -29,17 +29,17 @@ To promote the server to be a domain controller, follow the link below:
 
 ### Core Module
 
-- resource_group_name: (string) Resource Group Name where all resource will be built.
-- resource_group_location: (string) Region where all resource will be built. 
-- vnet_name: (string) Vnet Name. 
+- **resource_group_name**: (string) Resource Group Name where all resources will be built.
+- resource_group_location: (string) Region where all resources will be built. 
+- vnet_name: (string) Vnet Name where all resources will be built. 
 - address_space: (list) Main Vnet address CIDR.
-- dns_servers: (list) DNS server IP address Vnet will be configured with. Keep empty to point to Azure provided DNS (168.63.129.16). 
+- dns_servers: (list) IP address of DNS server Vnet will be point to. Keep empty to use Azure provided DNS (168.63.129.16). 
 - create_subnet_Mediacentral: (bool) Create or not a subnet for MediaCentral collection.
 - create_subnet_Monitor: (bool) Create or not a subnet for Monitor collection.
-- create_subnet_Remote: (bool) Create or not a subnet for Monitor collection.
-- create_subnet_Storage: (bool) Create or not a subnet for Monitor collection.
-- create_subnet_Transfer: (bool) Create or not a subnet for Monitor collection.
-- create_subnet_Workstations: (bool) Create or not a subnet for Monitor collection.
+- create_subnet_Remote: (bool) Create or not a subnet for Remote collection.
+- create_subnet_Storage: (bool) Create or not a subnet for Storage collection.
+- create_subnet_Transfer: (bool) Create or not a subnet for Transfer collection.
+- create_subnet_Workstations: (bool) Create or not a subnet for Workstations collection.
 - subnets: (map) Subnet addresses CIDR. Keep empty quote if subnet is not needed.                       
 - tags: (map) Tag for Resource Group. 
 
