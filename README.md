@@ -1,20 +1,19 @@
 # Avid Video Editorial In Azure Cloud
  
-This repository covers projects related to installing Avid Editorial software in Azure subscription. 
+This repository contains a collection of modules which allow Avid enterprise customers to set up a full editorial environment in Azure Cloud: media transfer, storage, secure remote connection, workstations (MediaComposer, ProTools), monitoring tool. Avid customers are able to either deploy environment via ARM template or Terraform technology.
  
-# Project  / Folder Details 
+# Project Details 
  
 ### Avid Edit In The Cloud - Terraform 
 - [Terraform Template](https://github.com/avid-technology/VideoEditorialInTheCloud/tree/master/Avid_Edit_In_The_Cloud_Terraform) 
-This Project covers installation of Media composer, Nexis and  Jump/Bastioned host in Azure subscription using terraform templates. 
-Information about the ecosystem, installation guide, current version supported items and future release road map is available in the project information
+This Project covers deployment via Terraform technology.
  
 
 ### Avid Edit In The Cloud - Arm 
 - [Arm Template](https://github.com/avid-technology/VideoEditorialInTheCloud/tree/master/Avid_Edit_In_The_Cloud_Arm) 
-This project covers installation of Media Composer with Nexis storage ( online) systems in Azure subscriptions using ARM Temaplates. 
+This Project covers deployment via ARM template technology. 
  
  
 ## Prerequisites  
-- [Azure subscription] (https://portal.azure.com)
+- [Azure subscription](https://portal.azure.com)
 - Avid licenses

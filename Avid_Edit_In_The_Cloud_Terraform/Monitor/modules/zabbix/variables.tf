@@ -17,8 +17,12 @@ variable "resource_group_location" {
   description = "Location of resource group where to build resources"
 }
 
-variable "vnet_subnet_id" {
-  description = "Subnet where resources will be built"
+variable "vnet_name" {
+  description = "Name of vnet where resource will be built"
+}
+
+variable "subnet_name" {
+  description = "Name of subnet where resource will be built"
 }
 
 variable "script_url" {
@@ -47,10 +51,10 @@ variable "zabbix_vm_hostname" {
   description   = "Zabbix hostname"
 }
 
-variable "zabbixScript" {
-  description   = "Script name forJumbpox"
-  default       = "zabbix_v0.1.bash"
-}
+# variable "zabbixScript" {
+#   description   = "Script name forJumbpox"
+#   default       = "zabbix_v0.1.bash"
+# }
 
 variable "zabbix_internet_access" {
   description = "Internet access for Jumpbox true or false"
