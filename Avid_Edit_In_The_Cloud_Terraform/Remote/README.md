@@ -10,11 +10,17 @@ Teradici CAC server is a solution built by Teradici to access VM via PCoIP proto
 
 ![current + Next Version](./remote.png)
 
+## Prerequisite
+
+- Teradici CAC License
+- For Teradici CAC, Domain Controller with valid certificate.
+
 ## Installation 
 
 1. Navigate to Remote collection: *$cd Avid_Edit_In_The_Cloud_Terraform/Remote/*
 1. Initialize terraform: *$terraform init*
 1. Apply configuration: *$terraform apply*
+1. Install [Teradici CAC](https://www.teradici.com/web-help/cas_manager/) on new CAC VM.
 1. Go to Storage collection [Reame](https://github.com/avid-technology/VideoEditorialInTheCloud/tree/master/Avid_Edit_In_The_Cloud_Terraform/Storage) to install your next collection. 
 
 ## Variables
@@ -39,7 +45,7 @@ Teradici CAC server is a solution built by Teradici to access VM via PCoIP proto
 - **jumpbox_internet_access** (bool): Internet access to Jumbpox. *False* recommended for better security.
 
 
-### Teradici cac Module
+### Teradici CAC Module
 
 - **local_admin_username** (string): Username for local administrator.              
 - **local_admin_password** (string): Local administrator password.             
