@@ -18,7 +18,7 @@ Avid will not be accountable for environment taken to production based on this r
 
 Each module contains a Readme document to explain what the collection can build.
 
-For the proof of concept, we will deploy the following network in this order: 1) Core 2) Remote 3) Storage 4) Workstations 5) Transfer 6) MediaCentral 7) Monitor. Feel free to bypass a collection creation if you do not need it for your own environment. 
+For the proof of concept, we will deploy the following network in this order: 1) Core 2) Remote 3) Storage 4) Workstations 5) Transfer 6) MediaCentral 7) Monitor. Feel free to bypass a collection creation if you do not need it in your own environment. 
 
 ![current + Next Version](./network.png)
 
@@ -37,7 +37,7 @@ If you decide not to run this code in a container, make sure you have the follow
 ## Installation 
 
 1. Clone entire repository: *$git clone https://github.com/avid-technology/VideoEditorialInTheCloud.git*
-1. Go to Core collection [Readme](https://github.com/avid-technology/VideoEditorialInTheCloud/tree/release/0.0.5/Avid_Edit_In_The_Cloud_Terraform/Core) to install the first collection.
+1. Go to Core collection [Readme](https://github.com/avid-technology/VideoEditorialInTheCloud/tree/master/Avid_Edit_In_The_Cloud_Terraform/Core) to install the first collection.
 
 ## Additional documentaiton
 

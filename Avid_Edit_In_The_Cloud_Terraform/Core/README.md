@@ -30,7 +30,7 @@ To promote the server to be a domain controller, follow the link below:
 1. Navigate to Core collection: *$cd Avid_Edit_In_The_Cloud_Terraform/Core/*
 1. Initialize terraform: *$terraform init*
 1. Apply configuration: *$terraform apply*
-1. Navigate to each other collection and add resource as needed (MediaCentral, Transfer, Workstations, Remote etc ...)
+1. Go to Remote collection [Reame](https://github.com/avid-technology/VideoEditorialInTheCloud/tree/master/Avid_Edit_In_The_Cloud_Terraform/Remote) to install your next collection. 
 
 ## Variables
 
