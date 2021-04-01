@@ -22,7 +22,7 @@ module "editorial_networking" {
   vnet_name                     = "poc-rg-vnet" 
   address_space                 = ["10.1.0.0/16"]
   subnets                       = { 
-                                        subnet_core="10.1.0.0/24"
+                                        subnet_core="10.1.0.0/24" # Subnet core is mandatory and will be created by default
                                         subnet_mediacentral="10.1.1.0/24"
                                         subnet_monitor="10.1.2.0/24"
                                         subnet_remote="10.1.3.0/24"
@@ -37,7 +37,6 @@ module "editorial_networking" {
   create_subnet_Storage         = true
   create_subnet_Transfer        = true
   create_subnet_Workstations    = true  
-  # Subnet core is always created by default
   tags                          = { 
                                         environment="EITC" 
                                       }
@@ -49,7 +48,6 @@ module "domaincontroller_deployment" {
   local_admin_password              = "Password123$"
   resource_group_name               = "poc-rg"
   resource_group_location           = "southcentralus"
-  #domainName                        = "poc.internal"
   vnet_name                         = "poc-rg-vnet"
   subnet_name                       = "subnet_core"
   script_url                        = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/Core/scripts/"
