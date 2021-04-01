@@ -2,4 +2,8 @@
 
 ## Introduction
 
-This collection will help you transfer media accross different locations.  
+This collection will help you transfer media accross distant locations. 
+
+![current + Next Version](./transfer.png)
+
+This collection is under development. 

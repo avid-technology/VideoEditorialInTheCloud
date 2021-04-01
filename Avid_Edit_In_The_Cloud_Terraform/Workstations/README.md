@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This collection will help you deploy 1 (or more) Media Composer and 1 (or more) ProTools instance.  
+This collection will help you deploy 1 (or more) MediaComposer and 1 (or more) ProTools instance.  
 
 ![current + Next Version](./workstations.png)
 
