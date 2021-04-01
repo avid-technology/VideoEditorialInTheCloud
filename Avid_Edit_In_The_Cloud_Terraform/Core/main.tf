@@ -17,18 +17,10 @@ provider "azurerm" {
 
 module "editorial_networking" {
   source                        = "./modules/network"
-  vnet_name                     = "poc-rg-vnet" 
   resource_group_name           = "poc-rg"
   resource_group_location       = "southcentralus"
+  vnet_name                     = "poc-rg-vnet" 
   address_space                 = ["10.1.0.0/16"]
-  dns_servers                   = []
-  create_subnet_Mediacentral    = true
-  create_subnet_Monitor         = true
-  create_subnet_Remote          = true
-  create_subnet_Storage         = true
-  create_subnet_Transfer        = true
-  create_subnet_Workstations    = true  
-  # Subnet core is always created by default
   subnets                       = { 
                                         subnet_core="10.1.0.0/24"
                                         subnet_mediacentral="10.1.1.0/24"
@@ -38,6 +30,14 @@ module "editorial_networking" {
                                         subnet_transfer="10.1.5.0/24"
                                         subnet_workstations="10.1.6.0/24"
                                   }
+  dns_servers                   = []
+  create_subnet_Mediacentral    = true
+  create_subnet_Monitor         = true
+  create_subnet_Remote          = true
+  create_subnet_Storage         = true
+  create_subnet_Transfer        = true
+  create_subnet_Workstations    = true  
+  # Subnet core is always created by default
   tags                          = { 
                                         environment="EITC" 
                                       }
