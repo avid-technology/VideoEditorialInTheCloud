@@ -4,6 +4,8 @@
 
 This collection will help you deploy 1 (or more) Media Composer and 1 (or more) ProTools instance.  
 
+![current + Next Version](./workstations.png)
+
 ## Prerequisite
 
 - MediaComposer and/or ProTools license(s)
