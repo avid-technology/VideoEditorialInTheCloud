@@ -18,7 +18,7 @@ Avid will not be accountable for environment taken to production based on this r
 
 Each module contains a readme documentation to explain what the collection can build.
 
-For the proof of concept, we will deploy the following network: 
+For the proof of concept, we will deploy the following network in this order: Core --> Remote --> Storage --> Workstations --> Transfer --> MediaCentral --> Monitor. Feel free to bypass a collection creation if you do not need it for your own environment. 
 
 ![current + Next Version](./network.png)
 
