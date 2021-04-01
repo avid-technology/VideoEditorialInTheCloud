@@ -8,13 +8,13 @@ Avid will not be accountable for environment taken to production based on this r
 
  Modules are grouped together by collection: 
 
-- **Core**: Resource Group, Network, Domain Controller.
-- **Mediacentral**: Asset Management, Cloud UX.
-- **Monitor**: Zabbix.
-- **Remote**: Jumpbox, Teradici CAC.
-- **Transfer**: FileCatalyst, Aspera, Signiant.
-- **Storage**: Nexis.
-- **Workstations**: MediaComposer, ProTools.
+- [**Core**](https://github.com/avid-technology/VideoEditorialInTheCloud/tree/master/Avid_Edit_In_The_Cloud_Terraform/Core): Resource Group, Network, Domain Controller.
+- [**Mediacentral**](https://github.com/avid-technology/VideoEditorialInTheCloud/tree/master/Avid_Edit_In_The_Cloud_Terraform/Mediacentral): Asset Management, Cloud UX.
+- [**Monitor**](https://github.com/avid-technology/VideoEditorialInTheCloud/tree/master/Avid_Edit_In_The_Cloud_Terraform/Monitor): Zabbix.
+- [**Remote**](https://github.com/avid-technology/VideoEditorialInTheCloud/tree/master/Avid_Edit_In_The_Cloud_Terraform/Remote): Jumpbox, Teradici CAC.
+- [**Transfer**](https://github.com/avid-technology/VideoEditorialInTheCloud/tree/master/Avid_Edit_In_The_Cloud_Terraform/Transfer): FileCatalyst, Aspera, Signiant.
+- [**Storage**](https://github.com/avid-technology/VideoEditorialInTheCloud/tree/master/Avid_Edit_In_The_Cloud_Terraform/Storage): Nexis.
+- [**Workstations**](https://github.com/avid-technology/VideoEditorialInTheCloud/tree/master/Avid_Edit_In_The_Cloud_Terraform/Workstations): MediaComposer, ProTools.
 
 Each module contains a readme documentation to explain what the collection can build.
 
@@ -42,6 +42,7 @@ If you decide not to run this code in a container, make sure you have the follow
 
 ## Additional documentaiton
 
+- Azure [learning paths](https://docs.microsoft.com/en-us/learn/azure/)
 - Introduction to Terraform on Azure: [Terraform](https://learn.hashicorp.com/tutorials/terraform/infrastructure-as-code?in=terraform/aws-get-started)
 
 ## Maintainer
