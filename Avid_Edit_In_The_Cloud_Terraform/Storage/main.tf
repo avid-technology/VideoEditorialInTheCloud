@@ -15,35 +15,6 @@ provider "azurerm" {
   features {}
 }
 
-# locals {
-#   resource_group_name   = "${var.resource_prefix}-rg"
-#   script_url            = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/Storage/scripts/"                                  
-# }
-
-# data "azurerm_subnet" "data_subnet_storage" {
-#   name                 = "subnet_storage"
-#   virtual_network_name = "${var.resource_prefix}-rg-vnet"
-#   resource_group_name  = "${var.resource_prefix}-rg"
-# }
-
-# data "azurerm_subnet" "data_subnet_workstations" {
-#   name                 = "subnet_workstations"
-#   virtual_network_name = "${var.resource_prefix}-rg-vnet"
-#   resource_group_name  = "${var.resource_prefix}-rg"
-# }
-
-# data "azurerm_subnet" "data_subnet_transfer" {
-#   name                 = "subnet_transfer"
-#   virtual_network_name = "${var.resource_prefix}-rg-vnet"
-#   resource_group_name  = "${var.resource_prefix}-rg"
-# }
-
-# data "azurerm_subnet" "data_subnet_mediacentral" {
-#   name                 = "subnet_mediacentral"
-#   virtual_network_name = "${var.resource_prefix}-rg-vnet"
-#   resource_group_name  = "${var.resource_prefix}-rg"
-# }
-
 # Example with private visibility to storage account and no public access to system director
 module "nexis_online_deployment" {
   source                                      = "./modules/nexis"
@@ -72,7 +43,7 @@ module "nexis_online_deployment" {
                                                 publisher = "debian"          # Either "Credativ" or "debian"
                                                 offer     = "debian-10"       # Either "Debian" or "debian-10"
                                                 sku       = "10"              # Either "8" or "10"
-                                                version   = "latest"          # Either "8.0.201901221" or "0.20210208.542"
+                                                version   = "0.20210208.542"          # Either "8.0.201901221" or "0.20210208.542"
                                               }
 }
 
@@ -90,7 +61,7 @@ module "nexis_nearline_deployment" {
   # nexis_storage_account_subnet_access         = []  
   # private_dns_zone_resource_group             = ""
   nexis_system_director_vm_size               = "Standard_F16s_v2"
-  nexis_system_director_nb_instances          = 0
+  nexis_system_director_nb_instances          = 1
   nexis_system_director_vm_script_url         = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/Storage/scripts/"
   nexis_system_director_vm_script_name        = "installNexis.bash"
   nexis_system_director_vm_artifacts_location = "https://eitcstore01.blob.core.windows.net/installers/"
@@ -104,6 +75,6 @@ module "nexis_nearline_deployment" {
                                                 publisher = "debian"          # Either "Credativ" or "debian"
                                                 offer     = "debian-10"       # Either "Debian" or "debian-10"
                                                 sku       = "10"              # Either "8" or "10"
-                                                version   = "latest"          # Either "8.0.201901221" or "0.20210208.542"
+                                                version   = "0.20210208.542"          # Either "8.0.201901221" or "0.20210208.542"
                                               }
 }

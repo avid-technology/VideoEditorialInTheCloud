@@ -6,6 +6,10 @@ This collection will help you deploy an Online and Nearline Cloud Nexis.
 
 ![current + Next Version](./storage.png)
 
+## Prerequisite
+
+- Avid Cloud Nexis license
+
 ## Installation 
 
 1. Navigate to Storage collection: *$cd Avid_Edit_In_The_Cloud_Terraform/Storage/*
