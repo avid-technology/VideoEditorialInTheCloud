@@ -16,7 +16,7 @@ Avid will not be accountable for environment taken to production based on this r
 - [**Storage**](https://github.com/avid-technology/VideoEditorialInTheCloud/tree/master/Avid_Edit_In_The_Cloud_Terraform/Storage): Nexis.
 - [**Workstations**](https://github.com/avid-technology/VideoEditorialInTheCloud/tree/master/Avid_Edit_In_The_Cloud_Terraform/Workstations): MediaComposer, ProTools.
 
-Each module contains a readme documentation to explain what the collection can build.
+Each module contains a Readme document to explain what the collection can build.
 
 For the proof of concept, we will deploy the following network in this order: 1) Core 2) Remote 3) Storage 4) Workstations 5) Transfer 6) MediaCentral 7) Monitor. Feel free to bypass a collection creation if you do not need it for your own environment. 
 
@@ -36,9 +36,8 @@ If you decide not to run this code in a container, make sure you have the follow
 
 ## Installation 
 
-1. Clone entire repository.
-1. Navigate to Core collection. Use Terraform apply to deploy 1 Resource Group with 1 vnet, 7 subnets and 1 Domain Controller.
-1. Navigate to each other collection and add resource as needed (MediaCentral, Transfer, Workstations, Remote etc ...)  
+1. Clone entire repository: *$git clone https://github.com/avid-technology/VideoEditorialInTheCloud.git*
+1. Go to Core collection [Readme](https://github.com/avid-technology/VideoEditorialInTheCloud/tree/release/0.0.5/Avid_Edit_In_The_Cloud_Terraform/Core) to install the first collection.
 
 ## Additional documentaiton
 
