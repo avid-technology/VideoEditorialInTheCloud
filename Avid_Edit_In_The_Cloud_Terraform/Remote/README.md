@@ -13,7 +13,7 @@ Teradici CAC server is a solution built by Teradici to access VM via PCoIP proto
 ## Prerequisite
 
 - Teradici CAC License
-- For Teradici CAC, Domain Controller with valid certificate.
+- Domain Controller(s) with valid certificate.
 
 ## Installation 
 

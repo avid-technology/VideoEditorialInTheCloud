@@ -3,7 +3,11 @@
 #########################
 
 variable "hostname" {
-  description = "Hostname of Cloud Nexis. Maximum 8 characters."
+  description = "Hostname of Cloud Nexis. Maximum 6 characters."
+  validation {
+        condition       = length(var.rhostname) <= 6
+        error_message   = "Resource prefix must be less than 6 characters."
+    }
 }
 
 variable "local_admin_username" {
