@@ -70,7 +70,7 @@
         "mediaComposerOS": {
             "type": "string",
             "metadata": {
-                "description": "OS for MediaComposer. Should be either: Windows_10"
+                "description": "OS for MediaComposer. Should be: Windows_10"
             },
             "allowedValues": [
                 "Windows_10"
@@ -120,8 +120,7 @@
         "adminPassword": "[parameters('adminPassword')]",
         "adminUsername": "[parameters('adminUsername')]",
         "createNic?": true,
-        "osType": "[variables(concat('osType_',parameters('mediaComposerOS')))]",
-        "osType_Windows_10": {
+        "osType": {
             "publisher": "MicrosoftWindowsDesktop",
             "offer": "Windows-10",
             "sku": "rs5-pro",
@@ -198,7 +197,6 @@
         ],
         "location": "[resourceGroup().location]",
         "uniqueName": "[parameters('resourcePrefix')]",
-        "networkSecurityGroupName": "[concat(parameters('resourcePrefix'),'-nsg')]",
         "nicName": "[concat(variables('uniqueName'), '-nic-')]",
         "numberOfInstances": "[parameters('numberOfInstances')]",
         "publicIPAddressName": "[concat(variables('uniqueName'), '-ip-')]",
@@ -216,7 +214,7 @@
         "mediaComposerInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('mediaComposerFileName'))]",
         "teradiciInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('teradiciInstallFileName'))]",
         "nexisClientInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('nexisClientInstallFileName'))]",
-        "scriptParameters": "[concat('-TeradiciKey ', variables('teradiciKey'),' -MediaComposerURL ', variables('mediaComposerInstallLocation'),' -TeradiciURL ', variables('teradiciInstallLocation'),' -AvidNEXISClientURL ', variables('nexisClientInstallLocation'))]"
+        "scriptParameters": "[concat('-TeradiciKey ', variables('teradiciKey'),' -TeradiciURL ', variables('teradiciInstallLocation'),' -MediaComposerURL ', variables('mediaComposerInstallLocation'),' -AvidNexisInstallerUrl ', variables('nexisClientInstallLocation'))]"
     },
     "resources": [
         {
@@ -231,16 +229,6 @@
                     "resources": []
                 }
             }
-        },
-        {
-            "name": "[concat(variables('networkSecurityGroupName'))]",
-            "type": "Microsoft.Network/networkSecurityGroups",
-            "apiVersion": "2018-08-01",
-            "location": "[resourceGroup().location]",
-            "properties": {
-                "securityRules": "[variables('networkSecurityGroupRules')]"
-            },
-            "tags": {}
         },
         {
             "apiVersion": "2017-10-01",

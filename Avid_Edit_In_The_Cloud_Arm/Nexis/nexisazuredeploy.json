@@ -34,6 +34,12 @@
                 "description": "Name of the Resource Group containing the existing VNet. If deploying a New Vnet, use the name of the Resource Group you're deploying to."
             }
         },
+        "systemName": {
+            "type": "string",
+            "metadata": {
+                "description": "Nexis name."
+            }
+        },
         "general-VnetName": {
             "type": "string",
             "metadata": {
@@ -59,20 +65,17 @@
         }
     },
     "variables": {
-        "nexisBuild": "AvidNexisCloud_20.7.0-3.run",
+        "nexisBuild": "AvidNEXISCloud_21.3.1-24.run",
         "_sasToken": "",
-        "_urlLocation": "https://ssengreleng.blob.core.windows.net/nexisgold/20.7.0",
+        "_urlLocation": "https://ssengreleng.blob.core.windows.net/nexisgold/21.3.1",
         "_artifactsLocation": "[concat(variables('_urlLocation'), '/AzureProvisioning/nexis.nearline')]",
-        "systemName":"[variables(concat('systemName_',parameters('nexisType')))]",
-        "systemName_Online":"[concat(parameters('resourcePrefix'), 'onnx')]",
-        "systemName_Nearline":"[concat(parameters('resourcePrefix'), 'nlnx')]",
         "nexisCloud": "[variables(concat('nexisCloud_',parameters('nexisType')))]",
         "nexisCloud_Online":"0100-40109-00",
         "nexisCloud_Nearline":"0100-38171-00",
         "_artifactsLocationSasToken": "[variables('_sasToken')]",
         "_buildArtifactsLocation": "[concat(variables('_urlLocation'), '/installers')]",
         "_buildArtifactsLocationSasToken": "[variables('_sasToken')]",
-        "deployNexisCloudTemplateURL": "[concat(variables('_artifactsLocation'),'/nestedtemplates/deploy-nexiscloud-','8','.json',variables('_sasToken'))]",
+        "deployNexisCloudTemplateURL": "[concat(variables('_artifactsLocation'),'/nestedtemplates/deploy-nexiscloud.json',parameters('_sasToken'))]",
         "deployNexisCloud": "deployNexisCloud",
         "adminUsername": "avid",
         "privateIPAddressType": "Static"
@@ -91,7 +94,7 @@
                 },
                 "parameters": {
                     "vmName": {
-                        "value": "[variables('systemName')]"
+                        "value": "[parameters('systemName')]"
                     },
                     "adminUsername": {
                         "value": "[variables('adminUsername')]"

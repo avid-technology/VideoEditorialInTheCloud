@@ -66,7 +66,7 @@ module "protools_deployment" {
   gpu_type                          = "Nvidia"
   protools_vm_hostname              = "poc-pt"
   protools_vm_size                  = "Standard_NV12s_v3" # Options available: Standard_NV8as_v4, Standard_NV16as_v4, Standard_NV32as_v4, Standard_NV12s_v3, Standard_NV24s_v3, Standard_NV48s_v3
-  protools_nb_instances             = 1
+  protools_nb_instances             = 0
   protools_internet_access          = false
   protoolsScript                    = "setupProTools_v0.1.ps1"
   ProToolsVersion                   = "2020.11.0"   # Options available: 2020.11.0
