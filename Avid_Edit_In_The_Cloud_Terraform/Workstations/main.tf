@@ -44,7 +44,7 @@ module "mediacomposer_deployment" {
   mediacomposer_nb_instances        = 1
   mediacomposer_internet_access     = false
   mediacomposerScript               = "setupMediaComposer_v0.2.ps1" 
-  mediacomposerVersion              = "2020.12.0"    # Options available: 2018.12.14, 2020.12.0, 2021.2.0
+  mediacomposerVersion              = "2021.3.0"    # Options available: 2018.12.14, 2020.12.0, 2021.3.0
   TeradiciKey                       = "0000"
   TeradiciInstaller                 = "pcoip-agent-graphics_21.03.0.exe"
   AvidNexisInstaller                = "AvidNEXISClient_Win64_21.3.0.21.msi" 

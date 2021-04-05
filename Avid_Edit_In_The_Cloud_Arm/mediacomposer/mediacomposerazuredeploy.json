@@ -6,7 +6,7 @@
             "type": "string",
             "minLength": 5,
             "maxLength": 10,
-            "defaultValue": "show-edit",
+            "defaultValue": "poc1-mc",
             "metadata": {
             "description": "Prefix must be 5-char min, 10-char max, lowercase alphanumeric"
             }
@@ -70,34 +70,32 @@
         "mediaComposerOS": {
             "type": "string",
             "metadata": {
-                "description": "OS for MediaComposer. Should be either: Windows_10, Windows_Server_2016, Windows_Server_2019"
+                "description": "OS for MediaComposer. Should be either: Windows_10"
             },
             "allowedValues": [
-                "Windows_10",
-                "Windows_Server_2016",
-                "Windows_Server_2019"
+                "Windows_10"
             ],
             "defaultValue": "Windows_10"
         },
         "mediaComposerVersion": {
             "type": "string",
             "metadata": {
-                "description": "MediaComposer version. Should be either: 2018.12.13, 2019.12, 2020.9.0"
+                "description": "MediaComposer version. Should be either: 2018.12.14, 2020.12.0, 2021.3.0"
             },
             "allowedValues": [
-                "2018.12.13",
-                "2019.12",
-                "2020.9.0"
+                "2018.12.14",
+                "2020.12.0",
+                "2021.3.0"
             ],
-            "defaultValue": "2020.9.0"
+            "defaultValue": "2021.3.0"
         },
         "teradiciInstallFileName": {
             "type": "string",
-            "defaultValue": "pcoip-agent-graphics_20.10.1.exe"
+            "defaultValue": "pcoip-agent-graphics_21.03.0.exe"
         },
         "nexisClientInstallFileName": {
             "type": "string",
-            "defaultValue": "AvidNEXISClient_Win64_20.7.3.10.msi"
+            "defaultValue": "AvidNEXISClient_Win64_21.3.0.21.msi"
         },
         "gpuType": {
             "type": "string",
@@ -115,11 +113,7 @@
             "metadata": {
                 "description": "Branch to point script to. Either master or avid-development"
             },
-            "defaultValue": "master",
-            "allowedValues": [
-                "master",
-                "avid-development"
-            ]
+            "defaultValue": "master"
         }
     },
     "variables": {
@@ -133,25 +127,7 @@
             "sku": "rs5-pro",
             "version": "latest"
         },
-        "osType_Windows_Server_2016": {
-            "publisher": "MicrosoftWindowsServer",
-            "offer": "WindowsServer",
-            "sku": "2016-Datacenter",
-            "version": "latest"
-        },
-        "osType_Windows_Server_2019": {
-            "publisher": "MicrosoftWindowsServer",
-            "offer": "WindowsServer",
-            "sku": "2019-Datacenter",
-            "version": "latest"
-        },
-        "scriptFileName": "[variables(concat('mcVersion_',parameters('gpuType'),'_',parameters('mediaComposerVersion')))]",
-        "mcVersion_AMD_2018.12.13": "setupMediaComposer_AMD_20181213.ps1",
-        "mcVersion_AMD_2019.12": "setupMediaComposer_AMD_20209.ps1",
-        "mcVersion_AMD_2020.9.0": "setupMediaComposer_AMD_20209.ps1",
-        "mcVersion_NVIDIA_2018.12.13": "setupMediaComposer_NVIDIA_20181213.ps1",
-        "mcVersion_NVIDIA_2019.12": "setupMediaComposer_NVIDIA_20209.ps1",
-        "mcVersion_NVIDIA_2020.9.0": "setupMediaComposer_NVIDIA_20209.ps1",
+        "scriptFileName": "setupMediaComposer_v0.2.ps1",
         "networkSecurityGroupRules": [
             {
                 "name": "PCoIPtcp",
