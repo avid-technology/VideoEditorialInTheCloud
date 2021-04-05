@@ -5,9 +5,9 @@
         "resourcePrefix": {
             "type": "string",
             "minLength": 3,
-            "maxLength": 4,
+            "maxLength": 8,
             "metadata": {
-                "description": "Prefix must be 3-char min, 4-char max, lowercase alphanumeric"
+                "description": "Prefix must be 3-char min, 8-char max, lowercase alphanumeric"
             }
         },
         "adminPassword": {
@@ -75,7 +75,7 @@
         "_artifactsLocationSasToken": "[variables('_sasToken')]",
         "_buildArtifactsLocation": "[concat(variables('_urlLocation'), '/installers')]",
         "_buildArtifactsLocationSasToken": "[variables('_sasToken')]",
-        "deployNexisCloudTemplateURL": "[concat(variables('_artifactsLocation'),'/nestedtemplates/deploy-nexiscloud.json',parameters('_sasToken'))]",
+        "deployNexisCloudTemplateURL": "[concat(variables('_artifactsLocation'),'/nestedtemplates/deploy-nexiscloud.json',variables('_sasToken'))]",
         "deployNexisCloud": "deployNexisCloud",
         "adminUsername": "avid",
         "privateIPAddressType": "Static"

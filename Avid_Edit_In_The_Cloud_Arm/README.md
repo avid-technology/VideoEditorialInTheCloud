@@ -56,17 +56,17 @@ To perform a successful deployment in your subscription, follow the steps below:
 
 | Module | Compatible Version | ARM Template link |
 | ------ | ------------------ | ----------------- |
-| Media Composer | Media Composer 2018.12.13  / 2019.12 / 2020.9.0 <br /> Nexis 20.7.3.10 (Client) <br /> Teradici Agent 20.10.1 <br /> Amd Radeon MI25 <br /> Nvidia Tesla M60 | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Fmediacomposer%2Fmediacomposerazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
+| Media Composer | Media Composer 2018.12.14  / 2020.12.0 / 2021.3.0 <br /> Nexis 21.3.0 (Client) <br /> Teradici Agent 21.03.0 <br /> Amd Radeon MI25 <br /> Nvidia Tesla M60 | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Fmediacomposer%2Fmediacomposerazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
 
 <br />
 
-To duplicate the VM, follow the steps below:
+To duplicate the VM, follow the steps below. It is highly recommended to not license any software or add the template VM to your domain before duplication. Also VM should be stopped before duplication.
 <br />
 
 a) Create a snapshot of the main os disk
 <br />
 
-b) Run script to duplicate snapshot x time (right click / run in powershell connected to your azure subscription)
+b) Run script to [duplicate](https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Arm/scripts/create_disk_from_snapshot.ps1) snapshot x time (right click / run in powershell connected to your azure subscription)
 <br />
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Fscripts%2Fcreate_disk_from_snapshot.ps1" target="_blank"></a>
@@ -84,7 +84,7 @@ c) Use duplication ARM template:
 
 | Module | Compatible Version | ARM Template link |
 | ------ | ------------------ | ----------------- |
-| Nexis | Avid Cloud Nexis 20.7.0 | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2Fmediacomposer%2Fmediacomposercloning.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
+| Nexis | Avid Cloud Nexis 21.3.0 | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Favid-technology%2FVideoEditorialInTheCloud%2Fmaster%2FAvid_Edit_In_The_Cloud_Arm%2FNexis%2Fnexisazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
 
 <br />
 

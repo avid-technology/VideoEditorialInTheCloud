@@ -4,11 +4,11 @@
 #>
 
 #Provide the subscription Id
-$subscriptionId = "63e4095b-6f13-45ed-9386-af1b8f8c1a40"
+$subscriptionId = "949ce875-4a5d-4f96-8db1-4bbd2f68f6e8"
 #Provide the name of your resource group with the snapshot
-$resourceGroupName = "sdbx-scus-01"
+$resourceGroupName = "poc-rg"
 #Provide the name of the snapshot that will be used to create OS disk
-$snapshotName = 'testgoldimage'
+$snapshotName = 'testsnap'
 # Change this for the desired VM OS Disk naming convention. 
 # A number and "osdisk" label will be appended in the loop below
 # For MediaComposer VM, replace xxxx with showCode. 
