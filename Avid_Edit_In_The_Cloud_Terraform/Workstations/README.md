@@ -9,8 +9,6 @@ This collection will help you deploy 1 (or more) MediaComposer and 1 (or more) P
 | MediaComposer | 2018.12.14, 2020.12.0, 2021.3.0 |
 | Pro Tools | 2020.11.0 | 
 
-Current version supported are: MediaComposer 2018.12.4, 2020.12.0, 2021.3.0
-
 ![current + Next Version](./workstations.png)
 
 ## Prerequisite

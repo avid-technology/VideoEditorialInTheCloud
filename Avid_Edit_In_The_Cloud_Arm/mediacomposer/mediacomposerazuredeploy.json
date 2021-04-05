@@ -36,7 +36,8 @@
                 "Standard_NV12s_v3",
                 "Standard_NV24s_v3",
                 "Standard_NV48s_v3"
-            ]
+            ],
+            "defaultValue": "Standard_NV12s_v3"
         },
         "numberOfInstances": {
             "type": "int",
@@ -127,74 +128,6 @@
             "version": "latest"
         },
         "scriptFileName": "setupMediaComposer_v0.2.ps1",
-        "networkSecurityGroupRules": [
-            {
-                "name": "PCoIPtcp",
-                "properties": {
-                    "priority": 301,
-                    "protocol": "TCP",
-                    "access": "Allow",
-                    "direction": "Inbound",
-                    "sourceAddressPrefix": "*",
-                    "sourcePortRange": "*",
-                    "destinationAddressPrefix": "*",
-                    "destinationPortRange": "4172"
-                }
-            },
-            {
-                "name": "PCoIPudp",
-                "properties": {
-                    "priority": 302,
-                    "protocol": "UDP",
-                    "access": "Allow",
-                    "direction": "Inbound",
-                    "sourceAddressPrefix": "*",
-                    "sourcePortRange": "*",
-                    "destinationAddressPrefix": "*",
-                    "destinationPortRange": "4172"
-                }
-            },
-            {
-                "name": "certauthhttp",
-                "properties": {
-                    "priority": 303,
-                    "protocol": "TCP",
-                    "access": "Allow",
-                    "direction": "Inbound",
-                    "sourceAddressPrefix": "*",
-                    "sourcePortRange": "*",
-                    "destinationAddressPrefix": "*",
-                    "destinationPortRange": "80"
-                }
-            },
-            {
-                "name": "certauthhttps",
-                "properties": {
-                    "priority": 304,
-                    "protocol": "TCP",
-                    "access": "Allow",
-                    "direction": "Inbound",
-                    "sourceAddressPrefix": "*",
-                    "sourcePortRange": "*",
-                    "destinationAddressPrefix": "*",
-                    "destinationPortRange": "443"
-                }
-            },
-            {
-                "name": "Teradici",
-                "properties": {
-                    "priority": 305,
-                    "protocol": "TCP",
-                    "access": "Allow",
-                    "direction": "Inbound",
-                    "sourceAddressPrefix": "*",
-                    "sourcePortRange": "*",
-                    "destinationAddressPrefix": "*",
-                    "destinationPortRange": "60443"
-                }
-            }
-
-        ],
         "location": "[resourceGroup().location]",
         "uniqueName": "[parameters('resourcePrefix')]",
         "nicName": "[concat(variables('uniqueName'), '-nic-')]",
@@ -253,10 +186,6 @@
                 "name": "nicLoop",
                 "count": "[variables('numberOfInstances')]"
             },
-            "dependsOn": [
-                "publicIPLoop",
-                "[concat(variables('networkSecurityGroupName'))]"
-            ],
             "properties": {
                 "ipConfigurations": [
                     {
@@ -271,10 +200,7 @@
                             }
                         }
                     }
-                ],
-                "networkSecurityGroup": {
-                    "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', concat(variables('networkSecurityGroupName')))]"
-                }
+                ]
             }
         },
         {

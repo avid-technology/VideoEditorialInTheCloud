@@ -4,6 +4,10 @@
 
 This collection will help you deploy an Online and Nearline Cloud Nexis. 
 
+| Module | Compatible Version|
+|--------|-------------------|
+| Cloud Nexis | 20.7.5, 21.3.0 |
+
 ![current + Next Version](./storage.png)
 
 ## Prerequisite
