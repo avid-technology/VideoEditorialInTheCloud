@@ -6,7 +6,7 @@
             "type": "string",
             "minLength": 5,
             "maxLength": 10,
-            "defaultValue": "poc1-mc",
+            "defaultValue": "poc-mc",
             "metadata": {
             "description": "Prefix must be 5-char min, 10-char max, lowercase alphanumeric"
             }
@@ -14,13 +14,15 @@
         "adminUsername": {
             "type": "string",
             "metadata": {
-            "description": "Username for the Virtual Machine."
+            "description": "Username for the Virtual Machine.",
+            "defaultValue": "local-admin"
       }
         },
         "adminPassword": {
             "type": "securestring",
             "metadata": {
-            "description": "Password for the Virtual Machine."
+            "description": "Password for the Virtual Machine.",
+            "defaultValue": "Password123$"
             }
         },
         "vmSize": {
@@ -50,19 +52,22 @@
             "type": "string",
             "metadata": {
                 "description": "Name of the Resource Group where the existing Vnet is deployed."
-            }
+            },
+            "defaultValue": "poc-rg"
         },
         "general-VnetName": {
             "type": "string",
             "metadata": {
                 "description": "Name of the existing Virtual Network."
-            }
+            },
+            "defaultValue": "poc-rg-vnet"
         },
         "general-SubnetName": {
             "type": "string",
             "metadata": {
                 "description": "Existing subnet in where VMs should be deployed"
-            }
+            },
+            "defaultValue": "subnet_workstations"
         },
         "_system-InstallURL": {
             "type": "string",
