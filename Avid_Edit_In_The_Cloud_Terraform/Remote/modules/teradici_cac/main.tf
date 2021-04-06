@@ -4,14 +4,8 @@ data "azurerm_subnet" "data_subnet" {
   resource_group_name  = var.resource_group_name
 }
 
-locals{
-  #resource_group_name         = "${var.resource_prefix}-rg"
-  #hostname                    = "${var.resource_prefix}-cac"
-}
-
 resource "azurerm_public_ip" "teradicicac_ip" {
   count               = var.teradicicac_internet_access ? var.teradicicac_nb_instances : 0
-  #count               = var.teradicicac_nb_instances
   name                = "${var.teradicicac_vm_hostname}-ip-${format("%02d",count.index)}"
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name

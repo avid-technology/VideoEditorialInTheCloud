@@ -2,20 +2,13 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.1.0.0",
     "parameters": {
-        "resourcePrefix": {
-            "type": "string",
-            "minLength": 3,
-            "maxLength": 4,
-            "metadata": {
-                "description": "Prefix must be 3-char min, 4-char max, lowercase alphanumeric"
-            }
-        },
         "adminPassword": {
             "type": "securestring",
             "minLength": 12,
             "metadata": {
                 "description": "Password for the Administrator account of the NEXIS system"
-            }
+            },
+            "defaultValue": "PAssword123$"
         },
         "vmSize": {
             "type": "string",
@@ -32,19 +25,29 @@
             "type": "string",
             "metadata": {
                 "description": "Name of the Resource Group containing the existing VNet. If deploying a New Vnet, use the name of the Resource Group you're deploying to."
-            }
+            },
+            "defaultValue": "poc-rg"
+        },
+        "systemName": {
+            "type": "string",
+            "metadata": {
+                "description": "Nexis name."
+            },
+            "defaultValue": "pocon00"
         },
         "general-VnetName": {
             "type": "string",
             "metadata": {
                 "description": "Name of the VNet"
-            }
+            },
+            "defaultValue": "poc-rg-vnet"
         },
         "general-SubnetName": {
             "type": "string",
             "metadata": {
                 "description": "Name of the existing or new subnet name in the Vnet to which the MP VMs should be deployed"
-            }
+            },
+            "defaultValue": "subnet_storage"
         },
         "nexisType": {
             "type": "string",
@@ -59,20 +62,17 @@
         }
     },
     "variables": {
-        "nexisBuild": "AvidNexisCloud_20.7.0-3.run",
+        "nexisBuild": "AvidNEXISCloud_21.3.1-24.run",
         "_sasToken": "",
-        "_urlLocation": "https://ssengreleng.blob.core.windows.net/nexisgold/20.7.0",
+        "_urlLocation": "https://ssengreleng.blob.core.windows.net/nexisgold/21.3.1",
         "_artifactsLocation": "[concat(variables('_urlLocation'), '/AzureProvisioning/nexis.nearline')]",
-        "systemName":"[variables(concat('systemName_',parameters('nexisType')))]",
-        "systemName_Online":"[concat(parameters('resourcePrefix'), 'onnx')]",
-        "systemName_Nearline":"[concat(parameters('resourcePrefix'), 'nlnx')]",
         "nexisCloud": "[variables(concat('nexisCloud_',parameters('nexisType')))]",
         "nexisCloud_Online":"0100-40109-00",
         "nexisCloud_Nearline":"0100-38171-00",
         "_artifactsLocationSasToken": "[variables('_sasToken')]",
         "_buildArtifactsLocation": "[concat(variables('_urlLocation'), '/installers')]",
         "_buildArtifactsLocationSasToken": "[variables('_sasToken')]",
-        "deployNexisCloudTemplateURL": "[concat(variables('_artifactsLocation'),'/nestedtemplates/deploy-nexiscloud-','8','.json',variables('_sasToken'))]",
+        "deployNexisCloudTemplateURL": "[concat(variables('_artifactsLocation'),'/nestedtemplates/deploy-nexiscloud.json',variables('_sasToken'))]",
         "deployNexisCloud": "deployNexisCloud",
         "adminUsername": "avid",
         "privateIPAddressType": "Static"
@@ -91,7 +91,7 @@
                 },
                 "parameters": {
                     "vmName": {
-                        "value": "[variables('systemName')]"
+                        "value": "[parameters('systemName')]"
                     },
                     "adminUsername": {
                         "value": "[variables('adminUsername')]"

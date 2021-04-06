@@ -6,7 +6,7 @@
             "type": "string",
             "minLength": 5,
             "maxLength": 10,
-            "defaultValue": "show-edit",
+            "defaultValue": "poc-mc",
             "metadata": {
             "description": "Prefix must be 5-char min, 10-char max, lowercase alphanumeric"
             }
@@ -14,13 +14,15 @@
         "adminUsername": {
             "type": "string",
             "metadata": {
-            "description": "Username for the Virtual Machine."
+            "description": "Username for the Virtual Machine.",
+            "defaultValue": "local-admin"
       }
         },
         "adminPassword": {
             "type": "securestring",
             "metadata": {
-            "description": "Password for the Virtual Machine."
+            "description": "Password for the Virtual Machine.",
+            "defaultValue": "Password123$"
             }
         },
         "vmSize": {
@@ -36,7 +38,8 @@
                 "Standard_NV12s_v3",
                 "Standard_NV24s_v3",
                 "Standard_NV48s_v3"
-            ]
+            ],
+            "defaultValue": "Standard_NV12s_v3"
         },
         "numberOfInstances": {
             "type": "int",
@@ -49,19 +52,22 @@
             "type": "string",
             "metadata": {
                 "description": "Name of the Resource Group where the existing Vnet is deployed."
-            }
+            },
+            "defaultValue": "poc-rg"
         },
         "general-VnetName": {
             "type": "string",
             "metadata": {
                 "description": "Name of the existing Virtual Network."
-            }
+            },
+            "defaultValue": "poc-rg-vnet"
         },
         "general-SubnetName": {
             "type": "string",
             "metadata": {
                 "description": "Existing subnet in where VMs should be deployed"
-            }
+            },
+            "defaultValue": "subnet_workstations"
         },
         "_system-InstallURL": {
             "type": "string",
@@ -70,34 +76,32 @@
         "mediaComposerOS": {
             "type": "string",
             "metadata": {
-                "description": "OS for MediaComposer. Should be either: Windows_10, Windows_Server_2016, Windows_Server_2019"
+                "description": "OS for MediaComposer. Should be: Windows_10"
             },
             "allowedValues": [
-                "Windows_10",
-                "Windows_Server_2016",
-                "Windows_Server_2019"
+                "Windows_10"
             ],
             "defaultValue": "Windows_10"
         },
         "mediaComposerVersion": {
             "type": "string",
             "metadata": {
-                "description": "MediaComposer version. Should be either: 2018.12.13, 2019.12, 2020.9.0"
+                "description": "MediaComposer version. Should be either: 2018.12.14, 2020.12.0, 2021.3.0"
             },
             "allowedValues": [
-                "2018.12.13",
-                "2019.12",
-                "2020.9.0"
+                "2018.12.14",
+                "2020.12.0",
+                "2021.3.0"
             ],
-            "defaultValue": "2020.9.0"
+            "defaultValue": "2021.3.0"
         },
         "teradiciInstallFileName": {
             "type": "string",
-            "defaultValue": "pcoip-agent-graphics_20.10.1.exe"
+            "defaultValue": "pcoip-agent-graphics_21.03.0.exe"
         },
         "nexisClientInstallFileName": {
             "type": "string",
-            "defaultValue": "AvidNEXISClient_Win64_20.7.3.10.msi"
+            "defaultValue": "AvidNEXISClient_Win64_21.3.0.21.msi"
         },
         "gpuType": {
             "type": "string",
@@ -115,114 +119,22 @@
             "metadata": {
                 "description": "Branch to point script to. Either master or avid-development"
             },
-            "defaultValue": "master",
-            "allowedValues": [
-                "master",
-                "avid-development"
-            ]
+            "defaultValue": "master"
         }
     },
     "variables": {
         "adminPassword": "[parameters('adminPassword')]",
         "adminUsername": "[parameters('adminUsername')]",
         "createNic?": true,
-        "osType": "[variables(concat('osType_',parameters('mediaComposerOS')))]",
-        "osType_Windows_10": {
+        "osType": {
             "publisher": "MicrosoftWindowsDesktop",
             "offer": "Windows-10",
             "sku": "rs5-pro",
             "version": "latest"
         },
-        "osType_Windows_Server_2016": {
-            "publisher": "MicrosoftWindowsServer",
-            "offer": "WindowsServer",
-            "sku": "2016-Datacenter",
-            "version": "latest"
-        },
-        "osType_Windows_Server_2019": {
-            "publisher": "MicrosoftWindowsServer",
-            "offer": "WindowsServer",
-            "sku": "2019-Datacenter",
-            "version": "latest"
-        },
-        "scriptFileName": "[variables(concat('mcVersion_',parameters('gpuType'),'_',parameters('mediaComposerVersion')))]",
-        "mcVersion_AMD_2018.12.13": "setupMediaComposer_AMD_20181213.ps1",
-        "mcVersion_AMD_2019.12": "setupMediaComposer_AMD_20209.ps1",
-        "mcVersion_AMD_2020.9.0": "setupMediaComposer_AMD_20209.ps1",
-        "mcVersion_NVIDIA_2018.12.13": "setupMediaComposer_NVIDIA_20181213.ps1",
-        "mcVersion_NVIDIA_2019.12": "setupMediaComposer_NVIDIA_20209.ps1",
-        "mcVersion_NVIDIA_2020.9.0": "setupMediaComposer_NVIDIA_20209.ps1",
-        "networkSecurityGroupRules": [
-            {
-                "name": "PCoIPtcp",
-                "properties": {
-                    "priority": 301,
-                    "protocol": "TCP",
-                    "access": "Allow",
-                    "direction": "Inbound",
-                    "sourceAddressPrefix": "*",
-                    "sourcePortRange": "*",
-                    "destinationAddressPrefix": "*",
-                    "destinationPortRange": "4172"
-                }
-            },
-            {
-                "name": "PCoIPudp",
-                "properties": {
-                    "priority": 302,
-                    "protocol": "UDP",
-                    "access": "Allow",
-                    "direction": "Inbound",
-                    "sourceAddressPrefix": "*",
-                    "sourcePortRange": "*",
-                    "destinationAddressPrefix": "*",
-                    "destinationPortRange": "4172"
-                }
-            },
-            {
-                "name": "certauthhttp",
-                "properties": {
-                    "priority": 303,
-                    "protocol": "TCP",
-                    "access": "Allow",
-                    "direction": "Inbound",
-                    "sourceAddressPrefix": "*",
-                    "sourcePortRange": "*",
-                    "destinationAddressPrefix": "*",
-                    "destinationPortRange": "80"
-                }
-            },
-            {
-                "name": "certauthhttps",
-                "properties": {
-                    "priority": 304,
-                    "protocol": "TCP",
-                    "access": "Allow",
-                    "direction": "Inbound",
-                    "sourceAddressPrefix": "*",
-                    "sourcePortRange": "*",
-                    "destinationAddressPrefix": "*",
-                    "destinationPortRange": "443"
-                }
-            },
-            {
-                "name": "Teradici",
-                "properties": {
-                    "priority": 305,
-                    "protocol": "TCP",
-                    "access": "Allow",
-                    "direction": "Inbound",
-                    "sourceAddressPrefix": "*",
-                    "sourcePortRange": "*",
-                    "destinationAddressPrefix": "*",
-                    "destinationPortRange": "60443"
-                }
-            }
-
-        ],
+        "scriptFileName": "setupMediaComposer_v0.2.ps1",
         "location": "[resourceGroup().location]",
         "uniqueName": "[parameters('resourcePrefix')]",
-        "networkSecurityGroupName": "[concat(parameters('resourcePrefix'),'-nsg')]",
         "nicName": "[concat(variables('uniqueName'), '-nic-')]",
         "numberOfInstances": "[parameters('numberOfInstances')]",
         "publicIPAddressName": "[concat(variables('uniqueName'), '-ip-')]",
@@ -240,7 +152,7 @@
         "mediaComposerInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('mediaComposerFileName'))]",
         "teradiciInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('teradiciInstallFileName'))]",
         "nexisClientInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('nexisClientInstallFileName'))]",
-        "scriptParameters": "[concat('-TeradiciKey ', variables('teradiciKey'),' -MediaComposerURL ', variables('mediaComposerInstallLocation'),' -TeradiciURL ', variables('teradiciInstallLocation'),' -AvidNEXISClientURL ', variables('nexisClientInstallLocation'))]"
+        "scriptParameters": "[concat('-TeradiciKey ', variables('teradiciKey'),' -TeradiciURL ', variables('teradiciInstallLocation'),' -MediaComposerURL ', variables('mediaComposerInstallLocation'),' -AvidNexisInstallerUrl ', variables('nexisClientInstallLocation'))]"
     },
     "resources": [
         {
@@ -255,16 +167,6 @@
                     "resources": []
                 }
             }
-        },
-        {
-            "name": "[concat(variables('networkSecurityGroupName'))]",
-            "type": "Microsoft.Network/networkSecurityGroups",
-            "apiVersion": "2018-08-01",
-            "location": "[resourceGroup().location]",
-            "properties": {
-                "securityRules": "[variables('networkSecurityGroupRules')]"
-            },
-            "tags": {}
         },
         {
             "apiVersion": "2017-10-01",
@@ -289,10 +191,6 @@
                 "name": "nicLoop",
                 "count": "[variables('numberOfInstances')]"
             },
-            "dependsOn": [
-                "publicIPLoop",
-                "[concat(variables('networkSecurityGroupName'))]"
-            ],
             "properties": {
                 "ipConfigurations": [
                     {
@@ -307,10 +205,7 @@
                             }
                         }
                     }
-                ],
-                "networkSecurityGroup": {
-                    "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', concat(variables('networkSecurityGroupName')))]"
-                }
+                ]
             }
         },
         {

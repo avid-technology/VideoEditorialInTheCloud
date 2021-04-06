@@ -37,26 +37,21 @@ variable "installers_url" {
 
 ############## Teradici Variables ##############
 
-variable "teradicicac_vm_hostname" {
+variable "teradicicam_vm_hostname" {
   description = "Teradici CAC hostname"
 }
 
-variable "teradicicac_vm_size" {
+variable "teradicicam_vm_size" {
   description = "Size of Teradici cac VM"
   default     = "Standard_D2s_v3"
 }
 
-variable "teradicicac_nb_instances" {
+variable "teradicicam_nb_instances" {
   description = "Number of Teradici cac instances"
   default     = 0
 }
 
-# variable "teradicicacScript" {
-#   description   = "Script name for Teradici cac"
-#   default       = "teradicicac_v0.1.bash"
-# }
-
-variable "teradicicac_internet_access" {
+variable "teradicicam_internet_access" {
   description = "Internet access for Teradici cac true or false"
   type        = bool
   default     = true 

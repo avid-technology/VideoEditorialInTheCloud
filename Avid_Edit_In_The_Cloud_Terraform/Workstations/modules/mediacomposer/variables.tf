@@ -109,7 +109,7 @@ variable "mediacomposerVersion" {
     default     = "2021.2.0"
     validation {
             condition       = (
-                var.mediacomposerVersion == "2021.2.0" || 
+                var.mediacomposerVersion == "2021.3.0" || 
                 var.mediacomposerVersion == "2020.12.0" ||
                 var.mediacomposerVersion == "2018.12.14"
             )

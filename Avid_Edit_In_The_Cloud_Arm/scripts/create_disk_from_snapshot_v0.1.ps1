@@ -8,7 +8,7 @@ $subscriptionId = "949ce875-4a5d-4f96-8db1-4bbd2f68f6e8"
 #Provide the name of your resource group with the snapshot
 $resourceGroupName = "poc-rg"
 #Provide the name of the snapshot that will be used to create OS disk
-$snapshotName = 'testsnap'
+$snapshotName = "testsnap"
 # Change this for the desired VM OS Disk naming convention. 
 # A number and "osdisk" label will be appended in the loop below
 # For MediaComposer VM, replace xxxx with showCode. 
@@ -25,7 +25,9 @@ $vmEndIndex = 2
 
 ##################### Nothing to change below here ###########################
 #Set the context to the subscription Id where Managed Disk will be created
-Select-AzSubscription -SubscriptionId $SubscriptionId
+
+az account set --subscription $SubscriptionId
+
 #The below loop will create the set number of VM clones.
 for($i = $vmStartIndex; $i -le $vmEndIndex; $i += 1) {
     #Name of the OS disk that will be created using the snapshot
@@ -33,9 +35,9 @@ for($i = $vmStartIndex; $i -le $vmEndIndex; $i += 1) {
 
     Write-Host "Creating Disk $osDiskName"
 
-    $snapshot = Get-AzSnapshot -ResourceGroupName $resourceGroupName -SnapshotName $snapshotName
- 
-    $diskConfig = New-AzDiskConfig -Location $snapshot.Location -Sku "Premium_LRS" -SourceResourceId $snapshot.Id -CreateOption Copy
+    $snapshot = az snapshot show -g $resourceGroupName -n $snapshotName
 
-    $disk = New-AzDisk -Disk $diskConfig -ResourceGroupName $resourceGroupName -DiskName $osDiskName
+    $snapshotobject = $snapshot | ConvertFrom-Json
+ 
+    $disk = az disk create --resource-group $resourceGroupName --location $snapshotobject.location --sku "Premium_LRS" --source $snapshotobject.id -n $osDiskName
 }

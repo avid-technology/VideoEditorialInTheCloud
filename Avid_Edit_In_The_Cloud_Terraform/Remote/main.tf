@@ -15,24 +15,13 @@ provider "azurerm" {
   features {}
 }
 
-# locals {
-#   resource_group_name   = "${var.resource_prefix}-rg"
-#   script_url            = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/${var.branch}/Avid_Edit_In_The_Cloud_Terraform/Remote/scripts/"                                   
-# }
-
-# data "azurerm_subnet" "data_subnet_remote" {
-#   name                 = "subnet_remote"
-#   virtual_network_name = "${var.resource_prefix}-rg-vnet"
-#   resource_group_name  = "${var.resource_prefix}-rg"
-# }
-
 module "jumpbox_deployment" {
   source                        = "./modules/jumpbox"
   local_admin_username          = "local-admin"
   local_admin_password          = "Password123$"
-  # domain_admin_username         = "domain-admin"
-  # domain_admin_password         = "Password123!"
-  # domainName                    = "poc.internal"
+  domain_admin_username         = "domain-admin"
+  domain_admin_password         = "Password123!"
+  domainName                    = "poc.internal"
   resource_group_name           = "poc-rg"
   resource_group_location       = "southcentralus"
   vnet_name                     = "poc-rg-vnet"
@@ -56,9 +45,26 @@ module "teradicicac_deployment" {
   subnet_name                   = "subnet_remote"
   teradicicac_vm_hostname       = "poc-cac"
   teradicicac_vm_size           = "Standard_D2s_v3"
-  teradicicac_nb_instances      = 1
+  teradicicac_nb_instances      = 0
   script_url                    = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/Remote/scripts/"
-  teradicicacScript             = "teradicicac_v0.1.bash"
+  # teradicicacScript             = "teradicicac_v0.1.bash"
   teradicicac_internet_access   = true
+  installers_url                = "https://eitcstore01.blob.core.windows.net/installers/"
+}
+
+module "teradicicam_deployment" {
+  source                        = "./modules/teradici_cam"
+  local_admin_username          = "local-admin"
+  local_admin_password          = "Password123$"
+  resource_group_name           = "poc-rg"
+  resource_group_location       = "southcentralus"
+  vnet_name                     = "poc-rg-vnet"
+  subnet_name                   = "subnet_remote"
+  teradicicam_vm_hostname       = "poc-cam"
+  teradicicam_vm_size           = "Standard_D4_v3"
+  teradicicam_nb_instances      = 0
+  script_url                    = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/Remote/scripts/"
+  # teradicicamScript             = "teradicicac_v0.1.bash"
+  teradicicam_internet_access   = true
   installers_url                = "https://eitcstore01.blob.core.windows.net/installers/"
 }
