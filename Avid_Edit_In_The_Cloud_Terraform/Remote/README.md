@@ -2,11 +2,11 @@
 
 ## Introduction
 
-This collection will help you deploy 1 Jumpbox and 1 Teradici CAC server. 
+This collection will help you deploy 1 Jumpbox, 1 Teradici CAC and 1 Teradici CAM servers. 
 
 Jumpbox will help you create a single point of access to your resource group. You should modify the NSG handling remote connections to only allow specific IP addresses to access your resources.
 
-Teradici CAC server is a solution built by Teradici to access VM via PCoIP protocol. Find more information at [Teradici CAC](https://docs.teradici.com/find/product/cloud-access-software/current?subscriptionName=cloud-access)
+Teradici CAM/CAC server is a solution built by Teradici to access VM via PCoIP protocol. Find more information at [Teradici CAC](https://www.teradici.com/web-help/cas_manager/). If you plan to use Teradici CAM SaaS, there is no need to install the standalone CAM server.
 
 ![current + Next Version](./remote.png)
 
@@ -20,6 +20,7 @@ Teradici CAC server is a solution built by Teradici to access VM via PCoIP proto
 1. Navigate to Remote collection: *$cd Avid_Edit_In_The_Cloud_Terraform/Remote/*
 1. Initialize terraform: *$terraform init*
 1. Apply configuration: *$terraform apply*
+1. (optional) Install [Teradici CAM](https://www.teradici.com/web-help/cas_manager/cam_standalone_installation/cam_standalone_installation/)
 1. Install [Teradici CAC](https://www.teradici.com/web-help/cas_manager/) on new CAC VM.
 1. Go to Storage collection [Reame](https://github.com/avid-technology/VideoEditorialInTheCloud/tree/master/Avid_Edit_In_The_Cloud_Terraform/Storage) to install your next collection. 
 

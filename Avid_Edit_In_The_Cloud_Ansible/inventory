@@ -1,0 +1,10 @@
+[teradicicachosts]
+cac1 ansible_host=10.1.3.6 ansible_connection=ssh ansible_user=local-admin
+
+[teradicicamhosts]
+cam1 ansible_host=10.1.3.5 ansible_connection=ssh ansible_user=local-admin
+
+[zabbixhosts]
+
+[dchosts]
+dc1 ansible_host=10.1.3.5 ansible_connection=winrm ansible_user=local-admin

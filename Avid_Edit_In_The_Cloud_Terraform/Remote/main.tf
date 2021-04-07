@@ -30,7 +30,7 @@ module "jumpbox_deployment" {
   installers_url                = "https://eitcstore01.blob.core.windows.net/installers/"
   jumpbox_vm_hostname           = "poc-jx"
   jumpbox_vm_size               = "Standard_D4s_v3"
-  jumpbox_nb_instances          = 1
+  jumpbox_nb_instances          = 0
   JumpboxScript                 = "jumpbox_v0.1.ps1"
   jumpbox_internet_access       = true 
 }
@@ -45,7 +45,7 @@ module "teradicicac_deployment" {
   subnet_name                   = "subnet_remote"
   teradicicac_vm_hostname       = "poc-cac"
   teradicicac_vm_size           = "Standard_D2s_v3"
-  teradicicac_nb_instances      = 1
+  teradicicac_nb_instances      = 0
   script_url                    = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/Remote/scripts/"
   # teradicicacScript             = "teradicicac_v0.1.bash"
   teradicicac_internet_access   = true

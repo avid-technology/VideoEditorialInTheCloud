@@ -1,5 +1,6 @@
 ---
 - hosts: dchosts
+
   vars: 
     domain_name: "poc"
     domain_extension: "internal"
@@ -7,6 +8,7 @@
     admin_username: "domain-admin"
     admin_password: "Password123!"
     user_password: "Password123$"
+
   tasks:
     - name: Install chocolatey
       win_chocolatey:
