@@ -32,7 +32,7 @@ echo "==========================================================================
 echo "Clone Github"
 echo "================================================================================"
 echo
-sudo git clone https://github.com/avid-technology/VideoEditorialInTheCloud.git /home/local-admin/
+sudo git clone https://github.com/avid-technology/VideoEditorialInTheCloud.git /home/local-admin/VideoEditorialInTheCloud
 echo
 echo "================================================================================"
 echo "Done Ubuntu Setup"

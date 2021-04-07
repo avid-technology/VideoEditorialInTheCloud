@@ -14,7 +14,7 @@ A basic network will be built in the resource group with 1 Vnet and 7 subnets co
 - subnet_transfer
 - subnet_workstations
 
-![current + Next Version](./Network.png)
+![current + Next Version](./Core.png)
 
 2 default NSG will be created: 
 
