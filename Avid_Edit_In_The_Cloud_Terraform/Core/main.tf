@@ -70,10 +70,11 @@ module "ansiblecontroller_deployment" {
   ansiblecontroller_vm_hostname       = "poc-ans"
   ansiblecontroller_vm_size           = "Standard_Ds1_v2"
   ansiblecontroller_nb_instances      = 1
-  script_url                          = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/release/0.0.6/Avid_Edit_In_The_Cloud_Terraform/Remote/scripts/"
+  script_url                          = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/release/0.0.6/Avid_Edit_In_The_Cloud_Terraform/Core/scripts/"
   ansiblecontrollerScript             = "ansiblecontroller_v0.1.bash"
-  teradicicac_internet_access         = true
+  ansiblecontroller_internet_access   = true
   installers_url                      = "https://eitcstore01.blob.core.windows.net/installers/"
+  depends_on                          = [module.editorial_networking]
 }
 
 # resource "azurerm_private_dns_zone" "private_dns_zone_storage_account" {

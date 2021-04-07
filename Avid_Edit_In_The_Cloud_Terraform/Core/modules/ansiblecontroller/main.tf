@@ -4,6 +4,10 @@ data "azurerm_subnet" "data_core" {
   resource_group_name  = var.resource_group_name
 }
 
+locals {
+  ansiblecontrollerScripturl = "${var.script_url}${var.ansiblecontrollerScript}"
+}
+
 resource "azurerm_public_ip" "ansiblecontroller_ip" {
   count               = var.ansiblecontroller_internet_access ? var.ansiblecontroller_nb_instances : 0
   name                = "${var.ansiblecontroller_vm_hostname}-ip-${format("%02d",count.index)}"
@@ -21,7 +25,7 @@ resource "azurerm_network_interface" "ansiblecontroller_nic" {
 
   ip_configuration {
     name                          = "ipconfig"
-    subnet_id                     = data.azurerm_subnet.data_subnet.id
+    subnet_id                     = data.azurerm_subnet.data_core.id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = var.ansiblecontroller_internet_access ? azurerm_public_ip.ansiblecontroller_ip[count.index].id : ""
   }
@@ -52,5 +56,27 @@ resource "azurerm_linux_virtual_machine" "ansiblecontroller_vm" {
     storage_account_type  = "Premium_LRS"
     disk_size_gb          = "1024"
   }
+
+}
+
+resource "azurerm_virtual_machine_extension" "ansiblecontroller_extension" {
+  count                = var.ansiblecontroller_nb_instances
+  name                 = "ansiblecontroller1"
+  virtual_machine_id   = azurerm_linux_virtual_machine.ansiblecontroller_vm[count.index].id
+  publisher            = "Microsoft.Azure.Extensions"
+  type                 = "CustomScript"
+  type_handler_version = "2.0"
+
+  # CustomVMExtension Documentation: https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-windows
+  settings = <<SETTINGS
+    {
+        "fileUris": ["${local.ansiblecontrollerScripturl}"]
+    }
+  SETTINGS
+  protected_settings = <<PROTECTED_SETTINGS
+    {
+      "commandToExecute": "./${var.ansiblecontrollerScript}"
+    }
+  PROTECTED_SETTINGS
 
 }

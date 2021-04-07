@@ -27,6 +27,13 @@ sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(l
 sudo apt-get install terraform=0.14.4
 sudo apt-get install packer
 echo
+echo
+echo "================================================================================"
+echo "Clone Github"
+echo "================================================================================"
+echo
+sudo git clone https://github.com/avid-technology/VideoEditorialInTheCloud.git /home/local-admin/
+echo
 echo "================================================================================"
 echo "Done Ubuntu Setup"
 echo "================================================================================"
