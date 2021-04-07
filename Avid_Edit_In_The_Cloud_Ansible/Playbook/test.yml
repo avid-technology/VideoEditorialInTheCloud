@@ -1,0 +1,17 @@
+- 
+  name: Play 1
+  hosts: teradicicachosts
+  remote_user: local-admin
+  tasks:
+    - name: execute command 'date'
+      command: echo "Hello World"
+      register: output
+
+    - debug: msg="{{ output.stdout }}"
+
+-
+  name: Play 2
+  hosts: teradicicachosts
+  remote_user: local-admin
+  tasks:
+
