@@ -50,7 +50,7 @@ module "domaincontroller_deployment" {
   resource_group_location           = "southcentralus"
   vnet_name                         = "poc-rg-vnet"
   subnet_name                       = "subnet_core"
-  script_url                        = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/Core/scripts/"
+  script_url                        = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/release/0.0.6/Avid_Edit_In_The_Cloud_Terraform/Core/scripts/"
   installers_url                    = "https://eitcstore01.blob.core.windows.net/installers/"
   domaincontroller_vm_size          = "Standard_D4s_v3"
   domaincontroller_vm_hostname      = "poc-dc"

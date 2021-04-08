@@ -18,6 +18,8 @@ echo "==========================================================================
 sudo apt install -y software-properties-common
 sudo apt-add-repository --yes --update ppa:ansible/ansible
 sudo apt install -y ansible
+sudo apt install -y python-pip
+sudo pip install "pywinrm>=0.3.0"
 echo
 echo "================================================================================"
 echo "Installing Terraform"
