@@ -55,6 +55,7 @@ module "domaincontroller_deployment" {
   domaincontroller_vm_size          = "Standard_D4s_v3"
   domaincontroller_vm_hostname      = "poc-dc"
   domaincontroller_nb_instances     = 1
+  domaincontrollerScript            = "ConfigureRemotingForAnsible.ps1"
   domaincontroller_internet_access  = false
   depends_on                        = [module.editorial_networking]
 }
