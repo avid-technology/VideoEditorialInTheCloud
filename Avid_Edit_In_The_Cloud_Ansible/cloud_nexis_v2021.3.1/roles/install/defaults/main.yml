@@ -1,0 +1,6 @@
+---
+# defaults file for install
+nexis_temp_folder: /var/avid/esd/temporary 
+part_number: 0100-40109-00 # 0100-40109-00: Online | 0100-38171-00: Nearline
+nexis_deployed: false
+nexis_vm_build: AvidNEXISCloud_21.3.1-25.run

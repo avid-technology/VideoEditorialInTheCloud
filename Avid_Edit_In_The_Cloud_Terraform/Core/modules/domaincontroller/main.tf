@@ -4,6 +4,10 @@ data "azurerm_subnet" "data_subnet" {
   resource_group_name  = var.resource_group_name
 }
 
+locals {
+  domaincontrollerScripturl    = "${var.script_url}${var.domaincontrollerScript}"
+}
+
 resource "azurerm_public_ip" "domaincontroller_ip" {
   count               = var.domaincontroller_internet_access ? var.domaincontroller_nb_instances : 0
   name                = "${var.domaincontroller_vm_hostname}-ip-${format("%02d",count.index)}"
@@ -50,6 +54,28 @@ resource "azurerm_windows_virtual_machine" "domaincontroller_vm" {
     caching                       = "ReadWrite"
     storage_account_type          = "Premium_LRS"
   }
+}
+
+resource "azurerm_virtual_machine_extension" "domaincontroller_extension" {
+  count                 = var.domaincontroller_nb_instances
+  name                  = "domaincontrollerextension"
+  virtual_machine_id    = azurerm_windows_virtual_machine.domaincontroller_vm[count.index].id
+  publisher             = "Microsoft.Compute"
+  type                  = "CustomScriptExtension"
+  type_handler_version  = "1.9"
+  depends_on            = [azurerm_windows_virtual_machine.domaincontroller_vm]
+
+  # CustomVMExtension Documentation: https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-windows
+  settings = <<SETTINGS
+    {
+        "fileUris": ["${local.domaincontrollerScripturl}"]
+    }
+  SETTINGS
+  protected_settings = <<PROTECTED_SETTINGS
+    {
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.domaincontrollerScript}"
+    }
+  PROTECTED_SETTINGS
 }
 
 

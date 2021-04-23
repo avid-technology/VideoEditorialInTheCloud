@@ -1,0 +1,165 @@
+################# Prior to run this playbook #################
+# - comment zcat command if already ran
+# - Enter private IP address of VM server in nginx conf
+##############################################################
+
+---
+- name: Zabbix playbook
+  hosts: zabbixhosts
+  remote_user: local-admin
+  become: yes
+
+  vars:
+    mysql_root_password: password
+    webserveripaddress: "10.1.2.4"
+    admin_user: "local-admin"
+
+  tasks:
+
+  - name: Update all packages reference to their latest version
+    apt:
+      name: "*"
+      state: latest
+
+  - name: Stop ufw for testing only
+    ansible.builtin.service:
+      name: ufw
+      state: stopped
+
+  - name: Install Nginx
+    apt:
+      name: 
+        - nginx
+      state: latest 
+
+  - name: Install MySQL
+    apt:
+      name: 
+        - mysql-server
+        - mysql-client
+      state: latest 
+
+  - name: Make sure mysql service is running
+    service:
+      name: mysql
+      state: started
+      enabled: True  
+
+  - name: Install python mysql
+    apt:
+      name: 
+        - python-mysqldb
+      state: latest 
+
+  - name: Configure password for MySQL root user
+    mysql_user: 
+      name: root
+      host: localhost
+      password: "{{ mysql_root_password }}" 
+      login_user: root
+      login_password: "{{ mysql_root_password }}"
+
+  - name: Install PHP
+    apt:
+      name: 
+        - php-fpm
+        - php-mysql
+      state: latest   
+
+  - name: Download Zabbix configuration package
+    get_url:
+      url: https://repo.zabbix.com/zabbix/5.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_5.0-1+bionic_all.deb
+      dest: /home/{{ admin_user }} 
+
+  - name: Execute the command in remote shell; stdout goes to the specified file on the remote 
+    shell: sudo dpkg -i /home/{{ admin_user }}/zabbix-release_5.0-1+bionic_all.deb
+
+  - name: Execute the command in remote shell; stdout goes to the specified file on the remote 
+    shell: sudo apt update 
+
+  - name: Install Zabbix
+    apt:
+      name:
+        - zabbix-server-mysql
+        - zabbix-frontend-php
+        - zabbix-nginx-conf
+        - zabbix-agent
+      state: latest 
+
+  - name: Create a new database with name "zabbix"
+    mysql_db:
+      name: zabbix
+      encoding: utf8
+      login_password: "{{ mysql_root_password }}"
+      state: present
+      collation: utf8_bin
+
+  - name: Add zabbix user to database
+    mysql_user:
+      name: zabbix
+      password: "{{ mysql_root_password }}"
+      priv: 'zabbix.*:ALL,GRANT'
+      state: present
+      #login_user: root
+      login_password: "{{ mysql_root_password }}"
+
+  - name: Execute the command in remote shell; stdout goes to the specified file on the remote 
+    shell: zcat /usr/share/doc/zabbix-server-mysql*/create.sql.gz | mysql --user=zabbix --password=password zabbix
+
+  - name: Replace line in zabbix configuration file
+    ansible.builtin.lineinfile:
+      path: /etc/zabbix/zabbix_server.conf
+      # The String to Search
+      regexp: "# DBPassword=" 
+      # The String to Replace
+      line: "DBPassword={{ mysql_root_password }}"
+      state: present
+
+  - name: Replace line in zabbix configuration file
+    ansible.builtin.lineinfile:
+      path: /etc/zabbix/nginx.conf
+      # The String to Search
+      regexp: "#        listen          80;" 
+      # The String to Replace
+      line: "        listen          80;"
+      state: present
+
+  - name: Replace line in zabbix configuration file
+    ansible.builtin.lineinfile:
+      path: /etc/zabbix/nginx.conf
+      # The String to Search
+      regexp: "#        server_name     example.com;" 
+      # The String to Replace
+      line: "        server_name     {{ webserveripaddress }};"
+      state: present
+
+  - name: Replace line in zabbix configuration file
+    ansible.builtin.lineinfile:
+      path: /etc/zabbix/php-fpm.conf
+      # The String to Search
+      regexp: "; php_value[date.timezone] = Europe/Riga" 
+      # The String to Replace
+      line: "php_value[date.timezone] = America/Los_Angeles"
+      state: present 
+
+  - name: Execute the command in remote shell; stdout goes to the specified file on the remote 
+    shell: sudo nginx -s reload
+
+  - name: Make sure mysql service is running
+    service:
+      name: php7.2-fpm.service
+      state: restarted
+      enabled: True
+
+  - name: Make sure mysql service is running
+    service:
+      name: php7.2-fpm.service
+      state: restarted
+      enabled: True
+
+  - name: Make sure mysql service is running
+    service:
+      name: zabbix-server
+      state: restarted
+      enabled: True 
+...

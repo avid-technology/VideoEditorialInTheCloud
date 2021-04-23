@@ -30,7 +30,7 @@ module "editorial_networking" {
                                         subnet_transfer="10.1.5.0/24"
                                         subnet_workstations="10.1.6.0/24"
                                   }
-  dns_servers                   = []
+  dns_servers                   = ["10.1.0.4"]
   create_subnet_Mediacentral    = true
   create_subnet_Monitor         = true
   create_subnet_Remote          = true
@@ -50,13 +50,32 @@ module "domaincontroller_deployment" {
   resource_group_location           = "southcentralus"
   vnet_name                         = "poc-rg-vnet"
   subnet_name                       = "subnet_core"
-  script_url                        = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/Core/scripts/"
+  script_url                        = "https://eitcstore01.blob.core.windows.net/scripts/"
   installers_url                    = "https://eitcstore01.blob.core.windows.net/installers/"
   domaincontroller_vm_size          = "Standard_D4s_v3"
   domaincontroller_vm_hostname      = "poc-dc"
   domaincontroller_nb_instances     = 1
+  domaincontrollerScript            = "ConfigureRemotingForAnsible.ps1"
   domaincontroller_internet_access  = false
   depends_on                        = [module.editorial_networking]
+}
+
+module "ansiblecontroller_deployment" {
+  source                              = "./modules/ansiblecontroller"
+  local_admin_username                = "local-admin"
+  local_admin_password                = "Password123$"
+  resource_group_name                 = "poc-rg"
+  resource_group_location             = "southcentralus"
+  vnet_name                           = "poc-rg-vnet"
+  subnet_name                         = "subnet_remote"
+  ansiblecontroller_vm_hostname       = "poc-ans"
+  ansiblecontroller_vm_size           = "Standard_Ds1_v2"
+  ansiblecontroller_nb_instances      = 1
+  script_url                          = "https://eitcstore01.blob.core.windows.net/scripts/"
+  ansiblecontrollerScript             = "ansiblecontroller_v0.1.bash"
+  ansiblecontroller_internet_access   = true
+  installers_url                      = "https://eitcstore01.blob.core.windows.net/installers/"
+  depends_on                          = [module.editorial_networking]
 }
 
 # resource "azurerm_private_dns_zone" "private_dns_zone_storage_account" {

@@ -1,34 +1,30 @@
 ---
-- hosts: dchosts
-  vars: 
-    domain_name: "poc"
-    domain_extension: "internal"
-    netbios_name: "POC"
-    admin_username: "domain-admin"
-    admin_password: "Password123!"
-    user_password: "Password123$"
-  tasks:
-    - name: Install chocolatey
-      win_chocolatey:
+    - 
+      name: Install chocolatey
+      chocolatey.chocolatey.win_chocolatey:
           name:
            - chocolatey
            - chocolatey-core.extension
           state: present
 
-    - name: Install Google Chrome
-      win_chocolatey:
-        name: googlechrome
+    - 
+      name: Install Firefox
+      chocolatey.chocolatey.win_chocolatey:
+        name: 
+           - firefox
         state: present
         ignore_checksums: yes
 
-    - name: Install AD DC
-      win_feature:
+    - 
+      name: Install Active Directory Domain Controller Services
+      ansible.windows.win_feature:
         name: AD-Domain-Services
         include_management_tools: yes
         state: present
 
-    - name: Create new Windows domain in a new forest with specific parameters
-      win_domain:
+    - 
+      name: Create new Windows domain in a new forest with specific parameters
+      ansible.windows.win_domain:
         create_dns_delegation: no
         database_path: C:\Windows\NTDS
         dns_domain_name: "{{ domain_name }}.{{ domain_extension }}"
@@ -39,20 +35,24 @@
         safe_mode_password: "{{ admin_password }}"
         register: domain_install
 
-    - name: Reboot the server
-      win_reboot:
+    - 
+      name: Reboot the server
+      ansible.windows.win_reboot:
 
-    - name: Pause for 5 minutes for gpo to initialize
-      pause:
+    - 
+      name: Pause for 5 minutes for gpo to initialize
+      ansible.builtin.pause:
         minutes: 5
 
-    - name: "Install XactiveDirectory"
-      win_psmodule:
+    - 
+      name: "Install XactiveDirectory"
+      community.windows.win_psmodule:
         name: ActiveDirectoryDSC
         state: present
 
-    - name: Ensure domain admin exists
-      win_domain_user:
+    - 
+      name: Ensure domain admin exists
+      community.windows.win_domain_user:
         name: "{{ admin_username }}"
         firstname: Domain
         surname: Admin
@@ -62,120 +62,130 @@
         groups:
           - Domain Admins
     
-    - name: "Create OU"
-      win_dsc:
+    - 
+      name: "Create OU"
+      ansible.windows.win_dsc:
         resource_name: ADOrganizationalUnit
         Name: "{{ domain_name }}{{ domain_extension }}"
         Path: "DC={{ domain_name }},DC={{ domain_extension }}"
 
-    - name: "Create OU"
-      win_dsc:
+    - 
+      name: "Create OU"
+      ansible.windows.win_dsc:
         resource_name: ADOrganizationalUnit
         Name: "Groups"
         Path: "OU={{ domain_name }}{{ domain_extension }},DC={{ domain_name }},DC={{ domain_extension }}"
 
-    - name: "Create OU"
-      win_dsc:
+    - 
+      name: "Create OU"
+      ansible.windows.win_dsc:
         resource_name: ADOrganizationalUnit
         Name: "Users"
         Path: "OU={{ domain_name }}{{ domain_extension }},DC={{ domain_name }},DC={{ domain_extension }}"
 
-    - name: Ensure MC_Admins exists
-      win_domain_group:
+    - 
+      name: Ensure MC_Admins exists
+      community.windows.win_domain_group:
         name: MC_Admins
         scope: global
         path: "OU=Groups,OU={{ domain_name }}{{ domain_extension }},DC={{ domain_name }},DC={{ domain_extension }}"
+        state: present
 
-    - name: Ensure MC_Services exists
-      win_domain_group:
+    - 
+      name: Ensure MC_Services exists
+      community.windows.win_domain_group:
         name: MC_Services
         scope: global
         path: "OU=Groups,OU={{ domain_name }}{{ domain_extension }},DC={{ domain_name }},DC={{ domain_extension }}"
+        state: present
 
-    - name: Ensure MC_Browse exists
-      win_domain_group:
+    - 
+      name: Ensure MC_Browse exists
+      community.windows.win_domain_group:
         name: MC_Browse
         scope: global
         path: "OU=Groups,OU={{ domain_name }}{{ domain_extension }},DC={{ domain_name }},DC={{ domain_extension }}"
+        state: present
 
-    - name: Ensure MC_Edit exists
-      win_domain_group:
+    - 
+      name: Ensure MC_Edit exists
+      community.windows.win_domain_group:
         name: MC_Edit
         scope: global
         path: "OU=Groups,OU={{ domain_name }}{{ domain_extension }},DC={{ domain_name }},DC={{ domain_extension }}"
-
-    - name: Ensure MC_Full exists
-      win_domain_group:
+        state: present
+      
+    - 
+      name: Ensure MC_Full exists
+      community.windows.win_domain_group:
         name: MC_Full
         scope: global
         path: "OU=Groups,OU={{ domain_name }}{{ domain_extension }},DC={{ domain_name }},DC={{ domain_extension }}"
+        state: present
 
-    - name: Ensure MC_View exists
-      win_domain_group:
+    - 
+      name: Ensure MC_View exists
+      community.windows.win_domain_group:
         name: MC_View
         scope: global
         path: "OU=Groups,OU={{ domain_name }}{{ domain_extension }},DC={{ domain_name }},DC={{ domain_extension }}"
+        state: present
 
-    - name: Ensure user mc_service exists
-      win_domain_user:
+    - 
+      name: Ensure user mc_service exists
+      community.windows.win_domain_user:
         name: mc_service
         firstname: MediaCentral
         surname: Service
         password: "{{ user_password }}"
-        state: present
         path: "OU=Users,OU={{ domain_name }}{{ domain_extension }},DC={{ domain_name }},DC={{ domain_extension }}"
         groups:
           - Domain Users
           - MC_Admins
           - MC_Services
           - ADministrators
+        state: present
     
-    - name: Ensure user mc_admin exists
-      win_domain_user:
+    - 
+      name: Ensure user mc_admin exists
+      community.windows.win_domain_user:
         name: mc_admin
         firstname: MediaCentral
         surname: Admin
         password: "{{ user_password }}"
-        state: present
         path: "OU=Users,OU={{ domain_name }}{{ domain_extension }},DC={{ domain_name }},DC={{ domain_extension }}"
         groups:
           - Domain Users
           - MC_Admins
+        state: present
 
-    - name: Ensure user sa_teradici exists
-      win_domain_user:
+    - 
+      name: Ensure user sa_teradici exists
+      community.windows.win_domain_user:
         name: sa_teradici
         firstname: SA
         surname: Teradici
         password: "{{ user_password }}"
-        state: present
         path: "OU=Users,OU={{ domain_name }}{{ domain_extension }},DC={{ domain_name }},DC={{ domain_extension }}"
         groups:
           - Domain Users
+        state: present
     
-    - name: Install AD Certificate Services
-      win_feature:
+    - 
+      name: Install AD Certificate Services
+      ansible.windows.win_feature:
         name: AD-Certificate
         include_management_tools: yes
         state: present
     
-    # - name: xAdcsDeployment DSC module
-    #   win_psmodule:
-    #     name: xAdcsDeployment
+    - name: xAdcsDeployment DSC module
+      community.windows.win_psmodule:
+        name: xAdcsDeployment
 
-    # - name: Enterprise Root CA
-    #   win_dsc:
-    #     resource_name: xAdcsCertificationAuthority
-    #     catype: EnterpriseRootCA
-    #     credential_username: "{{ admin_username }}"
-    #     credential_password: "{{ admin_password }}"
-    #     ensure: present
-      
-    #- name: Install AD Certificate Services
-    #  win_feature:
-    #    name: Install-AdcsEnrollmentWebService
-    #    state: present
-
-    #- name: Reboot the server
-    #  win_reboot:
-...
+    - name: Enterprise Root CA
+      ansible.windows.win_dsc:
+        resource_name: xAdcsCertificationAuthority
+        catype: EnterpriseRootCA
+        credential_username: "{{ admin_username }}"
+        credential_password: "{{ admin_password }}"
+        ensure: present

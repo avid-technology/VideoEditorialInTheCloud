@@ -1,0 +1,27 @@
+---
+
+# save to output file: part is duplicated in register.yml, to make sure that if license is consumed - device id will be in out vars
+- 
+  name: "Set json_content"
+  delegate_to: localhost
+  set_fact:
+    json_content: '{"nexis_device_id":"{{device_id.stdout}}"}'
+  when:  device_id.stdout != "" and device_id is defined
+
+- 
+  name: "make out vars file"
+  delegate_to: localhost
+  copy:
+    content: "{{ json_content | to_nice_json }}" 
+    dest: out-vars.json
+  when: device_id.stdout != "" and device_id is defined
+
+- 
+  name: "Save out vars file"
+  delegate_to: localhost
+  template: 
+    src: out-vars.json
+    dest: out-vars.json
+  when: device_id.stdout != "" and device_id is defined
+
+...

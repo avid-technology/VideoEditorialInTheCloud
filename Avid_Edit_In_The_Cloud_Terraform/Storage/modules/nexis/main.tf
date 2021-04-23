@@ -136,26 +136,26 @@ resource "azurerm_virtual_machine_data_disk_attachment" "nexis_system_director_d
   caching            = "ReadWrite"
 }
 
-resource "azurerm_virtual_machine_extension" "nexis_system_director_script" {
-  count                 = var.nexis_system_director_nb_instances
-  name                  = "nexis"
-  virtual_machine_id    = azurerm_linux_virtual_machine.nexis_system_director_vm[count.index].id
-  publisher             = "Microsoft.Azure.Extensions"
-  type                  = "CustomScript"
-  type_handler_version  = "2.0"
-  depends_on            = [azurerm_virtual_machine_data_disk_attachment.nexis_system_director_datadisk_attachement]
+# resource "azurerm_virtual_machine_extension" "nexis_system_director_script" {
+#   count                 = var.nexis_system_director_nb_instances
+#   name                  = "nexis"
+#   virtual_machine_id    = azurerm_linux_virtual_machine.nexis_system_director_vm[count.index].id
+#   publisher             = "Microsoft.Azure.Extensions"
+#   type                  = "CustomScript"
+#   type_handler_version  = "2.0"
+#   depends_on            = [azurerm_virtual_machine_data_disk_attachment.nexis_system_director_datadisk_attachement]
 
-  settings = <<EOF
-    {
-    "fileUris": [
-          "${local.nexis_storage_vm_script_url}"
-        ]
-    }
-  EOF
-  protected_settings = <<PROT
-    {
+#   settings = <<EOF
+#     {
+#     "fileUris": [
+#           "${local.nexis_storage_vm_script_url}"
+#         ]
+#     }
+#   EOF
+#   protected_settings = <<PROT
+#     {
         
-        "commandToExecute": "/bin/bash ${var.nexis_system_director_vm_script_name} ${azurerm_linux_virtual_machine.nexis_system_director_vm[count.index].name} ${local.nexis_storage_vm_artifacts_location} ${var.nexis_system_director_vm_build} ${var.nexis_system_director_vm_part_number}"
-    }
-    PROT
-}
+#         "commandToExecute": "/bin/bash ${var.nexis_system_director_vm_script_name} ${azurerm_linux_virtual_machine.nexis_system_director_vm[count.index].name} ${local.nexis_storage_vm_artifacts_location} ${var.nexis_system_director_vm_build} ${var.nexis_system_director_vm_part_number}"
+#     }
+#     PROT
+# }

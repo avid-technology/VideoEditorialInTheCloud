@@ -1,0 +1,58 @@
+#Sample Inventory File 
+
+#CAC Servers
+cac01 ansible_host=10.1.3.6 ansible_connection=ssh ansible_user=local-admin ansible_port=22
+
+#CAM Servers
+cam01 ansible_host=10.1.3.5 ansible_connection=ssh ansible_user=local-admin ansible_port=22
+
+#Zabbix Servers
+zabbix01 ansible_host=10.1.0.7 ansible_connection=ssh ansible_user=local-admin ansible_port=22
+
+#Nexis Servers
+nexis01 ansible_host=10.1.4.4 ansible_connection=ssh ansible_user=avid ansible_port=22
+nexis02 ansible_host=10.1.4.5 ansible_connection=ssh ansible_user=avid ansible_port=22
+
+#DC Servers
+dc01 ansible_host=10.1.0.4
+
+#MediaComposer Workstations
+mc01 ansible_host=10.1.6.4
+
+[cac_servers]
+cac01
+
+[cam_servers]
+cam01
+
+[zabbix_servers]
+zabbix01
+
+[nexis_servers]
+nexis01
+
+[dc_servers]
+dc01
+
+[MediaComposer_workstations]
+mc01
+
+[dc_servers:vars]
+ansible_user=local-admin
+ansible_password=Password123$
+ansible_connection=winrm
+ansible_winrm_server_cert_validation=ignore
+
+[MediaComposer_workstations:vars]
+ansible_user=local-admin
+ansible_password=Password123$
+ansible_connection=winrm
+ansible_winrm_server_cert_validation=ignore
+
+[Templatessp:vars]
+ansible_user=domain-admin@poc.internal
+ansible_port=5986
+ansible_password=Password123!
+ansible_connection=winrm
+ansible_winrm_transport=credssp
+ansible_winrm_server_cert_validation=ignore

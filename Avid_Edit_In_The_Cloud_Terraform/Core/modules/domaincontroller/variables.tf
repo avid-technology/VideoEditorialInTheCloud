@@ -43,10 +43,9 @@ variable "domaincontroller_vm_size" {
   default     = "Standard_D4s_v3"
 }
 
-# variable "domainName" {
-#   description = "Domain Name"
-#   type        = string
-# }
+variable "domaincontrollerScript" {
+  description = "Domain Controller script to launch"
+}
 
 variable "domaincontroller_internet_access" {
   description = "Internet access for domaincontroller true or false"

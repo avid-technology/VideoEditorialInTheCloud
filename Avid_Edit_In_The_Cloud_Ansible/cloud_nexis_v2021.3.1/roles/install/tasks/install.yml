@@ -1,0 +1,28 @@
+---
+
+- 
+  name: Run installer script
+  # cannot use ansible.builtin.shell (https://github.com/ansible/ansible/issues/72627) 
+  shell: /bin/bash "{{ nexis_temp_folder }}"/{{ nexis_vm_build }} $( hostname ) "{{part_number}}" > /var/log/nexis-install
+  register: installer_result
+  retries: 3
+  delay: 60
+  until: installer_result.rc == 0
+
+- 
+  name: "Debug information: Run installer script"
+  ansible.builtin.debug:
+    var: installer_result
+    verbosity: 2
+
+- 
+  name: Reboot server
+  ansible.builtin.reboot: 
+  
+- 
+  name: "Set flag that nexis is already deployed"
+  ansible.builtin.set_fact:
+    nexis_deployed: true
+  when: installer_result.rc == 0 
+
+...

@@ -1,0 +1,13 @@
+---
+
+  - 
+    name: Teradici CAM setup
+    hosts: cac01
+    become: yes
+
+    roles: 
+      - 
+        role: configure 
+        remote_user: local-admin
+        
+...

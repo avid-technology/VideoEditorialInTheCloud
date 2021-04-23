@@ -1,0 +1,11 @@
+---
+
+  - 
+    name: Media Composer setup
+    hosts: mc01
+
+    roles: 
+      - 
+        role: install-media-composer 
+        
+...

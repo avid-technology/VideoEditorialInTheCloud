@@ -1,0 +1,14 @@
+---
+# defaults file for configure
+
+configure_nexis_task: false
+nexis_activated: false
+nexis_administrator_name: Administrator
+ansible_password: Password123$
+nexis_workspace_size: "250000000000"
+nexis_storage_account_name: "xxxxxx" 
+nexis_storage_account_key: "xxxxxx"
+nexis_workspace_name: default
+nexis_new_user_name: domain-admin
+nexis_new_user_password: Password123!
+iosettype: 3 # 3 online, 2 = nearline

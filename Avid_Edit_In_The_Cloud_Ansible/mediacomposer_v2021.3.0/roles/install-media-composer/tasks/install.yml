@@ -1,0 +1,106 @@
+---
+
+# Install Teradici
+
+  - 
+      name: "Install Teradici"
+      win_shell: Start-Process -FilePath "{{ required_software_path }}\\{{ teradici_installer_name }}" -ArgumentList "/S", "/NoPostReboot" -Verb RunAs -Wait
+      retries: 6
+      delay: 10
+
+# Install NexisClient
+
+  - 
+      name: "Install Avid Cloud Nexis Client"
+      win_shell: Start-Process -FilePath "{{ required_software_path }}\\{{ nexis_client_installer_name }}" -ArgumentList "/quiet", "/passive", "/norestart" -Wait
+      retries: 6
+      delay: 10
+
+# Install Nvidia driver
+
+  - 
+      name: "Install Nvidia Driver"
+      win_shell: Start-Process -FilePath "{{ required_software_path }}\\{{ nvidia_installer_name }}" -ArgumentList "-s", "-noreboot", "-clean" -Wait
+      retries: 6
+      delay: 10
+      when: gpu_type == "Nvidia"
+
+# Install Amd driver
+
+  - 
+      name: "Install Amd Driver"
+      win_shell: Start-Process -FilePath "{{ required_software_path }}\\{{ amd_installer_name }}" -ArgumentList "-install" -Wait
+      retries: 6
+      delay: 10
+      when: gpu_type == "Amd"
+
+# Install MSI PACE license support, Sentinel USB Driver, Avid Link
+
+  - 
+    name: Create pace directory
+    ansible.windows.win_file:
+      path: "{{ item }}"
+      state: directory
+    with_items:
+      - "{{ media_composer_pace_dir }}"
+      - "{{ media_composer_sentinel_dir }}"
+      - "{{ media_composer_avid_link_dir }}"
+
+  - 
+    name: "Extract MSI PACE license support, Sentinel USB Driver, Avid Link"
+    win_shell: Start-Process -FilePath "{{ item.path }}" -ArgumentList "/s", "/x", "/b{{ item.dest }}", "/v/qn" -Wait
+    register: task_result
+    retries: 6
+    delay: 10
+    with_items:
+      - { path: "{{ media_composer_pace_installer_path }}", dest: "{{ media_composer_pace_dir }}"}
+      - { path: "{{ media_composer_sentinel_installer_path }}", dest: "{{ media_composer_sentinel_dir }}"}
+      - { path: "{{ media_composer_avid_link_installer_path }}", dest: "{{ media_composer_avid_link_dir }}"}
+
+  - 
+    name: "Debug information: Install PACE license support"
+    ansible.builtin.debug:
+      var: task_result
+      verbosity: 2
+
+  - 
+    name: "Install PACE license support, Sentinel USB Driver, Avid Link from msi installer"
+    win_shell: Start-Process -FilePath "{{ item.path }}\\{{ item.name }}" -ArgumentList "/quiet", "/passive", "/norestart" -Wait
+    register: task_result
+    retries: 6
+    delay: 10
+    with_items:
+      - { path: "{{ media_composer_pace_dir }}", name: "{{ media_composer_pace_msi }}"}
+      - { path: "{{ media_composer_sentinel_dir }}", name: "{{ media_composer_sentinel_msi }}"}
+      - { path: "{{ media_composer_avid_link_dir }}", name: "{{ media_composer_avid_link_msi }}"}
+
+  - 
+    name: "Debug information: Run PACE license support, Sentinel USB Driver, Avid Application Manager"
+    ansible.builtin.debug:
+      var: task_result
+      verbosity: 2
+
+  # Install Media Composer
+
+  - 
+    name: "Install Media Composer"
+    win_shell: Start-Process -FilePath "{{ media_composer_installer_path }}" -ArgumentList "/quiet", "/passive", "/norestart" -Wait
+    register: task_result
+    retries: 6
+    delay: 10
+
+  - 
+    name: "Debug information: Run Media Composer installer"
+    ansible.builtin.debug:
+      var: task_result
+      verbosity: 2
+
+  # Reboot machine
+
+  - 
+    name: Reboot machine
+    ansible.windows.win_reboot:
+      reboot_timeout_sec: 300 # wait 5 minutes for reboot
+    register: reboot_result
+
+...

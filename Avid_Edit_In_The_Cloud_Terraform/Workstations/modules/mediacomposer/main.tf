@@ -81,20 +81,22 @@ resource "azurerm_virtual_machine_extension" "mediacomposer_extension_1" {
   SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.mediacomposerScript} ${var.TeradiciKey} ${local.TeradiciURL} ${local.MediacomposerURL} ${local.AvidNexisInstallerUrl} ${var.domainName} ${var.domain_admin_username} ${var.domain_admin_password}"
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.mediacomposerScript}"
     }
   PROTECTED_SETTINGS
 }
 
-resource "azurerm_virtual_machine_extension" "mediacomposer_extension_2" {
-  count                       = var.mediacomposer_nb_instances
-  name                        = "mediacomposer2"
-  virtual_machine_id          = azurerm_windows_virtual_machine.mediacomposer_vm[count.index].id
-  publisher                   = "Microsoft.HpcCompute"
-  type                        = local.gpu_driver
-  type_handler_version        = "1.0"
-  auto_upgrade_minor_version  = true
-  depends_on                  = [azurerm_virtual_machine_extension.mediacomposer_extension_1]
-}
+# "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.mediacomposerScript} ${var.TeradiciKey} ${local.TeradiciURL} ${local.MediacomposerURL} ${local.AvidNexisInstallerUrl} ${var.domainName} ${var.domain_admin_username} ${var.domain_admin_password}"
+
+# resource "azurerm_virtual_machine_extension" "mediacomposer_extension_2" {
+#   count                       = var.mediacomposer_nb_instances
+#   name                        = "mediacomposer2"
+#   virtual_machine_id          = azurerm_windows_virtual_machine.mediacomposer_vm[count.index].id
+#   publisher                   = "Microsoft.HpcCompute"
+#   type                        = local.gpu_driver
+#   type_handler_version        = "1.0"
+#   auto_upgrade_minor_version  = true
+#   depends_on                  = [azurerm_virtual_machine_extension.mediacomposer_extension_1]
+# }
 
 

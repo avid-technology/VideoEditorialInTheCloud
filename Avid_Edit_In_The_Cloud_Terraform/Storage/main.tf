@@ -28,12 +28,12 @@ module "nexis_online_deployment" {
   nexis_storage_account_public_access         = false 
   # nexis_storage_account_subnet_access         = ["subnet_remote","subnet_mediacentral"]
   # private_dns_zone_resource_group             = "poc-rg"
-  nexis_system_director_vm_size               = "Standard_F16s_v2"
+  nexis_system_director_vm_size               = "Standard_DS4_v2" # Either Standard_F16s_v2 (production) or Standard_DS4_v2 (testing)
   nexis_system_director_nb_instances          = 1
-  nexis_system_director_vm_script_url         = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/Storage/scripts/"
+  nexis_system_director_vm_script_url         = "https://eitcstore01.blob.core.windows.net/scripts/"
   nexis_system_director_vm_script_name        = "installNexis.bash"
   nexis_system_director_vm_artifacts_location = "https://eitcstore01.blob.core.windows.net/installers/"
-  nexis_system_director_vm_build              = "AvidNEXISCloud_21.3.0-21.run"
+  nexis_system_director_vm_build              = "AvidNEXISCloud_21.3.1-25.run"
   nexis_system_director_vm_part_number        = "0100-40109-00"
   nexis_system_director_performance           = "Premium"
   nexis_system_director_replication           = "LRS"
@@ -43,7 +43,7 @@ module "nexis_online_deployment" {
                                                 publisher = "debian"          # Either "Credativ" or "debian"
                                                 offer     = "debian-10"       # Either "Debian" or "debian-10"
                                                 sku       = "10"              # Either "8" or "10"
-                                                version   = "0.20210208.542"          # Either "8.0.201901221" or "0.20210208.542"
+                                                version   = "latest"          # Either "8.0.201901221" or "0.20210208.542"
                                               }
 }
 
@@ -61,8 +61,8 @@ module "nexis_nearline_deployment" {
   # nexis_storage_account_subnet_access         = []  
   # private_dns_zone_resource_group             = ""
   nexis_system_director_vm_size               = "Standard_F16s_v2"
-  nexis_system_director_nb_instances          = 1
-  nexis_system_director_vm_script_url         = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/Storage/scripts/"
+  nexis_system_director_nb_instances          = 0
+  nexis_system_director_vm_script_url         = "https://eitcstore01.blob.core.windows.net/scripts/"
   nexis_system_director_vm_script_name        = "installNexis.bash"
   nexis_system_director_vm_artifacts_location = "https://eitcstore01.blob.core.windows.net/installers/"
   nexis_system_director_vm_build              = "AvidNEXISCloud_21.3.0-21.run"
@@ -75,6 +75,6 @@ module "nexis_nearline_deployment" {
                                                 publisher = "debian"          # Either "Credativ" or "debian"
                                                 offer     = "debian-10"       # Either "Debian" or "debian-10"
                                                 sku       = "10"              # Either "8" or "10"
-                                                version   = "0.20210208.542"          # Either "8.0.201901221" or "0.20210208.542"
+                                                version   = "latest"          # Either "8.0.201901221" or "0.20210208.542"
                                               }
 }
