@@ -1,0 +1,42 @@
+---
+# Directories and files
+
+required_software_path: "C:\\Avid\\Media_Composer"
+
+teradici_installer_url: "https://eitcstore01.blob.core.windows.net/installers/pcoip-agent-graphics_21.03.0.exe"
+teradici_installer_name: "teradici.exe"
+
+gpu_type: "Nvidia" # Either Nvidia or Amd 
+
+nvidia_installer_url: "https://eitcstore01.blob.core.windows.net/installers/442.06_grid_win10_64bit_international_whql.exe"
+nvidia_installer_name: "nvidia.exe"
+
+amd_installer_url: "https://eitcstore01.blob.core.windows.net/installers/AMD-Azure-NVv4-Driver-20Q4.exe"
+amd_installer_name: "amd.exe"
+amd_extract_dir: "{{ required_software_path }}\\amd"
+
+nexis_client_installer_url: "https://eitcstore01.blob.core.windows.net/installers/AvidNEXISClient_Win64_21.3.0.21.msi"
+nexis_client_installer_name: "nexis_client.msi"
+
+media_composer_installer_url: "https://eitcstore01.blob.core.windows.net/installers/Media_Composer_2021.3.0_Win.zip"
+media_composer_installer_name: "Media_Composer.zip"
+
+media_composer_pre_req_path: "{{ required_software_path }}\\MediaComposer\\Installers\\MediaComposer\\ISSetupPrerequisites"
+
+media_composer_pace_installer_path: "{{ media_composer_pre_req_path }}\\PACE License Support 5.0.3\\License Support Win64.exe"
+media_composer_pace_dir: "{{ required_software_path }}\\pace"
+media_composer_pace_msi: "PACE License Support Win64.msi"
+
+media_composer_sentinel_installer_path: "{{ media_composer_pre_req_path }}\\Sentinel USB 7.6.9 Driver\\Sentinel Protection Installer 7.6.9.exe"
+media_composer_sentinel_dir: "{{ required_software_path }}\\sentinel"
+media_composer_sentinel_msi: "Sentinel Protection Installer 7.6.9.msi"
+
+media_composer_avid_link_installer_path: "{{ media_composer_pre_req_path }}\\AvidLink\\AvidLinkSetup.exe"
+media_composer_avid_link_dir: "{{ required_software_path }}\\avidlink"
+media_composer_avid_link_msi: "Avid Link.msi"
+
+media_composer_installer_path: "{{ required_software_path }}\\MediaComposer\\Installers\\MediaComposer\\Avid Media Composer.msi"
+
+# Installer names
+
+...

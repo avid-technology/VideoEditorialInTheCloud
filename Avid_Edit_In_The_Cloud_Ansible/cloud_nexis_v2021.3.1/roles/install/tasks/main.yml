@@ -1,0 +1,17 @@
+---
+
+- 
+  name: "Initialize variables"
+  include: init.yml
+
+- 
+  name: "Download installer"
+  include: download.yml
+  when: nexis_deployed == false
+
+- 
+  name: "Install nexis"
+  include: install.yml
+  when: nexis_deployed == false
+
+...

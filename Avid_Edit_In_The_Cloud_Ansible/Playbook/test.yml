@@ -1,9 +1,0 @@
-- 
-  name: Play 1
-  hosts: all
-  remote_user: local-admin
-  tasks:
-    - name: Ping test
-      ping:
-
-

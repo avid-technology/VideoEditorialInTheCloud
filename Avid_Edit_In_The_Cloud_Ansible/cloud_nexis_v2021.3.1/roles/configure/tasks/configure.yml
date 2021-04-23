@@ -1,0 +1,116 @@
+---
+# all modules was writtent according to nexis api doc: 
+
+- 
+  name: "Make sure filesystem is created" 
+  nexis_filesystem:
+    host: "127.0.0.1"
+    username: "{{ nexis_administrator_name }}"
+    password: "{{ ansible_password }}" 
+  register: create_fs_result
+  until: create_fs_result is success
+  retries: 20
+  delay: 120
+
+- name: "Get Nexis Admin token" 
+  nexis_api_token:
+    host: "127.0.0.1"
+    username: "{{ nexis_administrator_name }}"
+    password: "{{ ansible_password }}" 
+  register: nexis_admin_token_result
+  until: nexis_admin_token_result is success
+  retries: 20
+  delay: 120
+
+- name: "Make sure default mediapack is bound"
+  nexis_media_pack_bound: 
+    host: "127.0.0.1" 
+    token: "{{ nexis_admin_token_result.token }}"
+  register: bound_media_pack_result
+  until: bound_media_pack_result is success
+  retries: 20
+  delay: 120
+
+# - name: "Set fact: nexis_storage_group_capacity (in Terabytes)" 
+#   set_fact:
+#     nexis_storage_group_capacity: "{{ (nexis_workspace_size | float * 10e-13) | round | int }}"
+
+- name: "Make sure storage group exists" 
+  nexis_storage_group: 
+    host: "127.0.0.1" 
+    token: "{{ nexis_admin_token_result.token }}"
+    name: "avidstorage"
+    ioAccountName: "{{ nexis_storage_account_name }}"
+    ioAccountKey: "{{ nexis_storage_account_key }}" 
+    ioSetType: "{{ iosettype }}" # 3 online, 2 = nearline
+    ioAccountType: "1" 
+    outPerformance: "4"
+  register: create_storage_group_result
+  until: bound_media_pack_result is success
+  retries: 20
+  delay: 120
+
+- name: "Make sure workspace is created" 
+  nexis_workspace: 
+    host: "127.0.0.1" 
+    token: "{{ nexis_admin_token_result.token }}"
+    name: "{{ nexis_workspace_name }}"
+    size: "{{ nexis_workspace_size }}"
+  register: workspace_create_result
+  until: workspace_create_result is success
+  retries: 5
+  delay: 120
+
+# - name: "Set fact: workspace id" 
+#   set_fact: 
+#     nexis_workspace_id: "{{ workspace_create_result.id }}"
+  
+- name: "Make sure user is created" 
+  nexis_user: 
+    host: "127.0.0.1" 
+    token: "{{ nexis_admin_token_result.token }}"
+    name: "{{ nexis_new_user_name }}"
+    password: "{{ nexis_new_user_password }}"
+  register: create_user_result
+  until: create_user_result is success
+  retries: 20
+  delay: 120
+
+- name: "Make sure user have a workspace access" 
+  nexis_workspace_access: 
+    host: "127.0.0.1" 
+    token: "{{ nexis_admin_token_result.token }}"
+    user: "{{ nexis_new_user_name }}"
+    workspace: "{{ nexis_workspace_name }}"
+    access: "3" 
+  register: workspace_access_result
+  until: create_user_result is success
+  retries: 20
+  delay: 120
+
+# - name: "Make sure admin password is set" 
+#   nexis_admin_password: 
+#     host: "127.0.0.1" 
+#     token: "{{ nexis_admin_token_result.token }}" 
+#     password: "{{ nexis_administrator_password }}"
+#   register: set_admin_password_reslut
+#   until: set_admin_password_reslut is success
+#   retries: 20
+#   delay: 120
+
+# - name: "Make sure wsadmin group is created"
+#   nexis_user_group:
+#     host: "127.0.0.1"
+#     token: "{{ nexis_admin_token_result.token }}"
+#     group_name: "{{ nexis_workspace_admin_group_name }}"
+#     wsadmin: true
+#   register: create_wsadmin_group_result
+#   until: create_wsadmin_group_result is success
+#   retries: 20
+#   delay: 120
+
+# - name: "Set fact: nexis workspace admin group id" 
+#   set_fact: 
+#     nexis_workspace_admin_group_id: "{{ create_wsadmin_group_result.user_group_id }}"
+
+...

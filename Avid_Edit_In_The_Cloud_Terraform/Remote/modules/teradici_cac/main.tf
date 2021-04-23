@@ -9,7 +9,8 @@ resource "azurerm_public_ip" "teradicicac_ip" {
   name                = "${var.teradicicac_vm_hostname}-ip-${format("%02d",count.index)}"
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
-  allocation_method   = "Dynamic"
+  allocation_method   = "Static"
+  sku                 = "Standard"   
 }
 
 resource "azurerm_network_interface" "teradicicac_nic" {

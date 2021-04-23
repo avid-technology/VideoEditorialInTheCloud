@@ -75,7 +75,7 @@ resource "azurerm_virtual_machine_extension" "ansiblecontroller_extension" {
   SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "./${var.ansiblecontrollerScript}"
+      "commandToExecute": "./${var.ansiblecontrollerScript} ${var.local_admin_username}"
     }
   PROTECTED_SETTINGS
 
