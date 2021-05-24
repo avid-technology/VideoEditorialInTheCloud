@@ -1,0 +1,405 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourcePrefix": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 15,
+            "defaultValue": "show-prot-01",
+            "metadata": {
+            "description": "Prefix must be 5-char min, 15-char max, lowercase alphanumeric"
+                }
+        },
+        "adminUsername": {
+            "type": "string",
+            "metadata": {
+            "description": "Username for the Virtual Machine."
+      }
+        },
+        "adminPassword": {
+            "type": "securestring",
+            "metadata": {
+            "description": "Password for the Virtual Machine."
+            }
+        },
+        "vmSize": {
+            "type": "string",
+            "metadata": {
+                "description": "Size of the ProTools VM. Please select v4 type for AMD GPU and v3 for NVIDIA GPU"
+            },
+            "allowedValues": [
+                "Standard_NV4as_v4",
+                "Standard_NV8as_v4",
+                "Standard_NV16as_v4",
+                "Standard_NV32as_v4",
+                "Standard_NV12s_v3",
+                "Standard_NV24s_v3",
+                "Standard_NV48s_v3"
+            ]
+        },
+        "general-VnetResourceGroup": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Resource Group where the existing Vnet is deployed."
+            }
+        },
+        "general-VnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the existing Virtual Network."
+            }
+        },
+        "general-SubnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Existing subnet in where VMs should be deployed"
+            }
+        },
+        "_system-InstallURL": {
+            "type": "string",
+            "defaultValue": "https://eitcstore01.blob.core.windows.net"
+        },
+        "proToolsOS": {
+            "type": "string",
+            "metadata": {
+                "description": "OS for ProTools. Should be either: Windows_10, Windows_Server_2016, Windows_Server_2019"
+            },
+            "allowedValues": [
+                "Windows_10"
+            ],
+            "defaultValue": "Windows_10"
+        },
+        "proToolsVersion": {
+            "type": "string",
+            "metadata": {
+                "description": "ProTools version."
+            },
+            "allowedValues": [
+                "2020.11.0"
+            ],
+            "defaultValue": "2020.11.0"
+        },
+        "teradiciInstallFileName": {
+            "type": "string",
+            "defaultValue": "pcoip-agent-graphics_20.10.1.exe"
+        },
+        "nexisClientInstallFileName": {
+            "type": "string",
+            "defaultValue": "AvidNEXISClient_Win64_20.7.3.10.msi"
+        },
+        "gpuType": {
+            "type": "string",
+            "metadata": {
+                "description": "GPu type. Should be: NVIDIA, AMD"
+            },
+            "defaultValue": "NVIDIA",
+            "allowedValues": [
+                "AMD",
+                "NVIDIA"
+            ]
+        },
+        "branchName": {
+            "type": "string",
+            "metadata": {
+                "description": "Branch to point script to. Either master or avid-development"
+            },
+            "defaultValue": "master",
+            "allowedValues": [
+                "master",
+                "avid-development"
+            ]
+        }
+    },
+    "variables": {
+        "adminPassword": "[parameters('adminPassword')]",
+        "adminUsername": "[parameters('adminUsername')]",
+        "createNic?": true,
+        "osType": {
+            "publisher": "MicrosoftWindowsDesktop",
+            "offer": "Windows-10",
+            "sku": "rs5-pro",
+            "version": "latest"
+        },
+        "scriptFileName": "setupProTools_2020.11.0.ps1",
+        "networkSecurityGroupRules": [
+            {
+                "name": "RDPtcp",
+                "properties": {
+                    "priority": 300,
+                    "protocol": "TCP",
+                    "access": "Allow",
+                    "direction": "Inbound",
+                    "sourceAddressPrefix": "*",
+                    "sourcePortRange": "*",
+                    "destinationAddressPrefix": "*",
+                    "destinationPortRange": "3389"
+                }
+            },
+            {
+                "name": "PCoIPtcp",
+                "properties": {
+                    "priority": 301,
+                    "protocol": "TCP",
+                    "access": "Allow",
+                    "direction": "Inbound",
+                    "sourceAddressPrefix": "*",
+                    "sourcePortRange": "*",
+                    "destinationAddressPrefix": "*",
+                    "destinationPortRange": "4172"
+                }
+            },
+            {
+                "name": "PCoIPudp",
+                "properties": {
+                    "priority": 302,
+                    "protocol": "UDP",
+                    "access": "Allow",
+                    "direction": "Inbound",
+                    "sourceAddressPrefix": "*",
+                    "sourcePortRange": "*",
+                    "destinationAddressPrefix": "*",
+                    "destinationPortRange": "4172"
+                }
+            },
+            {
+                "name": "certauthhttp",
+                "properties": {
+                    "priority": 303,
+                    "protocol": "TCP",
+                    "access": "Allow",
+                    "direction": "Inbound",
+                    "sourceAddressPrefix": "*",
+                    "sourcePortRange": "*",
+                    "destinationAddressPrefix": "*",
+                    "destinationPortRange": "80"
+                }
+            },
+            {
+                "name": "certauthhttps",
+                "properties": {
+                    "priority": 304,
+                    "protocol": "TCP",
+                    "access": "Allow",
+                    "direction": "Inbound",
+                    "sourceAddressPrefix": "*",
+                    "sourcePortRange": "*",
+                    "destinationAddressPrefix": "*",
+                    "destinationPortRange": "443"
+                }
+            },
+            {
+                "name": "Teradici",
+                "properties": {
+                    "priority": 305,
+                    "protocol": "TCP",
+                    "access": "Allow",
+                    "direction": "Inbound",
+                    "sourceAddressPrefix": "*",
+                    "sourcePortRange": "*",
+                    "destinationAddressPrefix": "*",
+                    "destinationPortRange": "60443"
+                }
+            }
+
+        ],
+        "location": "[resourceGroup().location]",
+        "uniqueName": "[parameters('resourcePrefix')]",
+        "networkSecurityGroupName": "[concat(parameters('resourcePrefix'),'-nsg')]",
+        "nicName": "[concat(variables('uniqueName'), '-nic')]",
+        "publicIPAddressName": "[concat(variables('uniqueName'), '-ip')]",
+        "osDiskName": "[concat(variables('uniqueName'), '-os-disk')]",
+        "subnetId": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]",
+        "teradiciKey": "null",
+        "vmName": "[parameters('resourcePrefix')]",
+        "vmSize": "[parameters('vmSize')]",
+        "scriptFolder": ".",
+        "proToolsFileName": "[concat('Pro_Tools_',parameters('proToolsVersion'),'_Win.zip')]",
+        "teradiciInstallFileName": "[parameters('teradiciInstallFileName')]",
+        "nexisClientInstallFileName": "[parameters('nexisClientInstallFileName')]",
+        "_githubLocation": "[concat('https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/',parameters('branchName'),'/Avid_Edit_In_The_Cloud_Arm')]",
+        "scriptLocation": "[concat(variables('_githubLocation'), '/','scripts')]",
+        "proToolsInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('proToolsFileName'))]",
+        "teradiciInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('teradiciInstallFileName'))]",
+        "nexisClientInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('nexisClientInstallFileName'))]",
+        "scriptParameters": "[concat('-TeradiciKey ', variables('teradiciKey'),' -ProToolsURL ', variables('proToolsInstallLocation'),' -TeradiciURL ', variables('teradiciInstallLocation'),' -AvidNEXISClientURL ', variables('nexisClientInstallLocation'))]"
+    },
+    "resources": [
+        {
+            "apiVersion": "2018-02-01",
+            "name": "pid-bc1e25ec-4990-4a2d-a035-a332bebc3ded",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": []
+                }
+            }
+        },
+        {
+            "name": "[concat(variables('networkSecurityGroupName'))]",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2018-08-01",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "securityRules": "[variables('networkSecurityGroupRules')]"
+            },
+            "tags": {}
+        },
+        {
+            "apiVersion": "2017-10-01",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[variables('publicIPAddressName')]",
+            "location": "[variables('location')]",
+            "properties": {
+                "publicIPAllocationMethod": "Static"
+            }
+        },
+        {
+            "apiVersion": "2017-10-01",
+            "condition": "[variables('createNic?')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[variables('nicName')]",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "[variables('publicIPAddressName')]",
+                "[variables('networkSecurityGroupName')]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
+                            },
+                            "subnet": {
+                                "id": "[variables('subnetId')]"
+                            }
+                        }
+                    }
+                ],
+                "networkSecurityGroup": {
+                    "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', concat(variables('networkSecurityGroupName')))]"
+                }
+            }
+        },
+        {
+            "apiVersion": "2017-12-01",
+            "tags": {
+                "avid": "protools"
+            },
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[variables('vmName')]",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "[variables('nicName')]"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[variables('vmSize')]"
+                },
+                "osProfile": {
+                    "computername": "[variables('vmName')]",
+                    "adminUsername": "[variables('adminUsername')]",
+                    "adminPassword": "[variables('adminPassword')]",
+                    "windowsConfiguration": {
+                        "provisionVmAgent": "true"
+                    }
+                },
+                "storageProfile": {
+                    "imageReference": "[variables('osType')]",
+                    "osDisk": {
+                        "name": "[variables('osDiskName')]",
+                        "createOption": "FromImage"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(variables('vmName'),'/','installprotools')]",
+            "apiVersion": "2017-12-01",
+            "location": "[variables('location')]",
+            "copy": {
+                "name": "extensionLoop1",
+                "count": 1
+            },
+            "dependsOn": [
+                "[variables('vmName')]"
+            ],
+            "properties": {
+                "publisher": "Microsoft.Compute",
+                "type": "CustomScriptExtension",
+                "typeHandlerVersion": "1.9",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "fileUris": [
+                        "[concat(variables('scriptLocation'), '/',variables('scriptFileName'))]"
+                    ],
+                    "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('scriptFolder'), '/', variables('scriptFileName'), ' ', variables('scriptParameters'))]"
+                }
+            }
+        },
+         {
+            "condition": "[equals(parameters('gpuType'),'NVIDIA')]",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(variables('vmName'),'/install.nvidia.v0')]",
+            "apiVersion": "2015-06-15",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "extensionLoop1"
+            ],
+            "properties": {
+                "publisher": "Microsoft.HpcCompute",
+                "type": "NvidiaGpuDriverWindows",
+                "typeHandlerVersion": "1.0",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                }
+            }
+        },
+        {
+            "condition": "[equals(parameters('gpuType'),'AMD')]",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(variables('vmName'),'/install.amdgpu.v0')]",
+            "apiVersion": "2015-06-15",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "extensionLoop1"
+            ],
+            "properties": {
+                "publisher": "Microsoft.HpcCompute",
+                "type": "AmdGpuDriverWindows",
+                "typeHandlerVersion": "1.0",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "resource_group": {
+            "type": "string",
+            "value": "[resourceGroup().name]"
+        },
+        "location": {
+            "type": "string",
+            "value": "[variables('location')]"
+        },
+        "subnet_id": {
+            "type": "string",
+            "value": "[variables('subnetId')]"
+        }
+    }
+}
