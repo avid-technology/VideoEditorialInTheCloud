@@ -22,4 +22,4 @@ Follow each link below to get more details on each technology.
 - [Azure subscription](https://portal.azure.com)
 - Avid licenses
 - Teradici license
-- Aspera / FileCatalyst / Signiant license
+- Aspera / FileCatalyst / Signiant licenses
