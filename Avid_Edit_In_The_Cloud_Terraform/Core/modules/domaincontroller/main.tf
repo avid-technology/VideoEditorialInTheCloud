@@ -5,7 +5,7 @@ data "azurerm_subnet" "data_subnet" {
 }
 
 locals {
-  domaincontrollerScripturl    = "${var.script_url}${var.domaincontrollerScript}"
+  domaincontrollerScripturl    = "${var.script_url}${var.domaincontrollerScript}${var.sas_token}"
 }
 
 resource "azurerm_public_ip" "domaincontroller_ip" {

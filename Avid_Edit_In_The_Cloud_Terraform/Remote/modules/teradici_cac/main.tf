@@ -56,7 +56,7 @@ resource "azurerm_linux_virtual_machine" "teradicicac_vm" {
     name                  = "${var.teradicicac_vm_hostname}-osdisk-${format("%02d",count.index)}"
     caching               = "ReadWrite"
     storage_account_type  = "Premium_LRS"
-    disk_size_gb          = "1024"
+    disk_size_gb          = "128"
   }
 
 }

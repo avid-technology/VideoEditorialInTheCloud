@@ -5,7 +5,7 @@ data "azurerm_subnet" "data_core" {
 }
 
 locals {
-  ansiblecontrollerScripturl = "${var.script_url}${var.ansiblecontrollerScript}"
+  ansiblecontrollerScripturl = "${var.script_url}${var.ansiblecontrollerScript}${var.sas_token}"
 }
 
 resource "azurerm_public_ip" "ansiblecontroller_ip" {
@@ -75,7 +75,7 @@ resource "azurerm_virtual_machine_extension" "ansiblecontroller_extension" {
   SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "./${var.ansiblecontrollerScript} ${var.local_admin_username}"
+      "commandToExecute": "./${var.ansiblecontrollerScript} ${var.local_admin_username} ${var.sas_token_unix}"
     }
   PROTECTED_SETTINGS
 

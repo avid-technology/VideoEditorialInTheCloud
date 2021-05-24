@@ -9,25 +9,17 @@ variable "local_admin_password" {
   sensitive   = true
 }
 
+variable "image_reference" {
+  description = "Source image reference for Virtual Machine to be built"
+  type = map
+}
+
+variable "sas_token" {
+  description = "Sas token to access storage account"
+}
+
 variable "resource_group_name" {
   description = "Name of resource group where to build resources"
-}
-
-variable "domainName" {
-  description = "Domain Name"
-  type        = string
-  default     = ""
-}
-
-variable "domain_admin_username" {
-  description = "Domain admin user to join domain"
-  default     = ""
-}
-
-variable "domain_admin_password" {
-  description = "Domain admin password to join domain"
-  default     = ""
-  sensitive   = true
 }
 
 variable "resource_group_location" {
@@ -45,24 +37,6 @@ variable "subnet_name" {
 variable "script_url" {
   description = "Location of all the powershell and bash scripts"
   default     = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/scripts/"
-}
-
-variable "installers_url" {
-  description = "Path to installer location"
-  default     = "https://eitcstore01.blob.core.windows.net/installers/"
-}
-
-variable "gpu_type" {
-    description = "Gpu type either Nvidia or Amd"
-    type = string
-    default = "Nvidia"
-    validation {
-            condition       = (
-                var.gpu_type == "Nvidia" || 
-                var.gpu_type == "Amd" 
-            )
-            error_message   = "Only the following gpu are supported: Nvidia, Amd."
-        }
 }
 
 ############## MediaComposer Variables ##############
@@ -101,39 +75,6 @@ variable "mediacomposer_internet_access" {
 variable "mediacomposerScript" {
   description = "Pscript to install MediaComposer"
   default     = "setupMediaComposer_v0.2.ps1"
-}
-
-variable "mediacomposerVersion" {   
-    type        = string 
-    description = "Options available: 2018.12.14, 2020.12.0, 2021.2.0"
-    default     = "2021.2.0"
-    validation {
-            condition       = (
-                var.mediacomposerVersion == "2021.3.0" || 
-                var.mediacomposerVersion == "2020.12.0" ||
-                var.mediacomposerVersion == "2018.12.14"
-            )
-            error_message   = "Only the following versions are supported: 2020.12.0, 2020.12.0 and 2018.12.14."
-        }
-}
-
-############## Teradici Variables ##############
-
-variable "TeradiciKey" {
-    type    = string  
-    default = "0000"  
-}
-
-variable "TeradiciInstaller" {
-    type    = string 
-    default = "pcoip-agent-graphics_21.03.0.exe"
-}
-
-############## Nexis Client Variables ##############
-
-variable "AvidNexisInstaller" {
-    type = string 
-    default = "AvidNEXISClient_Win64_21.3.0.21.msi"
 }
 
 

@@ -15,14 +15,20 @@ provider "azurerm" {
   features {}
 }
 
+locals {
+  sas_token_unix_1 = replace(var.sas_token, "=", "\\\\=")
+  sas_token_unix_2 = replace(local.sas_token_unix_1, "&", "\\\\&")
+}
+
 module "editorial_networking" {
   source                        = "./modules/network"
+  build_network                 = true   # If you already have vnet and subnets, enter false 
   resource_group_name           = "poc-rg"
   resource_group_location       = "southcentralus"
   vnet_name                     = "poc-rg-vnet" 
   address_space                 = ["10.1.0.0/16"]
   subnets                       = { 
-                                        subnet_core="10.1.0.0/24" # Subnet core is mandatory and will be created by default
+                                        subnet_core="10.1.0.0/24" 
                                         subnet_mediacentral="10.1.1.0/24"
                                         subnet_monitor="10.1.2.0/24"
                                         subnet_remote="10.1.3.0/24"
@@ -30,13 +36,7 @@ module "editorial_networking" {
                                         subnet_transfer="10.1.5.0/24"
                                         subnet_workstations="10.1.6.0/24"
                                   }
-  dns_servers                   = ["10.1.0.4"]
-  create_subnet_Mediacentral    = true
-  create_subnet_Monitor         = true
-  create_subnet_Remote          = true
-  create_subnet_Storage         = true
-  create_subnet_Transfer        = true
-  create_subnet_Workstations    = true  
+  dns_servers                   = [] 
   tags                          = { 
                                         environment="EITC" 
                                       }
@@ -49,9 +49,9 @@ module "domaincontroller_deployment" {
   resource_group_name               = "poc-rg"
   resource_group_location           = "southcentralus"
   vnet_name                         = "poc-rg-vnet"
+  sas_token                         = var.sas_token
   subnet_name                       = "subnet_core"
   script_url                        = "https://eitcstore01.blob.core.windows.net/scripts/"
-  installers_url                    = "https://eitcstore01.blob.core.windows.net/installers/"
   domaincontroller_vm_size          = "Standard_D4s_v3"
   domaincontroller_vm_hostname      = "poc-dc"
   domaincontroller_nb_instances     = 1
@@ -66,15 +66,16 @@ module "ansiblecontroller_deployment" {
   local_admin_password                = "Password123$"
   resource_group_name                 = "poc-rg"
   resource_group_location             = "southcentralus"
+  sas_token                           = var.sas_token
+  sas_token_unix                      = local.sas_token_unix_2
   vnet_name                           = "poc-rg-vnet"
   subnet_name                         = "subnet_remote"
   ansiblecontroller_vm_hostname       = "poc-ans"
-  ansiblecontroller_vm_size           = "Standard_Ds1_v2"
+  ansiblecontroller_vm_size           = "Standard_DS1_v2"
   ansiblecontroller_nb_instances      = 1
   script_url                          = "https://eitcstore01.blob.core.windows.net/scripts/"
   ansiblecontrollerScript             = "ansiblecontroller_v0.1.bash"
   ansiblecontroller_internet_access   = true
-  installers_url                      = "https://eitcstore01.blob.core.windows.net/installers/"
   depends_on                          = [module.editorial_networking]
 }
 

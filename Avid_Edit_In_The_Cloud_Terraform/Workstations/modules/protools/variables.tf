@@ -8,21 +8,13 @@ variable "vnet_name" {
   description = "Name of vnet where resource will be built"
 }
 
-variable "subnet_name" {
-  description = "Name of subnet where resource will be built"
+variable "image_reference" {
+  description = "Source image reference for Virtual Machine to be built"
+  type = map
 }
 
-variable "gpu_type" {
-  description = "Gpu type either Nvidia or Amd"
-  type = string
-  default = "Nvidia" 
-  validation {
-            condition       = (
-                var.gpu_type == "Nvidia" || 
-                var.gpu_type == "Amd" 
-            )
-            error_message   = "Only the following gpu are supported: Nvidia, Amd."
-        }
+variable "subnet_name" {
+  description = "Name of subnet where resource will be built"
 }
 
 variable "script_url" {
@@ -34,9 +26,8 @@ variable "resource_group_name" {
   description = "Name of resource group where to build resources"
 }
 
-variable "installers_url" {
-  description = "Path to all the installers"
-  default     = "https://eitcstore01.blob.core.windows.net/installers/"
+variable "sas_token" {
+  description = "Sas token to access storage account"
 }
 
 variable "local_admin_username" {
@@ -45,23 +36,6 @@ variable "local_admin_username" {
 
 variable "local_admin_password" {
   description = "Admin Password for Virtual Machines"
-  sensitive   = true
-}
-
-variable "domainName" {
-  description = "Domain Name"
-  type        = string
-  default     = ""
-}
-
-variable "domain_admin_username" {
-  description = "Domain admin user to join domain"
-  default     = ""
-}
-
-variable "domain_admin_password" {
-  description = "Domain admin password to join domain"
-  default     = ""
   sensitive   = true
 }
 
@@ -102,37 +76,5 @@ variable "protoolsScript" {
 variable "protools_vm_hostname" {
   description = "ProTools hostname"
 }
-
-variable "ProToolsVersion" {
-    type    = string 
-    description = "Options available: 2020.11.0"
-    default = "2020.11.0"
-    validation {
-            condition       = (
-                var.ProToolsVersion == "2020.11.0"
-            )
-            error_message   = "Only the following versions are supported: 2020.11.0."
-        }
-}
-
-############## Teradici Variables ##############
-
-variable "TeradiciKey" {
-    type    = string 
-    default = "0000"
-}
-
-variable "TeradiciInstaller" {
-    type    = string 
-    default = "pcoip-agent-graphics_21.03.0.exe"
-}
-
-############## Nexis Client Variables ##############
-
-variable "AvidNexisInstaller" {
-    type    = string 
-    default = "AvidNEXISClient_Win64_21.3.0.21.msi"
-}
-
 
 

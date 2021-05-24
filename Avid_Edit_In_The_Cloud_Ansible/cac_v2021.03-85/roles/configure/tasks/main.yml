@@ -6,9 +6,13 @@
       state: latest
 
   - 
+    name: Reboot server
+    reboot:
+
+  - 
     name: Download CAC installer
     ansible.builtin.get_url:
-      url: https://eitcstore01.blob.core.windows.net/installers/{{ cloud_access_installer }}
+      url: https://eitcstore01.blob.core.windows.net/installers/{{ cloud_access_installer }}{{ sas_token }}
       dest: /home/{{ username }}
 
   - 

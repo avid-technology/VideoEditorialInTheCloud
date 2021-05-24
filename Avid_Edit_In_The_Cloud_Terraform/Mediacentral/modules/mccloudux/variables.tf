@@ -21,19 +21,24 @@ variable "resource_group_location" {
   description = "Location of resource group where to build resources"
 }
 
-variable "vnet_subnet_id" {
+variable "subnet_name" {
   description = "Subnet where resources will be built"
+  default = "subnet_mediacentral"
 }
 
-variable "script_url" {
-  description = "Location of all the powershell and bash scripts"
-  default     = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/scripts/"
+variable "vnet_name" {
+  description = "Name of vnet where resource will be built"
 }
 
-variable "installers_url" {
-  description = "Location of all the installers"
-  default     = "https://eitcstore01.blob.core.windows.net/installers/"
-}
+# variable "script_url" {
+#   description = "Location of all the powershell and bash scripts"
+#   default     = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/scripts/"
+# }
+
+# variable "installers_url" {
+#   description = "Location of all the installers"
+#   default     = "https://eitcstore01.blob.core.windows.net/installers/"
+# }
 
 ############## Cloud UX Variables ##############
 

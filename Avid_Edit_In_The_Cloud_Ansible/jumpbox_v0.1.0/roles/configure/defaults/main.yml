@@ -1,0 +1,6 @@
+---
+
+dns_domain_name: poc.internal
+hostname: poc-jx-vm-00
+domain_admin_user: POC\domain-admin
+domain_admin_password: Password123!

@@ -5,14 +5,7 @@ data "azurerm_subnet" "data_subnet" {
 }
 
 locals {
-  #resource_group_name       = "${var.resource_prefix}-rg"
-  #mediacomposer_vm_hostname = "${var.resource_prefix}-mc"
-  mediacomposerScripturl    = "${var.script_url}${var.mediacomposerScript}"
-  gpu_driver                = "${var.gpu_type}GpuDriverWindows"
-  TeradiciURL               = "${var.installers_url}${var.TeradiciInstaller}"
-  MediacomposerURL          = "${var.installers_url}Media_Composer_${var.mediacomposerVersion}_Win.zip"
-  AvidNexisInstallerUrl     = "${var.installers_url}${var.AvidNexisInstaller}"
-  #mediacomposerScript       = "${var.mediacomposerScript}"
+  mediacomposerScripturl    = "${var.script_url}${var.mediacomposerScript}${var.sas_token}"
 }
 
 resource "azurerm_public_ip" "mediacomposer_ip" {
@@ -50,10 +43,10 @@ resource "azurerm_windows_virtual_machine" "mediacomposer_vm" {
   network_interface_ids         = [azurerm_network_interface.mediacomposer_nic[count.index].id]
 
   source_image_reference {
-    publisher = "MicrosoftWindowsDesktop"
-    offer     = "Windows-10"
-    sku       = "rs5-pro"
-    version   = "latest"
+    publisher = var.image_reference.publisher
+    offer     = var.image_reference.offer
+    sku       = var.image_reference.sku
+    version   = var.image_reference.version
   }
 
   os_disk {

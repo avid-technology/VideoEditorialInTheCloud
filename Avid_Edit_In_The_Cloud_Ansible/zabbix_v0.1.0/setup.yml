@@ -1,11 +1,13 @@
 ---
 
   - 
-    name: Media Composer setup
-    hosts: mc01
+    name: Zabbix setup
+    hosts: zabbix01
+    become: yes
 
     roles: 
       - 
-        role: install-media-composer 
+        role: configure 
+        remote_user: local-admin
         
 ...

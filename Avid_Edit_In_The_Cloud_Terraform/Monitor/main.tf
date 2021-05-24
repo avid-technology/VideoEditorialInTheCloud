@@ -26,7 +26,5 @@ module "zabbix_deployment" {
   subnet_name                   = "subnet_monitor"
   zabbix_vm_size                = "Standard_D4s_v3"
   zabbix_nb_instances           = 1
-  script_url                    = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/Workstations/scripts/"
-  zabbix_internet_access        = true
-  installers_url                = "https://eitcstore01.blob.core.windows.net/installers/"
+  zabbix_internet_access        = false
 }

@@ -8,26 +8,26 @@ variable "local_admin_password" {
   description = "Admin Password for Virtual Machines"
 }
 
-variable "domain_admin_username" {
-  description = "Domain admin user to join domain"
-  default     = ""
-}
+# variable "domain_admin_username" {
+#   description = "Domain admin user to join domain"
+#   default     = ""
+# }
 
 variable "resource_group_name" {
   description = "Name of resource group where to build resources"
 }
 
-variable "domainName" {
-  description = "Domain Name"
-  type        = string
-  default     = ""
-}
+# variable "domainName" {
+#   description = "Domain Name"
+#   type        = string
+#   default     = ""
+# }
 
-variable "domain_admin_password" {
-  description = "Domain admin password to join domain"
-  default     = ""
-  sensitive   = true
-}
+# variable "domain_admin_password" {
+#   description = "Domain admin password to join domain"
+#   default     = ""
+#   sensitive   = true
+# }
 
 variable "resource_group_location" {
   description = "Location of resource group where to build resources"
@@ -45,8 +45,8 @@ variable "script_url" {
   description = "Location of all the powershell and bash scripts"
 }
 
-variable "installers_url" {
-  description = "Location of all the installers"
+variable "sas_token" {
+  description = "Sas token to access storage account"
 }
 
 ############## Jumpbox Variables ##############

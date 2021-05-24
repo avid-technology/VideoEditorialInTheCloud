@@ -1,0 +1,26 @@
+##  Uncomment this line to enable remote system directors (zone 3, etc)
+##  Syntax is server1;server2;server3
+##
+AvidFos\Parameters\RemoteSystemDirectors {{ nexis_server_ipaddress }}
+
+##  Uncomment this line to use only specified ifnames. This takes precedence over ignore.
+##  Syntax is ifname;ifname
+##
+
+AvidFos\Parameters\UseIfnames {{ ux_network_interface }}
+
+##  Uncomment this line to ignore specified ifnames
+##  Syntax is ifname;ifname
+##
+
+#AvidFos\Parameters\IgnoreIfnames Auto_eth2
+
+##  Uncomment this line to set client mode.
+##  This mostly manages switching load.
+##  3 Low       (lowest switching requirements)
+##  0 Medium
+##  1 High      (lower timeouts)
+##  4 UltraHigh (10Gb clients)
+##
+
+#AvidFos\Parameters\UsrvTransport\Hires 4

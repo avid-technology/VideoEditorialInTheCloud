@@ -1,0 +1,12 @@
+---
+  
+  - 
+    include: initialize.yml
+
+  - 
+    include: configure.yml
+
+  - 
+    include: certificate.yml
+
+...

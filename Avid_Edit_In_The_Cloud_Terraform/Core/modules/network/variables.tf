@@ -43,32 +43,7 @@ variable "subnets" {
 #   type        = list(string)
 # }
 
-variable "create_subnet_Mediacentral" {
-  description = "Create Subnet Core"
-  type        = bool
-}
-
-variable "create_subnet_Monitor" {
-  description = "Create Subnet Core"
-  type        = bool
-}
-
-variable "create_subnet_Remote" {
-  description = "Create Subnet Core"
-  type        = bool
-}
-
-variable "create_subnet_Storage" {
-  description = "Create Subnet Core"
-  type        = bool
-}
-
-variable "create_subnet_Transfer" {
-  description = "Create Subnet Core"
-  type        = bool
-}
-
-variable "create_subnet_Workstations" {
+variable "build_network" {
   description = "Create Subnet Core"
   type        = bool
 }

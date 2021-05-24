@@ -1,0 +1,50 @@
+---
+# tasks file for init
+
+    - 
+      name: Install chocolatey
+      chocolatey.chocolatey.win_chocolatey:
+          name:
+           - chocolatey
+           - chocolatey-core.extension
+          state: present
+
+    - 
+      name: Install Firefox and Google Chrome
+      chocolatey.chocolatey.win_chocolatey:
+        name: 
+           - firefox
+           - googlechrome
+        state: present
+        ignore_checksums: yes
+
+    - 
+      name: Install Active Directory Domain Controller Services
+      ansible.windows.win_feature:
+        name: AD-Domain-Services
+        include_management_tools: yes
+        state: present
+
+    - 
+      name: Create new Windows domain in a new forest with specific parameters
+      ansible.windows.win_domain:
+        create_dns_delegation: no
+        database_path: C:\Windows\NTDS
+        dns_domain_name: "{{ domain_name }}.{{ domain_extension }}"
+        domain_mode: Win2012R2
+        domain_netbios_name: "{{ netbios_name }}"
+        forest_mode: Win2012R2
+        install_dns: yes
+        safe_mode_password: "{{ admin_password }}"
+        register: domain_install
+
+    - 
+      name: Reboot the server
+      ansible.windows.win_reboot:
+
+    - 
+      name: Pause for 5 minutes for gpo to initialize
+      ansible.builtin.pause:
+        minutes: 5
+
+...

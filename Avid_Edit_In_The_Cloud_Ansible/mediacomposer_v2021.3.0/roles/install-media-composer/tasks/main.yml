@@ -15,5 +15,9 @@
   # Join server to Domain / comment if not needed to join domain
   - 
     include: join.yml
+  
+  # Install teradici agent
+  - 
+    include: teradici.yml
 
 ...

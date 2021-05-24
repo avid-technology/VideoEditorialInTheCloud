@@ -33,9 +33,11 @@ sudo apt-add-repository --yes --update ppa:ansible/ansible-2.9 # point to specif
 sudo apt install -y ansible
 sudo apt install -y python-pip
 sudo pip install "pywinrm>=0.3.0"
-sudo curl https://eitcstore01.blob.core.windows.net/scripts/ansible.cfg >> /home/$1/ansible.cfg # overwrite ansible config. Disable host key check. Not recommended in production.
+sudo curl "https://eitcstore01.blob.core.windows.net/scripts/ansible.cfg$2" >> /home/$1/ansible.cfg # overwrite ansible config. Disable host key check. Not recommended in production.
 sudo cp /home/$1/ansible.cfg /etc/ansible/ansible.cfg
-sudo curl https://eitcstore01.blob.core.windows.net/scripts/inventory >> /home/$1/inventory # example of inventory file for ansible.
+sudo curl "https://eitcstore01.blob.core.windows.net/scripts/inventory.yml$2" >> /home/$1/inventory.yml # example of inventory file for ansible.
+sudo chown $1:$1 /home/$1/ansible.cfg
+sudo chown $1:$1 /home/$1/inventory.yml
 sudo ansible-galaxy collection install chocolatey.chocolatey  -p /usr/share/ansible/collections
 sudo ansible-galaxy collection install ansible.windows  -p /usr/share/ansible/collections
 sudo ansible-galaxy collection install community.windows  -p /usr/share/ansible/collections
@@ -47,7 +49,7 @@ echo "Installing Terraform"
 echo "================================================================================"
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-sudo apt-get install terraform=0.14.4
+sudo apt-get install terraform=0.15.4
 sudo apt-get install packer
 echo
 echo
@@ -71,7 +73,7 @@ echo "==========================================================================
 echo "Download Ansible Roles in Controller Node"
 echo "================================================================================"
 echo
-sudo azcopy copy "https://eitcstore01.blob.core.windows.net/scripts/Ansible/" "/home/$1/" --recursive
+sudo azcopy copy "https://eitcstore01.blob.core.windows.net/scripts/Ansible$2" "/home/$1/" --recursive
 sudo chown -R $1:$1 /home/$1/Ansible
 echo
 echo "================================================================================"

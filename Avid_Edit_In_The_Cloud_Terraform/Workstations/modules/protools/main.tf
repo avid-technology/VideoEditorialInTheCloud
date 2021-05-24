@@ -5,14 +5,7 @@ data "azurerm_subnet" "data_subnet_workstations" {
 }
 
 locals {
-  #resource_group_name       = "${var.resource_prefix}-rg"
-  #protools_vm_hostname      = "${var.resource_prefix}-pt"
-  protoolsScripturl         = "${var.script_url}${var.protoolsScript}"
-  gpu_driver                = "${var.gpu_type}GpuDriverWindows"
-  TeradiciURL               = "${var.installers_url}${var.TeradiciInstaller}"
-  ProToolsinstaller         = "${var.installers_url}Pro_Tools_${var.ProToolsVersion}_Win.zip"
-  AvidNexisInstallerUrl     = "${var.installers_url}${var.AvidNexisInstaller}"
-  #protoolsScript            = "setupProTools_${var.ProToolsVersion}.ps1"
+  protoolsScripturl         = "${var.script_url}${var.protoolsScript}${var.sas_token}"
 }
 
 resource "azurerm_public_ip" "protools_ip" {
@@ -50,10 +43,10 @@ resource "azurerm_windows_virtual_machine" "protools_vm" {
   network_interface_ids         = [azurerm_network_interface.protools_nic[count.index].id]
 
   source_image_reference {
-    publisher = "MicrosoftWindowsDesktop"
-    offer     = "Windows-10"
-    sku       = "rs5-pro"
-    version   = "latest"
+    publisher = var.image_reference.publisher
+    offer     = var.image_reference.offer
+    sku       = var.image_reference.sku
+    version   = var.image_reference.version
   }
 
   os_disk {
@@ -81,21 +74,21 @@ resource "azurerm_virtual_machine_extension" "protools_extension_1" {
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.protoolsScript} ${var.TeradiciKey} ${local.TeradiciURL} ${local.ProToolsinstaller} ${local.AvidNexisInstallerUrl} ${var.domainName} ${var.domain_admin_username} ${var.domain_admin_password}"
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.protoolsScript}"
     }
   PROTECTED_SETTINGS
 }
 
-resource "azurerm_virtual_machine_extension" "protools_extension_2" {
-  count                       = var.protools_nb_instances
-  name                        = "protools2"
-  virtual_machine_id          = azurerm_windows_virtual_machine.protools_vm[count.index].id
-  publisher                   = "Microsoft.HpcCompute"
-  type                        = local.gpu_driver
-  type_handler_version        = "1.0"
-  auto_upgrade_minor_version  = true
-  depends_on                  = [azurerm_virtual_machine_extension.protools_extension_1]
+# resource "azurerm_virtual_machine_extension" "protools_extension_2" {
+#   count                       = var.protools_nb_instances
+#   name                        = "protools2"
+#   virtual_machine_id          = azurerm_windows_virtual_machine.protools_vm[count.index].id
+#   publisher                   = "Microsoft.HpcCompute"
+#   type                        = local.gpu_driver
+#   type_handler_version        = "1.0"
+#   auto_upgrade_minor_version  = true
+#   depends_on                  = [azurerm_virtual_machine_extension.protools_extension_1]
 
-}
+# }
 
 

@@ -1,0 +1,9 @@
+---
+
+# Install Teradici
+
+  - 
+    name: "Install Teradici"
+    win_shell: Start-Process -FilePath "{{ required_software_path }}\\{{ teradici_installer_name }}" -ArgumentList "/S", "/NoPostReboot", "_?{{ required_software_path }}\\{{ teradici_installer_name }}" -Verb RunAs -Wait
+
+...

@@ -17,7 +17,7 @@ provider "azurerm" {
 
 # Example with private visibility to storage account and no public access to system director
 module "nexis_online_deployment" {
-  source                                      = "./modules/nexis"
+  source                                      = "./modules/cloud_nexis_system_director"
   hostname                                    = "pocon"
   local_admin_username                        = "local-admin"
   local_admin_password                        = "Password123$"
@@ -26,18 +26,11 @@ module "nexis_online_deployment" {
   subnet_name                                 = "subnet_storage"
   resource_group_name                         = "poc-rg"
   nexis_storage_account_public_access         = false 
-  # nexis_storage_account_subnet_access         = ["subnet_remote","subnet_mediacentral"]
-  # private_dns_zone_resource_group             = "poc-rg"
   nexis_system_director_vm_size               = "Standard_DS4_v2" # Either Standard_F16s_v2 (production) or Standard_DS4_v2 (testing)
   nexis_system_director_nb_instances          = 1
-  nexis_system_director_vm_script_url         = "https://eitcstore01.blob.core.windows.net/scripts/"
-  nexis_system_director_vm_script_name        = "installNexis.bash"
-  nexis_system_director_vm_artifacts_location = "https://eitcstore01.blob.core.windows.net/installers/"
-  nexis_system_director_vm_build              = "AvidNEXISCloud_21.3.1-25.run"
-  nexis_system_director_vm_part_number        = "0100-40109-00"
-  nexis_system_director_performance           = "Premium"
-  nexis_system_director_replication           = "LRS"
-  nexis_system_director_account_kind          = "BlockBlobStorage"
+  nexis_storage_account_performance           = "Premium"
+  nexis_storage_account_replication           = "LRS"
+  nexis_storage_account_kind                  = "BlockBlobStorage"
   nexis_system_director_internet_access       = false
   nexis_system_director_image_reference       = {
                                                 publisher = "debian"          # Either "Credativ" or "debian"
@@ -49,7 +42,7 @@ module "nexis_online_deployment" {
 
 # Example with public visibility to storage account and public access to system director
 module "nexis_nearline_deployment" {
-  source                                      = "./modules/nexis"
+  source                                      = "./modules/cloud_nexis_system_director"
   hostname                                    = "pocnl"
   local_admin_username                        = "local-admin"
   local_admin_password                        = "Password123$"
@@ -58,18 +51,11 @@ module "nexis_nearline_deployment" {
   subnet_name                                 = "subnet_storage"
   resource_group_name                         = "poc-rg"
   nexis_storage_account_public_access         = true
-  # nexis_storage_account_subnet_access         = []  
-  # private_dns_zone_resource_group             = ""
-  nexis_system_director_vm_size               = "Standard_F16s_v2"
+  nexis_system_director_vm_size               = "Standard_DS4_v2"
   nexis_system_director_nb_instances          = 0
-  nexis_system_director_vm_script_url         = "https://eitcstore01.blob.core.windows.net/scripts/"
-  nexis_system_director_vm_script_name        = "installNexis.bash"
-  nexis_system_director_vm_artifacts_location = "https://eitcstore01.blob.core.windows.net/installers/"
-  nexis_system_director_vm_build              = "AvidNEXISCloud_21.3.0-21.run"
-  nexis_system_director_vm_part_number        = "0100-38171-00"
-  nexis_system_director_performance           = "Standard"
-  nexis_system_director_replication           = "LRS"
-  nexis_system_director_account_kind          = "StorageV2"
+  nexis_storage_account_performance           = "Standard"
+  nexis_storage_account_replication           = "LRS"
+  nexis_storage_account_kind                  = "StorageV2"
   nexis_system_director_internet_access       = false
   nexis_system_director_image_reference       = {
                                                 publisher = "debian"          # Either "Credativ" or "debian"
@@ -77,4 +63,18 @@ module "nexis_nearline_deployment" {
                                                 sku       = "10"              # Either "8" or "10"
                                                 version   = "latest"          # Either "8.0.201901221" or "0.20210208.542"
                                               }
+}
+
+module "nexis_centos_client_deployment" {
+  source                        = "./modules/cloud_nexis_centos_client"
+  local_admin_username          = "local-admin"
+  local_admin_password          = "Password123$"
+  resource_group_name           = "poc-rg"
+  resource_group_location       = "southcentralus"
+  vnet_name                     = "poc-rg-vnet"
+  subnet_name                   = "subnet_storage"
+  nexis_client_vm_hostname      = "poc-cl"
+  nexis_client_vm_size          = "Standard_DS1_v2"
+  nexis_client_nb_instances     = 0
+  nexis_client_internet_access  = false
 }

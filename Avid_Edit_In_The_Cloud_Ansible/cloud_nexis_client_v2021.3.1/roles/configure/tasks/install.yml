@@ -1,0 +1,25 @@
+---
+
+  - 
+    name: Install libicu + fuse-libs
+    ansible.builtin.yum:
+      name: 
+        - libicu
+        - fuse-libs
+      state: present
+
+  - 
+    name: "Run installer script"
+    ansible.builtin.shell: /bin/bash /tmp/{{ nexis_client_installer }}
+    register: installer_result
+
+  - 
+    name: display stdout of Cloud Nexis Installation
+    ansible.builtin.debug:
+        var: installer_result.stdout_lines 
+
+  - 
+    name: Reboot server
+    ansible.builtin.reboot:
+
+...

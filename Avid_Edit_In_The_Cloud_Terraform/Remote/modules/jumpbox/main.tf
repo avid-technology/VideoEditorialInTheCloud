@@ -6,10 +6,7 @@ data "azurerm_subnet" "data_subnet" {
 
 
 locals {
-  #resource_group_name       = "${var.resource_prefix}-rg"
-  #jumpbox_vm_hostname       = "${var.resource_prefix}-jx"
-  JumpboxScriptUrl          = "${var.script_url}${var.JumpboxScript}"
-  #AvidNexisInstallerUrl     = "${var.installers_url}${var.AvidNexisInstaller}"
+  JumpboxScriptUrl          = "${var.script_url}${var.JumpboxScript}${var.sas_token}"
 }
 
 resource "azurerm_public_ip" "jumpbox_ip" {
@@ -77,7 +74,7 @@ resource "azurerm_virtual_machine_extension" "jumpbox_extension" {
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.JumpboxScript} ${var.domainName} ${var.domain_admin_username} ${var.domain_admin_password}"
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.JumpboxScript}"
     }
   PROTECTED_SETTINGS
 }

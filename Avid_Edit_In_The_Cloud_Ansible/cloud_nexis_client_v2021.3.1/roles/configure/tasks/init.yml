@@ -1,0 +1,84 @@
+---
+
+    - 
+      name: PASSWORDS | Update root password
+      ansible.builtin.user:
+        name: root
+        password: "{{ root_password | password_hash('sha512') }}"
+        update_password: always
+
+    # - 
+    #   name: "Configure Ethernet interface"
+    #   template:
+    #     src: ifcfg-eth0.j2
+    #     dest: /etc/sysconfig/network-scripts/ifcfg-eth0
+    
+    - 
+      name: Make sure no dns peering
+      ansible.builtin.lineinfile:
+        path: /etc/sysconfig/network-scripts/ifcfg-eth0
+        regexp: 'PEERDNS=yes'
+        line: PEERDNS=no
+
+    - 
+      name: Update Nexis Client hostname
+      lineinfile:
+        path: /etc/hostname
+        line: "{{ nexis_client_hostname }}"
+    
+    - 
+      name: Update Nexis Client Network
+      lineinfile:
+        path: /etc/sysconfig/network
+        regexp: 'HOSTNAME=localhost.localdomain'
+        line: "HOSTNAME={{ nexis_client_hostname }}.{{ domain_name }}.{{ domain_extension }}"
+
+    - 
+      name: Modify Nexis Client host file
+      lineinfile:
+        path: /etc/hosts
+        line: "{{ nexis_client_ipaddress }} {{ nexis_client_hostname }}.{{ domain_name }}.{{ domain_extension }} {{ nexis_client_hostname }}"
+
+    # - 
+    #   name: Disable Network Manager
+    #   ansible.builtin.service:
+    #     name: NetworkManager
+    #     state: stopped
+    #     enabled: false
+
+    - 
+      name: Reboot server
+      ansible.builtin.reboot:
+
+    - 
+      name: Add domain to etc/resolv.conf
+      ansible.builtin.lineinfile:
+        path: /etc/resolv.conf
+        line: domain {{ domain_name }}.{{ domain_extension }}
+        state: present 
+
+    - 
+      name: Add nameserver to etc/resolv.conf
+      ansible.builtin.lineinfile:
+        path: /etc/resolv.conf
+        line: nameserver {{ domain_ipaddress }}
+        state: present 
+
+    - 
+      name: Reboot server
+      ansible.builtin.reboot:
+
+    - 
+      name: Check if Cloud Nexis Client already installed on Centos
+      ansible.builtin.stat:
+        path: /etc/AvidRegistry
+        get_md5: no
+      register: installation_status
+
+    - 
+      name: "Set flag when nexis client is already deployed"
+      ansible.builtin.set_fact:
+        client_deployed: true
+      when: installation_status.stat.exists == true
+
+...

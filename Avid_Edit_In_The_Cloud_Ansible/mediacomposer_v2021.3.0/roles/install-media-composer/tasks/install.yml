@@ -1,13 +1,5 @@
 ---
 
-# Install Teradici
-
-  - 
-      name: "Install Teradici"
-      win_shell: Start-Process -FilePath "{{ required_software_path }}\\{{ teradici_installer_name }}" -ArgumentList "/S", "/NoPostReboot" -Verb RunAs -Wait
-      retries: 6
-      delay: 10
-
 # Install NexisClient
 
   - 
@@ -29,7 +21,7 @@
 
   - 
       name: "Install Amd Driver"
-      win_shell: Start-Process -FilePath "{{ required_software_path }}\\{{ amd_installer_name }}" -ArgumentList "-install" -Wait
+      win_shell: Start-Process -FilePath "{{ amd_extract_dir }}\\Setup.exe" -ArgumentList "-install" -Wait
       retries: 6
       delay: 10
       when: gpu_type == "Amd"

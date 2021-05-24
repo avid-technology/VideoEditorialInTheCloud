@@ -1,0 +1,38 @@
+---
+
+  - 
+    name: "Get default network interface"
+    set_fact:
+      ux_network_interface: "{{ ansible_default_ipv4.interface }}"
+
+  - 
+    name: "Configure AvidRegistry"
+    template:
+      src: AvidRegistry.j2
+      dest: /etc/AvidRegistry
+
+  # reload Nexis configuration
+  - 
+    name: "Apply AvidRegistry settings"
+    shell: avidfos_ctrl -r
+
+  - 
+    name: "Create a directory for local mount point"
+    file:
+      name: "{{ nexis_client_workspace_mount_dir }}"
+      state: directory
+
+  - 
+    name: "Mount Nexis root"
+    mount:
+      src: "{{ nexis_server_hostname }}"
+      path: "{{ nexis_client_workspace_mount_dir }}"
+      fstype: "avidfos"
+      opts: "umask=0777,auto,nofail,x-systemd.after=network-online.target,x-systemd.requires=avidfos.service,_netdev,username={{ nexis_user }},password={{ nexis_user_password }}"
+      state: mounted
+    register: mount_result
+    until: mount_result is success
+    retries: 6
+    delay: 30
+
+...

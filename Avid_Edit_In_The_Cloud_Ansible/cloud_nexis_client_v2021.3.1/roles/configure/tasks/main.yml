@@ -1,0 +1,14 @@
+---
+
+  - include: init.yml
+
+  - include: download.yml
+    when: client_deployed == false
+
+  - include: install.yml
+    when: client_deployed == false
+
+  - include: configure.yml
+    when: client_deployed == false
+
+...

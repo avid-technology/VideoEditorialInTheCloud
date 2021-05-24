@@ -24,8 +24,8 @@ variable "subnet_name" {
   description = "Name of subnet where resource will be built"
 }
 
-variable "installers_url" {
-  description = "Location of all the installers"
+variable "sas_token" {
+  description = "Sas token to access storage account"
 }
 
 variable "script_url" {

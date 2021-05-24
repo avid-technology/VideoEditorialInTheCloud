@@ -1,0 +1,5 @@
+---
+# defaults file for install
+nexis_temp_folder: /var/avid/esd/temporary 
+nexis_deployed: false
+installer_repository: "https://eitcstore01.blob.core.windows.net/installers/"

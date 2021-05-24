@@ -1,2 +1,15 @@
 ---
 # defaults file for configure
+
+root_password: "Password123!"
+admin_user: "local-admin"
+mccux_ipaddress: "10.1.1.4"
+platform_iso: "mediacentral_platform_2021.3.0.iso"
+feature_pack_iso: "mediacentral_feature_packs_2021.3.0"
+mccux_hostname: "poc-mcux-00"
+domain_name: "poc"
+domain_extension: "internal"
+domain_ipaddress: "10.1.0.4"
+kubernetes_password: "Password123$"
+nexis_system_director_name: "pocon00"
+nexis_system_director_ip: "10.1.4.4"

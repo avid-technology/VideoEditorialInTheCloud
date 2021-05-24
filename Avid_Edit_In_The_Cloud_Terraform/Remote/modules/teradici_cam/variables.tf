@@ -25,15 +25,15 @@ variable "subnet_name" {
   description = "Name of subnet where resource will be built"
 }
 
-variable "script_url" {
-  description = "Location of all the powershell and bash scripts"
-  default     = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/scripts/"
-}
+# variable "script_url" {
+#   description = "Location of all the powershell and bash scripts"
+#   default     = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/Avid_Edit_In_The_Cloud_Terraform/scripts/"
+# }
 
-variable "installers_url" {
-  description = "Location of all the installers"
-  default     = "https://eitcstore01.blob.core.windows.net/installers/"
-}
+# variable "installers_url" {
+#   description = "Location of all the installers"
+#   default     = "https://eitcstore01.blob.core.windows.net/installers/"
+# }
 
 ############## Teradici Variables ##############
 

@@ -1,0 +1,25 @@
+---
+# tasks file for certificate
+
+    - 
+      name: Install AD Certificate Services
+      ansible.windows.win_feature:
+        name: AD-Certificate
+        include_management_tools: yes
+        state: present
+    
+    - 
+      name: xAdcsDeployment DSC module
+      community.windows.win_psmodule:
+        name: xAdcsDeployment
+
+    - 
+      name: Enterprise Root CA
+      ansible.windows.win_dsc:
+        resource_name: xAdcsCertificationAuthority
+        catype: EnterpriseRootCA
+        credential_username: "{{ admin_username }}"
+        credential_password: "{{ admin_password }}"
+        ensure: present
+
+...

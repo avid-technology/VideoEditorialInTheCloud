@@ -1,0 +1,3 @@
+---
+# defaults file for configure
+client_deployed: false # Start with a status false. Change to right if already deployed.
