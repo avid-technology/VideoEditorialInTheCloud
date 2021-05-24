@@ -2,7 +2,9 @@
  
 ## Introduction 
 
-This repository contains a collection of modules which allows Avid Enterprise customers to set up a full editorial environment in azure cloud: media transfer, storage, secure remote connection, video and audio editing (MediaComposer, ProTools), monitoring etc... Avid customers are able to either deploy environment via ARM template or Terraform technology. Ansible playbooks are also available to automate software configuration on pre-built resources.
+This repository contains a collection of modules which allows Avid Enterprise customers to set up a full editorial environment in azure cloud: media transfer, storage, secure remote connection, video and audio editing (MediaComposer, ProTools), monitoring etc... Avid customers are able to either deploy environment via ARM template or Terraform technology. Ansible playbooks are available to automate software configuration on pre-built resources.
+
+Avid storage account is configured for private access only. You will not be able to download installers publicly. Please contact Avid to get a token generated to gain access to it. 
  
 ## Deployment
 
@@ -21,5 +23,5 @@ Follow each link below to get more details on each technology.
 ## Prerequisites  
 - [Azure subscription](https://portal.azure.com)
 - Avid licenses
-- Teradici license
-- Aspera / FileCatalyst / Signiant licenses
+- Teradici licenses
+- Aspera / FileCatalyst / Signiant license(s)
