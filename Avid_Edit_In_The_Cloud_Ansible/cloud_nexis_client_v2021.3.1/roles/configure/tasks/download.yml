@@ -1,0 +1,24 @@
+---
+
+    - 
+      name: Check if Nexis client installer present
+      ansible.builtin.stat:
+        path: /tmp/{{ nexis_client_installer }}
+      register: nexis_client_installer_present
+
+    - 
+      name: Download Cloud Nexis client
+      ansible.builtin.get_url:
+        url: "{{ installer_repository }}""{{ nexis_client_installer }}""{{ sas_token }}"
+        dest: /tmp/{{ nexis_client_installer }}
+        timeout: 180
+      when: not nexis_client_installer_present.stat.exists
+
+    - 
+      name: Update executable permission on installer
+      ansible.builtin.file:
+        path: /tmp/{{ nexis_client_installer }}
+        state: file
+        mode: a+x
+
+...

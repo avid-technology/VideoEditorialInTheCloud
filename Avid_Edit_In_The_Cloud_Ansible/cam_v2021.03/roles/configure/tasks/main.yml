@@ -1,0 +1,46 @@
+---
+    - 
+      name: Add CAS Manager repository 
+      ansible.builtin.shell: 
+        cmd: curl -1sLf 'https://dl.teradici.com/502R0tFrirxlgmRy/cas-manager/setup.rpm.sh' | sudo -E distro=el codename=7 bash
+
+    - 
+      name: Install SELinux policies and SELinux container
+      ansible.builtin.yum:
+        name:
+          - selinux-policy-base
+          - container-selinux
+        state: present
+
+    - 
+      name: Install specific version of SELinux tested for K3s
+      ansible.builtin.yum: 
+        name: https://github.com/k3s-io/k3s-selinux/releases/download/v0.2.stable.1/k3s-selinux-0.2-1.el7_8.noarch.rpm
+        disable_gpg_check: yes
+        state: present
+
+    - 
+      name: Install CAS Manager SELinux
+      ansible.builtin.yum:
+        name:
+          - cas-manager-selinux
+        state: present
+
+    - 
+      name: Install CAS Manager
+      ansible.builtin.yum:
+        name:
+          - cas-manager
+        state: present
+      
+    - 
+      name: Register credentials output to variable credentials
+      ansible.builtin.shell: 
+        cmd: cat /opt/teradici/casm/temp-creds.txt
+      register: credentials  
+
+    - 
+      name: Output credentials to stdout
+      ansible.builtin.debug:
+        var: credentials
+...

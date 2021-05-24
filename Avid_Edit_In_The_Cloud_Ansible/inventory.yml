@@ -1,0 +1,160 @@
+all:
+  hosts:
+    cac01:
+        ansible_host: 10.1.3.6
+        ansible_connection: ssh
+        ansible_user: local-admin
+        ansible_port: 22
+    cux01:
+        ansible_host: 10.1.1.4
+        ansible_connection: ssh
+        ansible_user: local-admin
+        ansible_port: 22
+    cam01: 
+        ansible_host: 10.1.3.5
+        ansible_connection: ssh
+        ansible_user: local-admin
+        ansible_port: 22
+    zabbix01: 
+        ansible_host: 10.1.2.4
+        ansible_connection: ssh
+        ansible_user: local-admin
+        ansible_port: 22
+    nexis01:
+        ansible_host: 10.1.4.5
+        ansible_connection: ssh
+        ansible_user: avid
+        ansible_port: 22
+        nexis_administrator: Administrator
+        nexis_administrator_password: Password123$
+        nexis_storage_account_name: "xxxxx"
+        nexis_storage_account_key: "xxxxx"
+        nexis_username: domain-admin
+        nexis_username_password: Password123!
+        nexis_activation_id: "xxxxx"
+        nexis_system_id: "xxxxx"
+    nexis01_client: 
+        ansible_host: 10.1.3.6
+        ansible_connection: ssh
+        ansible_user: local-admin
+        ansible_port: 22
+        ansible_become_pass: Password123$
+    nexis02:
+        ansible_host: 10.1.4.4
+        ansible_connection: ssh
+        ansible_user: avid
+        ansible_port: 22
+        nexis_administrator: Administrator
+        nexis_administrator_password: Password123$
+        nexis_storage_account_name: "xxxxx"
+        nexis_storage_account_key: "xxxxx"
+        nexis_username: domain-admin
+        nexis_username_password: Password123!
+        nexis_activation_id: "xxxxx"
+        nexis_system_id: "xxxxx"
+    dc01: 
+        ansible_host: 10.1.0.4
+        ansible_user: local-admin
+        ansible_password: Password123$
+        ansible_connection: winrm
+        ansible_winrm_server_cert_validation: ignore
+    mc01: 
+        ansible_host: 10.1.6.4
+        ansible_user: local-admin
+        ansible_password: Password123$
+        ansible_connection: winrm
+        ansible_winrm_server_cert_validation: ignore
+    jpbx01: 
+        ansible_host: 10.1.3.5
+        ansible_user: local-admin
+        ansible_password: Password123$
+        ansible_connection: winrm
+        ansible_winrm_server_cert_validation: ignore
+  children:
+    cac_servers:
+      hosts:
+        cac01:
+      vars: 
+        sas_token: "xxxx"
+        username: local-admin
+        ad_domain: poc.internal
+        sa_user: sa_teradici
+        sa_password: Password123$
+        cam_ipaddress: "xx.xx.xx.xx"
+        cac_token: "xxxxxxxx"
+        registration_code: "xxxxxx"
+        external_ip: "xx.xx.xx.xx"
+        cloud_access_installer: "cloud-access-connector_85_Linux.tar.gz"
+    cam_servers:
+      hosts:
+        cam01:
+    jumpbox_servers:
+      hosts:
+        jpbx01:
+    zabbix_servers:
+      hosts:
+        zabbix01:
+    online_nexis_servers:
+      hosts:
+        nexis01:
+      vars:
+        part_number: 0100-40109-00
+        iosettype: 3
+    nearline_nexis_servers:
+      hosts:
+        nexis02:
+      vars:
+        part_number: 0100-38171-00
+        iosettype: 2
+    nexis_server:
+      hosts:
+        nexis01:
+        nexis02:
+      vars: 
+        sas_token: "xxxxxxx"
+        nexis_vm_build: AvidNEXISCloud_21.3.1-25.run
+        nexis_workspace_size: 250000000000
+        nexis_workspace_name: default
+    dc_servers:
+      hosts:
+        dc01:
+    mediacomposer_workstations:
+      hosts:
+        mc01:
+      vars: 
+        sas_token: "xxxxxxx"
+        gpu_type: "Nvidia" # Either Nvidia or Amd 
+        teradici_installer: "pcoip-agent-graphics_21.03.0.exe"
+        nvidia_installer: "442.06_grid_win10_64bit_international_whql.exe"
+        amd_installer: "AMD-Azure-NVv4-Driver-20Q4.exe"
+        nexis_installer: "AvidNEXISClient_Win64_21.3.0.21.msi"
+        media_composer_version: "2021.5.0" # versions available are: 2018.12.15, 2020.12.2, 2021.5.0
+        installer_path: "https://eitcstore01.blob.core.windows.net/installers"
+        pace_version: "5.0.3" # pace versions available are: 5.0.3, 4.0.3
+        sentinel_version: "7.6.9"
+        dns_domain_name: poc.internal
+        hostname: poc-mc-vm-00
+        domain_admin_user: domain-admin
+        domain_admin_password: Password123!
+
+
+
+        client_deployed: false # Start at false
+    nexis_client:
+      hosts:
+        nexis01_client:
+      vars: 
+        sas_token: "xxxx"
+        root_password: "Password123!"
+        domain_name: "poc"
+        domain_extension: "internal"
+        domain_ipaddress: 10.1.0.4
+        installer_repository: "https://eitcstore01.blob.core.windows.net/installers/"
+        nexis_client_installer: "AvidNEXISClient_el7.centos.x86_64_20.7.5_23.bin"
+        nexis_client_workspace_mount_dir: "/mnt/nexis"
+        nexis_server_hostname: "pocon00"
+        nexis_client_ipaddress: 10.1.3.6
+        nexis_client_hostname: "poc-nxcl-vm-00"
+        nexis_server_ipaddress: 10.1.4.4
+        nexis_user: domain-admin
+        nexis_user_password: Password123!

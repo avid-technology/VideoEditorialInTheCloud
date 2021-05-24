@@ -1,0 +1,13 @@
+---
+
+  - 
+    name: Zabbix setup
+    hosts: zabbix01
+    become: yes
+
+    roles: 
+      - 
+        role: configure 
+        remote_user: local-admin
+        
+...

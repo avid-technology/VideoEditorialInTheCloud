@@ -1,0 +1,12 @@
+---
+
+  - 
+    name: Domain Controller setup
+    hosts: dc01
+    remote_user: local-admin
+
+    roles: 
+      - 
+        role: setup
+             
+...

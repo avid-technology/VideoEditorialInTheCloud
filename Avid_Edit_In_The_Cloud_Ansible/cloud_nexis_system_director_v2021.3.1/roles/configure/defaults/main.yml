@@ -1,0 +1,5 @@
+---
+# defaults file for configure
+
+configure_nexis_task: false
+nexis_activated: false

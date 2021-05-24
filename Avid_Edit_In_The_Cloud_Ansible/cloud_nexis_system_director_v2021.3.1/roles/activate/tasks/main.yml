@@ -1,0 +1,9 @@
+---
+# tasks file for activate
+
+- 
+  name: "Register Nexis"
+  include: register.yml
+  when: nexis_deployed == True
+
+...

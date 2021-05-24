@@ -1,0 +1,10 @@
+---
+
+  - 
+    name: "Configure Nexis"
+    include: configure.yml
+    when: nexis_deployed == true
+    tags: 
+      - configure
+
+...

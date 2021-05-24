@@ -1,0 +1,6 @@
+---
+# defaults file for configure
+
+mysql_root_password: password
+webserveripaddress: "10.1.2.4"
+admin_user: "local-admin"

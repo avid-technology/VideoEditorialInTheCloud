@@ -1,0 +1,21 @@
+---
+
+    - 
+      name: Install chocolatey
+      chocolatey.chocolatey.win_chocolatey:
+          name:
+           - chocolatey
+           - chocolatey-core.extension
+          state: present
+
+    - 
+      name: Install Firefox and Google Chrome
+      chocolatey.chocolatey.win_chocolatey:
+        name: 
+           - firefox
+           - googlechrome
+           - microsoftazurestorageexplorer
+        state: present
+        ignore_checksums: yes
+
+...

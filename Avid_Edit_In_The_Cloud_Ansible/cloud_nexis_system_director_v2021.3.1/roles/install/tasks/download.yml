@@ -1,0 +1,25 @@
+---
+
+- 
+  name: "Create folder for the installer"
+  ansible.builtin.file:
+    path: "{{ nexis_temp_folder }}"
+    state: directory
+
+- 
+  name: "Download installer"
+  ansible.builtin.get_url:
+    url: "{{ installer_repository }}{{ nexis_vm_build }}{{ sas_token }}"
+    dest: "{{ nexis_temp_folder }}"
+  register: download_result
+  until: download_result is success
+  retries: 6
+  delay: 10
+
+- 
+  name: "Debug information: Download installer"
+  ansible.builtin.debug:
+    var: download_result
+    verbosity: 2
+
+...

@@ -1,0 +1,58 @@
+---
+
+- 
+  name: "Run registration test"
+  shell: Avid-elf-cmd --nexis list_features | grep "num features = 0"
+  ignore_errors: true
+  register: activation_test
+
+- 
+  name: "Make sure that service is running"
+  service:
+    name: indexserverd.service
+    state: started
+
+- 
+  name: "Register"
+  shell: Avid-elf-cmd --nexis activate "{{ nexis_activation_id }}" "{{ nexis_system_id }}" "" "" 
+  register: activation_result
+  until: activation_result is success
+  retries: 30
+  delay: 5
+  when: activation_test.rc == 0
+
+- 
+  name: "Debug information: Register"
+  debug:
+    var: activation_result
+    verbosity: 2
+
+- 
+  name: "Restart service"
+  service:
+    name: indexserverd.service
+    state: restarted
+  when: activation_result is success
+
+- 
+  name: "Set flag when nexis is already activated"
+  set_fact:
+    nexis_activated: true
+  when: (activation_test.rc == 1) or (activation_result is success)
+    
+# Make and write Out Vars File
+- 
+  name: get Nexis Device ID
+  shell: Avid-elf-cmd get_device_id | awk '/Device ID/{print $5}' 
+  register: device_id
+  until: device_id is success
+  retries: 30
+  delay: 5
+  when: activation_result is success
+
+- name: "Set fact: nexis_device_id"
+  set_fact: 
+    nexis_device_id: "{{ device_id.stdout }}"
+  when: device_id is success
+
+...

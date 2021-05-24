@@ -1,0 +1,9 @@
+---
+# defaults file for setup
+
+domain_name: "poc"
+domain_extension: "internal"
+netbios_name: "POC"
+admin_username: "domain-admin"
+admin_password: "Password123!"
+user_password: "Password123$"

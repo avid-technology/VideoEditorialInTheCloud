@@ -1,0 +1,234 @@
+---  
+
+  - 
+    name: PASSWORDS | Update root password
+    user:
+      name: root
+      password: "{{ root_password | password_hash('sha512') }}"
+      update_password: always
+  
+  - 
+    name: Modify Cloud UX host file
+    lineinfile:
+      path: /etc/hosts
+      line: "{{ mccux_ipaddress }} {{ mccux_hostname }}.{{ domain_name }}.{{ domain_extension }} {{ mccux_hostname }}"
+
+  - 
+    name: Make sure no dns peering
+    lineinfile:
+      path: /etc/sysconfig/network-scripts/ifcfg-eth0
+      line: PEERDNS=no
+
+  - 
+    name: Reboot server
+    reboot:
+
+  - 
+    name: Add domain to etc/resolv.conf
+    lineinfile:
+      path: /etc/resolv.conf
+      line: domain {{ domain_name }}.{{ domain_extension }}
+
+  - 
+    name: Add nameserver to etc/resolv.conf
+    lineinfile:
+      path: /etc/resolv.conf
+      line: nameserver {{ domain_ipaddress }}
+
+  - 
+    name: Reboot server
+    reboot:
+
+  - 
+    name: Create iso folder 
+    file:
+      path: "/isos"
+      state: directory
+
+  - 
+    name: Create sysinstall folder 
+    file:
+      path: "/sysinstall"
+      state: directory
+
+  - 
+    name: Create features folder 
+    file:
+      path: "/features"
+      state: directory
+
+  - 
+    name: Check if base media central iso is present 
+    stat:
+      path: /isos/{{ platform_iso }}
+    register: baseiso_present
+
+  - 
+    name: Download Base MediaCentral Cloud UX 
+    get_url:
+      url: https://eitcstore01.blob.core.windows.net/installers/{{ platform_iso }}
+      dest: /isos
+      timeout: 180
+    when: not baseiso_present.stat.exists
+
+  - 
+    name: Check if feature media central iso is present 
+    stat:
+      path: /isos/{{ feature_pack_iso }}
+    register: featureiso_present
+
+  - 
+    name: Download Features MediaCentral Cloud UX 
+    get_url:
+      url: https://eitcstore01.blob.core.windows.net/installers/{{ feature_pack_iso }}
+      dest: /isos 
+      timeout: 180
+    when: not featureiso_present.stat.exists
+
+  - 
+    name: "Mount ISO CentOS"
+    mount:
+      path: /sysinstall
+      src: "/isos/{{ platform_iso }}"
+      fstype: iso9660
+      opts: loop
+      state: mounted
+      fstab: /tmp/tmp.fstab
+
+  - 
+    name: Check if avid agent service is present
+    service_facts:
+  
+  - 
+    name: Print service facts
+    ansible.builtin.debug:
+      var: ansible_facts.services
+
+  - 
+    name: Execute install.sh
+    shell: 
+      cmd: /sysinstall/install.sh
+    when: ansible_facts.services["avid-nexis-agent.service"] is not defined
+
+  - 
+    name: Reboot server
+    reboot:
+
+  - 
+    name: Install host setup
+    shell: 
+      cmd: avidctl platform host-setup --single --admin-token {{ kubernetes_password }} --cache-block-device "/dev/sdc"
+    when: ansible_facts.services["kubelet.service"] is not defined
+
+  # No need of source/profiles as rebooting server
+  - 
+    name: Reboot server
+    reboot:
+
+  - 
+    name: Get stats of a file
+    ansible.builtin.stat:
+      path: /etc/avid/config/site-key.yaml
+    register: site_key_stat
+
+  - 
+    name: Create temp directory for certificates 
+    file:
+      path: "/etc/mycerts"
+      state: directory
+    when: not site_key_stat.stat.exists
+
+  - 
+    name: Generate certificate files
+    shell: 
+      cmd: "avidctl tools cert-gen -c /etc/mycerts/dashboard.pem -k /etc/mycerts/dashboard-key.pem -N {{ mccux_hostname }}.{{ domain_name }}.{{ domain_extension }} -s {{ mccux_hostname }}.{{ domain_name }}.{{ domain_extension }} -s {{ mccux_hostname }} -s {{ mccux_ipaddress }}"
+    when: not site_key_stat.stat.exists
+
+  - 
+    name: Copy certificates
+    shell: 
+      cmd: "cp /etc/mycerts/dashboard* /opt/avid/etc/certs/"
+    when: not site_key_stat.stat.exists
+
+  - 
+    name: Deploy certificates
+    shell: 
+      cmd: avidctl platform config cert --cert-file "/opt/avid/etc/certs/dashboard.pem" --key-file "/opt/avid/etc/certs/dashboard-key.pem"
+    when: not site_key_stat.stat.exists
+
+  - 
+    name: Create new site key file
+    shell: 
+      cmd: "avidctl platform config site-key --issuer https://{{ mccux_hostname }}.{{ domain_name }}.{{ domain_extension }} --gen-keys"    
+    when: not site_key_stat.stat.exists
+
+  - 
+    name: try to install kubernetes dashboard
+
+    block:
+
+    - 
+      name: Check that you can connect (GET) to a page and it returns a status 200
+      uri:
+        url: https://{{ mccux_ipaddress }}:30143/
+        validate_certs: no
+      register: get_result
+
+    - 
+      name: Print service facts
+      ansible.builtin.debug:
+        var: get_result.status
+
+    # Not best logic. Will try to install if issue with kubernetes.
+    rescue:
+    - name: Install kubernetes dashboard
+      shell: 
+        cmd: "avidctl extra kube-dashboard deploy" 
+
+  - 
+    name: Get stats of a file
+    ansible.builtin.stat:
+      path: /etc/avid/config/auth.yaml
+    register: auth_stat
+
+  - 
+    name: Execute authentification provider
+    shell: 
+      cmd: avidctl platform config auth --host {{ domain_ipaddress }} --port "389" --bind-name "CN={{ admin_user }},CN=Users,DC={{ domain_name }},DC={{ domain_extension }}" --bind-password "{{ root_password }}" --base-dn "DC={{ domain_name }},DC={{ domain_extension }}" --admin-group-dn "CN=MC_Admins,OU=Groups,OU={{ domain_name }}{{ domain_extension }},DC={{ domain_name }},DC={{ domain_extension }}" --admin-username "mc_admin" --default-group-dn "CN=MC_Services,OU=Groups,OU={{ domain_name }}{{ domain_extension }},DC={{ domain_name }},DC={{ domain_extension }}" --default-username "mc_service"     
+    when: not auth_stat.stat.exists
+
+  - 
+    name: Execute authentification provider
+    shell: 
+      cmd: avidctl platform config nexis --system-name={{ nexis_system_director_name }} --system-directors={{ nexis_system_director_ip }} --user=mc_service --password={{ root_password }} --net-use=eth0 --mode=1  
+  
+  - 
+    name: Restart Avidfos
+    service:
+      name: avidfos
+      state: restarted
+      enabled: True
+
+  - 
+    name: Restart avid-nexis-agent
+    service:
+      name: avid-nexis-agent
+      state: restarted
+      enabled: True
+
+  - 
+    name: "Mount Feature pack iso"
+    mount:
+      path: /features
+      src: "/isos/{{ feature_pack_iso }}"
+      fstype: iso9660
+      opts: loop
+      state: mounted
+      fstab: /tmp/tmp.fstab
+
+  - 
+    name: Install base system
+    shell: 
+      cmd: avidctl platform deploy --skip-optional-features --feature-pack-path=/features/feature-packs/ -y  
+
+...

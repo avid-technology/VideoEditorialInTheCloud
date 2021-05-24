@@ -1,0 +1,38 @@
+---
+  - 
+    name: Set RemoteSigned execution policy on MC VM
+    win_shell: >
+      Set-ExecutionPolicy "RemoteSigned" -Scope Process -Confirm:$false;
+      Set-ExecutionPolicy "RemoteSigned" -Scope CurrentUser -Confirm:$false; 
+      Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine -Confirm:$false
+      
+  - 
+    name: "Create required_software workspace directory"
+    ansible.windows.win_file:
+      path: "{{ required_software_path }}"
+      state: directory
+
+  - 
+    name: "install chocolatey"
+    win_shell: "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
+
+  - 
+    name: Reboot machine
+    ansible.windows.win_reboot:
+      reboot_timeout_sec: 300 # wait 5 minutes for reboot
+    register: reboot_result
+
+  - 
+    name: Install Firefox, 7zip, quicktime and C++ redistributions
+    chocolatey.chocolatey.win_chocolatey:
+      name: 
+            - firefox
+            - 7zip.install # needed to use win_unzip
+            - quicktime
+            - vcredist2008
+            - vcredist2012
+            - vcredist2013
+            - vcredist2017
+      state: present
+      ignore_checksums: yes
+...

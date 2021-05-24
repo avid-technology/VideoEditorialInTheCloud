@@ -1,0 +1,19 @@
+---
+
+  - 
+    name: Join Domain
+    ansible.windows.win_domain_membership:
+      dns_domain_name: "{{ dns_domain_name }}"
+      hostname: "{{ hostname }}"
+      domain_admin_user: "{{ domain_admin_user }}@{{ dns_domain_name }}"
+      domain_admin_password: "{{ domain_admin_password }}"
+      state: domain
+    register: domain_state
+
+  - 
+    name: Reboot machine
+    ansible.windows.win_reboot:
+      reboot_timeout_sec: 300 # wait 5 minutes for reboot
+    register: reboot_result
+
+...

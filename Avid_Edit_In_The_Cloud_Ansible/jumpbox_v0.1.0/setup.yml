@@ -1,0 +1,12 @@
+---
+
+  - 
+    name: Media Composer setup
+    hosts: jpbx01
+    remote_user: local-admin
+
+    roles: 
+      - 
+        role: configure
+        
+...

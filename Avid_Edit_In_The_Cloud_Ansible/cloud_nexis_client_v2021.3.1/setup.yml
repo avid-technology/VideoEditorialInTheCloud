@@ -1,0 +1,12 @@
+---
+# Install and Configure Cloud Nexis Online 2021.3.0
+
+  -
+    name: Configure Cloud Nexis Client 2021.3.1
+    hosts: nexis01_client
+    become: yes
+
+    roles: 
+      - role: configure
+
+...
